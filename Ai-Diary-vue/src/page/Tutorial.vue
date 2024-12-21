@@ -1,11 +1,11 @@
 <script>
 /* eslint-disable vue/multi-word-component-names */
-import {  computed } from 'vue';  
-import NotFound from '@/page/NotFound.vue'; 
+import {  computed } from 'vue';
+import NotFound from '@/page/NotFound.vue';
 import Cookies from 'universal-cookie'; // universal-cookie import
 
 export default {
-  name: 'Tutorial',  
+  name: 'Tutorial',
   data(){
     return{
       author : "user123",
@@ -31,7 +31,7 @@ export default {
       content : "" ,
       hidden : true
     };
-  }, 
+  },
   mounted() {
     const cookies = new Cookies();
     const userData = cookies.get("userData");
@@ -100,16 +100,16 @@ export default {
                 <div class="tags">
                    <div  v-tooltip="'text1'">>
                     <input type="text" id="tag1" name="tag1" v-model="tags.tag1" placeholder="tag1" disabled/>
-                    
+
                     <input type="text" id="tag2" name="tag2" v-model="tags.tag2" placeholder="tag2" disabled/>
-                    
+
                     <input type="text" id="tag3" name="tag3" v-model="tags.tag3" placeholder="tag3" disabled/>
                    </div>
-                  <button type="button" class="aiButton">
+                  <!-- <button type="button" class="aiButton">
                      <div  v-tooltip="'사진이 생성되는 동안 일기를 작성할 수  없습니다.'">
                       <span>AI 이미지 생성</span>
                      </div>
-                  </button>
+                  </button> -->
                 </div>
               </div>
               <!--section3-->
@@ -178,18 +178,18 @@ export default {
     border-radius: 0.625em;
     overflow: hidden;
 }
-  
-.tutorial_content {			
+
+.tutorial_content {
     height: 100%;
     width: 99%;
     top: 1.875em;
     right: 0;
     bottom: 33.75em;
     left: 3.75em;
-    background-size: 30px 30px;  
+    background-size: 30px 30px;
   }
-  
-  .diaryTuto {	
+
+  .diaryTuto {
     padding: 1.875em;
     padding-top: 1.5em;
     width: 100%;
@@ -197,7 +197,7 @@ export default {
     z-index: 9999;
     font-size: 2vmin;
   }
-  
+
   .diaryTuto input,
   textarea,
   button {
@@ -206,7 +206,7 @@ export default {
     border: 0 solid black;
     font-size: 0.9375em;
   }
-  .tutorial_container {		
+  .tutorial_container {
     /* border: 1px solid #00fa9a; */
     margin: 0;
     width: 100%;
@@ -215,22 +215,22 @@ export default {
     flex-direction: row;
   }
 
-  .tutorialTitle {		
+  .tutorialTitle {
     font-size: 2rem;
     text-align: center;
     font-weight: bold;
-    
+
   }
-  .tutorialTitle {		
+  .tutorialTitle {
     box-shadow: inset 0 -23px 0 #e89b3d;
     display: inline;
   }
-  
+
   .tutorial_container form {
     width: 100%;
     height: 100%;
   }
-  .tutorial_noDalle {		
+  .tutorial_noDalle {
     width: 65%;
     height: 100%;
     margin: 0em;
@@ -247,9 +247,9 @@ export default {
     outline: 2px solid #c1ab86;
     transition: 0.1s;
   }
-  
-  
-  .tutorial_noDalle .section0 { 
+
+
+  .tutorial_noDalle .section0 {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -262,19 +262,19 @@ export default {
     flex-direction: row;
     margin-bottom: 0.9375em;
   }
-  
+
   .tutorial_noDalle .section01 input {
     width: 40%;
     text-align: center;
   }
-  
+
  .tutorial_noDalle .section1 input:hover {
     transition: 0.3s;
     opacity: 1;
     outline: 2px solid #c1ab86;
     width: 42%;
   }
-  
+
  .tutorial_noDalle .section2 {
     width: 100%;
     margin-bottom: 0.625em;
@@ -328,7 +328,7 @@ export default {
     width: 35%;
     height: 2.5em;
   }
- 
+
  .tutorial_noDalle .section3 .selectBox .v-select {
     background: transparent;
     outline: 0 none;
@@ -354,16 +354,16 @@ export default {
     justify-content: center;
     align-items: center;
   }
-  
+
  .tutorial_noDalle .section3 .selectBox .icoArrow img {
     width: 50%;
     transition: 0.3s;
   }
-  
+
  .tutorial_noDalle .section3 .selectBox .v-select:focus + .icoArrow img {
     transform: rotate(180deg);
   }
-  
+
  .tutorial_noDalle .section4 {
     display: flex;
     flex-direction: column;
@@ -386,7 +386,7 @@ export default {
  .tutorial_noDalle .section4 textarea:focus {
     outline: 2px solid #c1ab86;
   }
-  
+
  .tutorial_noDalle .section5 {
     width: 95%;
     display: flex;
@@ -397,7 +397,7 @@ export default {
  .tutorial_noDalle .section5 .text {
     margin-bottom: 0.625em;
   }
-  
+
  .tutorial_noDalle .section5 select {
     width: 35%;
     height: 2.5em;
@@ -408,13 +408,13 @@ export default {
     text-align: center;
     margin-right: 0.3125em;
   }
-  
+
  .tutorial_noDalle .section5 button {
     width: 35%;
     margin-right: 0.3125em;
     text-align: center;
   }
-  
+
  .tutorial_noDalle .section5 button:hover {
     width: 40%;
     opacity: 1;
@@ -422,5 +422,5 @@ export default {
     color: white;
     transition: 0.3s;
   }
-   
+
 </style>

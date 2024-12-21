@@ -11,6 +11,8 @@ import LoginPage from "@/page/LoginPage.vue";
 import SignupPage from "@/page/SignupPage.vue";
 import AgrrementPolicy from "@/page/AgrrementPolicy.vue";
 import DiaryWriting from "@/page/DiaryWriting.vue";
+import DiaryView from "@/page/DiaryView.vue";
+import DiaryList from "@/page/DiaryList.vue";
 
 const routes = [
   { path: "/", name: "Home", component: Home },
@@ -25,6 +27,8 @@ const routes = [
   { path: "/signup", name: "SignupPage", component: SignupPage },
   { path: "/agreementPolicy", name: "AgrrementPolicy", component: AgrrementPolicy },
   {path:"/diary/write", name:"DiaryWriting",component:DiaryWriting},
+  {path:"/diary/view", name:"DiaryView",component:DiaryView},
+  {path:"/diary/common", name:"DiaryList",component:DiaryList},
   {
     path: "/:pathMatch(.*)*",
     name: "CatchAll",

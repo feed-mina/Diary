@@ -1,21 +1,28 @@
 <script>
 /* eslint-disable vue/multi-word-component-names */
-import {  computed } from 'vue';
+import {  computed, ref } from 'vue';
 import NotFound from '@/page/NotFound.vue';
-import Cookies from 'universal-cookie'; // universal-cookie import
+import Cookies from 'universal-cookie'; 
 
 export default {
   name: 'Tutorial',
-  data(){
-    return{
-      author : "user123",
-      title : "",
-      tags: {
-        tag1 : "",
-        tag2 : "",
-        tag3 : "",
-      },
-      emotion : "",
+  setup() {
+  const currentView = computed(() => {
+    const routes = {
+      '/notFound': NotFound,
+    };
+    const currentPath = window.location.hash.slice(1) || '/';
+    return routes[currentPath] || NotFound;
+  });
+
+  const diaryContent =  ref({
+      date: new Date().toISOString().slice(0, 10), // YYYY-MM-DD 형식으로 날짜 설정
+      author:"작성자",
+      title:"제목",
+      tags:({ tag1: "#tag1", tag2: "#tag2", tag3: "#tag3" }),
+      emotion:"1",
+      content:"오늘은 기분이 어땠나요? ",
+      hidden:true,
       emotionItems: [
         { text: "😁 I feel good", value: "1" },
         { text: "😂 Oh, That's so funny", value: "2" },
@@ -28,34 +35,16 @@ export default {
         { text: "🤕 Not in a good condition", value: "9" },
         { text: "💙 I feel blue", value: "10" }
       ],
-      content : "" ,
-      hidden : true
-    };
-  },
-  mounted() {
-    const cookies = new Cookies();
-    const userData = cookies.get("userData");
-    if(!userData){
-      console.log('path:'/'');
-      // this.$router.push("/");
-    }
-  },
-  methods: {
-    saveDiary(){
-      console.log("Diary saved");
-    },
-  },
-  setup() {
-  const currentView = computed(() => {
-    const routes = {
-      '/notFound': NotFound,
-    };
-    const currentPath = window.location.hash.slice(1) || '/';
-    return routes[currentPath] || NotFound;
-  });
+
+    });
+  const saveDiary = () => {
+  console.log("Diary saved");
+  };
 
   return {
     currentView,
+    diaryContent,
+    saveDiary
   };
 }
 }
@@ -69,24 +58,25 @@ export default {
           <form>
             <div class="tutorialTitle">
               <div  v-tooltip="'튜토리얼 페이지입니다. 메뉴에 마우스를 올려보세요.'">
-                <span class="tutorialHighlight">
-                  튜토리얼페이지
-                </span>
+                <!-- <span class="tutorialHighlight">
+                </span> -->
               </div>
             </div>
             <div class="tutorial_noDalle">
               <div class="section0">
-                <div>오늘 날짜 : 날짜 자동입력</div>
+                <div>오늘 날짜 : {{diaryContent.date}}</div>
               </div>
               <div class="section01">
                 <div>
                   <div  v-tooltip="' ID가 자동 입력됩니다.'">
                     <label for="author">작성자&nbsp;&nbsp;&nbsp;</label>
-                  <input type="text" class="author" id="author" name="author" :value="author" placeholder=""  readonly :disabled="false"/>
+                  <input type="text" class="author" id="author" name="author" :value="diaryContent.author" placeholder=""  readonly :disabled="false"/>
                   </div>
                   <div  v-tooltip="' 제목을 입력해주세요.'">
-                    <label for="title">제목&nbsp;&nbsp;&nbsp;</label>
-                  <input type="text" class="title" id="title" name="title" :value="title" placeholder="" readonly :disabled="false"/>
+                    <div class="titleSc">
+                      <label for="title">제목&nbsp;&nbsp;&nbsp;</label>
+                  <input type="text" class="title" id="title" name="title" :value="diaryContent.title" placeholder="" readonly :disabled="false"/>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -98,12 +88,12 @@ export default {
                   </div>
                 </div>
                 <div class="tags">
-                   <div  v-tooltip="'text1'">>
-                    <input type="text" id="tag1" name="tag1" v-model="tags.tag1" placeholder="tag1" disabled/>
+                   <div  v-tooltip="'text1'"> 
+                    <input type="text" id="tag1" name="tag1" v-model="diaryContent.tags.tag1" placeholder="" disabled/>
 
-                    <input type="text" id="tag2" name="tag2" v-model="tags.tag2" placeholder="tag2" disabled/>
+                    <input type="text" id="tag2" name="tag2" v-model="diaryContent.tags.tag2" placeholder="" disabled/>
 
-                    <input type="text" id="tag3" name="tag3" v-model="tags.tag3" placeholder="tag3" disabled/>
+                    <input type="text" id="tag3" name="tag3" v-model="diaryContent.tags.tag3" placeholder="" disabled/>
                    </div>
                   <!-- <button type="button" class="aiButton">
                      <div  v-tooltip="'사진이 생성되는 동안 일기를 작성할 수  없습니다.'">
@@ -115,14 +105,14 @@ export default {
               <!--section3-->
               <div class="section3">
                 <div class="text">
-                 <div  v-tooltip="'일기의 대표되는 감정을 선택해주세요.'">
+                 <div  v-tooltip="'오늘의 내 기분을 나타내는 감정을 선택해주세요.'">
                       <span>감정지수를 선택하세요.</span>
                     </div>
                 </div>
                 <div class="selectBox">
                   <v-select
-                  v-model="emotion"
-                  :items="emotionItems"
+                  v-model="diaryContent.emotion"
+                  :items="diaryContent.emotionItems"
                   item-title="text"
                   item-value="value"
                   label="오늘의 감정지수는?"
@@ -136,17 +126,16 @@ export default {
               <div class="section4">
                 <div class="text">
                   <div  v-tooltip="' 아래에서 일기의 본문을 작성해주세요.'">
-                      <span>본문</span>
+                      <span>일기장</span>
                   </div>
                 </div>
-                <textarea v-model="content" rows="3" class="content" name="content" id="content" disabled></textarea>
+                <textarea v-model="diaryContent.content" rows="3" class="content" name="content" id="content" disabled></textarea>
               </div>
               <!--section05-->
               <div class="section05">
                 <div  v-tooltip="'일기를 다른 사람에게 공유할지를 선택해주세요.'">
                       <span>🔎</span>
-                </div>
-                    <select v-model="hidden" id="hidden" required>
+                    <select v-model="diaryContent.hidden" id="hidden" required>
                       <option value="true">
                         숨기기
                       </option>
@@ -154,12 +143,12 @@ export default {
                         보여주기
                       </option>
                     </select>
-                    <div>
-                      <button type="button" @click="saveDiary">일기장완료</button>
-                      <button type="button" @click="goDiary">뒤로가기</button>
-                    </div>
+                
+                  </div>
               </div>
-
+              <div class="saveDiary">
+                      <button type="button" @click="saveDiary">기록하기</button>
+                    </div>
               <!--diaryTuto-dalle-->
             </div>
           </form>
@@ -170,37 +159,42 @@ export default {
 </template>
 
 <style scoped>
+
+
+.titleSc{
+    padding-top:2rem;
+  }
 .tutorial{
-  width: 100%;
-    min-width: 25em;
-    height: 100%;
-    margin: 0 auto;
-    border-radius: 0.625em;
-    overflow: hidden;
+  display: flex;
+  justify-content: center;
+ /* height: 100vh;  화면 전체 높이를 채움 */
+  background-color: #f8f9fa; /* 배경색 */
+  padding: 10px;
 }
 
 .tutorial_content {
-    height: 100%;
-    width: 99%;
-    top: 1.875em;
-    right: 0;
-    bottom: 33.75em;
-    left: 3.75em;
-    background-size: 30px 30px;
+  height: 100%;
+  width: 100%; /* 모바일에서는 전체 너비 사용 */
+  padding: 1rem;
+  display: flex;
+  flex-direction: column; /* 수직 정렬 */
+  align-items: center; /* 수평 중앙 정렬 */
   }
 
   .diaryTuto {
-    padding: 1.875em;
     padding-top: 1.5em;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
+    width: 90%; /* 화면 크기 따라 자동 조정 */
+    display: flex;
+    flex-direction: column; /* 수직 정렬 */
+    justify-content: center;
+  
+    /* overflow-y: auto; 스크롤 가능 */
+    /* z-index: 9999; */
     font-size: 2vmin;
   }
 
   .diaryTuto input,
-  textarea,
-  button {
+  textarea{
     border-radius: 0.3125em;
     background: #eee7db;
     border: 0 solid black;
@@ -210,8 +204,7 @@ export default {
     /* border: 1px solid #00fa9a; */
     margin: 0;
     width: 100%;
-    height: 100%;
-    display: flex;
+     display: flex;
     flex-direction: row;
   }
 
@@ -236,12 +229,12 @@ export default {
     margin: 0em;
     float: left;
   }
-  .tutorial_noDalle input,
+  /* .tutorial_noDalle input,
   select,
   button,
   option {
     height: 1.875em;
-  }
+  } */
 
   .tutorial_container input:focus {
     outline: 2px solid #c1ab86;
@@ -298,12 +291,12 @@ export default {
     outline: 2px solid #c1ab86;
     width: 27%;
   }
- .tutorial_noDalle .section2 button {
+ /* .tutorial_noDalle .section2 button {
     width: 25%;
     margin: 0.3125em;
     height: 2em;
     background: #c1ab86;
-  }
+  } */
  .tutorial_noDalle .section2 button:hover {
     transition: 0.3s;
     opacity: 1;
@@ -334,8 +327,7 @@ export default {
     outline: 0 none;
     padding: 0 5px;
     position: relative;
-    z-index: 3;
-  }
+   }
  .tutorial_noDalle .section3 .selectBox .v-select option {
     color: #c1ab86;
     padding: 0.1875em 0;
@@ -370,16 +362,14 @@ export default {
     margin-bottom: 1.25em;
     margin-left: 0.3125em;
     width: 95%;
-    height: 50%;
   }
  .tutorial_noDalle .section4 .text {
     margin-bottom: 0.625em;
   }
  .tutorial_noDalle .section4 textarea {
     width: 100%;
-    height: 100%;
     padding: 0.625em;
-    font-size: 1.25em;
+    font-size: 1em;
     overflow: auto;
     resize: vertical;
   }
@@ -391,7 +381,6 @@ export default {
     width: 95%;
     display: flex;
     flex-direction: row;
-    margin-bottom: 1.25em;
     margin-left: 0.3125em;
   }
  .tutorial_noDalle .section5 .text {
@@ -400,7 +389,6 @@ export default {
 
  .tutorial_noDalle .section5 select {
     width: 35%;
-    height: 2.5em;
     margin-left: 0.625em;
     border-radius: 0.25em;
     border: 1px solid #c1ab86;
@@ -409,18 +397,22 @@ export default {
     margin-right: 0.3125em;
   }
 
- .tutorial_noDalle .section5 button {
-    width: 35%;
-    margin-right: 0.3125em;
+.saveDiary{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+    margin-top:2rem;
     text-align: center;
-  }
-
- .tutorial_noDalle .section5 button:hover {
-    width: 40%;
-    opacity: 1;
-    background: #604e2e;
-    color: white;
-    transition: 0.3s;
-  }
-
+    width: 120px;
+    height: 40px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background: #A5778F;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
 </style>

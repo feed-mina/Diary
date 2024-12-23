@@ -5,12 +5,12 @@ import Cookies from "universal-cookie";
 export default {
   name: 'HomePage',
   setup(){
-    
+
     const router = useRouter();
     const cookies = new Cookies(); // 쿠키 객체 생성
     // 쿠키 읽기(디버깅 용도)
     onMounted(()=>{
-      console.log(cookies.getAll());
+      console.log('Home cookiess.getAll', cookies.getAll());
     });
 
     const navigateTo = (path) =>{
@@ -20,7 +20,7 @@ export default {
     return{
       navigateTo,
     }
-  }  
+  }
 };
 </script>
 
@@ -40,10 +40,9 @@ export default {
             <button type="button" class="home-button" @click="navigateTo('/diary/tutorial')">
               튜토리얼 보러가기
             </button>
-
-            
-            <button type="button" class="home-button" @click="navigateTo('/diary/write')">
-              일기 쓰러가기
+ 
+            <button type="button" class="home-button" @click="navigateTo('/login')">
+              로그인 하러가기
             </button>
         </div>
       </div>
@@ -65,9 +64,11 @@ export default {
 .main-content {
   display: flex;
   flex-direction: column; /* 수직 정렬 */
+  max-width: 500px; /* 최대 너비 */
+  align-items: center; /* 수평 중앙 정렬 */
+ /*  justify-content: center; 세로 중앙 정렬 */
   width: 100%; /* 모바일에서는 전체 너비 사용 */
   padding: 1rem;
-  align-items: center;
 }
 
 /* Bubble styling */
@@ -81,7 +82,7 @@ export default {
   border-radius: 10px;
   padding: 20px;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .home-text {
@@ -105,7 +106,7 @@ export default {
 }
 
 /* Button hover effects */
-.home-button:hover { 
+.home-button:hover {
   outline: 2px solid rgb(250, 250, 250);
   border: 2px solid rgb(255, 46, 46);
   background-color: rgb(249, 233, 233);

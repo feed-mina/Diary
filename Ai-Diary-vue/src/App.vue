@@ -49,7 +49,7 @@ export default {
           <header>
             <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
           </header>
-          <DiaryHeader/>
+          <!-- <DiaryHeader/> -->
           <RouterView /> <!-- 현재 경로에 맞는 컴포넌트 렌더링 -->
           <DiaryFooter />
         </div>
@@ -70,7 +70,7 @@ export default {
 .main-wrap{
  display: flex; 
   width: 100vw;
-  height: 100vh;
+  /* height: 100vh; */
   background-color: #ffffff;
 }
 .content-wrap {

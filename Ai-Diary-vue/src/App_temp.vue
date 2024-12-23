@@ -12,7 +12,6 @@ import ComponentA from '@/components/ComponentA.vue';
 import ComponentB from '@/components/ComponentB.vue';
 import ComponentC from '@/components/ComponentC.vue'
 import TreeItem from '@/TreeItem.vue';
-import Modal from '@/Modal.vue'; 
 
 export default{
   // data()에서 반환된 속성들은 반응적인 상태가 되어 this에 노출된다.
@@ -475,7 +474,7 @@ return {
     </v-app>
 </template>
 
-<style>
+<style scoped>
 @import url("https://unpkg.com/todomvc-app-css@2.4.1/index.css");
  
 

@@ -14,7 +14,7 @@ export default {
     // 쿠키 객체 생성
     const cookies = new Cookies();
     const signUpData =  ref({
-      id:"",
+      userId:"",
       password:"",
       rePassword:"",
       email:"",
@@ -22,7 +22,7 @@ export default {
     });
 
     const errorWarning = ref({
-      id:  false,
+      userId:  false,
       password:  false,
       rePassword:  false,
       email : false,
@@ -46,7 +46,7 @@ export default {
       showRePassword.value = !showRePassword.value;
     }
 
-
+    // 컴포넌트가 로드될 때 오늘 날짜 자동 설정
     onMounted(() =>{
       const userData = cookies.get("userData");
       if (!userData) {
@@ -55,6 +55,8 @@ export default {
        } else {
         router.push("/diary/common");
       }
+      setTodayDate();
+      console.log(setTodayDate());
     });
 
     const checkId = (id) => {
@@ -106,6 +108,11 @@ export default {
           emailErrorMessage.value="유효하지 않는 이메일입니다."
         }
     }
+
+    // 오늘 날짜를 설정
+    const setTodayDate = () => {
+      diaryContentData.value.date = dayjs().format("YYYY-MM-DD"); // 현재 날짜 설정
+    };
 
 
     const handleIdChange = (event) =>{
@@ -188,6 +195,7 @@ const onClickSignUpButton = async () => {
       rePasswordValid,
       showPassword,
       showRePassword,
+      setTodayDate,
       togglePasswordVisibility,
       toggleRePasswordVisibility,
       handleIdChange,
@@ -215,8 +223,8 @@ const onClickSignUpButton = async () => {
         <label for="id" class="form-label">ID</label>
       </div>
       <div>
-        <input size="30" type="text"  v-model="signUpData.id" @input="handleIdChange" class="signUp_form-input" name="id" id="id"/>
-        <div class="signUp_form-oo" :style="{ color: errorWarning.id ? 'red' : 'black' }">
+        <input size="30" type="text"  v-model="signUpData.userId" @input="handleIdChange" class="signUp_form-input" name="userId" id="userId"/>
+        <div class="signUp_form-oo" :style="{ color: errorWarning.userId ? 'red' : 'black' }">
           {{ idErrorMessage }}
         </div>
       </div>

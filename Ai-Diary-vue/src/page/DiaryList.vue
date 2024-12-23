@@ -2,7 +2,7 @@
 import {ref, onMounted} from 'vue';
 import { useRouter } from 'vue-router';
 import axios from "axios";
-import Cookies from 'universal-cookie';
+import Cookies from "universal-cookie";
 import Modal from '../components/Modal.vue';
 import styled from '@vue-styled-components/core';
 export default {

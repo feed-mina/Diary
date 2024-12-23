@@ -14,11 +14,11 @@ export default {
 
     // 로그인 입력 데이터
     const loginData = ref({
-      id:"",
+      userId:"",
       password : "", 
     });
     const errorWarning = ref({
-      id:  false,
+      userId:  false,
       password:  false,
     });
     const idErrorMessage = ref("");
@@ -36,7 +36,7 @@ export default {
       if(!userData){
         console.log("로그인 필요");
         loginData.value = {
-          id : "",
+          userId : "",
           password : "",
         };
         router.push("/login");
@@ -52,7 +52,7 @@ export default {
 
     const onClickLoginButton = async() => {
       console.log("로그인 데이터 :", loginData.value);
-      if(!loginData.value.id){
+      if(!loginData.value.userId){
         alert("아이디를 입력해주세요.");
         return;
       }
@@ -119,8 +119,8 @@ export default {
               <label for="id" class="form-label">ID</label>
             </div>
             <div>
-              <input size="30" type="text"  v-model="loginData.id" @input="handleIdChange" class="login_form-input" name="id" id="id"/>
-              <div class="login_form-oo" :style="{ color: errorWarning.id ? 'red' : 'black' }">
+              <input size="30" type="text"  v-model="loginData.userId" @input="handleIdChange" class="login_form-input" name="userId" id="userId"/>
+              <div class="login_form-oo" :style="{ color: errorWarning.userId ? 'red' : 'black' }">
                 {{ idErrorMessage }}
               </div>
             </div>

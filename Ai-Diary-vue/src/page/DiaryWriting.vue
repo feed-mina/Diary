@@ -1,10 +1,10 @@
 <script>
+import axios from "axios";
+import { ref, onMounted } from 'vue'; 
+import {useRouter} from "vue-router";
 import Cookies from 'universal-cookie'; // universal-cookie
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
-import { ref, reactive } from 'vue';
-
-
 
 export default {
   name: 'DiaryWriting', // 다중 단어 이름으로 변경
@@ -12,8 +12,11 @@ export default {
     Datepicker,
   },
     setup() {
-
-    const diaryContent =  ref({
+      const router = useRouter();
+    // 쿠키 객체 생성
+    const cookies = new Cookies();
+    
+    const diaryContentData =  ref({
       date:"",
       author:"",
       title:"",
@@ -21,6 +24,10 @@ export default {
       emotion:"",
       content:"",
       hidden:true,
+    });
+
+    const diaryVisibility = ref({
+      diaryContentData: false,
     });
 
     const emotionItems = [
@@ -36,14 +43,125 @@ export default {
       { text: "💙 I feel blue", value: "10" }
     ];
 
-  const saveDiary = () => {
-  console.log("Diary saved");
-  };
+    axios.interceptors.request.use(
+  (config) => {
+    console.log("Axios 요청 설정:", config);
+    return config;
+  },
+  (error) => {
+    console.error("Axios 요청 에러:", error);
+    return { success: false, error: error.response?.data || "오류가 발생했습니다." };
+  }
+);
 
+axios.interceptors.response.use(
+  (response) => {
+    console.log("Axios 응답 데이터:", response);
+    return response;
+  },
+  (error) => {
+    console.error("Axios 응답 에러:", error);
+    return Promise.reject(error);
+  }
+);
+
+    const sendDiaryContentData = async()=>{
+      try{
+        const { title, date, author, tags, emotion, content, hidden} = diaryContentData.value; 
+        
+            // 값 검증
+    if (!date) {
+      alert("날짜를 입력해주세요.");
+      return;
+    }
+    if (!author) {
+      alert("작성자를 입력해주세요.");
+      return;
+    }
+    if (!title) {
+      alert("제목을 입력해주세요.");
+      return;
+    }
+    if (!emotion) {
+      alert("감정지수를 선택해주세요.");
+      return;
+    }
+    if (!content) {
+      alert("내용을 입력해주세요.");
+      return;
+    }
+    // 값 검증
+    if (!date || !author || !title || !emotion || !content) {
+      alert("필수 필드를 채워주세요.");
+      return;
+    }
+        const diaryDataToSave = {
+          pageNo: 1,
+          pageSize: 10,
+          title,
+          author,
+          emotion,
+          userId : localStorage.getItem("userId"),
+          date,
+          content,
+          tag1 : tags.tag1,
+          tag2 : tags.tag2,
+          tag3 : tags.tag3,
+          diaryStatus: hidden ? "true" : "false", // Boolean을 문자열로 변환
+        }
+        console.log('diaryDataToSave',diaryDataToSave);
+        const jwtToken = cookies.get("jwt")?.jwt; // 쿠키에서 jwt 속성 가져오기
+        console.log("jwtToken: " , jwtToken);
+        if (!jwtToken) {
+          alert("JWT 토큰이 없습니다. 다시 로그인해주세요.");
+          router.push("/login");
+          return;
+      //throw new Error("JWT 토큰이 없습니다.");
+    }
+
+        const response = await axios.post("http://localhost:8080/api/diary/addDiaryList", diaryDataToSave,{
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            "Content-Type": "application/json",
+            "X-Forwarded-For": "127.0.0.1",
+          },
+          withCredentials: true, // 쿠키 인증 허용
+
+        });
+        
+        console.log("jwtToken: " , jwtToken);
+        console.log('response',response);
+      return response.data;
+      }catch(error) {
+        if (error.response && error.response.status === 401) {
+        alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+        router.push("/login"); // 로그인 페이지로 이동
+      } else {
+      console.error("API 호출 실패:", error);
+      alert("일기 저장에 실패했습니다. 관리자에게 문의해주세요.");
+      
+      return { success: false, error: "서버 오류가 발생했습니다." }; // 실패 메시지 반환
+        }
+      }
+    } ;
+  
+
+  const onClicksaveDiaryButton = async () => {
+    const result =  await sendDiaryContentData();
+    console.log(result)
+    alert("일기가 저장되었습니다.");
+    router.push("/diary/common").then(() => location.reload());
+    if (result && result.error) {
+      alert("저장 실패: " + result.error);
+    
+    router.push("/").then(() => location.reload());
+  }  
+  };
     return {
       emotionItems,
-      diaryContent,
-      saveDiary
+      diaryContentData,
+      onClicksaveDiaryButton,
+      diaryVisibility
     };
   },
 }
@@ -62,29 +180,26 @@ export default {
             </div>
             <div class="diaryWriting_noDalle">
               <div class="section0">
-                <div><span>오늘 날짜</span>
+                <div><span>일기 날짜</span>
                   <div>
                     <Datepicker
-                    v-model="diaryContent.date"
-                    :format="'YYYY-MM-DD'"
+                    v-model="diaryContentData.date"
+                    :format="'yyyy-MM-dd'"
                     :auto-apply="true"
                     :locale="'ko'"
                   />
-
-                <div v-if="diaryContent.date">선택된 날짜: {{ diaryContent.date }}</div>
-
                   </div>
                 </div>
               </div>
               <div class="section01">
                 <div>
                     <div>
-                      <label for="author">작성자&nbsp;&nbsp;&nbsp;</label>
-                  <input type="text" class="author" id="author" name="author" v-model="diaryContent.author" placeholder=""  />
+                  <label for="author">작성자&nbsp;&nbsp;&nbsp;</label>
+                  <input type="text" class="author" id="author" name="author" v-model="diaryContentData.author" placeholder=""  />
                     </div>
                     <div class="titleSc">
                       <label for="title">제목&nbsp;&nbsp;&nbsp;</label>
-                  <input type="text" class="title" id="title" name="title" v-model="diaryContent.title" placeholder="" />
+                  <input type="text" class="title" id="title" name="title" v-model="diaryContentData.title"  />
                     </div>
                 </div>
               </div>
@@ -94,11 +209,11 @@ export default {
                     <span>오늘의 감정을 태그로 입력하세요.</span>
                 </div>
                 <div class="tags">
-                    <input type="text" id="tag1" name="tag1" v-model="diaryContent.tags.tag1" placeholder="tag1" />
+                    <input type="text" id="tag1" name="tag1" v-model="diaryContentData.tags.tag1" placeholder="tag1" />
 
-                    <input type="text" id="tag2" name="tag2" v-model="diaryContent.tags.tag2" placeholder="tag2" />
+                    <input type="text" id="tag2" name="tag2" v-model="diaryContentData.tags.tag2" placeholder="tag2" />
 
-                    <input type="text" id="tag3" name="tag3" v-model="diaryContent.tags.tag3" placeholder="tag3" />
+                    <input type="text" id="tag3" name="tag3" v-model="diaryContentData.tags.tag3" placeholder="tag3" />
                   <!-- <button type="button" class="aiButton">
                       <span>AI 이미지 생성</span>
                   </button> -->
@@ -111,7 +226,7 @@ export default {
                 </div>
                 <div class="selectBox">
                   <v-select
-                  v-model="diaryContent.emotion"
+                  v-model="diaryContentData.emotion"
                   :items="emotionItems"
                   item-title="text"
                   item-value="value"
@@ -127,12 +242,12 @@ export default {
                 <div class="text">
                       <span>본문</span>
                 </div>
-                <textarea v-model="diaryContent.content" rows="3" class="content" name="content" id="content" ></textarea>
+                <textarea v-model="diaryContentData.content" rows="3" class="content" name="content" id="content" ></textarea>
               </div>
               <!--section05-->
               <div class="section05">
                       <span>🔎</span>
-                    <select v-model="diaryContent.hidden" id="hidden" required>
+                    <select v-model="diaryContentData.hidden" id="hidden" required>
                       <option value="true">
                         숨기기
                       </option>
@@ -141,8 +256,7 @@ export default {
                       </option>
                     </select>
                     <div>
-                      <button type="button" @click="saveDiary">일기장완료</button>
-                      <button type="button" @click="goDiary">뒤로가기</button>
+                      <button type="button" @click="onClicksaveDiaryButton">일기장완료</button>
                     </div>
               </div>
 
@@ -158,7 +272,7 @@ export default {
 <style scoped>
 .diaryWriting{
     width: 99%;
-    height: 75%;
+    /**height: 75%; */
     min-width: 25em;
     height: 100%;
     margin: 0 auto;
@@ -167,7 +281,7 @@ export default {
 }
 
 .diaryWriting_content {
-    height: 100%;
+    /* height: 100%; */
     width: 99%;
     top: 1.875em;
     right: 0;

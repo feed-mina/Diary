@@ -27,7 +27,7 @@ const routes = [
   { path: "/signup", name: "SignupPage", component: SignupPage },
   { path: "/agreementPolicy", name: "AgrrementPolicy", component: AgrrementPolicy },
   {path:"/diary/write", name:"DiaryWriting",component:DiaryWriting},
-  {path:"/diary/view", name:"DiaryView",component:DiaryView},
+  {path:"/diary/view/:diaryId", name:"DiaryView",component:DiaryView},
   {path:"/diary/common", name:"DiaryList",component:DiaryList},
   {
     path: "/:pathMatch(.*)*",

@@ -5,6 +5,7 @@ import About from '@/page/About.vue';
 import NotFound from '@/page/NotFound.vue';    
 import ComponentB from '@/components/ComponentB.vue';
 import ComponentC from '@/components/ComponentC.vue';
+import DiaryList from "@/page/DiaryList.vue";
 
 import DiaryHeader from "@/components/Header.vue";
 import DiaryNav from "@/components/DiaryNav.vue";
@@ -22,7 +23,7 @@ export default {
       '/': Home,
       '/about': About,
       '/notFound': NotFound, 
-      '/componentB': ComponentB,
+      '/diary/common': DiaryList,
       '/componentC': ComponentC, 
     };
 
@@ -64,13 +65,13 @@ export default {
   flex-direction: row;
   box-sizing: border-box;
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
 }
 
 .main-wrap{
  display: flex; 
   width: 100vw;
-  /* height: 100vh; */
+  height: 100%;
   background-color: #ffffff;
 }
 .content-wrap {

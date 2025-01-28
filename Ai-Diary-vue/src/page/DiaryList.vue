@@ -1,171 +1,221 @@
+
 <script>
-import {ref, onMounted} from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from "axios";
-import Cookies from "universal-cookie";
-import Modal from '../components/Modal.vue';
-import styled from '@vue-styled-components/core';
+import axios from 'axios';
+import Cookies from 'universal-cookie';
+
 export default {
-  name: 'DiaryList', // 다중 단어 이름으로 변경
-  components : { Modal},
-  setup(){
+  name: 'DiaryList',
+  setup() {
     const router = useRouter();
     const cookies = new Cookies();
+    const jwtToken = cookies.get('jwt')?.jwt;
+
     const diaryList = ref([]);
-    const userId = ref("");
+    const diaries = ref([]);
+    const showOnlyMine = ref(false); // 내가 쓴 일기만 보기 체크박스
+
+  
     const page = ref({
-      page : 1,
-      totalPage : 0,
+      pageNo: 1,
+      pageSize: 5, // 한 페이지당 5개의 일기
+      total: 0,
     });
-    const modalOpen = ref(false);
-    const openModal = () =>{
-      modalOpen.value = true;
-    };
-    const closeModal = () => {
-      modalOpen.value = false;
-    };
 
-    const getDiaryList = async(id, temPage) => {
-      try{
-        const response = await axios.get(`localhost:8080/api/diary/getOtherList/${id}?page=${temPage}&perPage=6`,
-          {
-            headers : {
-              accessToken : cookies.get("userData").accessToken,
-            },
-          }
-        );
-        diaryList.value = response.data.diary;
-        page.value = {
-          page: temPage,
-          totalPage : response.data.totalPage,
-        };
+    const userId = localStorage.getItem('userId');
 
-      } catch(e){
-        console.error(e);
-        router.push("/");
+    console.log("userId : ",userId);
+    // userId와 response.data.diaryList.list.userId같은지, 같다면 내가 쓴 일기만 보기 체크박스 누를때 두개가 같은 것만 response.data.diaryList 보이기
+    const fetchDiaryList = async ( ) => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/diary/viewDiaryList', {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            'Content-Type': 'application/json',
+          },
+          params: {
+            userId: showOnlyMine.value? userId:null,
+            pageNo: page.value.pageNo,
+            pageSize: page.value.pageSize,
+          },
+        });
+        console.log("API 응답 데이터: ", response.data);
+  
+        console.log("diaryList : ",response.data.diaryList,response.data.diaryList.length,"개" );
+        
+        const { diaryList, total, pageSize, page: pageNum } = response.data;
+        diaries.value = diaryList || [];
+        page.value = { pageNo: pageNum, pageSize, total };
+        const userIds = diaryList.map(diary => diary.userId);
+        
+        for( let i = 0; i < response.data.diaryList.length; i++){
+          console.log("diaryList : ", diaryList);
+          console.log("diaryList : ", diaryList[i].userId);
+          console.log("userIds: ", userIds);
+          console.log("userId : ", userIds[i]);
+            if(diaryList[i].userId == userId){
+              console.log('localStorage에 매칭되는 id', diaryList[i].userId);
+              console.log("userId : ", userIds[i]);
+            } 
+            // else {  
+            //   console.log("showOnlyMine : ",showOnlyMine.value);
+            //   console.log("내 일기가 없음");
+            //   diaries.value = [];
+            //   page.value.total = 0;
+            // }
+        }
+        // userId 배열 추출
+
+        // const showMineEqualsList = response.data.diaryList;
+        // console.log("showMineEqualsList: ",showMineEqualsList)
+
+
+        // 내가 쓴 일기가 없을 경우 처리
+        if( userIds.length === 0){
+          
+          console.log("showOnlyMine : ",showOnlyMine.value);
+          console.log("내 일기가 없음");
+          diaries.value = [];
+          page.value.total = 0;
+        } 
+      } catch (error) {
+        console.error('Error fetching diary list: ', error);
+        diaries.value = [];
+        router.push('/');
       }
     };
 
-    const onClickPagination = async(newPage) =>{
-      page.value.page = newPage;
-      await getDiaryList(userId.value, newPage);
+      // 체크박스 변경 시 호출
+      const toggleFilter = async () => {
+      await fetchDiaryList();
+    };
+ 
+
+    const changePage = async (newPage) => {
+      page.value.pageNo = newPage;
+      await fetchDiaryList();
+    };
+  
+    const viewDiary = async (diaryId) => {
+      cookies.set("diaryId",diaryId);
+      await fetchDiaryList();
+      router.push(`/diary/view/${diaryId}`);
     };
 
-    const navigateTo = (path) =>{
-      router.push(path);
-    };
+        // 컴포넌트 마운트 시 일기 목록 로드
 
     onMounted(() => {
-      const userData = cookies.get("userData");
-      if(!userData){
-        router.push("/");
-      } else{
-        userId.value = userData.id;
-        getDiaryList(userId.value, page.value.page);
+      if (!userId) {
+        router.push('/');
+      } else {
+        fetchDiaryList();
       }
     });
 
-return{
-  diaryList,
-  page,
-  modalOpen,
-  openModal,
-  closeModal,
-  onClickPagination,
-  navigateTo
-};
-
+    return {
+      diaries,
+      diaryList,
+      page,
+      fetchDiaryList,
+      changePage,
+      viewDiary,
+      toggleFilter,
+      showOnlyMine
+    };
   },
-
 };
 </script>
 
 <template>
-
-<div class="diaryList">
-  <div class="diaryList_content">
-    <main class="diaryOtherList">
-      <div v-if="diaryList && diaryList.length > 0">
-        <div v-for="(it, index) in diaryList" :key="it.shortId">
-          <div class="mini-posts">
-          <article class="mini-post">
+  <div class="diaryList">
+    <h1>일기장 리스트</h1>
+  <div class="filter-section">
+    <label class="filter-checkbox">
+      <input type="checkbox" v-model="showOnlyMine" @change="toggleFilter"/>
+    내가 쓴 일기만 보기
+  </label>    
+  <!-- <p>필터 상태: {{ showOnlyMine }}</p> -->
+  </div>
+    <div class="diaryList_content">
+      <main class="diaryOtherList">
+        <div class="diaryListSection" v-if="diaries.length > 0">
+          <div  v-for="(it, index) in diaries" :key="it.diaryId" class="diary-post" @click="viewDiary(it.diaryId)">
             <header>
-              <h3>
-                <a class="mini-post-title" @click="navitateTo(`/diary/${it.shortId}/diaryview`)">
-                  <span style="font-size: bold; color:#604e2e">
-                    &nbsp; {{ it.author }} &nbsp;
-                  </span>
-                  <span>&nbsp; {{ it.title.substring(0, 7) }}...</span>
-                </a>
+              {{ diaries.userId }}
+              <h3 class="diaryAuthor">
+                {{ it.author || '익명' }} 
+                {{ it.userId }}
               </h3>
-              <time class="published" :dateTime="it.created_at">
-                {{ it.createdDate.substring(0, it.createdDate.length / 2) }}
+              <span class="diaryTitle">
+                &nbsp;{{ it.title ? it.title.substring(0, 10) : '제목 없음' }}...
+              </span>
+              <time class="diaryTime" :dateTime="it.regDt">
+                {{ new Date(it.regDt || it.date).toLocaleDateString() }}
               </time>
-              <a @click="navigateTo(`/diary/${it.shortId}/diaryView`)">
-                <h3>DiaryList</h3>
-              </a>
             </header>
-            <a @click="navigateTo(`/diary/${it.shortId}/diaryView`)" class="image">
-              <img :src="`data:image/jpeg;base64,${it.img_url}`" alt="" style="width: 100%; overflow: hidden"/>
-            </a>
-          </article>
-
+            <p class="diaryContent">{{ it.content ? it.content.substring(0, 50) : '내용 없음' }}</p>
+          </div>
         </div>
-
-        </div>
+        <div v-else>일기가 없습니다.</div>
+      </main>
+      <!-- 페이지네이션 -->
+      <div class="pagination" v-if="page.total > page.pageSize">
+        <button
+          v-for="p in Math.ceil(page.total / page.pageSize)"
+          :key="p"
+          :class="{ active: p === page.pageNo }"
+          @click="changePage(p)"
+        >
+          {{ p }}
+        </button>
       </div>
-      <div v-else>아직 게시글이 없습니다.😢</div>
-    </main>
-    <div style="text-align:center" class="diaryOtherList_ul">
-      <nav aria-label="Page navigation example" style="display:inline-block">
-        <ul>
-          <li v-if="page.page > 1">
-            <a aria-label="Previous" @click="onClickPagination(page.page - 1)">
-              &laquo;
-            </a>
-          </li>
-          <li>
-            <a @click="onClickPagination(page.page)">
-              {{ page.page }}
-            </a>
-          </li>
-          <li v-if="page.page < page.totalPage">
-              <a @click="onClickPagination(page.page + 1)">
-                {{ page.page + 1 }}
-              </a>
-          </li>
-          <li v-if="page.page < page.totalPage">
-            <a aria-label="Next" @click="onClickPagination(page.page + 1)">
-              &raquo;
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-    <div class="DiaryRabbitKV">
-      <div class="DiaryRabbitButton" @click="openModal">
-        <h3>모달 OPEN</h3>
-      </div>
-      <Modal :open="modalOpen" :close="closeModal" header="Diary List" />
     </div>
   </div>
-</div>
-
 </template>
 
-
 <style scoped>
-.diaryOtherList_paper {
+
+.filter-section {
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  padding: 10px;
+}
+
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.filter-checkbox input[type='checkbox'] {
+  margin-right: 10px;
+}
+
+.diaryList {
+  display: flex;
+	flex-wrap: wrap;
   width: 100%;
-  min-width: 400px;
-  height: 100%;
+  min-width: 700px;
   margin: 0 auto;
   border-radius: 2em;
   overflow: hidden;
 }
 
-.diaryOtherList_paper_content {
-  height: 100%;
+.diaryListSection{
+  flex: 1 1 60%;
+  display: grid;
+  gap : 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    /* auto-fit: 가능한 열로 채움, minmax로 최소 200px 이상, 최대 1fr */
+
+}
+
+.diaryList_content {
   width: 97%;
   background: linear-gradient(transparent, transparent 28px, #eee7db 28px);
   background-size: 30px 30px;
@@ -175,112 +225,100 @@ return{
 
 .diaryOtherList {
   padding: 1.875em;
-  padding-top: 1.5em;
-  width: 100%;
-  height: 87%;
-  z-index: 9999;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: center;
+  justify-content: space-around;
+  align-items: flex-start;
 }
-
-.diaryOtherList_ul ul {
-  list-style-type: none;
-  float: left;
-  margin-left: 10px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.diaryOtherList_ul li {
-  margin: 10px;
-}
-
-.diaryOtherList_ul li:hover {
-  transform: scale(1.5);
-  transition: transform 0.2s ease-out;
-}
-
-.mini-post {
-  display: flex;
-  flex-direction: column-reverse;
+.diary-post {
   background: #ffffff;
-  border: solid 1px #c1ab86;
-  border-radius: 0.25em;
-  padding: 2vmin;
-  margin: 2vmin;
-  width: 30vmin;
-  height: 33vmin;
-}
-
-.mini-post-title {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-}
-
-.mini-post a {
+  border: solid 1px #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   cursor: pointer;
+  transition: transform 0.3s ease-in-out;
 }
 
-.mini-post header {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding: 1.25em 4.25em 0.1em 1.25em;
-  min-height: 4em;
-  position: relative;
-  flex-grow: 1;
-}
-
-.mini-post header h3 {
-  font-size: 0.7em;
-  margin: 0;
-  margin-bottom: 2em;
-}
-
-.mini-post header .published {
-  font-size: 0.6em;
-  font-weight: 400;
-  letter-spacing: 0.25em;
-  margin: -0.625em 0 1.7em 0;
-  text-transform: uppercase;
-  text-align: left;
-}
-
-.mini-post header .author {
-  position: absolute;
-  right: 2em;
-  top: 2em;
-}
-
-.mini-post .image {
-  overflow: hidden;
-  width: 99%;
-  border-radius: 0.25em;
-  cursor: pointer;
-}
-
-.mini-post .image img {
-  transition: transform 0.2s ease-out;
-  width: 100%;
-}
-
-.mini-post .image:hover img {
+.diary-post:hover {
   transform: scale(1.05);
 }
 
-.mini-post .author img {
-  margin-right: -20px;
-  border-radius: 100%;
-  width: 2em;
+.diary-post header h3 {
+  margin-bottom: 0.5em;
+  white-space: nowrap; /* 내용 길게 표시 방지 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  text-align: left; /* 제목 중앙 정렬 */
 }
 
-.mini-post .image {
-  border: 1px solid #c1ab86;
+.diary-post header span {
+  display: block;
+  margin-top: 0.5em;
+  white-space: nowrap; /* 내용 길게 표시 방지 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  text-align: left; /* 부제목 중앙 정렬 */
 }
+
+.diary-post p {
+  text-align: left; /* 내용 왼쪽 정렬 */
+  margin-top: auto; /* 아래로 밀기 */
+  white-space: nowrap; /* 내용 길게 표시 방지 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pagination {
+  margin-top: 1em;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination button {
+  margin: 0.5em;
+  padding: 0.5em 1em;
+  border: none;
+  background-color: #c1ab86;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.diaryTime{
+  font-size: 1.5em;
+}
+.diaryTitle{
+  font-size: 2em;
+}
+.diaryAuthor{
+  font-size: 1.5em;
+}
+
+.diaryContent{
+  font-size: 1em;
+}
+.pagination button.active {
+  background-color: #805a3b;
+}
+
+.pagination button:hover {
+  background-color: #a8835b;
+}
+
+/* 
+@media screen and (min-width: 600px) {
+  .diary-post {
+    flex: 1 1 calc(50% - 2em);
+    max-width: calc(50% - 2em);
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .diary-post {
+    flex: 1 1 calc(33.333% - 2em);
+    max-width: calc(33.333% - 2em);
+  }
+} */
+
 </style>

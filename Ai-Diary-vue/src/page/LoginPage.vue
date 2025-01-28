@@ -62,31 +62,38 @@ export default {
         return;
       }
 
+      try {
+    // API 호출 및 응답 처리
+        const jwtToken = await sendLoginData();
+        console.log("로그인 성공, JWT:", jwtToken);
 
-      try{
-        const response = await sendLoginData();
-        cookies.set("userData",response.data, { path: "/" });
+        // JWT 토큰을 쿠키 또는 localStorage에 저장
+        cookies.set("jwt", jwtToken, { path: "/" });
+        localStorage.setItem("userId", loginData.value.userId);
         alert("로그인을 완료했습니다.");
-        router.push("/diary/home");
-      } catch(error){
-        console.error(error);
-        errorWarning.value = error.response?.data?.fail || "로그인에 실패했습니다.";
+      router.push("/diary/common").then(() => {
+        location.reload(); // 새로고침
+      });  
 
+      } catch (error) {
+        // 에러 처리
+        console.error("로그인 실패:", error);
+        alert(error.response?.data?.message || "로그인에 실패했습니다.");
       }
     };
 
 
     // 로그인 API 호출
-    const sendLoginData = async() => {
-      return await axios.post("http://localhost:8080/api/auth/login", loginData.value)
-      .then((response)=>{
-        this.user = response.data;
-      })
-      .catch((error)=>{
-        console.log("API 호출 실패",error);
-      });
-      
-    };
+    const sendLoginData = async () => {
+      try {
+        const response = await axios.post("http://localhost:8080/api/auth/login", loginData.value);
+        return response.data; // 응답 데이터를 반환합니다.
+      } catch (error) {
+        console.error("API 호출 실패:", error.response?.data || error.message);
+        throw error; // 예외를 던져서 상위에서 처리하도록 합니다.
+      }
+};
+
 
     
 

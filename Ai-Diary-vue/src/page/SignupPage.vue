@@ -1,9 +1,7 @@
 <script>
-import { ref } from 'vue'; // 사용하지 않는 reactive, onMounted 삭제
-
-import router from "@/router";
+import { ref, onMounted } from 'vue'; 
+import {useRouter} from "vue-router";
 import axios from "axios";
-import { onMounted } from "vue";
 import Cookies from "universal-cookie";
 
 // import port from "@/data/port.json";
@@ -11,203 +9,196 @@ import Cookies from "universal-cookie";
 export default {
   name: 'SignupPage',
   setup(){
+    const router = useRouter();
     // 쿠키 객체 생성
     const cookies = new Cookies();
+    const focusEmailField = ref(null);
+
     const signUpData =  ref({
+      email:{
+        emailPrefix:"",
+        emailDomain:"",
+        customDomain:"",
+      },
       userId:"",
       password:"",
       rePassword:"",
-      email:"",
-      name:"",
+      username:"",
+      phone:{
+        first:"",
+        middle:"",
+        last:"",
+      },
+      message:"",
+    });
+const validateDate = ref({
+  message:"",
+  code:"",
+})
+    const errorState = ref({
+      userId: false,
+      password: false,
+      rePassword: false,
+      email: false,
+      username: false,
+      phone: false,
     });
 
-    const errorWarning = ref({
-      userId:  false,
-      password:  false,
-      rePassword:  false,
-      email : false,
-      name:  false,
+    const errorMessage = ref({
+      userId: "",
+      password: "",
+      rePassword: "",
+      email: "",
+      username: "",
+      phone: "",
     });
-    const emailErrorMessage = ref("");
-    const idErrorMessage = ref("");
-    const passwordErrorMessage = ref("");
-    const nameErrorMessage = ref("");
 
-    const idValid = ref(true);
-    const passwordValid = ref(true);
-    const rePasswordValid = ref(true);
-    const nameValid = ref(true);
-    const showPassword = ref(false);
-    const showRePassword = ref(false);
-    const togglePasswordVisibility = () =>{
-      showPassword.value = !showPassword.value;
-    }
-    const toggleRePasswordVisibility = () =>{
-      showRePassword.value = !showRePassword.value;
-    }
+    const visibility = ref({
+      showPassword: false,
+      showRePassword: false,
+    });
+
+    const toggleVisibility = (key) => {
+      visibility.value[key] = !visibility.value[key];
+    };
+
+
+
+    const validateField = {
+      
+      email() {
+        const fullEmail = signUpData.value.emailDomain === "custom"
+          ? `${signUpData.value.emailPrefix}@${signUpData.value.customDomain}`
+          : `${signUpData.value.emailPrefix}@${signUpData.value.emailDomain}`;
+          console.log("Generated Email:", fullEmail); // 디버깅 로그 추가
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        errorState.value.email = !emailRegex.test(fullEmail);
+        errorMessage.value.email = errorState.value.email ? "유효하지 않은 이메일 형식입니다." : "";
+
+        signUpData.value.email = fullEmail ;
+        console.log("signUpData.value.email:", signUpData.value.email); // 디버깅 로그 추가
+      },
+      userId(id) {
+        const idRegex = /^[a-zA-Z0-9]{5,15}$/;
+        errorState.value.userId = !idRegex.test(id);
+        errorMessage.value.userId = errorState.value.userId ? "아이디는 5~15자의 영문 대소문자와 숫자만 허용됩니다." : "";
+      },
+      password(password) {
+        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{8,}$/;
+        errorState.value.password = !passwordRegex.test(password);
+        errorMessage.value.password = errorState.value.password ? "비밀번호는 영어, 숫자, 특수문자를 포함하여 8자리 이상이어야 합니다." : "";
+      },
+      rePassword(rePassword) {
+        errorState.value.rePassword = rePassword !== signUpData.value.password;
+        errorMessage.value.rePassword = errorState.value.rePassword ? "비밀번호가 일치하지 않습니다." : "";
+      },
+      username(username) {
+        const usernameRegex = /^[가-힣a-zA-Z\s]{2,20}$/;
+        errorState.value.username = !usernameRegex.test(username);
+        errorMessage.value.username = errorState.value.username ? "이름은 2~20자의 한글 또는 영문만 가능합니다." : "";
+      },
+      phone() {
+        const { first, middle, last } = signUpData.value.phone;
+        errorState.value.phone = !(first.length === 3 && middle.length === 4 && last.length === 4);
+        errorMessage.value.phone = errorState.value.phone ? "휴대폰 번호를 정확히 입력해주세요." : "";
+      },
+    };
+
+    const handleInput = (field, value) => {
+      signUpData.value[field] = value;
+        validateField[field]?.(value);
+
+    };
+
+    const isSignUpDataValid = () => {
+      return Object.values(errorState.value).every((state) => !state);
+    };
+
+    const sendSignUpData = async () => {
+      try {
+        const { userId, email, password,  username, phone } = signUpData.value;
+        const signUpDataToSave = {
+          userId,
+          email: `${email.emailPrefix}@${email.emailDomain === 'custom' ? email.customDomain : email.emailDomain}`,
+          password,
+          phone: `${phone.first}${phone.middle}${phone.last}`,
+          username,
+        };
+ 
+        console.log("회원가입 데이터:", signUpDataToSave);
+
+        const response = await axios.post("http://localhost:8080/api/auth/register", signUpDataToSave);
+
+        alert("회원가입이 완료되었습니다!");
+
+        router.push("/login").then(() => location.reload());
+        return response.data;
+      } catch (error) {
+        console.error("API 호출 실패", error);
+        if (error.response && error.response.status === 400) {
+          alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+          alert(error.response.data); // 서버에서 보낸 메시지: "이미 존재하는 이메일입니다."
+          focusEmailField.value.focus(); 
+          errorState.value.email = true;
+          errorMessage.value.email = error.response.data;
+        } else {
+          console.error("API 호출 실패", error);
+          alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+        }
+      }
+    };
+
 
     // 컴포넌트가 로드될 때 오늘 날짜 자동 설정
     onMounted(() =>{
       const userData = cookies.get("userData");
-      if (!userData) {
-    console.log("사용자가 로그인되어 있지 않음");
+      console.log('cookies.get("userData',cookies.get("userData"));
+    if (!userData) {
+      console.log("사용자가 로그인되어 있지 않음");
     // router.push("/"); // 필요하지 않다면 삭제
-       } else {
-        router.push("/diary/common");
+      } 
+       });
+
+  const onClickSignUpButton = async () => {
+    if (!isSignUpDataValid()) {
+        alert("빠진 정보 없이 입력해 주세요.");
+        return;
       }
-      setTodayDate();
-      console.log(setTodayDate());
-    });
-
-    const checkId = (id) => {
-      const idExp = /^[a-zA-Z0-9]{5,15}$/; // 정규식 검증
-      idValid.value = idExp.test(id); // 정규식 검증
-
-      idErrorMessage.value = idValid.value? "" : "아이디는 5~15자의 영문 대소문자와 숫자만 허용됩니다.";
-      errorWarning.value.id = !idValid.value;
-
+      await sendSignUpData();
+      
+      // 로컬스토로지 signUpDataToSave 삭제
+      //localStorage.removeItem('signUpDataToSave')
+      router.push("/login").then(() => {
+        location.reload(); // 새로고침
+      });  
     };
 
-    const checkPassword = (password) => {
-      const PaswrordExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$^&*]{8,}$/; // 최소 8자, 문자, 숫자, 특수문자 포함
-      passwordValid.value = PaswrordExp.test(password);
-      passwordErrorMessage.value = passwordErrorMessage.value ? "" : "비밀번호는 최소 8자 이상이며 문자, 숫자 특수문자를 포함해야 합니다."
-        errorWarning.value.password = !passwordValid.value;
+    const sendVerificationCode = async() =>{
+      try{
+        const response = await axios.post("http://localhost:8080/api/auth/signup", null, {
+          params: { email: signUpData.email },
+        });
+        signUpData.message = response.data;
+
+      }catch(error){
+        console.error(error);
+        this.message = "오류 발생!";
+
       }
-
-    const checkRePassword = (rePassword) =>{
-      rePasswordValid.value = rePassword === signUpData.value.password;
-      errorWarning.value.rePassword = !rePassword.value;
-      passwordErrorMessage.value = rePasswordValid.value ? "" : "비밀번호가 일치하지 않습니다.";
-      errorWarning.value.rePassword = !rePasswordValid.value;
     }
-
-    const checkName = async(name)=>{
-      const regNameExp = /^[가-힣a-zA-Z\s]{2,20}$/; // 2~20자, 한글 영문 이름 허용 (띄어쑤기 포함)
-      nameValid.value = regNameExp.test(name);
-      nameErrorMessage.value = nameValid.value ? "" : "이름은 2~20자의 한글 또는 영문만 가능합니다."
-        errorWarning.value.name = !nameValid.value;
-      }
-
-    const checkEmail = async (email) => {
-      const regExp =
-      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
-      if(regExp.test(email)){
-        try{
-          const response  = await axios.get(`http://localhost:8080/api/auth/findEmail/${email}`);
-          if(response.data.exists){
-            emailErrorMessage.value="";
-          }else{
-            emailErrorMessage.value="존재하지 않는 이메일입니다.";
-          }
-        }catch(error) {
-          console.error("API 호출 오류",error);
-          emailErrorMessage.value="이메일 확인 중 오류가 발생했씁니다.";
-        }
-      }else{
-          emailErrorMessage.value="유효하지 않는 이메일입니다."
-        }
-    }
-
-    // 오늘 날짜를 설정
-    const setTodayDate = () => {
-      diaryContentData.value.date = dayjs().format("YYYY-MM-DD"); // 현재 날짜 설정
-    };
-
-
-    const handleIdChange = (event) =>{
-      checkId(event.target.value);
-    }
-
-    const handlePasswordChange = (event) =>{
-      checkPassword(event.target.value);
-    }
-    const handleEmailChange = (event) => {
-      checkEmail(event.target.value);
-    };
-
-
-    const handleRePasswordChange = (event) => {
-      const rePassword = event.target.value;
-      signUpData.value.rePassword  = rePassword;
-      checkRePassword(rePassword);
-    }
-
-    const handleNameChange = (event) =>{
-      const name = event.target.value;
-      signUpData.value.name = name; // 데이터 갱신
-      checkName(event.target.name);
-    }
-
-
-
-    // 데이터 저장(localStorage)
-    const signUpDataToSave = {
-      email : signUpData.value.email,
-      password: signUpData.value.password,
-      name : signUpData.value.name,
-    };
-
-    const isSignUpDataValid = () =>{
-      console.log("유효성 검사");
-      return idValid.value   && passwordValid.value && rePasswordValid.value   &&   nameValid.value;
-    }
-
-// 회원가입 데이터 전송
-const sendSignUpData = async () => {
-  try {
-    const response = await axios.post("http://localhost:8080/api/auth/register", signUpData.value);
-
-    // 성공 처리
-    localStorage.setItem("signUpDataToSave", JSON.stringify(signUpDataToSave));
-    alert("회원가입이 완료되었습니다! (임시저장)");
-    console.log("회원가입 데이터:", signUpDataToSave);
-
-    return response.data; // 필요 시 반환
-  } catch (error) {
-    console.error("API 호출 실패", error);
-    alert("회원가입에 실패했습니다. 다시 시도해주세요.");
-  }
-};
-
-// 회원가입 버튼 클릭 핸들러
-const onClickSignUpButton = async () => {
-  console.log("회원가입 데이터:", signUpData.value);
-
-  // 유효성 검사
-  if (!isSignUpDataValid()) {
-    alert("빠진 정보 없이 적어주세요.");
-    return;
-  }
-
-  // 데이터 전송
-  await sendSignUpData();
-};
 
     return{
       signUpData,
-      errorWarning,
-      idErrorMessage,
-      passwordErrorMessage,
-      nameErrorMessage,
-      emailErrorMessage,
-      passwordValid,
-      rePasswordValid,
-      showPassword,
-      showRePassword,
-      setTodayDate,
-      togglePasswordVisibility,
-      toggleRePasswordVisibility,
-      handleIdChange,
-      handleEmailChange,
-      handlePasswordChange,
-      handleRePasswordChange,
-      handleNameChange,
+      focusEmailField,
+      errorState,
+      errorMessage,
+      visibility,
+      toggleVisibility,
+      handleInput,
       onClickSignUpButton,
-      sendSignUpData
-    }
-
-  }
+      sendVerificationCode
+    };
+  },
 };
 </script>
 
@@ -215,32 +206,49 @@ const onClickSignUpButton = async () => {
 
 <div class="signupPage">
   <div class="signUp_form">
-    <form @submit.prevent="onClickSignUpButton">
-
+    <!-- <form @submit.prevent="onClickSignUpButton"> -->
+      <form @submit.prevent="sendVerificationCode">
     <!--ID-->
     <div class="signUp-session">
       <div class="signUp-label">
         <label for="id" class="form-label">ID</label>
       </div>
       <div>
-        <input size="30" type="text"  v-model="signUpData.userId" @input="handleIdChange" class="signUp_form-input" name="userId" id="userId"/>
-        <div class="signUp_form-oo" :style="{ color: errorWarning.userId ? 'red' : 'black' }">
-          {{ idErrorMessage }}
+        <input size="30" type="text"  v-model="signUpData.userId" @input="(e) => handleInput('userId', e.target.value)" class="signUp_form-input" name="userId" id="userId"/>
+        <div class="signUp_form-oo" :style="{ color: errorState.userId ? 'red' : 'black' }">
+          {{ errorMessage.userId }}
         </div>
       </div>
      </div>
 
+    <!--선택박스 사용해서 이메일 종류 선택이랑 input으로 직접입력하기 기능 -->
       <!-- 이메일 -->
       <div class="signUp-session">
         <div class="signUp-label">
           <label for="email" class="form-label">Emaill</label>
         </div>
       <div>
-        <input size="30"  type="email" v-model="signUpData.email" @input="handleEmailChange" class="signUp_form-input" name="email" id="email" aria-describedby="emailHelp"/>
-        <div class="signUp_form-oo" :style="{ color: errorWarning.email ? 'red' : 'black' }">
-          {{ emailErrorMessage }}
+      <div style="display:flex; gap: 10px; align-items: center;">
+        <!--이메일 앞부분-->
+        <input size="20"  type="text" ref="focusEmailField" v-model="signUpData.email.emailPrefix"  @input="validateField.email" class="signUp_form-input" name="emailPrefix" id="emailPrefix" aria-describedby="emailHelp"/>
+        <span>@</span>
+        <!--이메일 도메인 선택-->
+        <select v-model="signUpData.email.emailDomain" @change="validateField.email" class="signUp_form-input">
+          <option value="" disabled selected>이메일선택</option>
+          <option value="naver.com">naver.com</option>
+          <option value="gmail.com">gmail.com</option>
+          <option value="nate.com">nate.com</option>
+          <option value="hanmail.net">hanmail.net</option>
+          <option value="daum.net">daum.net</option>
+          <option value="custom">직접입력</option>
+        </select>
+   
+        <input size="30"  type="text" v-if="signUpData.email.emailDomain === 'custom'" v-model="signUpData.email.customDomain" @input="validateField.email" class="signUp_form-input" name="customDomain" id="customDomain" placeholder="도메인 입력" aria-describedby="emailHelp"/>
+        <div class="signUp_form-oo" :style="{ color: errorState.email ? 'red' : 'black' }">
+          {{ errorMessage.email }}
         </div>
       </div>
+    </div>
     </div>
     <!--패스워드-->
     <div class="signUp-session">
@@ -248,58 +256,109 @@ const onClickSignUpButton = async () => {
         <label  for="password" class="form-label">Password</label>
       </div>
       <div>
-        <input size="30" :type="showPassword ? 'text' : 'password'" v-model="signUpData.password" @input="handlePasswordChange" class="signUp_form-input" name="password"  id="password"/>
-        <button type="button" @click="togglePasswordVisibility">
-          {{  showPassword ? '숨기기' : '보기' }}
+        <input size="30" :type="visibility.showPassword ? 'text' : 'password'" v-model="signUpData.password" @input="(e) => handleInput('password', e.target.value)"  class="signUp_form-input" name="password"  id="password"/>
+        <button type="button" @click="() => toggleVisibility('showPassword')">
+          {{  visibility.showPassword ? '숨기기' : '보기' }}
         </button>
-      <div class="signUp_form-oo" v-if="errorWarning.password" :style="{ color: errorWarning.password ? 'red' : 'black' }">
-        {{ passwordErrorMessage }}
+        <div class="signUp_form-oo" v-if="errorState.password" :style="{ color: errorState.password ? 'red' : 'black' }">>
+        {{ errorMessage.password }}
+      </div>
     </div>
-  </div>
   </div>
     <!--re패스워드-->
-    <div class="signUp-session">
-      <div class="signUp-label">
-      <label for="rePassword" class="form-label">Repassword</label>
-     </div>
-      <div>
-      <input size="30" :type="showRePassword ? 'text' : 'password'" v-model="signUpData.rePassword" @input="handleRePasswordChange" class="signUp_form-input" name="rePassword" id="rePassword"/>
-      <button type="button" @click="toggleRePasswordVisibility">
-        {{  showRePassword ? '숨기기' : '보기' }}
-      </button>
-      <div class="signUp_form-oo">
-        <div v-if="errorWarning.rePassword"  :style="{ color: errorWarning.rePassword ? 'red' : 'black' }">
-          비밀번호가 일치하지 않습니다.
-          {{ passwordErrorMessage }}
+      <div class="signUp-session">
+        <div class="signUp-label">
+          <label for="rePassword" class="form-label">Repassword</label>
         </div>
-      </div>
-      </div>
+        <div>
+            <input size="30" :type="visibility.showRePassword ? 'text' : 'password'" v-model="signUpData.rePassword" @input="(e) => handleInput('rePassword', e.target.value)" class="signUp_form-input" name="rePassword" id="rePassword" placeholder="비밀번호를 한 번 더 입력해 주세요.">
+            <button type="button" @click="() => toggleVisibility('showRePassword')">
+              {{ visibility.showRePassword ? '숨기기' : '보기' }}
+            </button>
+            <div class="signUp_form-oo" :style="{ color: errorState.rePassword ? 'red' : 'black' }">
+                {{ errorMessage.rePassword }}
+              </div>
+        </div>
     </div>
+    <!--핸드폰 번호 3글자 +`-`+4글자  +`-`+4글자--->
+    <div class="signUp-session">
+       <div class="signUp-label">
+        <label for="phone" class="form-label">휴대전화 *</label>
+    </div>
+    <div style="display: flex; gap: 10px;">
+    <!-- 첫 번째 입력 필드 -->
+      <input
+        type="text"
+        v-model="signUpData.phone.first"
+        maxlength="3"
+        placeholder="010"
+        @input="(e) => handleInput('phone.first', e.target.value)"
+        class="signUp_form-input phone-input"
+      />
+    <!-- 두 번째 입력 필드 -->
+    <input
+      type="text"
+      v-model="signUpData.phone.middle"
+      maxlength="4"
+      placeholder="1234"
+      @input="(e) => handleInput('phone.middle', e.target.value)"
+      class="signUp_form-input phone-input"
+    />
+    <!-- 세 번째 입력 필드 -->
+    <input
+      type="text"
+      v-model="signUpData.phone.last"
+      maxlength="4"
+      placeholder="5678"
+      @input="(e) => handleInput('phone.last', e.target.value)"
+      class="signUp_form-input phone-input"/>
+  </div>
+  <div class="signUp_form-oo" :style="{ color: errorState.phone ? 'red' : 'black' }">
+    {{ errorMessage.phone }}
+  </div>
+</div>
+
     <!--이름-->
     <div class="signUp-session">
       <div class="signUp-label">
-        <label for="name" class="form-label">Name</label>
+        <label for="username" class="form-label">Name</label>
       </div>
       <div>
-        <input size="30" type="text"   v-model="signUpData.name" @input="handleNameChange" class="signUp_form-input" name="name" id="name"/>
-      <div class="signUp_form-oo">
-        <div v-if="errorWarning.name"  :style="{ color: errorWarning.name ? 'red' : 'black' }">
-
-          {{ nameErrorMessage }}
+        <input size="30" type="text"  v-model="signUpData.username" @input="(e) => handleInput('username', e.target.value)" class="signUp_form-input" name="username" id="username" placeholder="이름을 입력해 주세요."/>
+        <div class="signUp_form-oo">
+          <div v-if="errorState.username"  :style="{ color: errorState.username ? 'red' : 'black' }">
+            {{ errorMessage.username }}
+          </div>
         </div>
       </div>
-
-      </div>
     </div>
-     <button type="button" @click="onClickSignUpButton"  class="signup_form_button">
+    <!--Submit -->
+     <!-- <button type="button" @click="onClickSignUpButton"  class="signup_form_button">
       회원가입
+     </button> -->
+     <button type="button" @click="onClickVerificationButton"  class="verification_form_button">
+      인증 코드 보내기
      </button>
     </form>
+    <p v-if="signUpData.message">{{ signUpData.message }}</p>
+
   </div>
 </div>
 </template>
 
 <style scoped>
+.phone-input {
+  width: 80px; /* 각 입력 필드 너비 */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.phone-input:focus {
+  border: 1px solid #4a90e2;
+  outline: none;
+}
 
 .temp {
   display: flex;
@@ -358,6 +417,23 @@ const onClickSignUpButton = async () => {
 .signup_form_button:hover{
   background-color: #357abd;
 
+}
+
+.verification_form_button{
+  width: 100%; /* 버튼이 컨테이너에 맞춰짐 */
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+}
+
+.verification_form_button:hover{
+  background-color: #357abd;
 }
 .signUp_form-oo{
   font-size: 0.9rem;

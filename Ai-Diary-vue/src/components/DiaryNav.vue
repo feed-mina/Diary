@@ -1,7 +1,7 @@
 
 <script>
 // import.meta.env.VITE_KAKAO_OAUTH_URI
-import {ref, onMounted, computed} from "vue";
+import {ref, onMounted, computed, watch} from "vue";
 import {useRouter} from "vue-router";
 import Cookies from "universal-cookie";
 // import axios from "axios";
@@ -10,24 +10,61 @@ name: "DiaryNav",
 setup(){
   
   const router = useRouter();
-    const cookies = new Cookies(); 
+  const cookies = new Cookies(); 
+
+  // JWT 쿠키 존재 여부로 로그인 상태 확인
+  const isLoggedIn = ref(!!cookies.get("jwt"));
+
+  // 로컬스토리지에 로그인할때 저장한 값
+  const LoginStorage = localStorage.getItem("userId");
+  console.log('LoginStorage: ',LoginStorage);
+// 쿠키 변경 시 로그인 상태 업데이트
+  const updateLoginStatus =  () => {
+    isLoggedIn.value = !!cookies.get("jwt");
+  };
+
+    onMounted(()=>{
+      console.log('Home cookiess.getAll', cookies.getAll());
+      updateLoginStatus(); // 초기 상태 설정
+    });
 
     // isLoggedIn을 computed로 구현
-    const isLoggedIn = computed(() => !!cookies.get("userData"));
+  //  const isLoggedIn = computed(() => !!cookies.get("jwt"));
     console.log('isLoggedIn',isLoggedIn);
-    console.log('cookies.get("userData")', cookies.get("userData"));
+    console.log('cookies.get("jwt")', cookies.get("jwt"));
     const navigateTo = (route) => {
       router.push(route);
     };
+    const login = ()=>{
+      updateLoginStatus();
+    }
     const logout = () => {
-      cookies.remove("userData");
-      router.push("/");
+      // 로컬스토로지 userId 삭제
+      localStorage.removeItem('userId')
+      // JWT 쿠키 삭제
+      cookies.remove("jwt",{path : "/"});
+      // 로그인 상태 업데이트 
+      updateLoginStatus();
+        // 홈으로 이동 후 새로고침
+      router.push("/").then(() => {
+        location.reload(); // 새로고침
+      });
+
     };
 
+    // JWT 쿠키 상태를 실시간으로 감지
+    watch(
+      () => cookies.get("jwt"), 
+      ()=>{
+      updateLoginStatus();
+    });
+
     return{
+      LoginStorage,
       isLoggedIn,
       navigateTo, 
       logout,
+      login
     };
 }
  };
@@ -37,20 +74,20 @@ setup(){
      <div class="nav-wrap">
       
       <div class="signup-button-wrap">
-          <button class="signup-nav" v-if="!isLoggedIn" @click="navigateTo('/signup')">회원가입</button>
+          <button class="signup-nav" v-if="!LoginStorage" @click="navigateTo('/signup')">회원가입</button>
        </div> 
       <nav>
         <div class="post-it-nav1">
-          <button class="diary-nav1" @click="navigateTo('/')">Home</button>
+          <button class="diary-nav1" @click="navigateTo('/')">메인페이지</button>
           <button class="diary-nav3" @click="navigateTo('/diary/tutorial')">튜토리얼</button>
-          <button class="login-nav" v-if="!isLoggedIn" @click="navigateTo('/login')">로그인</button>
+          <button class="login-nav" v-if="!LoginStorage" @click="navigateTo('/login')">로그인</button>
 
-          <button class="login-nav" v-if="isLoggedIn" @click="navigateTo('/logout')">로그아웃</button>
+          <button class="login-nav" v-if="LoginStorage" @click="logout">로그아웃</button>
 
         </div>
         <div class="post-it-nav2">
-          <button class="diary-nav2" v-if="isLoggedIn" @click="navigateTo('/diary/write')">일기쓰기</button>
-          <button class="diary-nav4" v-if="isLoggedIn" @click="navigateTo('/diary/common')">일기장보기</button>
+          <button class="diary-nav2" v-if="LoginStorage" @click="navigateTo('/diary/write')">일기쓰기</button>
+          <button class="diary-nav4" v-if="LoginStorage" @click="navigateTo('/diary/common')">일기장보기</button>
         </div>
     </nav>
   </div>

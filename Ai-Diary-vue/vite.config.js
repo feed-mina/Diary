@@ -13,7 +13,7 @@ export default defineConfig({
     vuetify({ autoImport: true }), // Vuetify 플러그인 추가
   ],
   server: {
-    port: 5173, // 포트 확인
+    port: 4000, // 포트 확인
   },
   base: '/', // 기본 경로 설정
   resolve: {

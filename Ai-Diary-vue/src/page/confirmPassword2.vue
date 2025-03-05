@@ -22,7 +22,7 @@ export default {
         checkId: localStorage.getItem("userId"),
         password : "", 
     });
-    const errorWarning = ref(c{
+    const errorWarning = ref({
         checkId:  false,
         password:  false,
     });

@@ -1,0 +1,1256 @@
+2025-03-05 18:39:55 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 24404 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 18:39:55 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 18:39:55 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-03-05 18:39:55 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-03-05 18:40:01 [restartedMain] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-05 18:40:01 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 18:40:01 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 18:40:01 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 18:40:01 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 18:40:01 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 18:40:01 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 18:40:03 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 18:40:03 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 18:40:03 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 18:40:03 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 18:40:03 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 18:40:03 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 8025 ms
+2025-03-05 18:40:04 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 18:40:04 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 18:40:05 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'kakaoController': Injection of autowired dependencies failed
+2025-03-05 18:40:05 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-03-05 18:40:05 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-03-05 18:40:05 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'kakaoController': Injection of autowired dependencies failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:498)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1416)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:597)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:973)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:942)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:608)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:737)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1309)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1298)
+	at com.domain.demo_backend.DemoBackendApplication.main(DemoBackendApplication.java:12)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'KAKAO_CLIENT_ID' in value "${KAKAO_CLIENT_ID}"
+	at org.springframework.util.PropertyPlaceholderHelper.parseStringValue(PropertyPlaceholderHelper.java:180)
+	at org.springframework.util.PropertyPlaceholderHelper.replacePlaceholders(PropertyPlaceholderHelper.java:126)
+	at org.springframework.core.env.AbstractPropertyResolver.doResolvePlaceholders(AbstractPropertyResolver.java:239)
+	at org.springframework.core.env.AbstractPropertyResolver.resolveRequiredPlaceholders(AbstractPropertyResolver.java:210)
+	at org.springframework.context.support.PropertySourcesPlaceholderConfigurer.lambda$processProperties$0(PropertySourcesPlaceholderConfigurer.java:200)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.resolveEmbeddedValue(AbstractBeanFactory.java:918)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1358)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1337)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:764)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:747)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:145)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:492)
+	... 22 common frames omitted
+2025-03-05 18:43:34 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 27500 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 18:43:34 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 18:43:35 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-03-05 18:43:35 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-03-05 18:43:39 [restartedMain] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-05 18:43:39 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 18:43:39 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 18:43:39 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 18:43:39 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 18:43:39 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 18:43:39 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 18:43:40 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 18:43:40 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 18:43:40 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 18:43:40 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 18:43:40 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 18:43:40 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 5492 ms
+2025-03-05 18:43:41 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 18:43:41 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 18:43:42 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4e34a95, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6afc0e20, org.springframework.security.web.context.SecurityContextHolderFilter@7a4985e3, org.springframework.security.web.header.HeaderWriterFilter@197fe75, org.springframework.web.filter.CorsFilter@2a02c9c0, org.springframework.security.web.authentication.logout.LogoutFilter@58d5405, com.domain.demo_backend.util.JwtAuthenticationFilter@6fd52309, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@68486fa9, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1089f983, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3b902adf, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@71fc6b84, org.springframework.security.web.access.ExceptionTranslationFilter@3e96180f, org.springframework.security.web.access.intercept.AuthorizationFilter@66dd9eca]
+2025-03-05 18:43:43 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 18:43:43 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 18:43:44 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 18:43:44 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 11.791 seconds (process running for 14.058)
+2025-03-05 18:46:41 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-05 18:46:41 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-03-05 18:46:41 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 89 ms
+2025-03-05 18:46:42 [http-nio-8080-exec-2] WARN  o.a.c.util.SessionIdGeneratorBase - Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [443] milliseconds.
+2025-03-05 20:33:49 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 21624 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 20:33:49 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 20:33:50 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-03-05 20:33:50 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-03-05 20:33:58 [restartedMain] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-05 20:33:58 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 20:33:58 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 20:33:58 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 20:33:58 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 20:33:58 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 20:33:58 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 20:34:04 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 20:34:04 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 20:34:04 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 20:34:04 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 20:34:05 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 20:34:05 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 15074 ms
+2025-03-05 20:34:11 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 20:34:11 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 20:34:14 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2ff67082, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6e95d876, org.springframework.security.web.context.SecurityContextHolderFilter@3f61c9f7, org.springframework.security.web.header.HeaderWriterFilter@6bc8262, org.springframework.web.filter.CorsFilter@51ed64e6, org.springframework.security.web.authentication.logout.LogoutFilter@7fcdea77, com.domain.demo_backend.util.JwtAuthenticationFilter@720845e5, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@6015f884, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4583bc9b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@405d74ce, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6ee65946, org.springframework.security.web.access.ExceptionTranslationFilter@6e196e2e, org.springframework.security.web.access.intercept.AuthorizationFilter@11ff8188]
+2025-03-05 20:34:17 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 20:34:17 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 20:34:17 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 20:34:17 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 30.457 seconds (process running for 40.207)
+2025-03-05 20:48:23 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-05 20:48:23 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-03-05 20:48:23 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 4 ms
+2025-03-05 20:48:23 [http-nio-8080-exec-1] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-05 20:48:23 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-03-05 20:48:24 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@46e24887
+2025-03-05 20:48:24 [http-nio-8080-exec-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-03-05 20:48:25 [http-nio-8080-exec-3] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-05 20:48:26 [http-nio-8080-exec-7] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-05 20:49:21 [http-nio-8080-exec-4] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-05 20:49:23 [http-nio-8080-exec-9] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-05 21:12:39 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 1 deletion, 0 modifications)
+2025-03-05 21:12:39 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:12:39 [Thread-5] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-03-05 21:12:39 [Thread-5] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Destroying Spring FrameworkServlet 'dispatcherServlet'
+2025-03-05 21:12:39 [Thread-5] WARN  o.a.c.loader.WebappClassLoaderBase - The web application [ROOT] appears to have started a thread named [HikariPool-1 housekeeper] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@17.0.12/jdk.internal.misc.Unsafe.park(Native Method)
+ java.base@17.0.12/java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:252)
+ java.base@17.0.12/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:1672)
+ java.base@17.0.12/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:1182)
+ java.base@17.0.12/java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:899)
+ java.base@17.0.12/java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:1062)
+ java.base@17.0.12/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1122)
+ java.base@17.0.12/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+ java.base@17.0.12/java.lang.Thread.run(Thread.java:842)
+2025-03-05 21:12:39 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:12:39 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Destroying ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:12:39 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-03-05 21:12:39 [Thread-5] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-03-05 21:12:41 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 21624 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 21:12:41 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 21:12:45 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 21:12:45 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 21:12:45 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 21:12:45 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 21:12:45 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 21:12:45 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 21:12:45 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 21:12:45 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:12:45 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 21:12:45 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 21:12:46 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 21:12:46 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 4872 ms
+2025-03-05 21:12:46 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 21:12:46 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 21:12:47 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@d311c14, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@764662c1, org.springframework.security.web.context.SecurityContextHolderFilter@77ccdb52, org.springframework.security.web.header.HeaderWriterFilter@60a34b93, org.springframework.web.filter.CorsFilter@4d993f93, org.springframework.security.web.authentication.logout.LogoutFilter@623973bc, com.domain.demo_backend.util.JwtAuthenticationFilter@7074fa25, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@1ff45499, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@12bc5b57, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@792d9a54, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@75a08983, org.springframework.security.web.access.ExceptionTranslationFilter@45f5d1ed, org.springframework.security.web.access.intercept.AuthorizationFilter@7519cfbd]
+2025-03-05 21:12:48 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 21:12:48 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:12:48 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 21:12:48 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 7.751 seconds (process running for 2351.135)
+2025-03-05 21:12:48 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-03-05 21:12:52 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (1 addition, 0 deletions, 0 modifications)
+2025-03-05 21:12:52 [Thread-7] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:12:52 [Thread-7] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-03-05 21:12:52 [Thread-7] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:12:52 [Thread-7] INFO  o.a.coyote.http11.Http11NioProtocol - Destroying ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:12:52 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 21624 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 21:12:52 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 21:12:55 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 21:12:55 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 21:12:55 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 21:12:55 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 21:12:55 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 21:12:55 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 21:12:55 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 21:12:55 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:12:55 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 21:12:55 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 21:12:55 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 21:12:55 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2602 ms
+2025-03-05 21:12:55 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 21:12:55 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 21:12:56 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3868d6d7, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6aa023b8, org.springframework.security.web.context.SecurityContextHolderFilter@e7e343a, org.springframework.security.web.header.HeaderWriterFilter@3682e39a, org.springframework.web.filter.CorsFilter@554e92c8, org.springframework.security.web.authentication.logout.LogoutFilter@68717311, com.domain.demo_backend.util.JwtAuthenticationFilter@181bc777, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5b62cf51, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6e102a97, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@36eee151, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@663b74cd, org.springframework.security.web.access.ExceptionTranslationFilter@5621c0e4, org.springframework.security.web.access.intercept.AuthorizationFilter@46ff35d9]
+2025-03-05 21:12:57 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 21:12:57 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:12:57 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 21:12:57 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 4.5 seconds (process running for 2360.168)
+2025-03-05 21:12:57 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-03-05 21:27:28 [http-nio-8080-exec-3] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-05 21:27:28 [http-nio-8080-exec-3] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-03-05 21:27:29 [http-nio-8080-exec-3] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 138 ms
+2025-03-05 21:40:34 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 3896 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 21:40:34 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 21:40:34 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-03-05 21:40:34 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-03-05 21:40:38 [restartedMain] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-05 21:40:38 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 21:40:38 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 21:40:38 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 21:40:38 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 21:40:38 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 21:40:38 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 21:40:39 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 21:40:39 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:40:39 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 21:40:39 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 21:40:40 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 21:40:40 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 5502 ms
+2025-03-05 21:40:40 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 21:40:40 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 21:40:42 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6bcfd8e1, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7d1e5eac, org.springframework.security.web.context.SecurityContextHolderFilter@1badfedc, org.springframework.security.web.header.HeaderWriterFilter@949c825, org.springframework.web.filter.CorsFilter@53e9571d, org.springframework.security.web.authentication.logout.LogoutFilter@672bf468, com.domain.demo_backend.util.JwtAuthenticationFilter@239f9423, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@d1c686a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@300e530c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6b3e7ac3, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@36024861, org.springframework.security.web.access.ExceptionTranslationFilter@1a34160f, org.springframework.security.web.access.intercept.AuthorizationFilter@8a7511c]
+2025-03-05 21:40:43 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 21:40:43 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:40:43 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 21:40:43 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 11.719 seconds (process running for 15.232)
+2025-03-05 21:41:56 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-05 21:41:56 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-03-05 21:41:56 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-03-05 21:44:00 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 2228 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 21:44:01 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 21:44:01 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-03-05 21:44:01 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-03-05 21:44:11 [restartedMain] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-05 21:44:11 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 21:44:11 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 21:44:11 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 21:44:11 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 21:44:11 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 21:44:11 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 21:44:14 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 21:44:14 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:44:14 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 21:44:14 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 21:44:15 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 21:44:15 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 13532 ms
+2025-03-05 21:44:17 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 21:44:17 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 21:44:20 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7d1e5eac, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@53e9571d, org.springframework.security.web.context.SecurityContextHolderFilter@5c62056c, org.springframework.security.web.header.HeaderWriterFilter@2add5b1, org.springframework.web.filter.CorsFilter@239f9423, org.springframework.security.web.authentication.logout.LogoutFilter@672efa0f, com.domain.demo_backend.util.JwtAuthenticationFilter@36024861, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@12a09ce8, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1140ad9f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7f860e6e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@39668b33, org.springframework.security.web.access.ExceptionTranslationFilter@2dc1db80, org.springframework.security.web.access.intercept.AuthorizationFilter@d1c686a]
+2025-03-05 21:44:22 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 21:44:22 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:44:23 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 21:44:23 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 26.161 seconds (process running for 31.435)
+2025-03-05 21:46:05 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-05 21:46:05 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-03-05 21:46:05 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2025-03-05 21:52:32 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 24552 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 21:52:32 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 21:52:33 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-03-05 21:52:33 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-03-05 21:52:40 [restartedMain] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-05 21:52:40 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 21:52:40 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 21:52:40 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 21:52:40 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 21:52:40 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 21:52:40 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 21:52:45 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 21:52:45 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:52:45 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 21:52:45 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 21:52:45 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 21:52:45 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 12459 ms
+2025-03-05 21:52:48 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 21:52:48 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 21:52:52 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7d1e5eac, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@53e9571d, org.springframework.security.web.context.SecurityContextHolderFilter@5c62056c, org.springframework.security.web.header.HeaderWriterFilter@2add5b1, org.springframework.web.filter.CorsFilter@239f9423, org.springframework.security.web.authentication.logout.LogoutFilter@672efa0f, com.domain.demo_backend.util.JwtAuthenticationFilter@36024861, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@12a09ce8, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1140ad9f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7f860e6e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@39668b33, org.springframework.security.web.access.ExceptionTranslationFilter@2dc1db80, org.springframework.security.web.access.intercept.AuthorizationFilter@d1c686a]
+2025-03-05 21:52:54 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 21:52:54 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:52:54 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 21:52:54 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 25.429 seconds (process running for 29.849)
+2025-03-05 21:53:42 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-05 21:53:42 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-03-05 21:53:42 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2025-03-05 21:55:31 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 23080 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 21:55:31 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 21:55:31 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-03-05 21:55:31 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-03-05 21:55:35 [restartedMain] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-05 21:55:35 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 21:55:35 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 21:55:35 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 21:55:35 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 21:55:35 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 21:55:35 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 21:55:37 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 21:55:37 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:55:37 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 21:55:37 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 21:55:37 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 21:55:37 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 6230 ms
+2025-03-05 21:55:39 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 21:55:39 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 21:55:42 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@688db674, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3c546ef7, org.springframework.security.web.context.SecurityContextHolderFilter@1264b4d5, org.springframework.security.web.header.HeaderWriterFilter@2cda4f29, org.springframework.web.filter.CorsFilter@581faf2e, org.springframework.security.web.authentication.logout.LogoutFilter@65812cca, com.domain.demo_backend.util.JwtAuthenticationFilter@8a7511c, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@3c217353, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7f193de, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2add5b1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@d1c686a, org.springframework.security.web.access.ExceptionTranslationFilter@1242fd25, org.springframework.security.web.access.intercept.AuthorizationFilter@4114f0d]
+2025-03-05 21:55:45 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 21:55:45 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 21:55:45 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 21:55:45 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 15.862 seconds (process running for 18.451)
+2025-03-05 21:56:40 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-05 21:56:40 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-03-05 21:56:40 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2025-03-05 21:57:23 [http-nio-8080-exec-1] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.springframework.mail.MailAuthenticationException: Authentication failed] with root cause
+jakarta.mail.AuthenticationFailedException: 535 5.7.1 Username and Password not accepted zbPed6KWSl283eXs1Dx57g - nsmtp
+
+	at com.sun.mail.smtp.SMTPTransport$Authenticator.authenticate(SMTPTransport.java:979)
+	at com.sun.mail.smtp.SMTPTransport.authenticate(SMTPTransport.java:890)
+	at com.sun.mail.smtp.SMTPTransport.protocolConnect(SMTPTransport.java:794)
+	at jakarta.mail.Service.connect(Service.java:342)
+	at org.springframework.mail.javamail.JavaMailSenderImpl.connectTransport(JavaMailSenderImpl.java:518)
+	at org.springframework.mail.javamail.JavaMailSenderImpl.doSend(JavaMailSenderImpl.java:437)
+	at org.springframework.mail.javamail.JavaMailSenderImpl.send(JavaMailSenderImpl.java:361)
+	at org.springframework.mail.javamail.JavaMailSenderImpl.send(JavaMailSenderImpl.java:356)
+	at com.domain.demo_backend.service.AuthService.sendVerificationCode(AuthService.java:183)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:699)
+	at com.domain.demo_backend.service.AuthService$$SpringCGLIB$$0.sendVerificationCode(<generated>)
+	at com.domain.demo_backend.controller.AuthController.sendVerificationCode(AuthController.java:139)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:884)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1011)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at com.domain.demo_backend.util.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:76)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.domain.demo_backend.util.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:76)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:894)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1740)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+2025-03-05 22:09:56 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-03-05 22:09:56 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:09:56 [Thread-5] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-03-05 22:09:56 [Thread-5] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Destroying Spring FrameworkServlet 'dispatcherServlet'
+2025-03-05 22:09:56 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:09:56 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Destroying ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:09:57 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 23080 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 22:09:57 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 22:09:59 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 22:09:59 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 22:09:59 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 22:09:59 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 22:09:59 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 22:09:59 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 22:10:00 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 22:10:00 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:10:00 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 22:10:00 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 22:10:00 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 22:10:00 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2928 ms
+2025-03-05 22:10:00 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 22:10:00 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 22:10:01 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2d48e5b4, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@e30eec7, org.springframework.security.web.context.SecurityContextHolderFilter@14a40028, org.springframework.security.web.header.HeaderWriterFilter@61117dd7, org.springframework.web.filter.CorsFilter@403f6e4a, org.springframework.security.web.authentication.logout.LogoutFilter@98abc1e, com.domain.demo_backend.util.JwtAuthenticationFilter@47cc0fe1, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@6f5d1531, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@40c35a63, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@d44366f, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2d4327e9, org.springframework.security.web.access.ExceptionTranslationFilter@32bfeeaa, org.springframework.security.web.access.intercept.AuthorizationFilter@4281881b]
+2025-03-05 22:10:02 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 22:10:02 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:10:02 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 22:10:02 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 5.277 seconds (process running for 875.66)
+2025-03-05 22:10:02 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-03-05 22:11:17 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-03-05 22:11:17 [Thread-7] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:11:17 [Thread-7] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-03-05 22:11:17 [Thread-7] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:11:17 [Thread-7] INFO  o.a.coyote.http11.Http11NioProtocol - Destroying ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:11:17 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 23080 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 22:11:17 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 22:11:20 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 22:11:20 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 22:11:20 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 22:11:20 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 22:11:20 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 22:11:20 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 22:11:20 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 22:11:20 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:11:20 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 22:11:20 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 22:11:21 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 22:11:21 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3771 ms
+2025-03-05 22:11:21 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 22:11:21 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 22:11:24 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2d19605b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@2afa9b05, org.springframework.security.web.context.SecurityContextHolderFilter@23d6c684, org.springframework.security.web.header.HeaderWriterFilter@4cafe48e, org.springframework.web.filter.CorsFilter@1c865cae, org.springframework.security.web.authentication.logout.LogoutFilter@21fc4835, com.domain.demo_backend.util.JwtAuthenticationFilter@2d978d37, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@8772afb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@90d27d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1367882, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4bea2b66, org.springframework.security.web.access.ExceptionTranslationFilter@61cc1d70, org.springframework.security.web.access.intercept.AuthorizationFilter@7d09687c]
+2025-03-05 22:11:25 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 22:11:25 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:11:25 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 22:11:25 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 8.085 seconds (process running for 958.552)
+2025-03-05 22:11:25 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-03-05 22:29:32 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 2 class path changes (0 additions, 2 deletions, 0 modifications)
+2025-03-05 22:29:33 [Thread-11] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:29:33 [Thread-11] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-03-05 22:29:33 [Thread-11] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:29:33 [Thread-11] INFO  o.a.coyote.http11.Http11NioProtocol - Destroying ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:29:34 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 23080 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 22:29:34 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 22:29:37 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 22:29:37 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 22:29:37 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 22:29:37 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 22:29:37 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 22:29:37 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 22:29:37 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 22:29:37 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:29:37 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 22:29:37 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 22:29:37 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 22:29:37 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3824 ms
+2025-03-05 22:29:38 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 22:29:38 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 22:29:38 [restartedMain] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'authController': Resolution of declared constructors on bean Class [com.domain.demo_backend.controller.AuthController] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@227df69d] failed
+2025-03-05 22:29:38 [restartedMain] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-03-05 22:29:38 [restartedMain] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-03-05 22:29:39 [restartedMain] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'authController': Resolution of declared constructors on bean Class [com.domain.demo_backend.controller.AuthController] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@227df69d] failed
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:367)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1291)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1186)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:560)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:520)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:325)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:973)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:942)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:608)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:737)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1309)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1298)
+	at com.domain.demo_backend.DemoBackendApplication.main(DemoBackendApplication.java:12)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: java.lang.NoClassDefFoundError: com/domain/demo_backend/service/AuthService
+	at java.base/java.lang.Class.getDeclaredConstructors0(Native Method)
+	at java.base/java.lang.Class.privateGetDeclaredConstructors(Class.java:3373)
+	at java.base/java.lang.Class.getDeclaredConstructors(Class.java:2555)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:362)
+	... 23 common frames omitted
+Caused by: java.lang.ClassNotFoundException: com.domain.demo_backend.service.AuthService
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:525)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:467)
+	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:121)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:525)
+	... 27 common frames omitted
+2025-03-05 22:31:49 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 21988 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 22:31:50 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 22:31:50 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-03-05 22:31:50 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-03-05 22:31:54 [restartedMain] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-05 22:31:54 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 22:31:54 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 22:31:54 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 22:31:54 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 22:31:54 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 22:31:54 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 22:31:56 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 22:31:56 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:31:56 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 22:31:56 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 22:31:56 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 22:31:57 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 6453 ms
+2025-03-05 22:31:58 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 22:31:59 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 22:32:03 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@ab9cc87, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@662e4d18, org.springframework.security.web.context.SecurityContextHolderFilter@6f327080, org.springframework.security.web.header.HeaderWriterFilter@6013ae2d, org.springframework.web.filter.CorsFilter@39fc32e1, org.springframework.security.web.authentication.logout.LogoutFilter@4b0b0ce6, com.domain.demo_backend.util.JwtAuthenticationFilter@3d6b54b0, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@7a6b55e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7e8a4deb, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@12b80b73, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@79726a6e, org.springframework.security.web.access.ExceptionTranslationFilter@15907a2f, org.springframework.security.web.access.intercept.AuthorizationFilter@2fc6644d]
+2025-03-05 22:32:05 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 22:32:06 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:32:06 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 22:32:06 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 18.439 seconds (process running for 22.998)
+2025-03-05 22:32:13 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-03-05 22:32:13 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:32:13 [Thread-5] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-03-05 22:32:13 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:32:13 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Destroying ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:32:13 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 21988 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 22:32:13 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 22:32:14 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 22:32:14 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 22:32:14 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 22:32:14 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 22:32:14 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 22:32:14 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 22:32:15 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 22:32:15 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:32:15 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 22:32:15 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 22:32:15 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 22:32:15 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1598 ms
+2025-03-05 22:32:15 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 22:32:15 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 22:32:15 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@20d55bf1, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@23c489bf, org.springframework.security.web.context.SecurityContextHolderFilter@74b6a194, org.springframework.security.web.header.HeaderWriterFilter@22ea996e, org.springframework.web.filter.CorsFilter@3c7c9c1b, org.springframework.security.web.authentication.logout.LogoutFilter@3b98dabb, com.domain.demo_backend.util.JwtAuthenticationFilter@4993be5f, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5d650fe4, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7faa35c5, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@c34a763, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@43136e4f, org.springframework.security.web.access.ExceptionTranslationFilter@10ac6823, org.springframework.security.web.access.intercept.AuthorizationFilter@3c14767a]
+2025-03-05 22:32:16 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 22:32:16 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:32:16 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 22:32:16 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 3.369 seconds (process running for 33.512)
+2025-03-05 22:32:16 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-03-05 22:32:24 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-03-05 22:32:24 [Thread-7] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:32:24 [Thread-7] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-03-05 22:32:24 [Thread-7] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:32:24 [Thread-7] INFO  o.a.coyote.http11.Http11NioProtocol - Destroying ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:32:24 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 21988 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 22:32:24 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 22:32:25 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 22:32:25 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 22:32:25 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 22:32:25 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 22:32:25 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 22:32:25 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 22:32:25 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 22:32:25 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:32:25 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 22:32:25 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 22:32:25 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 22:32:25 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1557 ms
+2025-03-05 22:32:26 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 22:32:26 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 22:32:26 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3b676af, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4560c443, org.springframework.security.web.context.SecurityContextHolderFilter@2f76a37a, org.springframework.security.web.header.HeaderWriterFilter@7ad442b9, org.springframework.web.filter.CorsFilter@58cf1e21, org.springframework.security.web.authentication.logout.LogoutFilter@3e7c573e, com.domain.demo_backend.util.JwtAuthenticationFilter@7fb9c3ec, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5faf0fc3, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1b2d1475, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7c121907, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4f0ac1ba, org.springframework.security.web.access.ExceptionTranslationFilter@312ace51, org.springframework.security.web.access.intercept.AuthorizationFilter@21b780be]
+2025-03-05 22:32:27 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 22:32:27 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:32:27 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 22:32:27 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 3.246 seconds (process running for 44.249)
+2025-03-05 22:32:27 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-03-05 22:33:30 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 26148 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 22:33:30 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 22:33:31 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-03-05 22:33:31 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-03-05 22:33:36 [restartedMain] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-05 22:33:36 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 22:33:36 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 22:33:36 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 22:33:36 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 22:33:36 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 22:33:36 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 22:33:38 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 22:33:39 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:33:39 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 22:33:39 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 22:33:39 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 22:33:39 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 8367 ms
+2025-03-05 22:33:40 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 22:33:41 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 22:33:43 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@36aabff3, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@51fe686a, org.springframework.security.web.context.SecurityContextHolderFilter@733d27ee, org.springframework.security.web.header.HeaderWriterFilter@57c589fe, org.springframework.web.filter.CorsFilter@43091e65, org.springframework.security.web.authentication.logout.LogoutFilter@2628f7a9, com.domain.demo_backend.util.JwtAuthenticationFilter@1d6fb39, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@2011898c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2e995c9b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@478b391e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@626089d7, org.springframework.security.web.access.ExceptionTranslationFilter@cfaa87a, org.springframework.security.web.access.intercept.AuthorizationFilter@3e4a82f3]
+2025-03-05 22:33:45 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 22:33:45 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:33:46 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 22:33:46 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 18.672 seconds (process running for 24.41)
+2025-03-05 22:34:19 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-03-05 22:34:19 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:34:19 [Thread-5] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-03-05 22:34:19 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:34:19 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Destroying ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:34:19 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 26148 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 22:34:19 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 22:34:20 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 22:34:20 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 22:34:20 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 22:34:20 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 22:34:20 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 22:34:20 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 22:34:21 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 22:34:21 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:34:21 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 22:34:21 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 22:34:21 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 22:34:21 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1417 ms
+2025-03-05 22:34:21 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 22:34:21 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 22:34:22 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2c444357, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3710b9a5, org.springframework.security.web.context.SecurityContextHolderFilter@6962d759, org.springframework.security.web.header.HeaderWriterFilter@3520c3c7, org.springframework.web.filter.CorsFilter@226a8a87, org.springframework.security.web.authentication.logout.LogoutFilter@58bbbb5d, com.domain.demo_backend.util.JwtAuthenticationFilter@8c3113b, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@2920647d, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5e0e5a9a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1491bf46, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@613b58f, org.springframework.security.web.access.ExceptionTranslationFilter@2a8c0b26, org.springframework.security.web.access.intercept.AuthorizationFilter@6dbf0a1a]
+2025-03-05 22:34:23 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 22:34:23 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:34:23 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 22:34:23 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 3.514 seconds (process running for 61.652)
+2025-03-05 22:34:23 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-03-05 22:38:18 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 25596 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 22:38:18 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 22:38:18 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-03-05 22:38:18 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-03-05 22:38:25 [restartedMain] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-05 22:38:25 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 22:38:25 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 22:38:25 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 22:38:25 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 22:38:25 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 22:38:25 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 22:38:27 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 22:38:27 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:38:27 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 22:38:27 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 22:38:28 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 22:38:28 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 9322 ms
+2025-03-05 22:38:29 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 22:38:29 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 22:38:33 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@523aee6c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@38f1cf5f, org.springframework.security.web.context.SecurityContextHolderFilter@1fbb52e7, org.springframework.security.web.header.HeaderWriterFilter@426cb432, org.springframework.web.filter.CorsFilter@50cf9892, org.springframework.security.web.authentication.logout.LogoutFilter@60971509, com.domain.demo_backend.util.JwtAuthenticationFilter@7ae3b683, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@3d6b54b0, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@973483b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@38aed981, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7faf6e3d, org.springframework.security.web.access.ExceptionTranslationFilter@7e8a4deb, org.springframework.security.web.access.intercept.AuthorizationFilter@39fc32e1]
+2025-03-05 22:38:35 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 22:38:35 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:38:35 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 22:38:35 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 20.341 seconds (process running for 23.118)
+2025-03-05 22:39:24 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 4728 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 22:39:24 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 22:39:24 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-03-05 22:39:24 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-03-05 22:39:28 [restartedMain] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-05 22:39:28 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 22:39:28 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 22:39:28 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 22:39:28 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 22:39:28 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 22:39:28 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 22:39:29 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 22:39:29 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:39:29 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 22:39:29 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 22:39:29 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 22:39:29 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 5459 ms
+2025-03-05 22:39:30 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 22:39:30 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 22:39:33 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@688db674, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3c546ef7, org.springframework.security.web.context.SecurityContextHolderFilter@1264b4d5, org.springframework.security.web.header.HeaderWriterFilter@2cda4f29, org.springframework.web.filter.CorsFilter@581faf2e, org.springframework.security.web.authentication.logout.LogoutFilter@65812cca, com.domain.demo_backend.util.JwtAuthenticationFilter@8a7511c, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@3c217353, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7f193de, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2add5b1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@d1c686a, org.springframework.security.web.access.ExceptionTranslationFilter@1242fd25, org.springframework.security.web.access.intercept.AuthorizationFilter@4114f0d]
+2025-03-05 22:39:34 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 22:39:34 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:39:34 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 22:39:34 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 13.619 seconds (process running for 16.18)
+2025-03-05 22:39:50 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-05 22:39:50 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-03-05 22:39:50 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2025-03-05 22:43:17 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 1 deletion, 0 modifications)
+2025-03-05 22:43:17 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:43:17 [Thread-5] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-03-05 22:43:17 [Thread-5] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Destroying Spring FrameworkServlet 'dispatcherServlet'
+2025-03-05 22:43:17 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:43:17 [Thread-5] INFO  o.a.coyote.http11.Http11NioProtocol - Destroying ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:43:17 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 4728 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 22:43:17 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 22:43:19 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 22:43:19 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 22:43:19 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 22:43:19 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 22:43:19 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 22:43:19 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 22:43:19 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 22:43:19 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:43:19 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 22:43:19 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 22:43:20 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 22:43:20 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2407 ms
+2025-03-05 22:43:20 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 22:43:20 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 22:43:21 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@517c90be, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@61d8a8b0, org.springframework.security.web.context.SecurityContextHolderFilter@1606b8b2, org.springframework.security.web.header.HeaderWriterFilter@40afc281, org.springframework.web.filter.CorsFilter@4a3c4848, org.springframework.security.web.authentication.logout.LogoutFilter@1101e5ee, com.domain.demo_backend.util.JwtAuthenticationFilter@10b6a751, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@616766f8, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@c5faebe, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7d3f0014, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@257a3c99, org.springframework.security.web.access.ExceptionTranslationFilter@5fa5d68f, org.springframework.security.web.access.intercept.AuthorizationFilter@2e50b3f0]
+2025-03-05 22:43:22 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 22:43:22 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:43:22 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 22:43:22 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 4.634 seconds (process running for 243.512)
+2025-03-05 22:43:22 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-03-05 22:43:26 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (1 addition, 0 deletions, 0 modifications)
+2025-03-05 22:43:26 [Thread-7] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:43:26 [Thread-7] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-03-05 22:43:26 [Thread-7] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:43:26 [Thread-7] INFO  o.a.coyote.http11.Http11NioProtocol - Destroying ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:43:26 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 4728 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 22:43:26 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 22:43:28 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 22:43:28 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 22:43:28 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 22:43:28 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 22:43:28 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 22:43:28 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 22:43:28 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 22:43:28 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:43:28 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 22:43:28 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 22:43:28 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 22:43:28 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1537 ms
+2025-03-05 22:43:28 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 22:43:28 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 22:43:28 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@774be1c5, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6ebb3e44, org.springframework.security.web.context.SecurityContextHolderFilter@52946525, org.springframework.security.web.header.HeaderWriterFilter@68a4d9e6, org.springframework.web.filter.CorsFilter@4c2a09e7, org.springframework.security.web.authentication.logout.LogoutFilter@5b01d0e8, com.domain.demo_backend.util.JwtAuthenticationFilter@29c8141f, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@2298e3ee, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3325128a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@64e8bb5b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1259d2a, org.springframework.security.web.access.ExceptionTranslationFilter@66363580, org.springframework.security.web.access.intercept.AuthorizationFilter@61b8716d]
+2025-03-05 22:43:29 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 22:43:29 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:43:29 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 22:43:29 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 2.81 seconds (process running for 250.628)
+2025-03-05 22:43:29 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-03-05 22:44:16 [restartedMain] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 20292 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-05 22:44:17 [restartedMain] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-05 22:44:17 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-03-05 22:44:17 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-03-05 22:44:21 [restartedMain] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-05 22:44:21 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-05 22:44:21 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-05 22:44:21 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-05 22:44:21 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-05 22:44:21 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-05 22:44:21 [restartedMain] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-05 22:44:23 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-05 22:44:23 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:44:23 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-05 22:44:23 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-05 22:44:23 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-05 22:44:23 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 6369 ms
+2025-03-05 22:44:24 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-05 22:44:24 [restartedMain] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-05 22:44:26 [restartedMain] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1dc27aa4, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@29cf3e1a, org.springframework.security.web.context.SecurityContextHolderFilter@f93d78c, org.springframework.security.web.header.HeaderWriterFilter@dbb3bc1, org.springframework.web.filter.CorsFilter@5507a5a, org.springframework.security.web.authentication.logout.LogoutFilter@10af6493, com.domain.demo_backend.util.JwtAuthenticationFilter@72945604, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@5aca5187, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@c68f4ed, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2e104f83, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7c8d05a8, org.springframework.security.web.access.ExceptionTranslationFilter@2d18c5f, org.springframework.security.web.access.intercept.AuthorizationFilter@4f6960dc]
+2025-03-05 22:44:27 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-03-05 22:44:27 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-05 22:44:27 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-05 22:44:27 [restartedMain] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 14.791 seconds (process running for 19.163)
+2025-03-05 22:45:08 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-05 22:45:08 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-03-05 22:45:08 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 3 ms
+2025-03-05 23:07:23 [http-nio-8080-exec-6] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: jakarta.mail.internet.AddressException: Illegal address in string ``''] with root cause
+jakarta.mail.internet.AddressException: Illegal address
+	at org.springframework.mail.javamail.MimeMessageHelper.parseAddress(MimeMessageHelper.java:737)
+	at org.springframework.mail.javamail.MimeMessageHelper.setTo(MimeMessageHelper.java:614)
+	at com.domain.demo_backend.service.AuthService.sendVerificationCode(AuthService.java:184)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:699)
+	at com.domain.demo_backend.service.AuthService$$SpringCGLIB$$0.sendVerificationCode(<generated>)
+	at com.domain.demo_backend.controller.AuthController.sendVerificationCode(AuthController.java:139)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:884)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1011)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at com.domain.demo_backend.util.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:76)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.domain.demo_backend.util.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:76)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:894)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1740)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+2025-03-05 23:47:39 [http-nio-8080-exec-9] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: jakarta.mail.internet.AddressException: Illegal address in string ``''] with root cause
+jakarta.mail.internet.AddressException: Illegal address
+	at org.springframework.mail.javamail.MimeMessageHelper.parseAddress(MimeMessageHelper.java:737)
+	at org.springframework.mail.javamail.MimeMessageHelper.setTo(MimeMessageHelper.java:614)
+	at com.domain.demo_backend.service.AuthService.sendVerificationCode(AuthService.java:184)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:699)
+	at com.domain.demo_backend.service.AuthService$$SpringCGLIB$$0.sendVerificationCode(<generated>)
+	at com.domain.demo_backend.controller.AuthController.sendVerificationCode(AuthController.java:139)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:884)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1011)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at com.domain.demo_backend.util.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:76)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.domain.demo_backend.util.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:76)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:894)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1740)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+2025-03-05 23:47:39 [http-nio-8080-exec-7] ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: jakarta.mail.internet.AddressException: Illegal address in string ``''] with root cause
+jakarta.mail.internet.AddressException: Illegal address
+	at org.springframework.mail.javamail.MimeMessageHelper.parseAddress(MimeMessageHelper.java:737)
+	at org.springframework.mail.javamail.MimeMessageHelper.setTo(MimeMessageHelper.java:614)
+	at com.domain.demo_backend.service.AuthService.sendVerificationCode(AuthService.java:184)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:699)
+	at com.domain.demo_backend.service.AuthService$$SpringCGLIB$$0.sendVerificationCode(<generated>)
+	at com.domain.demo_backend.controller.AuthController.sendVerificationCode(AuthController.java:139)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:205)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:150)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:884)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1011)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at com.domain.demo_backend.util.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:76)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.domain.demo_backend.util.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:76)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:894)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1740)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+2025-03-05 23:47:39 [http-nio-8080-exec-7] ERROR o.a.c.c.C.[Tomcat].[localhost] - Exception Processing ErrorPage[errorCode=0, location=/error]
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: 현재 연결은 사용자의 호스트 시스템의 소프트웨어의 의해 중단되었습니다
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:305)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:267)
+	at org.apache.catalina.connector.CoyoteOutputStream.flush(CoyoteOutputStream.java:120)
+	at java.base/java.io.FilterOutputStream.flush(FilterOutputStream.java:153)
+	at com.fasterxml.jackson.core.json.UTF8JsonGenerator.flush(UTF8JsonGenerator.java:1200)
+	at com.fasterxml.jackson.databind.ObjectWriter.writeValue(ObjectWriter.java:1063)
+	at org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.writeInternal(AbstractJackson2HttpMessageConverter.java:483)
+	at org.springframework.http.converter.AbstractGenericHttpMessageConverter.write(AbstractGenericHttpMessageConverter.java:103)
+	at org.springframework.web.servlet.mvc.method.annotation.AbstractMessageConverterMethodProcessor.writeWithMessageConverters(AbstractMessageConverterMethodProcessor.java:297)
+	at org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor.handleReturnValue(HttpEntityMethodProcessor.java:245)
+	at org.springframework.web.method.support.HandlerMethodReturnValueHandlerComposite.handleReturnValue(HandlerMethodReturnValueHandlerComposite.java:78)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:136)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:884)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1081)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:974)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1011)
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:126)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:120)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:227)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:221)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:101)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149)
+	at org.apache.catalina.core.ApplicationDispatcher.invoke(ApplicationDispatcher.java:642)
+	at org.apache.catalina.core.ApplicationDispatcher.processRequest(ApplicationDispatcher.java:410)
+	at org.apache.catalina.core.ApplicationDispatcher.doForward(ApplicationDispatcher.java:340)
+	at org.apache.catalina.core.ApplicationDispatcher.forward(ApplicationDispatcher.java:277)
+	at org.apache.catalina.core.StandardHostValve.custom(StandardHostValve.java:362)
+	at org.apache.catalina.core.StandardHostValve.status(StandardHostValve.java:222)
+	at org.apache.catalina.core.StandardHostValve.throwable(StandardHostValve.java:308)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:149)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:894)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1740)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:842)
+Caused by: java.io.IOException: 현재 연결은 사용자의 호스트 시스템의 소프트웨어의 의해 중단되었습니다
+	at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method)
+	at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:54)
+	at java.base/sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:132)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:97)
+	at java.base/sun.nio.ch.IOUtil.write(IOUtil.java:53)
+	at java.base/sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:532)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:118)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1381)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:764)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:728)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:712)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:566)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:220)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1247)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:400)
+	at org.apache.coyote.Response.action(Response.java:208)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:301)
+	... 94 common frames omitted

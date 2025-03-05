@@ -13,8 +13,9 @@ export default {
     // 쿠키 객체 생성
     const cookies = new Cookies();
     const focusEmailField = ref(null);
+    const fullEmail = ref("");
 
-    const signUpData =  ref({
+    const signUpData = ref({
       email:{
         emailPrefix:"",
         emailDomain:"",
@@ -62,14 +63,25 @@ const validateDate = ref({
       visibility.value[key] = !visibility.value[key];
     };
 
+    const updateFullEmail = () => {
+      const emailPrefix =signUpData.value.email.emailPrefix;
+      const emailDomain = signUpData.value.email.emailDomain === "custom"
+              ? signUpData.value.email.customDomain
+                : signUpData.value.email.emailDomain;
 
+                fullEmail.value = `${emailPrefix}@${emailDomain}`;
+                console.log("전체 이메일", fullEmail.value);
+    }
 
     const validateField = {
       
       email() {
-        const fullEmail = signUpData.value.emailDomain === "custom"
-          ? `${signUpData.value.emailPrefix}@${signUpData.value.customDomain}`
-          : `${signUpData.value.emailPrefix}@${signUpData.value.emailDomain}`;
+        const emailPrefix = signUpData.value.email.emailPrefix;
+        const emailDomain = signUpData.value.email.emailDomain === "custom"
+                        ? signUpData.value.email.customDomain : signUpData.value.email.emailDomain;
+
+        const fullEmail = `${emailPrefix}@${emailDomain}`;
+         
           console.log("Generated Email:", fullEmail); // 디버깅 로그 추가
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         errorState.value.email = !emailRegex.test(fullEmail);
@@ -175,14 +187,28 @@ const validateDate = ref({
 
     const sendVerificationCode = async() =>{
       try{
-        const response = await axios.post("http://localhost:8080/api/auth/signup", null, {
-          params: { email: signUpData.email },
-        });
-        signUpData.message = response.data;
+        const emailPrefix = signUpData.value.email.emailPrefix;
+        console.log('emailPrefix : ',emailPrefix);
+        const emailDomain = signUpData.value.email.emailDomain === "custom" 
+          ? signUpData.value.email.customDomain : signUpData.value.email.emailDomain;
 
+          console.log('emailDomain : ',emailDomain);
+        const fullEmail = `${emailPrefix}@${emailDomain}`;
+        console.log('fullEmail : ',fullEmail);
+        const response = await axios.post("http://localhost:8080/api/auth/signup", null, {
+          params: { 
+            email: fullEmail,
+            message : "인증코드를 보내드립니다." 
+          },
+        });
+
+        signUpData.value.message = "인증코드를 보내드립니다." ;
+        console.log("signUpData.value : ", signUpData.value);
+        console.log("response: ", response);
+        alert("인증 코드가 이메일로 전송되었습니다!");
       }catch(error){
         console.error(error);
-        this.message = "오류 발생!";
+        alert("인증 코드 전송 중 오류 발생!");
 
       }
     }
@@ -230,10 +256,13 @@ const validateDate = ref({
       <div>
       <div style="display:flex; gap: 10px; align-items: center;">
         <!--이메일 앞부분-->
-        <input size="20"  type="text" ref="focusEmailField" v-model="signUpData.email.emailPrefix"  @input="validateField.email" class="signUp_form-input" name="emailPrefix" id="emailPrefix" aria-describedby="emailHelp"/>
+        <!-- <input size="20"  type="text" ref="focusEmailField" v-model="signUpData.email.emailPrefix"  @input="validateField.email" class="signUp_form-input" name="emailPrefix" id="emailPrefix" aria-describedby="emailHelp"/> -->
+        <input v-model="signUpData.email.emailPrefix" @input="updateFullEmail" />
         <span>@</span>
         <!--이메일 도메인 선택-->
-        <select v-model="signUpData.email.emailDomain" @change="validateField.email" class="signUp_form-input">
+        <!-- <select v-model="signUpData.email.emailDomain"  @change="() => validateField.email()" class="signUp_form-input"> -->
+          <select v-model="signUpData.email.emailDomain" @change="updateFullEmail">
+
           <option value="" disabled selected>이메일선택</option>
           <option value="naver.com">naver.com</option>
           <option value="gmail.com">gmail.com</option>
@@ -336,7 +365,7 @@ const validateDate = ref({
      <!-- <button type="button" @click="onClickSignUpButton"  class="signup_form_button">
       회원가입
      </button> -->
-     <button type="button" @click="onClickVerificationButton"  class="verification_form_button">
+     <button type="button" @click="sendVerificationCode"  class="verification_form_button">
       인증 코드 보내기
      </button>
     </form>

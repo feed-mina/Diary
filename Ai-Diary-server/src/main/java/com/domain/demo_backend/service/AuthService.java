@@ -10,6 +10,7 @@ import com.domain.demo_backend.util.PasswordUtil;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -24,6 +25,9 @@ import java.util.Random;
 public class AuthService {
     private final UserMapper userMapper;
     private final JwtUtil jwtUtil;
+
+    @Value("${spring.mail.username}")
+    private String fromEmail;
 
     @Autowired
     private JavaMailSender mailSender;
@@ -123,6 +127,7 @@ public class AuthService {
 
     public void sendEmail(String to, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(fromEmail);
         message.setTo(to);
         message.setSubject(subject);
         message.setText(body);
@@ -177,7 +182,8 @@ public class AuthService {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
         helper.setTo(email);
-        helper.setSubject("이메일 인증 코드");
+        // 🚀 Your GitHub launch code
+        helper.setSubject("\uD83D\uDE80 이메일 인증 코드");
         helper.setText("인증 코드: " + verificationCode, true);
 
         mailSender.send(message);

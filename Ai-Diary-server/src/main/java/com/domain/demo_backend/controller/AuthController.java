@@ -133,21 +133,29 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/SignUp")
+    @PostMapping("/signup")
     public String sendVerificationCode(@RequestParam String email, @RequestParam String message) throws MessagingException {
+        System.out.println("회원가입 진입");
+
         // 랜덤 인증 코드 생성
-        // String verificationCode = generateVerification();
         String verificationCode = authService.sendVerificationCode(email);
         // 인증 코드를 Map에 저장
         emailVerificationMap.put(email, verificationCode);
 
         // 이메일 전송 시뮬레이션(실제 서비스에서는 이메일 전송 API)
         System.out.println("이메일 전송: " + email);
-        System.out.println("메시지: " + message + " 코드 : ");
+        System.out.println("메시지: " + message);
 
         String savedCode = emailVerificationMap.get(email);
         return "인증 코드가 다음 이메일로 전송되었습니다." + email;
     }
+
+
+    @GetMapping("/signUp")
+    public String sendVerificationCodeByGet(@RequestParam String email, @RequestParam String message) throws MessagingException {
+        return sendVerificationCode(email, message);
+    }
+
     @PostMapping("/verify")
     public String verifyCode(@RequestParam String email, @RequestParam String code) {
         String saveCode = emailVerificationMap.get(email);

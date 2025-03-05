@@ -23,10 +23,10 @@ export default {
       total: 0,
     });
 
-    const userId = localStorage.getItem('userId');
+    const loggedInUserId = localStorage.getItem('userId');
 
-    console.log("userId : ",userId);
-    // userId와 response.data.diaryList.list.userId같은지, 같다면 내가 쓴 일기만 보기 체크박스 누를때 두개가 같은 것만 response.data.diaryList 보이기
+    console.log("loggedInUserId : ",loggedInUserId);
+    // loggedInUserId와 response.data.diaryList.list.userId같은지, 같다면 내가 쓴 일기만 보기 체크박스 누를때 두개가 같은 것만 response.data.diaryList 보이기
     const fetchDiaryList = async ( ) => {
       try {
         const response = await axios.get('http://localhost:8080/api/diary/viewDiaryList', {
@@ -35,7 +35,7 @@ export default {
             'Content-Type': 'application/json',
           },
           params: {
-            userId: showOnlyMine.value? userId:null,
+            userId: showOnlyMine.value? loggedInUserId:null,
             pageNo: page.value.pageNo,
             pageSize: page.value.pageSize,
           },
@@ -45,7 +45,18 @@ export default {
         console.log("diaryList : ",response.data.diaryList,response.data.diaryList.length,"개" );
         
         const { diaryList, total, pageSize, page: pageNum } = response.data;
-        diaries.value = diaryList || [];
+        // diaries.value = diaryList || [];
+        
+        diaries.value = diaryList.filter(diary => {
+          if(diary.diaryStatus){
+            return true;
+          }
+          if(showOnlyMine.value && diary.userId ===  loggedInUserId){
+            return true;
+          }
+          return false;
+        })
+
         page.value = { pageNo: pageNum, pageSize, total };
         const userIds = diaryList.map(diary => diary.userId);
         
@@ -54,7 +65,7 @@ export default {
           console.log("diaryList : ", diaryList[i].userId);
           console.log("userIds: ", userIds);
           console.log("userId : ", userIds[i]);
-            if(diaryList[i].userId == userId){
+            if(diaryList[i].userId == loggedInUserId){
               console.log('localStorage에 매칭되는 id', diaryList[i].userId);
               console.log("userId : ", userIds[i]);
             } 
@@ -97,16 +108,22 @@ export default {
       await fetchDiaryList();
     };
   
-    const viewDiary = async (diaryId) => {
-      cookies.set("diaryId",diaryId);
-      await fetchDiaryList();
-      router.push(`/diary/view/${diaryId}`);
-    };
+    const viewDiary = async (diaryId, userId) => {
+  // userId를 동적으로 반영하여 URL 생성
+  const requestUrl = `http://localhost:8080/api/diary/viewDiaryItem/${diaryId}?userId=${loggedInUserId}`;
 
+  console.log("📌 요청 URL:", requestUrl);
+
+  cookies.set("diaryId", diaryId);
+  cookies.set("loggedInUserId", loggedInUserId);  // 필요하면 쿠키에도 저장 가능
+
+  await fetchDiaryList();
+  router.push(`/diary/view/${diaryId}?userId=${loggedInUserId}`); // userId 포함하여 이동
+};
         // 컴포넌트 마운트 시 일기 목록 로드
 
     onMounted(() => {
-      if (!userId) {
+      if (!loggedInUserId) {
         router.push('/');
       } else {
         fetchDiaryList();
@@ -140,23 +157,28 @@ export default {
     <div class="diaryList_content">
       <main class="diaryOtherList">
         <div class="diaryListSection" v-if="diaries.length > 0">
-          <div  v-for="(it, index) in diaries" :key="it.diaryId" class="diary-post" @click="viewDiary(it.diaryId)">
+        <div v-for="diary in diaries" :key="diary.diaryId" >
+          <div @click="viewDiary(diary.diaryId, diary.userId)" class="diary-post"> 
+            일기보여주기 : {{  diary.diaryStatus }} false면 숨기기
             <header>
-              {{ diaries.userId }}
+             <div>
+              <!-- {{ diary.userId }} -->
               <h3 class="diaryAuthor">
-                {{ it.author || '익명' }} 
-                {{ it.userId }}
+                {{ diary.author || '익명' }} 
+                {{ diary.userId }}
               </h3>
               <span class="diaryTitle">
-                &nbsp;{{ it.title ? it.title.substring(0, 10) : '제목 없음' }}...
+                {{ diary.title ? diary.title.substring(0, 10) : '제목 없음' }}...
               </span>
-              <time class="diaryTime" :dateTime="it.regDt">
-                {{ new Date(it.regDt || it.date).toLocaleDateString() }}
+             </div>
+              <time class="diaryTime" :dateTime="diary.regDt">
+                {{ new Date(diary.regDt || diary.date).toLocaleDateString() }}
               </time>
             </header>
-            <p class="diaryContent">{{ it.content ? it.content.substring(0, 50) : '내용 없음' }}</p>
+            <p class="diaryContent">{{ diary.content ? diary.content.substring(0, 50) : '내용 없음' }}</p>
           </div>
         </div>
+      </div>
         <div v-else>일기가 없습니다.</div>
       </main>
       <!-- 페이지네이션 -->
@@ -183,10 +205,12 @@ export default {
 }
 
 .filter-checkbox {
+  margin-left:2rem;
+  color: aliceblue;
   display: flex;
   align-items: center;
   padding: 10px;
-  background-color: #f4f4f4;
+  background-color: cadetblue;
   border: 1px solid #ccc;
   border-radius: 5px;
   cursor: pointer;
@@ -207,11 +231,9 @@ export default {
 }
 
 .diaryListSection{
-  flex: 1 1 60%;
   display: grid;
-  gap : 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    /* auto-fit: 가능한 열로 채움, minmax로 최소 200px 이상, 최대 1fr */
+  gap: 1rem;
+  grid-template-columns: repeat(1, 1fr); /* 기본적으로 한 줄에 한 개 */
 
 }
 
@@ -224,17 +246,20 @@ export default {
 }
 
 .diaryOtherList {
-  padding: 1.875em;
+  margin-top: 2rem;
+  padding: 1rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  align-items: flex-start;
+  flex-direction: column;
 }
 .diary-post {
   background: #ffffff;
   border: solid 1px #ccc;
   border-radius: 8px;
   padding: 1rem;
+  width: 100%;
+  max-width: 500px; /* 카드가 너무 커지지 않도록 */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   cursor: pointer;
   transition: transform 0.3s ease-in-out;
@@ -245,26 +270,25 @@ export default {
 }
 
 .diary-post header h3 {
-  margin-bottom: 0.5em;
+  /* margin-bottom: 0.5em; */
   white-space: nowrap; /* 내용 길게 표시 방지 */
   overflow: hidden;
   text-overflow: ellipsis;
-
   text-align: left; /* 제목 중앙 정렬 */
 }
 
 .diary-post header span {
+  font: message-box;
   display: block;
-  margin-top: 0.5em;
+  /* margin-top: 0.5em; */
   white-space: nowrap; /* 내용 길게 표시 방지 */
   overflow: hidden;
   text-overflow: ellipsis;
-
-  text-align: left; /* 부제목 중앙 정렬 */
+ /* text-align: left;  부제목 중앙 정렬 */
 }
 
 .diary-post p {
-  text-align: left; /* 내용 왼쪽 정렬 */
+  /* text-align: left;  내용 왼쪽 정렬 */
   margin-top: auto; /* 아래로 밀기 */
   white-space: nowrap; /* 내용 길게 표시 방지 */
   overflow: hidden;
@@ -286,13 +310,13 @@ export default {
   cursor: pointer;
 }
 .diaryTime{
-  font-size: 1.5em;
+  font-size: 1em;
 }
-.diaryTitle{
-  font-size: 2em;
+.diaryTitle{ 
+  font-size: 1em;
 }
 .diaryAuthor{
-  font-size: 1.5em;
+  font-size: 1em;
 }
 
 .diaryContent{
@@ -306,19 +330,12 @@ export default {
   background-color: #a8835b;
 }
 
-/* 
-@media screen and (min-width: 600px) {
-  .diary-post {
-    flex: 1 1 calc(50% - 2em);
-    max-width: calc(50% - 2em);
+/* 1020px 이상일 때 한 줄에 2개 배치 */
+@media screen and (min-width: 1020px) {
+  .diaryListSection {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media screen and (min-width: 900px) {
-  .diary-post {
-    flex: 1 1 calc(33.333% - 2em);
-    max-width: calc(33.333% - 2em);
-  }
-} */
 
 </style>

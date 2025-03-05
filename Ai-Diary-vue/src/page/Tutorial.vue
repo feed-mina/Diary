@@ -3,11 +3,12 @@
 import {  computed, ref } from 'vue';
 import NotFound from '@/page/NotFound.vue';
 import Cookies from 'universal-cookie'; 
-
+import Swal from 'sweetalert2';
 export default {
   name: 'Tutorial',
   setup() {
-  const currentView = computed(() => {
+    const isHidden = ref(true);   // 기본값: 숨기기 상태
+    const currentView = computed(() => {
     const routes = {
       '/notFound': NotFound,
     };
@@ -24,27 +25,46 @@ export default {
       content:"오늘은 기분이 어땠나요? ",
       hidden:true,
       emotionItems: [
-        { text: "😁 I feel good", value: "1" },
-        { text: "😂 Oh, That's so funny", value: "2" },
-        { text: "😫 What should I do?!", value: "3" },
-        { text: "😒 unpleasant, boring", value: "4" },
-        { text: "😤 How dare you", value: "5" },
-        { text: "😡 Angry", value: "6" },
-        { text: "🤯 I wanna get outta here...", value: "7" },
-        { text: "💖 Love", value: "8" },
-        { text: "🤕 Not in a good condition", value: "9" },
-        { text: "💙 I feel blue", value: "10" }
+      { text: "😁 기분이 좋아요", value: "1" },
+      { text: "😂 너무 웃겨요", value: "2" },
+      { text: "😫 어떡해야 할까요?!", value: "3" },
+      { text: "😒 불쾌하고 지루해요", value: "4" },
+      { text: "😤 어떻게 이럴 수가", value: "5" },
+      { text: "😡 화가 나요", value: "6" },
+      { text: "🤯 여기서 벗어나고 싶어요...", value: "7" },
+      { text: "💖 사랑이 넘쳐요", value: "8" },
+      { text: "🤕 몸 상태가 좋지 않아요", value: "9" },
+      { text: "💙 우울해요", value: "10" }
       ],
 
     });
+    
+    const toggleHidden = (value) => {
+      isHidden.value = value;
+    };
   const saveDiary = () => {
+    event.preventDefault(); // 기본 동작 방지
   console.log("Diary saved");
+  // alert("일기가 저장되었습니다.");
+  Swal.fire({
+    title : "튜토리얼모드: 저장 완료 !",
+    text : "일기장이 성공적으로 저장되었습니다.",
+    icon : "success",
+    confirmButtonText :"좋아요!",
+    confirmButtonColor : "#5DBB63",
+    background: "#f5f5b5", // 배경색 변경
+    color: "#330", // 글자색 변경
+  }).then(() =>{
+    location.reload();
+  })
   };
 
   return {
     currentView,
     diaryContent,
-    saveDiary
+    toggleHidden,
+    saveDiary,
+    isHidden
   };
 }
 }
@@ -88,7 +108,7 @@ export default {
                   </div>
                 </div>
                 <div class="tags">
-                   <div  v-tooltip="'text1'"> 
+                   <div  v-tooltip="'오늘의 감정을 태그로 입력하세요.'"> 
                     <input type="text" id="tag1" name="tag1" v-model="diaryContent.tags.tag1" placeholder="" disabled/>
 
                     <input type="text" id="tag2" name="tag2" v-model="diaryContent.tags.tag2" placeholder="" disabled/>
@@ -135,19 +155,20 @@ export default {
               <div class="section05">
                 <div  v-tooltip="'일기를 다른 사람에게 공유할지를 선택해주세요.'">
                       <span>🔎</span>
-                    <select v-model="diaryContent.hidden" id="hidden" required>
-                      <option value="true">
-                        숨기기
-                      </option>
-                      <option value="false">
-                        보여주기
-                      </option>
-                    </select>
-                
+                      <div class="button-group">
+                      <button 
+                        :class="{ active: isHidden }" 
+                         @click.prevent="toggleHidden(true)"
+                      >숨기기</button>
+                      <button 
+                        :class="{ active: !isHidden }" 
+                         @click.prevent="toggleHidden(false)"
+                      >보여주기</button>
+                    </div> 
                   </div>
               </div>
               <div class="saveDiary">
-                      <button type="button" @click="saveDiary">기록하기</button>
+                      <button type="button"  @click.prevent="saveDiary">기록하기</button>
                     </div>
               <!--diaryTuto-dalle-->
             </div>
@@ -190,7 +211,7 @@ export default {
   
     /* overflow-y: auto; 스크롤 가능 */
     /* z-index: 9999; */
-    font-size: 2vmin;
+    font-size: 1em;
   }
 
   .diaryTuto input,
@@ -198,7 +219,7 @@ export default {
     border-radius: 0.3125em;
     background: #eee7db;
     border: 0 solid black;
-    font-size: 0.9375em;
+    font-size: 1em;
   }
   .tutorial_container {
     /* border: 1px solid #00fa9a; */
@@ -397,6 +418,33 @@ export default {
     margin-right: 0.3125em;
   }
 
+
+  .section05 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.button-group {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  padding: 10px 15px; 
+    border-radius: 1em;
+    background: #eee7db;
+  color: black;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+button.active {
+    color: #fff;
+    background: #A5778F;
+}
+
 .saveDiary{
   display: flex;
   flex-direction: column;
@@ -409,10 +457,15 @@ export default {
     font-size: 1rem;
     font-weight: bold;
     color: #fff;
-    background: #A5778F;
+    border: #A5778F;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s;
+    margin-top: 1em; /* 기록하기 버튼과 간격 조정 */
+}
+.saveDiary button:hover {
+  background: #8a5e72;
+  color: #fff;
 }
 </style>

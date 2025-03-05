@@ -436,7 +436,7 @@ const validateDate = ref({
   background-color: #357abd;
 }
 .signUp_form-oo{
-  font-size: 0.9rem;
+  font-size: 1em;
   color: red;
   margin-top: 0.5rem;
 }

@@ -52,8 +52,9 @@ export default {
           </header>
           <!-- <DiaryHeader/> -->
           <RouterView /> <!-- 현재 경로에 맞는 컴포넌트 렌더링 -->
-          <DiaryFooter />
         </div>
+        <DiaryFooter />
+
       </div>
     </div>
   </v-app>
@@ -70,15 +71,18 @@ export default {
 
 .main-wrap{
  display: flex; 
-  width: 100vw;
+  /* width: 100vw; */
   height: 100%;
+  /*height: 100vh;  전체 높이 맞추기 */
+  margin: 0; /* 혹시 있을 여백 제거 */
   background-color: #ffffff;
 }
 .content-wrap {
   flex: 1; /* 남은 공간을 본문이 차지 */
   height: 100%; /* 부모 컨테이너의 높이를 100% 채움 */
   padding: 20px; /* 본문에 여백 추가 */
-  overflow-y: auto; /* 스크롤 가능 */
+  margin-bottom: 2rem;
+  /* overflow-y: auto; 스크롤 가능 */
 }
 
 .DiaryNav {
@@ -111,7 +115,9 @@ footer{
   header {
     display: flex;
     place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    padding-right: 1rem;
+    /* padding-right: calc(var(--section-gap) / 2); */
+    justify-content: space-between;
   }
 
   .logo {
@@ -127,7 +133,8 @@ footer{
   .content-wrap {
   flex: 1; /* 남은 공간을 본문이 차지 */
   padding: 20px; /* 본문에 여백 추가 */
-  overflow-y: auto; /* 스크롤 가능 */
+  margin-bottom: 2rem;
+  /* overflow-y: auto; 스크롤 가능 */
 }
 
 .DiaryNav {

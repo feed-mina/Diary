@@ -22,4 +22,42 @@
     <select id="findByUserEmail"  resultType="com.domain.demo_backend.user.domain.User">
         SELECT * FROM users WHERE email = #{email}
     </select>
+
+    <select id="findByUsername" parameterType="string"  resultType="com.domain.demo_backend.user.domain.User">
+            SELECT
+            username,
+            password,
+            user_sqno AS userSqno
+            FROM users
+            WHERE username = #{username}
+    </select>
+
+    <insert id="insertVerification">
+        INSERT INTO email_verification(email, verification_code)
+        VALUES (#{email}, #{verificationCode})
+    </insert>
+
+    <select id="getVerificationCode" resultType="String">
+        SELECT verification_code
+        FROM email_verification
+        WHERE email = #{email}
+    </select>
+
+    <select id="getExpriationTime" resultType="java.time.LocalDateTime">
+        SELECT expires_at
+        FROM  email_verification
+        WHERE email = #{email}
+    </select>
+
+    <delete id="deleteVerification">
+        DELETE FROM  email_verification
+        WHERE email = #{email}
+    </delete>
+
+    <update id="nonMember" parameterType="com.domain.demo_backend.user.domain.User">
+        UPDATE users
+        SET delYn = 'Y', updated_at = NOW()
+        WHERE user_id = #{userId}
+    </update>
+
 </mapper>

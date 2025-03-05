@@ -58,12 +58,12 @@ export default {
       <!--Bubble Section-->
       <div id="HomeBubble" class="home-bubble">
         <div id="HomeText" class="home-text">
-          <span>
+          <span class="home-header">
             <br/>
             <strong>
               ai이미지 생성 기능을 이용한
             </strong>
-            <br/><br/>
+            <br/>
             <strong>
               감정다이어리
             </strong>
@@ -98,30 +98,31 @@ export default {
   justify-content: center;
   height: 100vh; /* 화면 전체 높이를 채움 */
   background-color: #f8f9fa; /* 배경색 */
-  padding: 10px;
+  padding: 1rem;
 }
 .main-content {
+  height: 70%;
   display: flex;
   flex-direction: column; /* 수직 정렬 */
-  max-width: 500px; /* 최대 너비 */
   align-items: center; /* 수평 중앙 정렬 */
- /*  justify-content: center; 세로 중앙 정렬 */
-  width: 100%; /* 모바일에서는 전체 너비 사용 */
-  padding: 1rem;
+ justify-content: center; /*  세로 중앙 정렬 */
+  width: 100%; 
 }
 
 /* Bubble styling */
 .home-bubble {
-  width: 90%; /* 화면 크기 따라 자동 조정 */
-  max-width: 500px; /* 최대 너비 설정 */
   display: flex;
   flex-direction: column; /* 수직 정렬 */
   justify-content: center;
   background: #e0f7fa;
   border-radius: 10px;
-  padding: 20px;
+  padding: 3rem;
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.home-header{
+  margin-bottom: 4rem;
 }
 
 .home-text {
@@ -132,7 +133,9 @@ export default {
 }
 
 .home-text span {
-  font-size: 3vmin;
+  font-family: system-ui;
+  font-style: oblique;
+  font-size:  1em;
 }
 
 

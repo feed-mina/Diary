@@ -3,6 +3,7 @@ import {ref, onMounted} from "vue";
 import {useRouter} from "vue-router";
 import Cookies from "universal-cookie";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
   name: 'LoginPage', 
@@ -30,20 +31,7 @@ export default {
     const togglePasswordVisibility = () =>{
       showPassword.value = !showPassword.value;
     }
-    // 로그인 상태 확인 후 리다이렉트
-    onMounted(() => {
-      const userData = cookies.get("userData");
-      if(!userData){
-        console.log("로그인 필요");
-        loginData.value = {
-          userId : "",
-          password : "",
-        };
-        router.push("/login");
-      }  else{
-        router.push("/diary/common");
-      }
-    });
+    
 
     const handleLoginData = (event) =>{
       loginData.value[event.target.name] = event.target.value;
@@ -52,13 +40,27 @@ export default {
 
     const onClickLoginButton = async() => {
       console.log("로그인 데이터 :", loginData.value);
-      if(!loginData.value.userId){
-        alert("아이디를 입력해주세요.");
+      if(!loginData.value.userId){        
+        Swal.fire({
+              title: "아이디 오류",
+              text: "아이디를 입력해주세요",
+              icon: "warning",
+              confirmButtonText: "확인",
+              confirmButtonColor: "#FF5733"
+            });
         return;
       }
 
       if(!loginData.value.password){
-        alert("비밀번호를 입력해주세요.");
+        // alert("비밀번호를 입력해주세요.");
+        
+        Swal.fire({
+              title: "비밀번호 오류",
+              text: "비밀번호를 입력해주세요",
+              icon: "warning",
+              confirmButtonText: "확인",
+              confirmButtonColor: "#FF5733"
+            });
         return;
       }
 
@@ -70,15 +72,33 @@ export default {
         // JWT 토큰을 쿠키 또는 localStorage에 저장
         cookies.set("jwt", jwtToken, { path: "/" });
         localStorage.setItem("userId", loginData.value.userId);
-        alert("로그인을 완료했습니다.");
-      router.push("/diary/common").then(() => {
+        localStorage.setItem("password", loginData.value.password);
+
+        // alert("로그인을 완료했습니다.");
+        
+        Swal.fire({
+              title: "로그인 성공",
+              text: "로그인을 완료했습니다",
+              icon: "success",
+              confirmButtonText: "확인",
+              confirmButtonColor: "#357abd",
+            });
+
+            router.push("/diary/common").then(() => {
         location.reload(); // 새로고침
       });  
-
       } catch (error) {
         // 에러 처리
         console.error("로그인 실패:", error);
-        alert(error.response?.data?.message || "로그인에 실패했습니다.");
+        // alert(error.response?.data?.message || "로그인에 실패했습니다.");
+        
+        Swal.fire({
+              title: "로그인 실패",
+              text: "로그인을 실패했습니다.",
+              icon: "warning",
+              confirmButtonText: "확인",
+              confirmButtonColor: "#FF5733"
+            });
       }
     };
 
@@ -118,7 +138,7 @@ export default {
   <div id="login_form" class="login_form">
       <!--로그인 또는 회원가입 폼 렌더링-->
           <!--로그인 폼-->
-          <form @submit.prevent="onClickLoginButton">
+          <form @submit.prevent="onClickLoginButton" class="login_form_box">
    
           <!--ID-->
           <div class="login-session">
@@ -163,27 +183,34 @@ export default {
 
 
 .loginPage {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 50%; /* 화면 전체 높이를 채움 */
-  background-color: #f8f9fa; /* 배경색 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    background-color: #f8f9fa;
+    padding: 8rem;
+    flex-direction: column;
 }
 .login_form{
-  width: 90%; /* 화면 크기 따라 자동 조정 */
-  max-width: 500px; /* 최대 너비 설정 */
-  padding: 2rem;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  margin: auto;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
+    display: flex;
+    height: 100%;
+    width: 100%;
+    padding: 5rem;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    /* margin: auto; */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    justify-content: flex-start;
+    flex-direction: column;
+    margin-bottom: 1.5rem; 
+  margin-bottom: 1.5rem; /* 필드 간 여백 */
 }
 
-.login-session{
-  display: flex;
-  flex-direction: column; /* 수직 정렬 */
-  margin-bottom: 1.5rem; /* 필드 간 여백 */
+.login_form_box{
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 .login-label{
   font-size: 1rem;

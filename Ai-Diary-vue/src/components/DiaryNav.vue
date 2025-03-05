@@ -75,6 +75,7 @@ setup(){
       
       <div class="signup-button-wrap">
           <button class="signup-nav" v-if="!LoginStorage" @click="navigateTo('/signup')">회원가입</button>
+          <button class="nonuser-nav" v-if="LoginStorage" @click="navigateTo('/memberOut')">회원탈퇴</button>
        </div> 
       <nav>
         <div class="post-it-nav1">
@@ -96,15 +97,15 @@ setup(){
 
 <style> 
 .nav-wrap{
-  width: 30vw; /* 네비게이션 너비 */
+  /*width: 30vw;  네비게이션 너비 */
+  flex-shrink: 0; /* 크기 축소 방지 */
   height: 100%; /* 부모 컨테이너의 높이를 100% 채움 */
-  background-color: #f4f4f4;
+  background-color: beige;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   justify-content: flex-start; /* 내용 상단 정렬 */
-  padding: 1rem;
-  z-index: 10;
+  padding: 2rem;
 }
 .signup-button-wrap{
   position: absolute;
@@ -124,6 +125,20 @@ setup(){
   cursor: pointer;
   transition: all 0.3s;
 }
+
+.nonuser-nav{
+  width: 120px;
+  height: 40px;
+  font-size: 1rem;
+  font-weight: bold;
+  background: #604e2e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
 .post-it-nav1,
 .post-it-nav2 {
   display: flex;

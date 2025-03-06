@@ -1,5 +1,5 @@
 <script>
-import { ref } from 'vue';
+import {ref} from 'vue';
 
 export default {
   name: 'AgreementPolicy',
@@ -7,14 +7,14 @@ export default {
     // 약관 동의 상태
     const allAgree = ref(false);
     const requiredAgreements = ref([
-      { id: 1, text: '[필수] 이용약관', agreed: false },
-      { id: 2, text: '[필수] 전자금융거래 이용약관', agreed: false },
-      { id: 3, text: '[필수] 개인정보 수집동의서', agreed: false },
+      {id: 1, text: '[필수] 이용약관', agreed: false},
+      {id: 2, text: '[필수] 전자금융거래 이용약관', agreed: false},
+      {id: 3, text: '[필수] 개인정보 수집동의서', agreed: false},
     ]);
 
     const optionalAgreements = ref([
-      { id: 4, text: '[선택] 개인정보 수집동의서', agreed: false },
-      { id: 5, text: '[선택] 위치기반서비스 이용약관', agreed: false },
+      {id: 4, text: '[선택] 개인정보 수집동의서', agreed: false},
+      {id: 5, text: '[선택] 위치기반서비스 이용약관', agreed: false},
     ]);
 
     // 전체 동의 토글
@@ -32,8 +32,8 @@ export default {
     // 개별 약관 동의 변경
     const toggleAgreement = () => {
       allAgree.value =
-        isAllRequiredAgreed() &&
-        optionalAgreements.value.every((agreement) => agreement.agreed);
+          isAllRequiredAgreed() &&
+          optionalAgreements.value.every((agreement) => agreement.agreed);
     };
 
     return {
@@ -53,7 +53,7 @@ export default {
     <!-- 전체 동의 -->
     <div class="agreement-item">
       <label>
-        <input type="checkbox" v-model="allAgree" @change="toggleAllAgree" />
+        <input type="checkbox" v-model="allAgree" @change="toggleAllAgree"/>
         약관 전체 동의
       </label>
     </div>
@@ -63,9 +63,9 @@ export default {
     <div v-for="agreement in requiredAgreements" :key="agreement.id" class="agreement-item">
       <label>
         <input
-          type="checkbox"
-          v-model="agreement.agreed"
-          @change="toggleAgreement"
+            type="checkbox"
+            v-model="agreement.agreed"
+            @change="toggleAgreement"
         />
         {{ agreement.text }}
       </label>
@@ -76,9 +76,9 @@ export default {
     <div v-for="agreement in optionalAgreements" :key="agreement.id" class="agreement-item">
       <label>
         <input
-          type="checkbox"
-          v-model="agreement.agreed"
-          @change="toggleAgreement"
+            type="checkbox"
+            v-model="agreement.agreed"
+            @change="toggleAgreement"
         />
         {{ agreement.text }}
       </label>
@@ -86,8 +86,8 @@ export default {
 
     <!-- 다음 단계 버튼 -->
     <button
-      :disabled="!isAllRequiredAgreed()"
-      class="next-button"
+        :disabled="!isAllRequiredAgreed()"
+        class="next-button"
     >
       다음 단계
     </button>

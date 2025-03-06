@@ -1,6 +1,7 @@
 package com.domain.demo_backend.controller;
 
 
+import com.domain.demo_backend.user.dto.RegisterRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestController
@@ -27,17 +27,22 @@ public class KakaoController {
     private String redirectUri;
 
     private String accessToken;
-    
+
     private static final String KAKAO_URL = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
 
-    @GetMapping("/login")
-    public String kakaoLogin() {
+    @PostMapping("/login")
+    public ResponseEntity<?> kakaoLogin(@RequestBody RegisterRequest registerRequest) {
         log.info("@@@@@@@@@@@@@@@@@@@@@@@@");
         log.info("kakao login");
         log.info("client_id : " + clientId);
         log.info("redirectUri : " + redirectUri);
 
-        return "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=" + redirectUri;
+        // 1. 받은 AccessToken 으로 사용자 정보 가져오기
+        //   KakaoUserInfo kakaoUserInfo = KakaoService.getKakaoUserInfo(registerRequest.getAccessToken());
+
+        // 회원가입 대신 카카오 로그인을 사용한다면 > clientId, kakaoAcessToken 을 password, HashedPassword로 저장하기
+        // return "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=" + redirectUri + "&response_type=code&scope=account_email,gender";
+        return null;
     }
 
     @GetMapping("/callback")
@@ -79,8 +84,7 @@ public class KakaoController {
     @PostMapping("/sendRecord")
     public ResponseEntity<String> sendRecord(
             @RequestHeader(value = "Authorization", required = true) String authorization,
-            @RequestBody Map<String, Object> data)
-    {
+            @RequestBody Map<String, Object> data) {
 
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("카카오 토큰이 필요");
@@ -91,7 +95,7 @@ public class KakaoController {
         log.info("kakao sendRecord");
         log.info("kakao sendRecord data:" + data);
         log.info("kakao sendRecord accessToken:" + accessToken);
-       // clientId, redirectUri 체크
+        // clientId, redirectUri 체크
         if (clientId == null || redirectUri == null) {
             String loginUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=" + redirectUri;
             log.info("로그인이 필요해요. 로그인 페이지로 보내줄게요!");

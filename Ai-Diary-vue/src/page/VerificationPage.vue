@@ -1,49 +1,63 @@
+<template>
+  <div class="email-verification">
+    <h2>이메일 인증하기</h2>
+    <p>인증 코드를 입력해주세요</p>
+    <div class="code-box">
+      <input v-model="code" maxlength="6" placeholder="000000"/>
+    </div>
+    <button @click="checkCode">확인</button>
+    <p>{{ message }}</p>
+  </div>
+</template>
 <script>
-import axios from "axios";
-export default {
-  name: 'VerificationPage',
-  setup(){
-    const codeData= ref({
-        email:"",
-        code:"",
-        message:"",
-    });
+import axios from 'axios';
+import {useRoute} from 'vue-router';
 
-    const verifyCode = async() =>{
-        try{
-            const response = await axios.post("http://localhost:8080/api/auth/verify", null, {
-            params: { email: codeData.email, code: codeData.code },
-            });
-            codeData.message = response.data;
-        } catch(error){
-            console.error(error);
-            this.message = "오류 발생!";
-        }
-    }
-    return{
-        codeData,
-        verifyCode
-    }
+export default {
+  setup() {
+    const route = useRoute();
+    const email = route.query.email;  // 주소창에서 이메일 가져오기
+    const code = ref('');
+    const message = ref('');
+
+    const checkCode = async () => {
+      try {
+        const response = await axios.post('http://localhost:8080/api/auth/verify-code', {
+          email,
+          code: code.value,
+        });
+        message.value = '인증 성공!';
+      } catch {
+        message.value = '인증 실패! 코드를 다시 확인해주세요.';
+      }
+    };
+
+    return {code, message, checkCode};
   }
 };
 </script>
+<style scoped>
+.email-verification {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+}
 
-<template>
-  <div>
-    <h1>이메일 인증</h1>
-    <form @submit.prevent="verifyCode">
-        <div>
-            <label for="email">이메일 : </label>
-            <input type="email" v-model="codeData.email" required/>
-        </div>
-        <div>
-            <label for="code" class="code">
-                인증 코드:
-            </label>
-            <input type="text" v-model="codeData.code" required/>
-        </div>
-        <button type="submit">인증</button>
-    </form>
-    <p v-if="codeData.message">{{ codeData.message }}</p>
-  </div>
-</template>
+.code-box input {
+  font-size: 2rem;
+  text-align: center;
+  width: 100%;
+  padding: 10px;
+  margin: 20px 0;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+</style>

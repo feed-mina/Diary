@@ -23,6 +23,7 @@
     "axios": "^1.7.8",
     "lodash-es": "^4.17.21",
     "marked": "^15.0.3",
+    "notyf": "^3.10.0",
     "universal-cookie": "^7.2.2",
     "vue": "^3.5.13",
     "vue-cal": "^4.10.0",

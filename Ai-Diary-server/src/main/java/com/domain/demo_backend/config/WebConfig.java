@@ -1,13 +1,13 @@
 package com.domain.demo_backend.config;
- import com.domain.demo_backend.helper.RemoteIpResolver;
- import org.springframework.beans.factory.annotation.Autowired;
- import org.springframework.context.annotation.Bean;
+
+import com.domain.demo_backend.helper.RemoteIpResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
- import org.springframework.web.method.support.HandlerMethodArgumentResolver;
- import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
- import java.util.List;
+import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
@@ -16,16 +16,20 @@ public class WebConfig implements WebMvcConfigurer {
     private RemoteIpResolver remoteIpResolver;
 
     @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers){
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(remoteIpResolver);
-    };
+    }
+
+    ;
 
     @Override
-    public void addCorsMappings(CorsRegistry registry){
+    public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE");
-    };
+    }
+
+    ;
 //
 //    @Bean
 //    public WebMvcConfigurer corsConfigurer() {

@@ -1,11 +1,12 @@
 package com.domain.demo_backend.util;
+
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -15,7 +16,6 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.Date;
@@ -38,7 +38,7 @@ public class JwtUtil {
     private static final String SALT = "mySaltValue"; // 🔹 SALT 값
 
     @PostConstruct
-    public void init(){
+    public void init() {
         this.secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret));
     }
 //    public String generateToken(String userId, boolean useKakaoIssuer) {
@@ -84,6 +84,7 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
     public BigInteger getUserSqnoFromToken(String token) {
         Claims claims = validateToken(token); // 토큰 검증 및 클레임 추출
         // userSqno 값을 BigInteger로 변환
@@ -92,52 +93,55 @@ public class JwtUtil {
 
     }
 
-/** AES-256으로 문자열을 암호화 하는 메서드*/
-public static String encryptAesByBase64(String strToEncrypt){
+    /**
+     * AES-256으로 문자열을 암호화 하는 메서드
+     */
+    public static String encryptAesByBase64(String strToEncrypt) {
         try {
-        byte[] iv = new byte[16]; // 초기화 백터 (IV)
-        IvParameterSpec ivspec = new IvParameterSpec(iv);
+            byte[] iv = new byte[16]; // 초기화 백터 (IV)
+            IvParameterSpec ivspec = new IvParameterSpec(iv);
 
-        SecretKeySpec secretKey = getSecretKey();
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivspec);
+            SecretKeySpec secretKey = getSecretKey();
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivspec);
 
-        byte[] encryptedText = cipher.doFinal(strToEncrypt.getBytes(StandardCharsets.UTF_8));
+            byte[] encryptedText = cipher.doFinal(strToEncrypt.getBytes(StandardCharsets.UTF_8));
 
-        //Base64 인코딩 후 반환
+            //Base64 인코딩 후 반환
             return Base64.getEncoder().encodeToString(encryptedText);
 
-    } catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-    return null;
-}
-// AES56으로 암호화된 문자열을 복호화 하는 메서드
-    public static String decryptAesByBase64(String strToDecrypt){
-    try{
-        byte[] iv = new byte[16]; // 초기화 백터 (IV)
-        IvParameterSpec ivspec = new IvParameterSpec(iv);
-
-        SecretKeySpec secretKey = getSecretKey();
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.DECRYPT_MODE, secretKey, ivspec);
-
-        // Base64 디코딩 후 복호화
-        byte[] decodedText = Base64.getDecoder().decode(strToDecrypt);
-        return new String(cipher.doFinal(decodedText), StandardCharsets.UTF_8);
-    } catch (Exception e) {
-        e.printStackTrace();
+        return null;
     }
-    return null;
-}
+
+    // AES56으로 암호화된 문자열을 복호화 하는 메서드
+    public static String decryptAesByBase64(String strToDecrypt) {
+        try {
+            byte[] iv = new byte[16]; // 초기화 백터 (IV)
+            IvParameterSpec ivspec = new IvParameterSpec(iv);
+
+            SecretKeySpec secretKey = getSecretKey();
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, ivspec);
+
+            // Base64 디코딩 후 복호화
+            byte[] decodedText = Base64.getDecoder().decode(strToDecrypt);
+            return new String(cipher.doFinal(decodedText), StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
-//      * AES-256 비밀키 생성 메서드
-private static SecretKeySpec getSecretKey() throws Exception{
-    SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-    KeySpec spec = new PBEKeySpec(SECRET_KEY.toCharArray(), SALT.getBytes(), 65536, 256);
-    SecretKey secretKey = factory.generateSecret(spec);
-    return new SecretKeySpec(secretKey.getEncoded(), "AES");
-}
+    //      * AES-256 비밀키 생성 메서드
+    private static SecretKeySpec getSecretKey() throws Exception {
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        KeySpec spec = new PBEKeySpec(SECRET_KEY.toCharArray(), SALT.getBytes(), 65536, 256);
+        SecretKey secretKey = factory.generateSecret(spec);
+        return new SecretKeySpec(secretKey.getEncoded(), "AES");
+    }
 
 }

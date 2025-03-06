@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.math.BigInteger;
-import java.util.Collection;
 
 @Getter
 @Setter
@@ -26,13 +25,13 @@ public class DiaryRequest {
 
     private String diaryStatus;
     // 사용자 일련번호
-     private BigInteger userSqno;
-     // 글쓴이
+    private BigInteger userSqno;
+    // 글쓴이
     private String userId;
-     // 최초 등록 IP
+    // 최초 등록 IP
     private String frstRegstIp;
 
-     // 최중 수정 IP
+    // 최중 수정 IP
     private String lastUpdtIp;
 
     // 최종 수정 일시
@@ -55,6 +54,7 @@ public class DiaryRequest {
 
     private String author;
     private Integer emotion;
+
     public Diary toDiary() {
         return Diary.builder()
                 .diaryId(this.diaryId)

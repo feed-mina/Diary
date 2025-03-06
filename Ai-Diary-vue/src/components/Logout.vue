@@ -1,4 +1,3 @@
-
 <script>
 export default {
   name: 'Logout', // 다중 단어 이름으로 변경
@@ -7,9 +6,9 @@ export default {
 
 <template>
 
-<div class="logout">
-  <h1>Logout</h1>
-</div>
+  <div class="logout">
+    <h1>Logout</h1>
+  </div>
 
 </template>
 <style scoped>

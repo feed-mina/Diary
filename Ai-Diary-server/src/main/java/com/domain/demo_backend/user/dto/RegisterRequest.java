@@ -24,4 +24,6 @@ public class RegisterRequest {
     // private String nickname;
     private LocalDate createdAt;
     private String updatedAt;
+
+    private String accessToken;
 }

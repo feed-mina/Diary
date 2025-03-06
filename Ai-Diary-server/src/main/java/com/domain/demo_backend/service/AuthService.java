@@ -16,8 +16,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.io.File;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Random;
 
@@ -37,9 +37,11 @@ public class AuthService {
         this.userMapper = userMapper;
         this.jwtUtil = jwtUtil;
     }
+
     public String login(LoginRequest loginRequest) {
 
         User user = userMapper.findByUserId(loginRequest.getUserId());
+        // 카카오 로그인 로직 ? 로그인 type이 social / normal 구분 > normal 안에서 찾아야함
         // 디버깅
         System.out.println("DB에서 가져온 User: " + user);
         System.out.println("LoginRequest UserID: " + loginRequest.getUserId());
@@ -56,7 +58,7 @@ public class AuthService {
         }
         System.out.println("JWT 성공");
         // 비밀번호를 포함하지 않은 사용자 정보를 JWT에 포함
-        return jwtUtil.createToken( user.getUsername(), user.getUserSqno(), user.getUserId());
+        return jwtUtil.createToken(user.getUsername(), user.getUserSqno(), user.getUserId());
     }
 
     public class DuplicateEmailException extends RuntimeException {
@@ -72,18 +74,18 @@ public class AuthService {
         if (userMapper.findByUserEmail(registerRequest.getEmail()) != null) {
             throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
         }
-            if (userMapper.findByUserId(registerRequest.getUserId()) != null) {
+        if (userMapper.findByUserId(registerRequest.getUserId()) != null) {
             System.out.println("존재하는 아이디 실패");
 
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         }
-        if(userMapper.findByUserEmail(registerRequest.getEmail()) != null){
+        if (userMapper.findByUserEmail(registerRequest.getEmail()) != null) {
             System.out.println("회원가입 이메일 실패");
 
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
 
-        if(userMapper.findByUserPhone(registerRequest.getPhone()) != null){
+        if (userMapper.findByUserPhone(registerRequest.getPhone()) != null) {
             System.out.println("회원가입 핸드폰 실패");
             throw new IllegalArgumentException("이미 존재하는 핸드폰 번호입니다.");
         }
@@ -99,7 +101,7 @@ public class AuthService {
                 .role("ROLE_USER")
                 .createdAt(LocalDateTime.now())
                 .build();
-        System.out.println("user: "+ user);
+        System.out.println("user: " + user);
         System.out.println("user Mapper insertUser 시작");
         userMapper.insertUser(user);
     }
@@ -118,7 +120,7 @@ public class AuthService {
         // 회원탈퇴 처리
         existingUser.setDelYn("Y");
         existingUser.setUpdatedAt(LocalDateTime.now());
-        System.out.println("existingUser : "+ existingUser);
+        System.out.println("existingUser : " + existingUser);
         System.out.println("user Mapper nonMember 시작");
         userMapper.nonMember(existingUser);
         System.out.println("user 탈퇴 처리 완료: " + existingUser);
@@ -148,33 +150,7 @@ public class AuthService {
 
         mailSender.send(mimeMessage);
     }
-    public void sendEmailWithAttachment(String to, String subject, String body, String filePath) throws MessagingException {
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true); // true는 첨부 파일 허용
 
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(body, true); // HTML 형식 허용
-
-        // 첨부 파일 추가
-        File file = new File(filePath);
-        helper.addAttachment(file.getName(), file);
-
-        mailSender.send(mimeMessage);
-    }
-    public void saveVerificationCode(String email, String verificationCode){
-        LocalDateTime expiresAt = LocalDateTime.now().plusMinutes(60);
-        userMapper.insertVerification(email,verificationCode,expiresAt);
-    }
-
-    public boolean verifyCode(String email, String code){
-        String storedCode = userMapper.getVerificationCode(email);
-        LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(60);
-        if(storedCode != null && storedCode.equals(code)&& expirationTime.isAfter(LocalDateTime.now())) {
-            return true;
-        }
-        return false;
-    }
     public String sendVerificationCode(String email) throws MessagingException {
         //랜덤 인등코드 생성
         String verificationCode = generateRendomCode();
@@ -183,7 +159,18 @@ public class AuthService {
         MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
         helper.setTo(email);
         // 🚀 Your GitHub launch code
+
         helper.setSubject("\uD83D\uDE80 이메일 인증 코드");
+
+        String emailContent = "<div style='padding:20px; font-family:Arial; text-align:center;'>"
+                + "<h2>🚀 회원가입 인증 코드</h2>"
+                + "<p>아래 인증 코드를 입력해주세요!</p>"
+                + "<h1 style='color:#4CAF50;'>" + verificationCode + "</h1>"
+                + "<p>감사합니다 😊</p>"
+                + "</div>";
+
+        helper.setText(emailContent, true);   // 여기 true가 HTML이라는 뜻이야!
+
         helper.setText("인증 코드: " + verificationCode, true);
 
         mailSender.send(message);
@@ -191,6 +178,7 @@ public class AuthService {
         return verificationCode; // 인증 코드 반환
 
     }
+
     private String generateRendomCode() {
         Random random = new Random();
         int code = 1000000 + random.nextInt(10000);

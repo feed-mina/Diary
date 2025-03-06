@@ -1,17 +1,18 @@
 <script setup>
-import { computed } from 'vue'
-import { valueToPoint } from './util';
+import {computed} from 'vue'
+import {valueToPoint} from './util';
+
 const props = defineProps({
-  stat : Object,
-  index : Number,
-  total : Number
+  stat: Object,
+  index: Number,
+  total: Number
 })
 
-const point = computed(()=>
-valueToPoint(+props.stat.value + 10, props.index, props.total))
+const point = computed(() =>
+    valueToPoint(+props.stat.value + 10, props.index, props.total))
 </script>
 
 <template>
-  <text :x="point.x" :y="point.y">{{stat.label}}</text>
-  
+  <text :x="point.x" :y="point.y">{{ stat.label }}</text>
+
 </template>

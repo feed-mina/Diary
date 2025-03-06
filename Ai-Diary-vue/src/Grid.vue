@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import {computed, ref} from 'vue';
 
 // Props 정의 (JavaScript에서는 타입 제거)
 const props = defineProps({
@@ -11,15 +11,15 @@ const props = defineProps({
 // 정렬 키와 정렬 순서 설정
 const sortKey = ref('');
 const sortOrders = ref(
-  props.columns.reduce((o, key) => {
-    o[key] = 1;
-    return o;
-  }, {})
+    props.columns.reduce((o, key) => {
+      o[key] = 1;
+      return o;
+    }, {})
 );
 
 // 필터 및 정렬된 데이터 계산
 const filteredData = computed(() => {
-  let { data, filterKey } = props;
+  let {data, filterKey} = props;
   if (filterKey) {
     filterKey = filterKey.toLowerCase();
     data = data.filter((row) => {
@@ -56,23 +56,23 @@ function capitalize(str) {
 <template>
   <table v-if="filteredData.length">
     <thead>
-      <tr>
-        <th
+    <tr>
+      <th
           v-for="(key, cIndex) in columns"
           @click="sortBy(key)"
           :class="{ active: sortKey == key }"
           :key="cIndex"
-        >
-          {{ capitalize(key) }}
-        </th>
-      </tr>
+      >
+        {{ capitalize(key) }}
+      </th>
+    </tr>
     </thead>
     <tbody>
-      <tr v-for="(entry, index) in filteredData" :key="index">
-        <td v-for="(key, colIndex) in columns" :key="colIndex">
-          {{ entry[key] }}
-        </td>
-      </tr>
+    <tr v-for="(entry, index) in filteredData" :key="index">
+      <td v-for="(key, colIndex) in columns" :key="colIndex">
+        {{ entry[key] }}
+      </td>
+    </tr>
     </tbody>
   </table>
   <p v-else>No matches found.</p>

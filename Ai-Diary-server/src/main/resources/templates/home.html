@@ -17,7 +17,7 @@
 
 <script>
     // 버튼 클릭 이벤트 핸들러
-    document.getElementById("addDiaryButton").addEventListener("click", function() {
+    document.getElementById("addDiaryButton").addEventListener("click", function () {
         axios.post("http://localhost:8080/api/diary/addDiaryList", {
             userSqno: "12345",
             content: "Test Content",

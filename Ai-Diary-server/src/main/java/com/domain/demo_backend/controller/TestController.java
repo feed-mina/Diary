@@ -8,10 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-@Tag(name="swagger 테스트", description = "swagger API 예제 문서")
+@Tag(name = "swagger 테스트", description = "swagger API 예제 문서")
 public class TestController {
 
-    @Operation(summary="기본 default url 설정", description = "localhost:8080들어가면 로그인 페이지로 리다이렉트 하기")
+    @Operation(summary = "기본 default url 설정", description = "localhost:8080들어가면 로그인 페이지로 리다이렉트 하기")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "로그인 페이지로 redirect")
     })
@@ -20,7 +20,7 @@ public class TestController {
         return "redirect:/login"; // 로그인 페이지로 리다이렉트
     }
 
-    @Operation(summary = "주소창에 /login 으로 바로 들어가는 경우 또는 회원가입 후 로그인 페이지로 가는 경우",description = "get방식으로 처리")
+    @Operation(summary = "주소창에 /login 으로 바로 들어가는 경우 또는 회원가입 후 로그인 페이지로 가는 경우", description = "get방식으로 처리")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "로그인 페이지")
     })

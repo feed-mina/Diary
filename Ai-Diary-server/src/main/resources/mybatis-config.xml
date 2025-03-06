@@ -9,9 +9,9 @@
         <setting name="lazyLoadingEnabled" value="true"/>
     </settings>
 
-<!--    <typeAliases>-->
-<!--        <typeAlias alias="User" type="com.example.demo.model.User"/>-->
-<!--    </typeAliases>-->
+    <!--    <typeAliases>-->
+    <!--        <typeAlias alias="User" type="com.example.demo.model.User"/>-->
+    <!--    </typeAliases>-->
 
     <environments default="development">
         <environment id="development">

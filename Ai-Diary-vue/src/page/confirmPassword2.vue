@@ -1,74 +1,73 @@
-
 <script>
-import {ref, onMounted} from "vue";
+import {ref} from "vue";
 import {useRouter} from "vue-router";
 import Cookies from "universal-cookie";
 import axios from "axios";
 import Swal from "sweetalert2";
 
 export default {
-  name: 'confirmPassword2', 
-  setup(){
+  name: 'confirmPassword2',
+  setup() {
     const router = useRouter();
-    const cookies = new Cookies(); 
+    const cookies = new Cookies();
 
     const goToPage = (path) => {
-        router.push(path);
-      };
-    const isEditPg = ref(true);   
+      router.push(path);
+    };
+    const isEditPg = ref(true);
 
     //  입력 데이터
     const editData = ref({
-        checkId: localStorage.getItem("userId"),
-        password : "", 
+      checkId: localStorage.getItem("userId"),
+      password: "",
     });
     const errorWarning = ref({
-        checkId:  false,
-        password:  false,
+      checkId: false,
+      password: false,
     });
 
     const idErrorMessage = ref("");
     const passwordErrorMessage = ref("");
-    
+
     // const passwordValid = ref(true);
     const showPassword = ref(false);
-    const togglePasswordVisibility = () =>{
+    const togglePasswordVisibility = () => {
       showPassword.value = !showPassword.value;
     }
-    
-    const handleEditData = (event) =>{
+
+    const handleEditData = (event) => {
       editData.value[event.target.name] = event.target.value;
     };
- 
 
-    const onClickEditButton = async() => {
+
+    const onClickEditButton = async () => {
       console.log(" 데이터 :", editData.value);
-      if(!editData.value.userId){        
+      if (!editData.value.userId) {
         Swal.fire({
-              title: "아이디 오류",
-              text: "아이디를 입력해주세요",
-              icon: "warning",
-              confirmButtonText: "확인",
-              confirmButtonColor: "#FF5733"
-            });
+          title: "아이디 오류",
+          text: "아이디를 입력해주세요",
+          icon: "warning",
+          confirmButtonText: "확인",
+          confirmButtonColor: "#FF5733"
+        });
         return;
       }
 
-      if(!editData.value.password){
+      if (!editData.value.password) {
         // alert("비밀번호를 입력해주세요.");
-        
+
         Swal.fire({
-              title: "비밀번호 오류",
-              text: "비밀번호를 입력해주세요",
-              icon: "warning",
-              confirmButtonText: "확인",
-              confirmButtonColor: "#FF5733"
-            });
+          title: "비밀번호 오류",
+          text: "비밀번호를 입력해주세요",
+          icon: "warning",
+          confirmButtonText: "확인",
+          confirmButtonColor: "#FF5733"
+        });
         return;
       }
 
       try {
-    // API 호출 및 응답 처리
+        // API 호출 및 응답 처리
         const jwtToken = await sendEditData();
         const userId = localStorage.getItem("userId");
         const userPassword = localStorage.getItem("password");
@@ -77,30 +76,30 @@ export default {
         // JWT 토큰을 쿠키 또는 localStorage에 저장
         // cookies.set("jwt", jwtToken, { path: "/" });
         // alert("완료했습니다.");
-        
-        Swal.fire({
-              title: "성공",
-              text: "비밀번호가 맞습니다",
-              icon: "success",
-              confirmButtonText: "확인",
-              confirmButtonColor: "#357abd",
-            });
 
-            router.push("/").then(() => {
-        location.reload(); // 새로고침
-      });  
+        Swal.fire({
+          title: "성공",
+          text: "비밀번호가 맞습니다",
+          icon: "success",
+          confirmButtonText: "확인",
+          confirmButtonColor: "#357abd",
+        });
+
+        router.push("/").then(() => {
+          location.reload(); // 새로고침
+        });
       } catch (error) {
         // 에러 처리
         console.error(" 실패:", error);
         // alert(error.response?.data?.message || "에 실패했습니다.");
-        
+
         Swal.fire({
-              title: " 실패",
-              text: "비밀번호가 다릅니다.",
-              icon: "warning",
-              confirmButtonText: "확인",
-              confirmButtonColor: "#FF5733"
-            });
+          title: " 실패",
+          text: "비밀번호가 다릅니다.",
+          icon: "warning",
+          confirmButtonText: "확인",
+          confirmButtonColor: "#FF5733"
+        });
       }
     };
 
@@ -114,12 +113,12 @@ export default {
         console.error("API 호출 실패:", error.response?.data || error.message);
         throw error; // 예외를 던져서 상위에서 처리하도록 합니다.
       }
-};
+    };
 
-    return{
+    return {
       isEditPg,
       goToPage,
-      editData, 
+      editData,
       errorWarning,
       showPassword,
       handleEditData,
@@ -129,39 +128,42 @@ export default {
       onClickEditButton
     };
 
-   },
+  },
 };
 </script>
 
 <template>
-<div class="editPage">
-  <header class="confirmHeader">
+  <div class="editPage">
+    <header class="confirmHeader">
       <h1 class="confirmTitle">비밀번호 인증</h1>
     </header>
-  <div  class="layoutContainer">
-    <p class="confirmTitle2">개인정보 보호를 위해<br>비밀번호 확인이 필요해요.</p>
-        <div class="checkId">
-            <input type="text" v-model="editData.checkId" disabled />
-        </div>
+    <div class="layoutContainer">
+      <p class="confirmTitle2">개인정보 보호를 위해<br>비밀번호 확인이 필요해요.</p>
+      <div class="checkId">
+        <input type="text" v-model="editData.checkId" disabled/>
+      </div>
 
-          <div class="gapCheckInput">
-            <div class="password_field">
-                <input :type="showPassword? 'text' : 'password'" v-model.trim="editData.checkPassword" @input="handleIdChange"  id="checkPassword" @keyup.enter="onClickConfirmButton" placeholder="비밀번호" />
-                <button type="button"  class="password_toggle" @click="togglePasswordVisibility">
-              {{  showPassword ? '숨기기' : '보기' }}
-            </button>
-            </div> 
-          </div>
+      <div class="gapCheckInput">
+        <div class="password_field">
+          <input :type="showPassword? 'text' : 'password'" v-model.trim="editData.checkPassword" @input="handleIdChange"
+                 id="checkPassword" @keyup.enter="onClickConfirmButton" placeholder="비밀번호"/>
+          <button type="button" class="password_toggle" @click="togglePasswordVisibility">
+            {{ showPassword ? '숨기기' : '보기' }}
+          </button>
+        </div>
+      </div>
 
       <!--  버튼 -->
       <div>
-        <button type="submit" class="confirmButton" @click="goToPage('/edit/newPassword')" :disabled="!editData.password">확인</button>
+        <button type="submit" class="confirmButton" @click="goToPage('/edit/newPassword')"
+                :disabled="!editData.password">확인
+        </button>
       </div>
-   </div>
-</div>
+    </div>
+  </div>
 </template>
 
-<style scoped> 
+<style scoped>
 
 .confirmHeader {
   text-align: center;
@@ -194,7 +196,7 @@ export default {
 }
 
 .password_field input {
-    width: 100%;
+  width: 100%;
   height: 40px;
   font-size: 1.2rem;
   background: #f3f3f3;

@@ -1,12 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ai-Diary Vue</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://developers.kakao.com https://kauth.kakao.com https://accounts.kakao.com https://t1.kakaocdn.net;
+      connect-src 'self' http://localhost:8080 http://justsaying.co.kr http://justsaying.co.kr https://kauth.kakao.com https://accounts.kakao.com https://developers.kakao.com https://t1.kakaocdn.net;
+    style-src 'self' 'unsafe-inline';
+    frame-src https://kauth.kakao.com https://accounts.kakao.com;
+  ">
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <title>vite</title>
+</head>
+<body>
+<div id="app"></div>
+<script type="module" src="/src/main.js"></script>
+
+</body>
 </html>

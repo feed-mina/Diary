@@ -3,12 +3,8 @@ package com.domain.demo_backend.util;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.catalina.security.SecurityUtil;
-import org.apache.catalina.util.URLEncoder;
-import org.springframework.web.service.invoker.UrlArgumentResolver;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -40,12 +36,12 @@ public class utility {
                         .getFirst(param));
     }
 
-    public static void rememberMeSubmit(HttpServletRequest request, HttpServletResponse response, Cookie c){
-        try{
-            if( c != null){
+    public static void rememberMeSubmit(HttpServletRequest request, HttpServletResponse response, Cookie c) {
+        try {
+            if (c != null) {
                 String dec = JwtUtil.decryptAesByBase64(c.getValue());
                 String[] r = dec.split("\\|");
-                if(r.length > 0 && "SSO_REMEMBER_ME_SITE".equals(r[0]));
+                if (r.length > 0 && "SSO_REMEMBER_ME_SITE".equals(r[0])) ;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,7 +51,7 @@ public class utility {
 
 
     // 자동로그인 관련 유틸
-    private static String generateSsoLoginHtml( Map<String, String> map){
+    private static String generateSsoLoginHtml(Map<String, String> map) {
         StringBuilder sb = new StringBuilder();
 
         // HTML 문서 시작
@@ -75,7 +71,7 @@ public class utility {
         sb.append("<div>");
 
         // map에 담긴 데이터를 <input hidden> 태그로 추가
-        for(Map.Entry<String, String> entry : map.entrySet()){
+        for (Map.Entry<String, String> entry : map.entrySet()) {
             sb.append("<input type=\"hidden\" name=\"");
             sb.append(entry.getKey());
             sb.append("\" value=\"");

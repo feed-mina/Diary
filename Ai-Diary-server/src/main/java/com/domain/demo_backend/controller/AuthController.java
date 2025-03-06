@@ -1,10 +1,7 @@
 package com.domain.demo_backend.controller;
 
 import com.domain.demo_backend.service.AuthService;
-import com.domain.demo_backend.user.dto.EmailRequest;
-import com.domain.demo_backend.user.dto.LoginRequest;
-import com.domain.demo_backend.user.dto.LoginResponse;
-import com.domain.demo_backend.user.dto.RegisterRequest;
+import com.domain.demo_backend.user.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -20,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@Tag(name="회원 권한 로직 컨트롤러", description = "로그인, 회원가입 (-- 로그아웃, 회원탈퇴, kakao OAuth2추가 예정 --)")
+@Tag(name = "회원 권한 로직 컨트롤러", description = "로그인, 회원가입 (-- 로그아웃, 회원탈퇴, kakao OAuth2추가 예정 --)")
 public class AuthController {
     private Map<String, String> emailVerificationMap = new HashMap<>();
 
@@ -33,8 +30,7 @@ public class AuthController {
     }
 
 
-
-    @Operation(summary = "회원 로그인" , description = "id와 password와 haspassword가 일치하다면 로그인, 아니면 팝업 경고창이 뜬다.")
+    @Operation(summary = "회원 로그인", description = "id와 password와 haspassword가 일치하다면 로그인, 아니면 팝업 경고창이 뜬다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "일반 회원 로그인 성공"),
             @ApiResponse(responseCode = "401", description = "아이디 또는 비밀번호 불일치"),
@@ -43,12 +39,12 @@ public class AuthController {
     })
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        try{
+        try {
             String jwt = authService.login(loginRequest);
 
             System.out.println("로그인 성공");
             return ResponseEntity.ok(new LoginResponse(jwt));
-         }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             // 명확한 에러 메시지 반환
             Map<String, String> errorResponse = new HashMap<>();
 
@@ -59,7 +55,7 @@ public class AuthController {
         }
     }
 
-    @Operation(summary = "회원 가입" , description = "새로운 회원을 등록한다.")
+    @Operation(summary = "회원 가입", description = "새로운 회원을 등록한다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "회원가입 성공"),
             @ApiResponse(responseCode = "400", description = "입력값 오류"),
@@ -70,13 +66,13 @@ public class AuthController {
     public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
         System.out.println("회원가입 진입");
 
-        System.out.println("registerRequest: "+ registerRequest);
+        System.out.println("registerRequest: " + registerRequest);
         authService.register(registerRequest);
         System.out.println("register service logic OK");
         return ResponseEntity.ok("User registred successfully!");
     }
 
-    @Operation(summary = "회원 탈퇴" , description = "사용자 계정의 del_yn flag를 'Y' -> 'N'로 표시한다.")
+    @Operation(summary = "회원 탈퇴", description = "사용자 계정의 del_yn flag를 'Y' -> 'N'로 표시한다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "회원탈퇴 성공"),
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자"),
@@ -105,17 +101,6 @@ public class AuthController {
 
     }
 
-    @Operation(summary = "Kakao OAuth2 로그인" , description = "Kakao 계정으로 로그인 한다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "카카오 로그인 성공"),
-            @ApiResponse(responseCode = "400", description = "카카오 인증 실패"),
-            @ApiResponse(responseCode = "500", description = "서버오류"),
-    })
-    @GetMapping("/oauth2/kakao")
-    public ResponseEntity<String> kakaoLogin(@RequestParam String code) {
-        // 카카오 OAuth2 로그인 로직
-        return ResponseEntity.ok("Kakao 로그인 성공");
-    }
 
     @PostMapping("/send")
     public String sendEmail(@RequestBody EmailRequest emailRequest) {
@@ -126,7 +111,7 @@ public class AuthController {
     @PostMapping("/send-html")
     public String sendHtmlEmail(@RequestBody EmailRequest emailRequest) {
         try {
-            authService.sendHtmlEmail(emailRequest.getTo(), emailRequest.getSubject(), emailRequest.getBody(),emailRequest.getImagePath());
+            authService.sendHtmlEmail(emailRequest.getTo(), emailRequest.getSubject(), emailRequest.getBody(), emailRequest.getImagePath());
             return "HTML Email sent successfully!";
         } catch (MessagingException e) {
             return "Failed to send email: " + e.getMessage();
@@ -157,12 +142,12 @@ public class AuthController {
     }
 
     @PostMapping("/verify")
-    public String verifyCode(@RequestParam String email, @RequestParam String code) {
-        String saveCode = emailVerificationMap.get(email);
-        if( saveCode != null && saveCode.equals(code)){
-            emailVerificationMap.remove(email); // 인증 성공 시 코드 제거
+    public String verifyCode(@RequestBody verificationRequest request) {
+        String saveCode = emailVerificationMap.get(request.getEmail());
+        if (saveCode != null && saveCode.equals(request.getCode())) {
+            emailVerificationMap.remove(request.getEmail()); // 인증 성공 시 코드 제거
             return "이메일 인증 성공!";
-        }else {
+        } else {
             return "인증 실패 : 잘못된 코드입니다.";
         }
     }

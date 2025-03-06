@@ -6,7 +6,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.math.BigInteger;
 import java.util.Collection;
@@ -35,7 +34,7 @@ public class CustomUserDetails extends User {
     public static CustomUserDetails getMemberInfo() {
         // Spring Security의 SecurityContextHolder에서 인증 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-System.out.println("authentication.getPrincipal(): "+ authentication.getPrincipal());
+        System.out.println("authentication.getPrincipal(): " + authentication.getPrincipal());
         // 인증 여부 확인
         if (authentication == null || authentication.getPrincipal() == null) {
             throw new IllegalStateException("인증되지 않은 사용자입니다.");

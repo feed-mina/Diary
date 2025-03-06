@@ -13,15 +13,15 @@ export default {
 <style scoped>
 .footer {
   margin-bottom: -4rem;
-position: absolute;
-bottom: 0;
-width: 110%; 
-/* width: 100%; */
-height: 50px;
-background-color: black;
-color: white;
-text-align: center;
-line-height: 50px;
+  position: absolute;
+  bottom: 0;
+  width: 110%;
+  /* width: 100%; */
+  height: 50px;
+  background-color: black;
+  color: white;
+  text-align: center;
+  line-height: 50px;
   /* padding: 10px 0; */
   /* margin-top: 20px; */
 }

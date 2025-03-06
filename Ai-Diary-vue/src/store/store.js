@@ -1,29 +1,28 @@
-import { reactive } from "vue";
-import { createStore } from "vuex";
+import {createStore} from "vuex";
 
 const store = createStore({
-  state: {
-    message: "Hello Vuex",
-  },
-  mutations: {
-    setMessage(state, newMessage) {
-      state.message = newMessage;
+    state: {
+        message: "Hello Vuex",
     },
-  },
-  actions: {
-    updateMessage({ commit }, newMessage) {
-      commit("setMessage", newMessage);
+    mutations: {
+        setMessage(state, newMessage) {
+            state.message = newMessage;
+        },
     },
-  },
-  getters: {
-    getMessage(state) {
-      return state.message;
+    actions: {
+        updateMessage({commit}, newMessage) {
+            commit("setMessage", newMessage);
+        },
     },
-  },
-  count: 0,
-  increment() {
-    this.count++;
-  },
+    getters: {
+        getMessage(state) {
+            return state.message;
+        },
+    },
+    count: 0,
+    increment() {
+        this.count++;
+    },
 });
 
 export default store;

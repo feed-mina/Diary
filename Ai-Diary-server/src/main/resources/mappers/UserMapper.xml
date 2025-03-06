@@ -6,30 +6,36 @@
 <mapper namespace="com.domain.demo_backend.mapper.UserMapper">
 
     <insert id="insertUser" parameterType="com.domain.demo_backend.user.domain.User">
-        INSERT INTO users (user_id, password, hashed_password, email, phone, nickname,  role, username, created_at, updated_at)
+        INSERT INTO users (user_id, password, hashed_password, email, phone, nickname, role, username, created_at,
+                           updated_at)
         VALUES (#{userId}, #{password}, #{hashedPassword}, #{email}, #{phone},
-                IFNULL(#{nickname}, #{userId}), #{role}, #{username},  #{createdAt}, #{updatedAt});
+                IFNULL(#{nickname}, #{userId}), #{role}, #{username}, #{createdAt}, #{updatedAt});
     </insert>
 
-    <select id="findByUserId"  resultType="com.domain.demo_backend.user.domain.User">
-        SELECT * FROM users WHERE user_id = #{userId}
+    <select id="findByUserId" resultType="com.domain.demo_backend.user.domain.User">
+        SELECT *
+        FROM users
+        WHERE user_id = #{userId}
     </select>
 
-    <select id="findByUserPhone"  resultType="com.domain.demo_backend.user.domain.User">
-        SELECT * FROM users WHERE password = #{password}
+    <select id="findByUserPhone" resultType="com.domain.demo_backend.user.domain.User">
+        SELECT *
+        FROM users
+        WHERE password = #{password}
     </select>
 
-    <select id="findByUserEmail"  resultType="com.domain.demo_backend.user.domain.User">
-        SELECT * FROM users WHERE email = #{email}
+    <select id="findByUserEmail" resultType="com.domain.demo_backend.user.domain.User">
+        SELECT *
+        FROM users
+        WHERE email = #{email}
     </select>
 
-    <select id="findByUsername" parameterType="string"  resultType="com.domain.demo_backend.user.domain.User">
-            SELECT
-            username,
-            password,
-            user_sqno AS userSqno
-            FROM users
-            WHERE username = #{username}
+    <select id="findByUsername" parameterType="string" resultType="com.domain.demo_backend.user.domain.User">
+        SELECT username,
+               password,
+               user_sqno AS userSqno
+        FROM users
+        WHERE username = #{username}
     </select>
 
     <insert id="insertVerification">
@@ -45,18 +51,20 @@
 
     <select id="getExpriationTime" resultType="java.time.LocalDateTime">
         SELECT expires_at
-        FROM  email_verification
+        FROM email_verification
         WHERE email = #{email}
     </select>
 
     <delete id="deleteVerification">
-        DELETE FROM  email_verification
+        DELETE
+        FROM email_verification
         WHERE email = #{email}
     </delete>
 
     <update id="nonMember" parameterType="com.domain.demo_backend.user.domain.User">
         UPDATE users
-        SET delYn = 'Y', updated_at = NOW()
+        SET delYn      = 'Y',
+            updated_at = NOW()
         WHERE user_id = #{userId}
     </update>
 

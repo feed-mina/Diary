@@ -3,7 +3,10 @@ package com.domain.demo_backend.diary.dto;
 
 import com.domain.demo_backend.diary.domain.Diary;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -12,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @EqualsAndHashCode
-public  class DiaryResponse {
+public class DiaryResponse {
     private String diaryId;
     private BigInteger userSqno;
     private String userId;
@@ -39,7 +42,8 @@ public  class DiaryResponse {
 
 
     // 기존 기본 생성자가 있을 수도 있음
-    public DiaryResponse() {}
+    public DiaryResponse() {
+    }
 
     // 필요한 생성자 추가
     public DiaryResponse(String diaryId, String title, String content, LocalDateTime regDt) {

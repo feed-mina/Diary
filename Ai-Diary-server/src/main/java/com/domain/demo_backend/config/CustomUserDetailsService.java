@@ -27,9 +27,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // db에서 조회
-      //  CustomUserDetails user =  userMapper.findByUsername(username);
+        //  CustomUserDetails user =  userMapper.findByUsername(username);
 
-      User user =  userMapper.findByUsername(username);
+        User user = userMapper.findByUsername(username);
         System.out.println("DB에서 조회된 사용자: " + user);
         System.out.println("CustomUserDetails userSqno: " + user.getUserSqno());
         System.out.println("CustomUserDetails username: " + user.getUserSqno());
@@ -46,11 +46,11 @@ public class CustomUserDetailsService implements UserDetailsService {
                 getAuthorities(user.getRole())
         ); // CustomUserDetails 객체 반환
     }
+
     // 사용자 역할 권한 부여
     private Collection<? extends GrantedAuthority> getAuthorities(String role) {
         return List.of(new SimpleGrantedAuthority(role));
     }
-
 
 
 }

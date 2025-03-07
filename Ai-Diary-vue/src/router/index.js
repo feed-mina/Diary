@@ -19,6 +19,7 @@ import ConfirmPassword from "@/page/ConfirmPassword.vue";
 import ConfirmPassword2 from "@/page/ConfirmPassword2.vue";
 import EditNewPassword from "@/page/EditNewPassword.vue";
 
+import EmailVerificationPage from '@/page/VerificationPage.vue';
 const routes = [
     {path: "/", name: "Home", component: Home},
     {path: "/about", name: "About", component: About},
@@ -38,7 +39,8 @@ const routes = [
     {path: "/mypage/confirmPassword", name: "ConfirmPassword", component: ConfirmPassword},
     {path: "/mypage/confirmPassword2", name: "ConfirmPassword2", component: ConfirmPassword2},
     {path: "/edit/newPassword", name: "EditNewPassword", component: EditNewPassword}, //EditNewPassword.vue
-    {},
+   
+  { path: '/email-verification', name: 'EmailVerificationPage', component: EmailVerificationPage }, {},
     {path: "/edit/password", name: "EditPassword", component: EditPassword},
     {
         path: "/:pathMatch(.*)*",

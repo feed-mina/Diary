@@ -127,26 +127,18 @@
          if (window.Kakao && window.Kakao.Auth) {
            console.log('🌐 웹에서는 그냥 페이지 이동!');
            window.Kakao.Auth.login({
-             scope: "talk_message",
+             scope: "profile_nickname, account_email, talk_message",
+            //  scope: "profile_nickname, account_email, talk_message, gender , age_range ,birthday   ",
              success: async function (authObj) {
-              // API 호출 및 응답 처리
-            // const jwtToken = await sendKakaoLoginData();
            const kakaoAccessToken = authObj.access_token;
             console.log("✅ 카카오 AccessToken:", kakaoAccessToken);
-           // JWT 토큰을 쿠키 또는 localStorage에 저장
-           //cookies.set("jwt", jwtToken, {path: "/"});
-           // localStorage.setItem("userId", loginData.value.userId);
-           // localStorage.setItem("password", loginData.value.password);
-               console.log('authObj: ', authObj);
                const token = authObj.access_token;
                console.log('token: ', token);
                console.log('로그인 성공');
-          localStorage.setItem("authObj", authObj);
          localStorage.setItem("token", token);
                notyf.success("로그인 성공!");
    
                try {
-           // alert("로그인을 완료했습니다.");
            console.log('카카오 로그인 api 호출도입');
            const response = await axios.post("http://localhost:8080/api/kakao/login",  {
                 accessToken: kakaoAccessToken

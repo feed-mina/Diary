@@ -27,8 +27,47 @@ export default {
           code: code.value,
         });
         message.value = '인증 성공!';
+        await sendSignUpData(); 
+
+
+        console.log('response : ', response);
       } catch {
         message.value = '인증 실패! 코드를 다시 확인해주세요.';
+      }
+    };
+
+    const sendSignUpData = async () => {
+      try {
+        const {userId, email, password, username, phone} = signUpData.value;
+        const signUpDataToSave = {
+          userId,
+          email: `${email.emailPrefix}@${email.emailDomain === 'custom' ? email.customDomain : email.emailDomain}`,
+          password,
+          phone: `${phone.first}${phone.middle}${phone.last}`,
+          username,
+        };
+
+        console.log("회원가입 데이터:", signUpDataToSave);
+
+        const response = await axios.post("http://localhost:8080/api/auth/register", signUpDataToSave);
+
+        console.log('회원가입 response : ', response);
+        alert("회원가입이 완료되었습니다!");
+
+        router.push("/login").then(() => location.reload());
+        return response.data;
+      } catch (error) {
+        console.error("API 호출 실패", error);
+        if (error.response && error.response.status === 400) {
+          alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+          alert(error.response.data); // 서버에서 보낸 메시지: "이미 존재하는 이메일입니다."
+          focusEmailField.value.focus();
+          errorState.value.email = true;
+          errorMessage.value.email = error.response.data;
+        } else {
+          console.error("API 호출 실패", error);
+          alert("회원가입에 실패했습니다. 다시 시도해주세요.");
+        }
       }
     };
 

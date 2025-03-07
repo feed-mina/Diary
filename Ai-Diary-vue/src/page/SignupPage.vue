@@ -126,40 +126,6 @@ export default {
       return Object.values(errorState.value).every((state) => !state);
     };
 
-    const sendSignUpData = async () => {
-      try {
-        const {userId, email, password, username, phone} = signUpData.value;
-        const signUpDataToSave = {
-          userId,
-          email: `${email.emailPrefix}@${email.emailDomain === 'custom' ? email.customDomain : email.emailDomain}`,
-          password,
-          phone: `${phone.first}${phone.middle}${phone.last}`,
-          username,
-        };
-
-        console.log("회원가입 데이터:", signUpDataToSave);
-
-        const response = await axios.post("http://localhost:8080/api/auth/register", signUpDataToSave);
-
-        alert("회원가입이 완료되었습니다!");
-
-        router.push("/login").then(() => location.reload());
-        return response.data;
-      } catch (error) {
-        console.error("API 호출 실패", error);
-        if (error.response && error.response.status === 400) {
-          alert("회원가입에 실패했습니다. 다시 시도해주세요.");
-          alert(error.response.data); // 서버에서 보낸 메시지: "이미 존재하는 이메일입니다."
-          focusEmailField.value.focus();
-          errorState.value.email = true;
-          errorMessage.value.email = error.response.data;
-        } else {
-          console.error("API 호출 실패", error);
-          alert("회원가입에 실패했습니다. 다시 시도해주세요.");
-        }
-      }
-    };
-
 
     // 컴포넌트가 로드될 때 오늘 날짜 자동 설정
     onMounted(() => {
@@ -215,12 +181,8 @@ export default {
         console.error(error);
         alert("인증 코드 전송 중 오류 발생!");
       }
-
-      await sendSignUpData();
-      //  router.push(`/email-verification?email=${fullEmail}`);
-      router.push(`/email-verification?email=${fullEmail}`).then(() => {
-        console.log("verifyCodepage이동 ");
-      });
+     router.push(`/email-verification?email=${fullEmail}`);
+   
 
     }
 

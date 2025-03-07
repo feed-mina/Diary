@@ -29,7 +29,7 @@ public class KakaoService {
     public KakaoUserInfo getKakaoUserInfo(String accessToken){
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer" + accessToken);
+        headers.set("Authorization", "Bearer " + accessToken);
         HttpEntity<HttpHeaders> request = new HttpEntity<>(headers);
 
         log.info("@@@@@@@@@@@@@@@@@@@@@@@@");
@@ -44,9 +44,15 @@ public class KakaoService {
                 Map.class
         );
 
+        Map<String, Object> body = response.getBody();
+
+        if (body == null) {
+            throw new RuntimeException("카카오에서 사용자 정보를 받지 못했어요!");
+        }
+
+        log.info("body : " + body);
         log.info("response : " + response);
 
-        Map<String, Object> body = response.getBody();
         Map<String, Object> kakaoAccount = (Map<String, Object>) response.getBody().get("kakao_account");
         Map<String, Object> properties = (Map<String, Object>) body.get("properties");
 
@@ -70,9 +76,10 @@ public class KakaoService {
 
         User user = User.builder()
                 .userId("kakao_" + System.currentTimeMillis()) // 카카오 회원 고유 아이디 생성
-                .password(kakaoUserInfo.getNickname())
+                .password(accessToken)
                 .hashedPassword(PasswordUtil.sha256(accessToken))
                 .email(kakaoUserInfo.getEmail())
+                .username(kakaoUserInfo.getNickname())
                 .role("ROLE_USER")
                 .createdAt(LocalDateTime.now())
                 .build();

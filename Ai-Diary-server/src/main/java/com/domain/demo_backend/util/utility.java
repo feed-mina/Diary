@@ -8,7 +8,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Map;
 import java.util.Optional;
 
-public class utility {
+public class utility extends RuntimeException {
 
     public static String addParams(String url, String key, String value) {
         return UriComponentsBuilder.fromUriString(url).queryParam(key, value).build().toUriString();
@@ -92,6 +92,11 @@ public class utility {
         return sb.toString();
     }
 
+    public static class DuplicateEmailException extends RuntimeException {
+        public DuplicateEmailException(String message) {
+            super(message);
+        }
+    }
 }
 
 

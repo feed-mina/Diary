@@ -1,9 +1,16 @@
 package com.domain.demo_backend.controller;
 
 
+import com.domain.demo_backend.service.AuthService;
+import com.domain.demo_backend.service.KakaoService;
+import com.domain.demo_backend.user.domain.User;
+import com.domain.demo_backend.user.dto.KakaoAuthRequest;
+import com.domain.demo_backend.user.dto.KakaoUserInfo;
 import com.domain.demo_backend.user.dto.RegisterRequest;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
@@ -13,12 +20,19 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
-
 @RestController
 @RequestMapping("/api/kakao")
 public class KakaoController {
     private final Logger log = LoggerFactory.getLogger(KakaoController.class);
     // application.properties 에 있는 값 불러오기
+
+    private final KakaoService kakaoService;
+
+    // 생성자 주입
+    @Autowired
+    public KakaoController(KakaoService kakaoService) {
+        this.kakaoService = kakaoService;
+    }
 
     @Value("${KAKAO_CLIENT_ID}")
     private String clientId;
@@ -30,19 +44,28 @@ public class KakaoController {
 
     private static final String KAKAO_URL = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
 
+
     @PostMapping("/login")
-    public ResponseEntity<?> kakaoLogin(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<?> kakaoLogin(@RequestBody KakaoAuthRequest kakaoAuthRequest) {
         log.info("@@@@@@@@@@@@@@@@@@@@@@@@");
         log.info("kakao login");
         log.info("client_id : " + clientId);
         log.info("redirectUri : " + redirectUri);
 
         // 1. 받은 AccessToken 으로 사용자 정보 가져오기
-        //   KakaoUserInfo kakaoUserInfo = KakaoService.getKakaoUserInfo(registerRequest.getAccessToken());
+        KakaoUserInfo kakaoUserInfo = kakaoService.getKakaoUserInfo(kakaoAuthRequest.getAccessToken());
+
+        // 2. 사용자 DB 저장 또는 조회
+        User user = kakaoService.registerKakaoUser(kakaoUserInfo, kakaoAuthRequest.getAccessToken());
+
 
         // 회원가입 대신 카카오 로그인을 사용한다면 > clientId, kakaoAcessToken 을 password, HashedPassword로 저장하기
-        // return "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=" + redirectUri + "&response_type=code&scope=account_email,gender";
-        return null;
+
+        // 3. JWT 발급 또는 성공 메시지 반환
+        return ResponseEntity.ok("카카오 로그인 성공! 사용자: " + user.getUsername());
+
+        //  return "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=" + redirectUri + "&response_type=code&scope=account_email,gender";
+        //    return null;
     }
 
     @GetMapping("/callback")

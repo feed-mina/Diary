@@ -68,21 +68,24 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()  // Swagger 관련 URL 허용
                         .requestMatchers(HttpMethod.GET, "/api/auth/**", "/api/diary/**").permitAll() // GET 요청 허용 , 로그인, 회원가입 허용
                         .requestMatchers(HttpMethod.POST, "/api/auth/**", "/api/diary/**").permitAll() // POST 요청 허용 , 로그인, 회원가입 허용
+                        .requestMatchers(HttpMethod.POST, "/api/kakao/**").permitAll()  //  추가!
                         .requestMatchers("/resources/**", "/static/**", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class) // JWT 인증 필터 추가
-                .formLogin(form -> form
-                        .loginPage("/login") // 로그인 페이지 설정
-                        .defaultSuccessUrl("/", true) // 로그인 성공 시 이동할 페이지
-                        .failureUrl("/login?error=true") // 로그인 실패 시 이동할 페이지
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout=true") // 로그아웃 성공 시 이동할 페이지
-                        .permitAll()
-                );
+                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable()) // formLogin 끄기!
+                .logout(logout -> logout.disable()); // 로그아웃 기능도 끄기 (API라면 필요없을 수 있음)
 
+//                .formLogin(form -> form
+//                        .loginPage("/login") // 로그인 페이지 설정
+//                        .defaultSuccessUrl("/", true) // 로그인 성공 시 이동할 페이지
+//                        .failureUrl("/login?error=true") // 로그인 실패 시 이동할 페이지
+//                        .permitAll()
+//                )
+//                .logout(logout -> logout
+//                        .logoutSuccessUrl("/login?logout=true") // 로그아웃 성공 시 이동할 페이지
+//                        .permitAll()
+//                );
         return http.build();
     }
 

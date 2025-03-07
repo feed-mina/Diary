@@ -67,8 +67,8 @@
 
 
 <script>
-    let emailSesion = window.sessionStorage.getItem("email")
-    let userNmSesion = window.sessionStorage.getItem("userNm")
+    let emailSesion = window.localStorage.getItem("email")
+    let userNmSesion = window.localStorage.getItem("userNm")
     document.querySelector("#userNm").innerText = userNmSesion
     document.querySelector("#userEmail").innerText = emailSesion
     /*
@@ -77,8 +77,8 @@
 document.querySelector("#mainbutton").addEventListener('click', (event) => {
 console.log("메인페이지로 이동");
    window.location.assign(MAIN_PAGE);
-   window.sessionStorage.removeItem("userNm");
-   window.sessionStorage.removeItem("email");
+   window.localStorage.removeItem("userNm");
+   window.localStorage.removeItem("email");
 })
  */
 </script>

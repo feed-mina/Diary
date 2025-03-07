@@ -126,7 +126,7 @@ export default {
 
     watchEffect(() => {
       if (diaryId) {
-        console.log("✅ diaryId 감지됨:", diaryId);
+        console.log("diaryId 감지됨:", diaryId);
         getDiaryItem();
         fetchDiaryDetails();
       }

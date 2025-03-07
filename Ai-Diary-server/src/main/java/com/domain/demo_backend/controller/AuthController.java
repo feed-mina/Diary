@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.mail.MessagingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,9 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 @Tag(name = "회원 권한 로직 컨트롤러", description = "로그인, 회원가입 (-- 로그아웃, 회원탈퇴, kakao OAuth2추가 예정 --)")
 public class AuthController {
+
+
+    private final Logger log = LoggerFactory.getLogger(KakaoController.class);
     private Map<String, String> emailVerificationMap = new HashMap<>();
 
     private final AuthService authService;
@@ -55,6 +60,71 @@ public class AuthController {
         }
     }
 
+
+    @Operation(summary = "회원 가입 페이지", description = "회원가입 페이지에서 사용")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "성공"),
+            @ApiResponse(responseCode = "400", description = "입력값 오류"),
+            @ApiResponse(responseCode = "409", description = "이미 존재하는 사용자"),
+            @ApiResponse(responseCode = "500", description = "서버오류"),
+    })
+    @PostMapping("/signup")
+    public String sendVerificationCode(@RequestBody RegisterRequest registerRequest, @RequestParam String message) throws MessagingException {
+
+        System.out.println("유효성 평가 ");
+
+        authService.beforesendVerificationCode(registerRequest);
+        System.out.println("회원가입 하기 위해 인증코드 전송 ");
+        String email = registerRequest.getEmail();
+        // 랜덤 인증 코드 생성
+        String verificationCode = authService.sendVerificationCode(email);
+        // 인증 코드를 Map에 저장
+        emailVerificationMap.put(email, verificationCode);
+
+        // 이메일 전송 시뮬레이션(실제 서비스에서는 이메일 전송 API)
+        System.out.println("이메일 전송: " + email);
+        System.out.println("메시지: " + message);
+
+        String savedCode = emailVerificationMap.get(email);
+        return "인증 코드가 다음 이메일로 전송되었습니다." + email;
+    }
+
+    @Operation(summary = "get방식의 /signUp", description = "get 회원가입페이지.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "성공"),
+            @ApiResponse(responseCode = "400", description = "입력값 오류"),
+            @ApiResponse(responseCode = "409", description = "이미 존재하는 사용자"),
+            @ApiResponse(responseCode = "500", description = "서버오류"),
+    })
+    @GetMapping("/signUp")
+    public String sendVerificationCodeByGet(@RequestBody RegisterRequest registerRequest, @RequestParam String message) throws MessagingException {
+
+        System.out.println("get 테스트 회원가입 하기 위해 인증코드 전송 ");
+        String email = registerRequest.getEmail();
+
+        String verificationCode = authService.sendVerificationCode(email);
+
+        return "인증 코드가 다음 이메일로 전송되었습니다.";
+    }
+
+
+    @Operation(summary = "회원 가입", description = "새로운 회원을 등록한다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "회원가입 성공"),
+            @ApiResponse(responseCode = "400", description = "입력값 오류"),
+            @ApiResponse(responseCode = "409", description = "이미 존재하는 사용자"),
+            @ApiResponse(responseCode = "500", description = "서버오류"),
+    })
+    @PostMapping("/verify-code")
+    public ResponseEntity<String> verifyCode(@RequestBody RegisterRequest request){
+        boolean isValid = authService.verifyCode(request.getEmail(), request.getCode());
+        if (isValid) {
+            return ResponseEntity.ok("인증 성공!");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인증 실패! 코드를 다시 확인해주세요.");
+        }
+    }
+
     @Operation(summary = "회원 가입", description = "새로운 회원을 등록한다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "회원가입 성공"),
@@ -64,7 +134,7 @@ public class AuthController {
     })
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
-        System.out.println("회원가입 진입");
+        System.out.println("인증후 회원가입 진입");
 
         System.out.println("registerRequest: " + registerRequest);
         authService.register(registerRequest);
@@ -117,30 +187,6 @@ public class AuthController {
             return "Failed to send email: " + e.getMessage();
         }
     }
-
-    @PostMapping("/signup")
-    public String sendVerificationCode(@RequestParam String email, @RequestParam String message) throws MessagingException {
-        System.out.println("회원가입 진입");
-
-        // 랜덤 인증 코드 생성
-        String verificationCode = authService.sendVerificationCode(email);
-        // 인증 코드를 Map에 저장
-        emailVerificationMap.put(email, verificationCode);
-
-        // 이메일 전송 시뮬레이션(실제 서비스에서는 이메일 전송 API)
-        System.out.println("이메일 전송: " + email);
-        System.out.println("메시지: " + message);
-
-        String savedCode = emailVerificationMap.get(email);
-        return "인증 코드가 다음 이메일로 전송되었습니다." + email;
-    }
-
-
-    @GetMapping("/signUp")
-    public String sendVerificationCodeByGet(@RequestParam String email, @RequestParam String message) throws MessagingException {
-        return sendVerificationCode(email, message);
-    }
-
     @PostMapping("/verify")
     public String verifyCode(@RequestBody verificationRequest request) {
         String saveCode = emailVerificationMap.get(request.getEmail());

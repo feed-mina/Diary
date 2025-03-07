@@ -1,6 +1,7 @@
 package com.domain.demo_backend.service;
 
 
+import com.domain.demo_backend.controller.KakaoController;
 import com.domain.demo_backend.mapper.UserMapper;
 import com.domain.demo_backend.user.domain.User;
 import com.domain.demo_backend.user.dto.LoginRequest;
@@ -9,6 +10,8 @@ import com.domain.demo_backend.util.JwtUtil;
 import com.domain.demo_backend.util.PasswordUtil;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -16,6 +19,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -23,6 +27,7 @@ import java.util.Random;
 
 @Service
 public class AuthService {
+    private final Logger log = LoggerFactory.getLogger(KakaoController.class);
     private final UserMapper userMapper;
     private final JwtUtil jwtUtil;
 
@@ -43,20 +48,25 @@ public class AuthService {
         User user = userMapper.findByUserId(loginRequest.getUserId());
         // 카카오 로그인 로직 ? 로그인 type이 social / normal 구분 > normal 안에서 찾아야함
         // 디버깅
-        System.out.println("DB에서 가져온 User: " + user);
-        System.out.println("LoginRequest UserID: " + loginRequest.getUserId());
-        System.out.println("DB 해시값: " + user.getHashedPassword());
-        System.out.println("입력된 해시값: " + PasswordUtil.sha256(loginRequest.getPassword()));
+        log.info("DB에서 가져온 User: " + user);
+        log.info("LoginRequest UserID: " + loginRequest.getUserId());
+        log.info("DB 해시값: " + user.getHashedPassword());
+        log.info("입력된 해시값: " + PasswordUtil.sha256(loginRequest.getPassword()));
 
         if (user == null) {
-            System.out.println("아이디 실패");
+            log.info("아이디 실패");
             throw new RuntimeException("존재하지 않는 아이디입니다.");
         }
+
+        if ("N".equals(user.getVerifyYn())) {
+            throw new RuntimeException("이메일 인증이 필요합니다.");
+        }
+
         if (!user.getHashedPassword().equals(PasswordUtil.sha256(loginRequest.getPassword()))) {
-            System.out.println("비밀번호 실패");
+            log.info("비밀번호 실패");
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
-        System.out.println("JWT 성공");
+        log.info("JWT 성공");
         // 비밀번호를 포함하지 않은 사용자 정보를 JWT에 포함
         return jwtUtil.createToken(user.getUsername(), user.getUserSqno(), user.getUserId());
     }
@@ -67,93 +77,45 @@ public class AuthService {
         }
     }
 
-    // 새 사용자 정보를 해시처리 후 데이터베이스에 저장
-    // 이미 존재하는 사용자 아이디인지 확인하고 중복되면 예외 발생
     @Transactional
-    public void register(RegisterRequest registerRequest) {
+    public void beforesendVerificationCode(RegisterRequest registerRequest) {
         if (userMapper.findByUserEmail(registerRequest.getEmail()) != null) {
             throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
         }
         if (userMapper.findByUserId(registerRequest.getUserId()) != null) {
-            System.out.println("존재하는 아이디 실패");
+            log.info("존재하는 아이디 실패");
 
             throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         }
         if (userMapper.findByUserEmail(registerRequest.getEmail()) != null) {
-            System.out.println("회원가입 이메일 실패");
+            log.info("회원가입 이메일 실패");
 
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
 
         if (userMapper.findByUserPhone(registerRequest.getPhone()) != null) {
-            System.out.println("회원가입 핸드폰 실패");
+            log.info("회원가입 핸드폰 실패");
             throw new IllegalArgumentException("이미 존재하는 핸드폰 번호입니다.");
         }
 
-        System.out.println("유효성 통과");
-        User user = User.builder()
-                .userId(registerRequest.getUserId())
-                .username(registerRequest.getUsername())
-                .password(registerRequest.getPassword())
-                .hashedPassword(PasswordUtil.sha256(registerRequest.getPassword()))
-                .phone(registerRequest.getPhone())
-                .email(registerRequest.getEmail())
-                .role("ROLE_USER")
-                .createdAt(LocalDateTime.now())
-                .build();
-        System.out.println("user: " + user);
-        System.out.println("user Mapper insertUser 시작");
-        userMapper.insertUser(user);
+        log.info("유효성 통과");
     }
 
-
-    // 새 사용자 정보를 해시처리 후 데이터베이스에 저장
-    // 이미 존재하는 사용자 아이디인지 확인하고 중복되면 예외 발생
-    @Transactional
-    public void nonMember(RegisterRequest registerRequest) {
-        System.out.println("회원탈퇴 서비스 진입: " + registerRequest.getUserId());
-        User existingUser = userMapper.findByUserId(registerRequest.getUserId());
-        if (existingUser == null) {
-            System.out.println("회원탈퇴 실패: 해당 사용자가 존재하지 않습니다.");
-            throw new IllegalArgumentException("해당 사용자가 존재하지 않습니다.");
-        }
-        // 회원탈퇴 처리
-        existingUser.setDelYn("Y");
-        existingUser.setUpdatedAt(LocalDateTime.now());
-        System.out.println("existingUser : " + existingUser);
-        System.out.println("user Mapper nonMember 시작");
-        userMapper.nonMember(existingUser);
-        System.out.println("user 탈퇴 처리 완료: " + existingUser);
-    }
-
-
-    public void sendEmail(String to, String subject, String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(fromEmail);
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
-        mailSender.send(message);
-    }
-
-    public void sendHtmlEmail(String to, String subject, String body, String imagePath) throws MessagingException {
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(body, true);
-
-        // Inline 이미지 추가
-        File imageFile = new File(imagePath);
-        helper.addInline("imageId", imageFile);
-
-        mailSender.send(mimeMessage);
-    }
 
     public String sendVerificationCode(String email) throws MessagingException {
+
+        log.info("@@@@@@@@@@@@@@@@@@@@@@@@");
+        log.info("sendVerificationCode");
+        log.info("email", email);
+
         //랜덤 인등코드 생성
         String verificationCode = generateRendomCode();
+
+
+        // DB에 인증코드, 만료시간 저장
+        userMapper.updateVerificationCode(email, verificationCode);
+
+
         // 이메일 작성 및 전송
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
@@ -186,5 +148,104 @@ public class AuthService {
         return String.valueOf(code);
     }
 
+    // 회원가입 페이지 이후 인증번호 코드 페이지
+    public boolean verifyCode(String email, String code){
+
+        User user = userMapper.findByUserEmail(email);
+        if (user == null) return false;
+        if (!code.equals(user.getVerificationCode())) return false;
+
+
+        // 인증 성공 → verifyYn = 'Y'
+        userMapper.updateVerifyYn(email);
+        return true; // 코드가 틀리면 false
+    }
+
+    // 새 사용자 정보를 해시처리 후 데이터베이스에 저장
+    // 이미 존재하는 사용자 아이디인지 확인하고 중복되면 예외 발생
+    @Transactional
+    public void register(RegisterRequest registerRequest) {
+     /*
+     *    if (userMapper.findByUserEmail(registerRequest.getEmail()) != null) {
+            throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
+        }
+        if (userMapper.findByUserId(registerRequest.getUserId()) != null) {
+            log.info("존재하는 아이디 실패");
+
+            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+        }
+        if (userMapper.findByUserEmail(registerRequest.getEmail()) != null) {
+            log.info("회원가입 이메일 실패");
+
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+        }
+
+        if (userMapper.findByUserPhone(registerRequest.getPhone()) != null) {
+            log.info("회원가입 핸드폰 실패");
+            throw new IllegalArgumentException("이미 존재하는 핸드폰 번호입니다.");
+        }
+
+        log.info("유효성 통과");
+     * */
+        User user = User.builder()
+                .userId(registerRequest.getUserId())
+                .username(registerRequest.getUsername())
+                .password(registerRequest.getPassword())
+                .hashedPassword(PasswordUtil.sha256(registerRequest.getPassword()))
+                .phone(registerRequest.getPhone())
+                .email(registerRequest.getEmail())
+                .role("ROLE_USER")
+                .verifyYn("N") // 카카오는 인증 완료니까 Y!
+                .socialType("N") // 일반가입은 K!
+                .createdAt(LocalDateTime.now())
+                .build();
+        log.info("user: " + user);
+        log.info("user Mapper insertUser 시작");
+        userMapper.insertUser(user);
+    }
+
+    // 새 사용자 정보를 해시처리 후 데이터베이스에 저장
+    // 이미 존재하는 사용자 아이디인지 확인하고 중복되면 예외 발생
+    @Transactional
+    public void nonMember(RegisterRequest registerRequest) {
+        log.info("회원탈퇴 서비스 진입: " + registerRequest.getUserId());
+        User existingUser = userMapper.findByUserId(registerRequest.getUserId());
+        if (existingUser == null) {
+            log.info("회원탈퇴 실패: 해당 사용자가 존재하지 않습니다.");
+            throw new IllegalArgumentException("해당 사용자가 존재하지 않습니다.");
+        }
+        // 회원탈퇴 처리
+        existingUser.setDelYn("Y");
+        existingUser.setUpdatedAt(LocalDateTime.now());
+        log.info("existingUser : " + existingUser);
+        log.info("user Mapper nonMember 시작");
+        userMapper.nonMember(existingUser);
+        log.info("user 탈퇴 처리 완료: " + existingUser);
+    }
+
+
+    public void sendEmail(String to, String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(fromEmail);
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
+        mailSender.send(message);
+    }
+
+    public void sendHtmlEmail(String to, String subject, String body, String imagePath) throws MessagingException {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(body, true);
+
+        // Inline 이미지 추가
+        File imageFile = new File(imagePath);
+        helper.addInline("imageId", imageFile);
+
+        mailSender.send(mimeMessage);
+    }
 
 }

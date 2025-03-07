@@ -17,11 +17,10 @@ public interface UserMapper {
 
     User findByUsername(String username);
 
-    void insertVerification(String email, String verification, LocalDateTime expiresAt);
 
-    void deleteVerification(String email);
-
-    String getVerificationCode(String email);
-
+    void updateVerifyYn(String email);
     void nonMember(User user);
+
+    void updateVerificationCode(String email, String verificationCode);
+    void deleteVerification(String email);
 }

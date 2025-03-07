@@ -75,14 +75,17 @@ public class KakaoService {
         }
 
         User user = User.builder()
-                .userId("kakao_" + System.currentTimeMillis()) // 카카오 회원 고유 아이디 생성
+                .userId("kakao_" + kakaoUserInfo.getEmail())
                 .password(accessToken)
                 .hashedPassword(PasswordUtil.sha256(accessToken))
                 .email(kakaoUserInfo.getEmail())
                 .username(kakaoUserInfo.getNickname())
                 .role("ROLE_USER")
+                .verifyYn("Y") // 카카오는 인증 완료니까 Y!
+                .socialType("K") // 소셜 타입은 K!
                 .createdAt(LocalDateTime.now())
                 .build();
+
 
         userMapper.insertUser(user);
         return user;

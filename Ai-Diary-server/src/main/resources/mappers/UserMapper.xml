@@ -38,28 +38,27 @@
         WHERE username = #{username}
     </select>
 
-    <insert id="insertVerification">
-        INSERT INTO email_verification(email, verification_code)
-        VALUES (#{email}, #{verificationCode})
-    </insert>
+    <!-- 이메일 인증 성공하면 verifyYn을 Y로 바꾸기 -->
+    <update id="updateVerifyYn">
+        UPDATE users
+        SET verifyYn = 'Y'
+        WHERE email = #{email}
+    </update>
 
-    <select id="getVerificationCode" resultType="String">
-        SELECT verification_code
-        FROM email_verification
+    <update id="updateVerificationCode">
+        UPDATE users
+        SET verification_code = #{code},
+            verification_expired_at = DATE_ADD(NOW(), INTERVAL 3 MINUTE)
+        WHERE email = #{email}
+    </update>
+
+    <select id="findCodeByEmail" resultType="String">
+        SELECT verifyYn
+        FROM users
         WHERE email = #{email}
     </select>
 
-    <select id="getExpriationTime" resultType="java.time.LocalDateTime">
-        SELECT expires_at
-        FROM email_verification
-        WHERE email = #{email}
-    </select>
 
-    <delete id="deleteVerification">
-        DELETE
-        FROM email_verification
-        WHERE email = #{email}
-    </delete>
 
     <update id="nonMember" parameterType="com.domain.demo_backend.user.domain.User">
         UPDATE users

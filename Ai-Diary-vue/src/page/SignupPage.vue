@@ -3,7 +3,9 @@ import {onMounted, ref} from 'vue';
 import {useRouter} from "vue-router";
 import axios from "axios";
 import Cookies from "universal-cookie";
-
+import { Notyf } from 'notyf';
+import 'notyf/notyf.min.css';
+const notify = new Notyf();
 // import port from "@/data/port.json";
 
 export default {
@@ -62,32 +64,24 @@ export default {
     const toggleVisibility = (key) => {
       visibility.value[key] = !visibility.value[key];
     };
-
-    const updateFullEmail = () => {
-      const emailPrefix = signUpData.value.email.emailPrefix;
-      const emailDomain = signUpData.value.email.emailDomain === "custom"
-          ? signUpData.value.email.customDomain
-          : signUpData.value.email.emailDomain;
-
-      fullEmail.value = `${emailPrefix}@${emailDomain}`;
-      console.log("전체 이메일", fullEmail.value);
-    }
+ 
 
     const validateField = {
-
       email() {
         const emailPrefix = signUpData.value.email.emailPrefix;
         const emailDomain = signUpData.value.email.emailDomain === "custom"
             ? signUpData.value.email.customDomain : signUpData.value.email.emailDomain;
+            
+        const testEmail = `${emailPrefix}@${emailDomain}`;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          errorState.value.email = !emailRegex.test(testEmail);
+          errorMessage.value.email = errorState.value.email ? "유효하지 않은 이메일 형식입니다." : "";
 
         const fullEmail = `${emailPrefix}@${emailDomain}`;
 
         console.log("Generated Email:", fullEmail); // 디버깅 로그 추가
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        errorState.value.email = !emailRegex.test(fullEmail);
-        errorMessage.value.email = errorState.value.email ? "유효하지 않은 이메일 형식입니다." : "";
 
-        signUpData.value.email = fullEmail;
+        // signUpData.value.email = fullEmail;
         console.log("signUpData.value.email:", signUpData.value.email); // 디버깅 로그 추가
       },
       userId(id) {
@@ -139,7 +133,7 @@ export default {
 
     const onClickSignUpButton = async () => {
       if (!isSignUpDataValid()) {
-        alert("빠진 정보 없이 입력해 주세요.");
+        notify.error("빠진 정보 없이 입력해 주세요.");
         return;
       }
       await sendSignUpData();
@@ -151,9 +145,43 @@ export default {
       });
     };
 
+    const sendSignUpData = async () => {
+      try {
+        const {userId, email, password, username, phone} = signUpData.value;
+        const signUpDataToSave = {
+          userId,
+          email: `${email.emailPrefix}@${email.emailDomain === 'custom' ? email.customDomain : email.emailDomain}`,
+          password,
+          phone: `${phone.first}${phone.middle}${phone.last}`,
+          username,
+        };
+
+        console.log("회원가입 데이터:", signUpDataToSave);
+
+        const response = await axios.post("http://localhost:8080/api/auth/register", signUpDataToSave);
+
+        console.log('회원가입 response : ', response);
+        notify.success("회원가입이 완료되었습니다!");
+
+        // router.push("/login").then(() => location.reload());
+        return response.data;
+      } catch (error) {
+        console.error("API 호출 실패", error);
+        if (error.response && error.response.status === 400) {
+          notify.error("회원가입에 실패했습니다. 다시 시도해주세요.");
+          console.log('error: ',error.response.data); // 서버에서 보낸 메시지: "이미 존재하는 이메일입니다."
+          focusEmailField.value.focus();
+          errorState.value.email = true;
+          errorMessage.value.email = error.response.data;
+        } else {
+          console.error("API 호출 실패", error);
+          notify.error("회원가입에 실패했습니다. 다시 시도해주세요.");
+        }
+      }
+    };
     const sendVerificationCode = async () => {
       if (!isSignUpDataValid()) {
-        alert("빠진 정보 없이 입력해 주세요.");
+        notify.error("빠진 정보 없이 입력해 주세요.");
         return;
       }
 
@@ -164,11 +192,14 @@ export default {
             ? signUpData.value.email.customDomain : signUpData.value.email.emailDomain;
 
         console.log('emailDomain : ', emailDomain);
-        const fullEmail = `${emailPrefix}@${emailDomain}`;
+        // const fullEmail = `${emailPrefix}@${emailDomain}`;
+      
+
+        fullEmail.value = `${emailPrefix}@${emailDomain}`;
         console.log('fullEmail : ', fullEmail);
         const response = await axios.post("http://localhost:8080/api/auth/signup", null, {
           params: {
-            email: fullEmail,
+            email: fullEmail.value,
             message: "인증코드를 보내드립니다."
           },
         });
@@ -176,12 +207,12 @@ export default {
         signUpData.value.message = "인증코드를 보내드립니다.";
         console.log("signUpData.value : ", signUpData.value);
         console.log("response: ", response);
-        alert("인증 코드가 이메일로 전송되었습니다!");
+        notify.success("인증 코드가 이메일로 전송되었습니다!");
       } catch (error) {
         console.error(error);
-        alert("인증 코드 전송 중 오류 발생!");
+        notify.error("인증 코드 전송 중 오류 발생!");
       }
-     router.push(`/email-verification?email=${fullEmail}`);
+     router.push(`/email-verification?email=${fullEmail.value}`);
    
 
     }

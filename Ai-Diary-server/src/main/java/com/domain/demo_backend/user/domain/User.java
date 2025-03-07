@@ -23,14 +23,19 @@ public class User {
     private String phone;               // phone
     private String email;               // email
     private String repassword;          // repassword
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private String nickname;
     private String delYn; // 추가된 탈퇴 여부 컬럼
 
+    private String verifyYn; // 'N', 'Y'
+    private String socialType; // 'K'
+    private String verificationCode; //  인증번호 6숫자
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
 
     @Builder
-    public User(String userId, String password, String hashedPassword, String role, String username, String phone, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public User(String userId, String password, String hashedPassword, String role, String username, String phone, String email, String verifyYn, String socialType, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.userId = userId;
         this.password = password;
         this.hashedPassword = hashedPassword;
@@ -38,6 +43,8 @@ public class User {
         this.username = username;
         this.phone = phone;
         this.email = email;
+        this.verifyYn = verifyYn;
+        this.socialType = socialType;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }

@@ -26,4 +26,6 @@ public class RegisterRequest {
     private String updatedAt;
 
     private String accessToken;
+    //이메일 인증 코드
+    private String code;
 }

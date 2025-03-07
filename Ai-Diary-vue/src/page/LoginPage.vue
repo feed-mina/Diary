@@ -131,7 +131,7 @@
             //  scope: "profile_nickname, account_email, talk_message, gender , age_range ,birthday   ",
              success: async function (authObj) {
            const kakaoAccessToken = authObj.access_token;
-            console.log("✅ 카카오 AccessToken:", kakaoAccessToken);
+            console.log("카카오 AccessToken:", kakaoAccessToken);
                const token = authObj.access_token;
                console.log('token: ', token);
                console.log('로그인 성공');
@@ -183,6 +183,11 @@
            return response.data; // 응답 데이터를 반환합니다.
          } catch (error) {
            console.error("API 호출 실패:", error.response?.data || error.message);
+    if (error.response.data.message === '이메일 인증이 필요합니다.') {
+      alert('이메일 인증을 먼저 해주세요!');
+    } else {
+      alert('로그인 실패');
+    }
            throw error; // 예외를 던져서 상위에서 처리하도록 합니다.
          }
        };

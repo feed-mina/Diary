@@ -4,6 +4,7 @@ package com.domain.demo_backend.service;
 import com.domain.demo_backend.controller.KakaoController;
 import com.domain.demo_backend.mapper.UserMapper;
 import com.domain.demo_backend.user.domain.User;
+import com.domain.demo_backend.user.dto.KakaoUserInfo;
 import com.domain.demo_backend.user.dto.LoginRequest;
 import com.domain.demo_backend.user.dto.RegisterRequest;
 import com.domain.demo_backend.util.JwtUtil;
@@ -220,7 +221,39 @@ public class AuthService {
         String verificationCode = generateRendomCode();
         userMapper.updateVerificationCode(email, verificationCode);
         resendEmail(email, verificationCode);
-    }   // 새 사용자 정보를 해시처리 후 데이터베이스에 저장
+    }
+    @Transactional
+    public User registerKakaoUser(KakaoUserInfo kakaoUserInfo, String accessToken){
+        // 기존 유저 조회
+        User existingUser = userMapper.findByUserEmail(kakaoUserInfo.getEmail());
+        if(existingUser != null){
+            // 기존회원 socailType 이 N이면 sosialType 업데이트
+            if(!"K".equals(existingUser.getSocialType())){
+                existingUser.setSocialType("K/N");
+                existingUser.setPassword(accessToken);
+                existingUser.setHashedPassword(PasswordUtil.sha256(accessToken));
+                userMapper.updateUserSocialType(existingUser);
+            }
+            return existingUser;
+        }
+
+        // 세로운 회원 등록
+        User user = User.builder()
+                .password(accessToken)
+                .hashedPassword(PasswordUtil.sha256(accessToken))
+                .email(kakaoUserInfo.getEmail())
+                .username(kakaoUserInfo.getNickname())
+                .role("ROLE_USER")
+                .verifyYn("Y")
+                .socialType("K")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        userMapper.insertUser(user);
+        return user;
+    }
+
+    // 새 사용자 정보를 해시처리 후 데이터베이스에 저장
     // 이미 존재하는 사용자 아이디인지 확인하고 중복되면 예외 발생
     @Transactional
     public void nonMember(RegisterRequest registerRequest) {

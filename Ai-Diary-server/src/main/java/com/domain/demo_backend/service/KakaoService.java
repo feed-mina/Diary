@@ -70,6 +70,7 @@ public class KakaoService {
 
     @Transactional
     public User registerKakaoUser(KakaoUserInfo kakaoUserInfo, String accessToken){
+//        이 로직대로라면 일반회원가입한 사람은 소셜 회원가입할때 이메일이 같으면 회원가입이 어려운데 이럴때 어떻게 일반회원가입한 사람이 카카오로 로그인도 가능하게 할까?
         if(userMapper.findByUserEmail(kakaoUserInfo.getEmail()) != null){
             throw new utility.DuplicateEmailException("이미 존재하는 이메일입니다.");
         }

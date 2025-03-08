@@ -23,4 +23,6 @@ public interface UserMapper {
 
     void updateVerificationCode(String email, String verificationCode);
     void deleteVerification(String email);
+    void updateUserSocialType(User user);
+
 }

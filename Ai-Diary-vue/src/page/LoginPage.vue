@@ -19,11 +19,14 @@
    
        // 로그인 입력 데이터
        const loginData = ref({
-         userId: "",
+          emailPrefix: "", // 이메일 앞부분
+          emailDomain: "", // 이메일 도메인
+          customDomain: "", // 직접 입력 도메인
+          email: "", // 최종 이메일 주소
          password: "",
        });
        const errorWarning = ref({
-         userId: false,
+         email: false,
          password: false,
        });
        const idErrorMessage = ref("");
@@ -37,17 +40,22 @@
        }
    
    
-       const handleLoginData = (event) => {
-         loginData.value[event.target.name] = event.target.value;
-       };
-   
+// 이메일 주소 업데이트 로직
+const updateFullEmail = () => {
+  if (loginData.value.emailDomain === "custom") {
+    loginData.value.email = `${loginData.value.emailPrefix}@${loginData.value.customDomain}`;
+  } else {
+    loginData.value.email = `${loginData.value.emailPrefix}@${loginData.value.emailDomain}`;
+  }
+};
+       
    
        const onClickLoginButton = async () => {
          console.log("로그인 데이터 :", loginData.value);
-         if (!loginData.value.userId) {
+         if (!loginData.value.email) {
            Swal.fire({
-             title: "아이디 오류",
-             text: "아이디를 입력해주세요",
+             title: "이메일 오류",
+             text: "이메일를 입력해주세요",
              icon: "warning",
              confirmButtonText: "확인",
              confirmButtonColor: "#FF5733"
@@ -75,7 +83,7 @@
    
            // JWT 토큰을 쿠키 또는 localStorage에 저장
          //   cookies.set("jwt", jwtToken, {path: "/"});
-           localStorage.setItem("userId", loginData.value.userId);
+           localStorage.setItem("email", loginData.value.email);
            localStorage.setItem("password", loginData.value.password);
    
            // alert("로그인을 완료했습니다.");
@@ -105,6 +113,28 @@
            });
          }
        };
+   
+   
+       // 로그인 API 호출
+       const sendLoginData = async () => {
+         try {
+           const response = await axios.post("http://localhost:8080/api/auth/login",   
+           {
+            email: loginData.value.email,
+           password: loginData.value.password,
+           });
+           return response.data; // 응답 데이터를 반환합니다.
+         } catch (error) {
+           console.error("API 호출 실패:", error.response?.data || error.message);
+    if (error.response.data.message === '이메일 인증이 필요합니다.') {
+      alert('이메일 인증을 먼저 해주세요!');
+    } else {
+      alert('로그인 실패');
+    }
+           throw error; // 예외를 던져서 상위에서 처리하도록 합니다.
+         }
+       };
+   
    
    
        onMounted(() => {
@@ -175,24 +205,6 @@
            console.error('카카오 SDK가 아직 로드되지 않았어요!');
          }
        }
-   
-       // 로그인 API 호출
-       const sendLoginData = async () => {
-         try {
-           const response = await axios.post("http://localhost:8080/api/auth/login", loginData.value);
-           return response.data; // 응답 데이터를 반환합니다.
-         } catch (error) {
-           console.error("API 호출 실패:", error.response?.data || error.message);
-    if (error.response.data.message === '이메일 인증이 필요합니다.') {
-      alert('이메일 인증을 먼저 해주세요!');
-    } else {
-      alert('로그인 실패');
-    }
-           throw error; // 예외를 던져서 상위에서 처리하도록 합니다.
-         }
-       };
-   
-   
        // 로그인 API 호출
        const sendKakaoLoginData = async () => {
          try {
@@ -229,18 +241,37 @@
          <!--로그인 폼-->
          <form @submit.prevent="onClickLoginButton" class="login_form_box">
             <!--ID-->
-            <div class="login-session">
-               <div class="login-label">
-                  <label for="id" class="form-label">ID</label>
-               </div>
-               <div>
-                  <input size="30" type="text" v-model="loginData.userId" @input="handleIdChange" class="login_form-input"
-                     name="userId" id="userId"/>
-                  <div class="login_form-oo" :style="{ color: errorWarning.userId ? 'red' : 'black' }">
-                     {{ idErrorMessage }}
-                  </div>
-               </div>
-            </div>
+            <<!-- 이메일 입력 폼 -->
+<div class="login-session">
+  <div class="login-label">
+    <label for="email" class="form-label">Email</label>
+  </div>
+  <div style="display: flex; gap: 10px; align-items: center;">
+    <!-- 이메일 아이디 부분 -->
+    <input size="20" type="text" v-model="loginData.emailPrefix" @input="updateFullEmail"
+           class="login_form-input" name="emailPrefix" id="emailPrefix" placeholder="이메일 앞부분"/>
+
+    <span>@</span>
+
+    <!-- 이메일 도메인 선택 -->
+    <select v-model="loginData.emailDomain" @change="updateFullEmail" class="login_form-input">
+      <option value="" disabled selected>이메일 선택</option>
+      <option value="naver.com">naver.com</option>
+      <option value="gmail.com">gmail.com</option>
+      <option value="nate.com">nate.com</option>
+      <option value="hanmail.net">hanmail.net</option>
+      <option value="daum.net">daum.net</option>
+      <option value="custom">직접 입력</option>
+    </select>
+
+    <!-- 직접 입력 -->
+    <input size="30" type="text" v-if="loginData.emailDomain === 'custom'"
+           v-model="loginData.customDomain" @input="updateFullEmail"
+           class="login_form-input" name="customDomain" id="customDomain"
+           placeholder="도메인 입력"/>
+  </div>
+</div>
+
             <!--패스워드-->
             <div class="login-session">
                <div class="login-label">

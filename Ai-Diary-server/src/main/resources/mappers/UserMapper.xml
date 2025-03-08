@@ -4,13 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.domain.demo_backend.mapper.UserMapper">
+    <!--일반 회원가입은 socailType을 'N'으로-->
 
     <insert id="insertUser" parameterType="com.domain.demo_backend.user.domain.User">
         INSERT INTO users (user_id, password, hashed_password, email, phone, nickname, role, username, created_at,
-                           updated_at)
+                           updated_at, socialType)
         VALUES (#{userId}, #{password}, #{hashedPassword}, #{email}, #{phone},
-                IFNULL(#{nickname}, #{userId}), #{role}, #{username}, #{createdAt}, #{updatedAt});
+                IFNULL(#{nickname}, #{userId}), #{role}, #{username}, #{createdAt}, #{updatedAt}, 'N');
     </insert>
+
+
+    <update id="updateUserSocialType" parameterType="com.domain.demo_backend.user.domain.User">
+        UPDATE users
+        SET socialType = 'K', password = #{password}, hashed_password = #{hashedPassword}, updated_at = NOW()
+        WHERE email = #{email};
+    </update>
 
     <select id="findByUserId" resultType="com.domain.demo_backend.user.domain.User">
         SELECT *

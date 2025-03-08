@@ -7,6 +7,7 @@ import com.domain.demo_backend.user.domain.User;
 import com.domain.demo_backend.user.dto.KakaoAuthRequest;
 import com.domain.demo_backend.user.dto.KakaoUserInfo;
 import com.domain.demo_backend.user.dto.RegisterRequest;
+import com.domain.demo_backend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +28,14 @@ public class KakaoController {
     // application.properties 에 있는 값 불러오기
 
     private final KakaoService kakaoService;
+    private final AuthService authService;
+    private final JwtUtil jwtUtil;
 
     // 생성자 주입
     @Autowired
-    public KakaoController(KakaoService kakaoService) {
+    public KakaoController(KakaoService kakaoService, JwtUtil jwtUtil) {
         this.kakaoService = kakaoService;
+        this.jwtUtil = jwtUtil;
     }
 
     @Value("${KAKAO_CLIENT_ID}")
@@ -60,6 +64,8 @@ public class KakaoController {
 
 
         // 회원가입 대신 카카오 로그인을 사용한다면 > clientId, kakaoAcessToken 을 password, HashedPassword로 저장하기
+        String jwtToken = jwtUtil.createToken(user.getUsername(), user.getUserSqno(), user.getUserId());
+
 
         // 3. JWT 발급 또는 성공 메시지 반환
         return ResponseEntity.ok("카카오 로그인 성공! 사용자: " + user.getUsername());

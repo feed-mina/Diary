@@ -158,10 +158,11 @@ export default {
 
         console.log("회원가입 데이터:", signUpDataToSave);
 
+
         const response = await axios.post("http://localhost:8080/api/auth/register", signUpDataToSave);
 
         console.log('회원가입 response : ', response);
-        notify.success("회원가입이 완료되었습니다!");
+        notify.success("인증번호를 전송했습니다.");
 
         // router.push("/login").then(() => location.reload());
         return response.data;
@@ -194,14 +195,20 @@ export default {
         console.log('emailDomain : ', emailDomain);
         // const fullEmail = `${emailPrefix}@${emailDomain}`;
       
+        await sendSignUpData();
 
         fullEmail.value = `${emailPrefix}@${emailDomain}`;
         console.log('fullEmail : ', fullEmail);
-        const response = await axios.post("http://localhost:8080/api/auth/signup", null, {
+        const response = await axios.post("http://localhost:8080/api/auth/signup", {
+          email: fullEmail.value
+        }, {
           params: {
             email: fullEmail.value,
             message: "인증코드를 보내드립니다."
           },
+        headers: {
+          'Content-Type': 'application/json'
+        }
         });
 
         signUpData.value.message = "인증코드를 보내드립니다.";
@@ -264,7 +271,7 @@ export default {
               <span>@</span>
               <!--이메일 도메인 선택-->
               <!-- <select v-model="signUpData.email.emailDomain"  @change="() => validateField.email()" class="signUp_form-input"> -->
-              <select v-model="signUpData.email.emailDomain" @change="updateFullEmail">
+              <select v-model="signUpData.email.emailDomain" @change="updateFullEmail" class="signUp_form-input">
                 <option value="" disabled selected>이메일선택</option>
                 <option value="naver.com">naver.com</option>
                 <option value="gmail.com">gmail.com</option>

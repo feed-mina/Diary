@@ -259,7 +259,7 @@
                </div>
             </div>
             <!-- 로그인 버튼 -->
-            <button type="submit" class="login_form_button">로그인</button>
+            <button type="submit" class="login_form_button">로&nbsp;&nbsp;&nbsp;그&nbsp;&nbsp;&nbsp;인</button>
          </form>
          <div>
             <button class="kakao-button" @click="kakaoLogin">
@@ -276,14 +276,14 @@
    align-items: center;
    height: 100%;
    background-color: #f8f9fa;
-   padding: 8rem;
+   padding: 3rem;
    flex-direction: column;
    }
    .login_form {
    display: flex;
    height: 100%;
    width: 100%;
-   padding: 5rem;
+   padding: 3rem;
    background-color: #f9f9f9;
    border-radius: 10px;
    /* margin: auto; */
@@ -315,16 +315,28 @@
    border: 1px solid #4a90e2;
    outline: none;
    }
+
+   .kakao-button,
    .login_form_button {
    width: 100%; /* 버튼이 컨테이너에 맞춰짐 */
-   background-color: #4a90e2;
-   color: white;
+   height: 50px; /* 버튼 높이 동일하게 설정 */
    border: none;
-   padding: 0.8rem 1.5rem;
    border-radius: 5px;
    font-size: 1rem;
    cursor: pointer;
    transition: background-color 0.3s ease;
+   }
+
+.kakao-button img {
+  width: 100%; /* 카카오 로고 크기 조정 */
+  height: 50px;
+}
+   .login_form_button {
+   background-color: #4a90e2;
+   color: white;
+   padding: 0.8rem 1.5rem;
+    font-weight: 600;
+    font-size: large;
    }
    .login_form_button:hover {
    background-color: #357abd;

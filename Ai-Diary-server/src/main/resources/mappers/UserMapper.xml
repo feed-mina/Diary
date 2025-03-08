@@ -47,7 +47,7 @@
 
     <update id="updateVerificationCode">
         UPDATE users
-        SET verification_code = #{code},
+        SET verification_code = #{verificationCode},
             verification_expired_at = DATE_ADD(NOW(), INTERVAL 3 MINUTE)
         WHERE email = #{email}
     </update>

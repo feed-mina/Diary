@@ -11,7 +11,7 @@ export default {
     const route = useRoute();
     const router = useRouter();
     const email = route.query.email;  // 주소창에서 이메일 가져오기
-    const codeDigits = ref(['','','','','','']); // 6자리 코드 입력값 배열
+    const codeDigits = ref(['','','','','','',''])// 7자리 코드 입력값 배열
     const message = ref('');
     const timer = ref(180); // 3분(180초)
     const resendEnabled = ref(false);  // 재전송 버튼 상태
@@ -20,20 +20,24 @@ export default {
    const notyf = new Notyf();
 
     const startTimer = () => {
-      countdown = setInterval(()=> {
-        if(timer.value > 0){
-          timer.value --;
-        } else{
-          clearInterval(countdown);
-          message.value =  '⏰ 시간이 다 됐어요! 코드를 다시 받아주세요.';
-          resendEnabled.value = true; // 시간이 끝나면 재전송 가능하게
-        }
-      }, 1000);
-    };
+      timer.value = 180; // 타이머 초기화
+    
+        countdown = setInterval(() => {
+          if (timer.value > 0) {
+            timer.value--;
+          } else {
+            clearInterval(countdown);
+            message.value = '⏰ 시간이 다 됐어요! 코드를 다시 받아주세요.';
+            resendEnabled.value = true; // 시간이 끝나면 재전송 가능하게
+          }
+        }, 1000);
+      };
 
     // 다음 칸으로 커서 이동
-    const focusNext = (event, index) =>{
-      if(event.target.value.length === 1 && index < 5){
+    const handleInput = (event, index) =>{
+      const value = event.target.value.replace(/[^0-9]/g, ''); // ✅ 숫자만 허용
+      codeDigits.value[index] = value;  // ✅ 입력값 반영
+      if(event.target.value.length === 1 && index < 6){
         document.getElementById(`code-${index + 1}`).focus();
       }
       checkAutoSubmit();
@@ -49,13 +53,15 @@ export default {
     // 인증코드확인
     const checkCode = async () => {
       const code = codeDigits.value.join('');
+      console.log("전송할 이메일:", email, "전송할 코드:", code);
 
       try {
         const response = await axios.post('http://localhost:8080/api/auth/verify-code', {email,code });
         console.log('response : ', response);
 
         message.value = '인증 성공 !';
-        await sendSignUpData(); 
+        resendEnabled.value = false; // 인증 성공하면 재전송 버튼 숨김
+        // await sendSignUpData(); 
         console.log('로그인페이지로 이동');
         // router.push('/login').then(()=> location.reload());
       } catch {
@@ -77,9 +83,9 @@ export default {
 
         console.log("회원가입 데이터:", signUpDataToSave);
 
-        const response = await axios.post("http://localhost:8080/api/auth/register", signUpDataToSave);
+        // const response = await axios.post("http://localhost:8080/api/auth/register", signUpDataToSave);
 
-        console.log('회원가입 response : ', response);
+        // console.log('회원가입 response : ', response);
         notify.success("회원가입이 완료되었습니다!");
 
         // router.push("/login").then(() => location.reload());
@@ -99,22 +105,23 @@ export default {
       }
     };
 
+    onMounted(()=>{
+        startTimer();
+      });
     const resendCode =async () =>{
       try{
         await axios.post(`http://localhost:8080/api/auth/resend-code`, {email});
         message.value = ' 새 코드가 전송되었어요 ! ';
-        codeDigits.value = ['','','','','',''];
+        codeDigits.value = ['','','','','','',''];
         timer.value = 180;
+        resendEnabled.value = false;
         startTimer();
         document.getElementById('code-0').focus();
       }catch{
         message.value = '코드 재전송 실패';
       }
-      onMounted(()=>{
-        startTimer();
-      })
     };
-    return { email, codeDigits, message, timer, resendEnabled, checkCode, focusNext, resendCode};
+    return { email, codeDigits, message, timer, resendEnabled, checkCode, handleInput, resendCode};
   }
 };
 </script>
@@ -132,12 +139,12 @@ export default {
     </p>
 
     <div class="code-inputs">
-      <input v-for="(digit, index) in codeDigits" :key="index" :id="`code-${index}`" v-model="codeDigits[index]" maxlength="1" type="number" class="code-box" @input="focusNext($event, index)" />
+      <input v-for="(digit, index) in codeDigits" :key="index" :id="`code-${index}`" v-model="codeDigits[index]" maxlength="1"  type="text" class="code-box" @input="handleInput($event, index)"/>
     </div>
+    <button v-if="!resendEnabled"  @click="checkCode">확인</button>
 
-    <button @click="resendCode" :disabled="!resendEnabled">코드 재전송</button>
+    <button @click="resendCode" v-if="resendEnabled" >코드 재전송</button>
 
-    <button @click="checkCode">확인</button>
     <p>{{ message }}</p>
   </div>
 </template>
@@ -163,12 +170,15 @@ export default {
   justify-content: space-between;
   gap: 8px;
   margin: 20px 0;
+  background: beige;
+  border: green 1px solid;
 }
 .code-box {
   width: 50px;
   height: 60px;
   font-size: 2rem;
   text-align: center;
+  border: #555 2px solid;
 }
 button {
   padding: 12px 24px;

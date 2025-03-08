@@ -27,7 +27,7 @@ import java.util.Random;
 
 @Service
 public class AuthService {
-    private final Logger log = LoggerFactory.getLogger(KakaoController.class);
+    private final Logger log = LoggerFactory.getLogger(AuthService.class);
     private final UserMapper userMapper;
     private final JwtUtil jwtUtil;
 
@@ -77,28 +77,51 @@ public class AuthService {
         }
     }
 
+    // 새 사용자 정보를 해시처리 후 데이터베이스에 저장
+    // 이미 존재하는 사용자 아이디인지 확인하고 중복되면 예외 발생
     @Transactional
-    public void beforesendVerificationCode(RegisterRequest registerRequest) {
+    public void register(RegisterRequest registerRequest) {
+
         if (userMapper.findByUserEmail(registerRequest.getEmail()) != null) {
             throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
         }
-        if (userMapper.findByUserId(registerRequest.getUserId()) != null) {
-            log.info("존재하는 아이디 실패");
-
-            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
-        }
-        if (userMapper.findByUserEmail(registerRequest.getEmail()) != null) {
-            log.info("회원가입 이메일 실패");
-
-            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
-        }
-
+//        if (userMapper.findByUserId(registerRequest.getUserId()) != null) {
+//            log.info("존재하는 아이디 실패");
+//
+//            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+//        }
         if (userMapper.findByUserPhone(registerRequest.getPhone()) != null) {
             log.info("회원가입 핸드폰 실패");
             throw new IllegalArgumentException("이미 존재하는 핸드폰 번호입니다.");
         }
 
         log.info("유효성 통과");
+        User user = User.builder()
+                .userId(registerRequest.getUserId())
+                .username(registerRequest.getUsername())
+                .password(registerRequest.getPassword())
+                .hashedPassword(PasswordUtil.sha256(registerRequest.getPassword()))
+                .phone(registerRequest.getPhone())
+                .email(registerRequest.getEmail())
+                .role("ROLE_USER")
+                .verifyYn("N") // 카카오는 인증 완료니까 Y!
+                .socialType("N") // 일반가입은 N!
+                .createdAt(LocalDateTime.now())
+                .build();
+        log.info("user: " + user);
+        log.info("user Mapper insertUser 시작");
+        userMapper.insertUser(user);
+    }
+
+
+    @Transactional
+    public void beforesendVerificationCode(RegisterRequest registerRequest) {
+
+        if (userMapper.findByUserEmail(registerRequest.getEmail()) != null) {
+            log.info("회원가입 이메일 실패");
+
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+        }
     }
 
 
@@ -111,7 +134,7 @@ public class AuthService {
         //랜덤 인등코드 생성
         String verificationCode = generateRendomCode();
 
-
+        log.info("verificationCode", verificationCode);
         // DB에 인증코드, 만료시간 저장
         userMapper.updateVerificationCode(email, verificationCode);
 
@@ -140,7 +163,6 @@ public class AuthService {
         return verificationCode; // 인증 코드 반환
 
     }
-
     private String generateRendomCode() {
         Random random = new Random();
         int code = 1000000 + random.nextInt(10000);
@@ -150,61 +172,55 @@ public class AuthService {
 
     // 회원가입 페이지 이후 인증번호 코드 페이지
     public boolean verifyCode(String email, String code){
-
+        log.info("email: ", email);
         User user = userMapper.findByUserEmail(email);
-        if (user == null) return false;
-        if (!code.equals(user.getVerificationCode())) return false;
 
+        if (user == null) {
+            log.error("사용자를 찾을 수 없음: {}", email);
+            return false;
+        }
+
+        if (!code.equals(user.getVerificationCode())) {
+            log.error("❌ 인증 실패: 코드 불일치 -> 입력한 코드: {}, 저장된 코드: {}", code, user.getVerificationCode());
+            return false;
+        }
 
         // 인증 성공 → verifyYn = 'Y'
         userMapper.updateVerifyYn(email);
         return true; // 코드가 틀리면 false
     }
 
-    // 새 사용자 정보를 해시처리 후 데이터베이스에 저장
-    // 이미 존재하는 사용자 아이디인지 확인하고 중복되면 예외 발생
-    @Transactional
-    public void register(RegisterRequest registerRequest) {
-     /*
-     *    if (userMapper.findByUserEmail(registerRequest.getEmail()) != null) {
-            throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
-        }
-        if (userMapper.findByUserId(registerRequest.getUserId()) != null) {
-            log.info("존재하는 아이디 실패");
+    public void resendEmail(String email, String verificationCode)  throws MessagingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
 
-            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
-        }
-        if (userMapper.findByUserEmail(registerRequest.getEmail()) != null) {
-            log.info("회원가입 이메일 실패");
+        helper.setTo(email);
+        helper.setSubject("📨 이메일 인증 코드 재발송");
 
-            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
-        }
+        String emailContent = "<div style='padding:20px; font-family:Arial; text-align:center;'>"
+                + "<h2>📨 이메일 인증 코드</h2>"
+                + "<p>아래 인증 코드를 입력해주세요!</p>"
+                + "<h1 style='color:#4CAF50;'>" + verificationCode + "</h1>"
+                + "<p>감사합니다 😊</p>"
+                + "</div>";
 
-        if (userMapper.findByUserPhone(registerRequest.getPhone()) != null) {
-            log.info("회원가입 핸드폰 실패");
-            throw new IllegalArgumentException("이미 존재하는 핸드폰 번호입니다.");
-        }
+        helper.setText(emailContent, true);
 
-        log.info("유효성 통과");
-     * */
-        User user = User.builder()
-                .userId(registerRequest.getUserId())
-                .username(registerRequest.getUsername())
-                .password(registerRequest.getPassword())
-                .hashedPassword(PasswordUtil.sha256(registerRequest.getPassword()))
-                .phone(registerRequest.getPhone())
-                .email(registerRequest.getEmail())
-                .role("ROLE_USER")
-                .verifyYn("N") // 카카오는 인증 완료니까 Y!
-                .socialType("N") // 일반가입은 K!
-                .createdAt(LocalDateTime.now())
-                .build();
-        log.info("user: " + user);
-        log.info("user Mapper insertUser 시작");
-        userMapper.insertUser(user);
+        mailSender.send(message);
     }
 
-    // 새 사용자 정보를 해시처리 후 데이터베이스에 저장
+    // 인증코드 재발송 로직
+    public void resendVerification(String email) throws MessagingException {
+        User user = userMapper.findByUserEmail(email);
+
+        if (user == null) {
+            throw new IllegalArgumentException("존재하지 않는 사용자입니다: " + email);
+        }
+
+        String verificationCode = generateRendomCode();
+        userMapper.updateVerificationCode(email, verificationCode);
+        resendEmail(email, verificationCode);
+    }   // 새 사용자 정보를 해시처리 후 데이터베이스에 저장
     // 이미 존재하는 사용자 아이디인지 확인하고 중복되면 예외 발생
     @Transactional
     public void nonMember(RegisterRequest registerRequest) {
@@ -224,14 +240,6 @@ public class AuthService {
     }
 
 
-    public void sendEmail(String to, String subject, String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(fromEmail);
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
-        mailSender.send(message);
-    }
 
     public void sendHtmlEmail(String to, String subject, String body, String imagePath) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();

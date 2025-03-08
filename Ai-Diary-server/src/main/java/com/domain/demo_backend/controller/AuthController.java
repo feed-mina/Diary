@@ -23,7 +23,7 @@ import java.util.Map;
 public class AuthController {
 
 
-    private final Logger log = LoggerFactory.getLogger(KakaoController.class);
+    private final Logger log = LoggerFactory.getLogger(AuthController.class);
     private Map<String, String> emailVerificationMap = new HashMap<>();
 
     private final AuthService authService;
@@ -47,13 +47,13 @@ public class AuthController {
         try {
             String jwt = authService.login(loginRequest);
 
-            System.out.println("로그인 성공");
+            log.info("로그인 성공");
             return ResponseEntity.ok(new LoginResponse(jwt));
         } catch (RuntimeException e) {
             // 명확한 에러 메시지 반환
             Map<String, String> errorResponse = new HashMap<>();
 
-            System.out.println("로그인 실패");
+            log.info("로그인 실패");
             errorResponse.put("error", "로그인 실패");
             errorResponse.put("message", e.getMessage());
             return ResponseEntity.badRequest().body(errorResponse);
@@ -61,9 +61,26 @@ public class AuthController {
     }
 
 
-    @Operation(summary = "회원 가입 페이지", description = "회원가입 페이지에서 사용")
+
+    @Operation(summary = "회원 가입페이지에서 회원가입 로직", description = "users 테이블에 insert한다..")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "성공"),
+            @ApiResponse(responseCode = "201", description = "users 테이블에 insert 성공"),
+            @ApiResponse(responseCode = "400", description = "입력값 오류"),
+            @ApiResponse(responseCode = "409", description = "이미 존재하는 사용자"),
+            @ApiResponse(responseCode = "500", description = "서버오류"),
+    })
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
+        log.info("registerRequest: " + registerRequest);
+        authService.register(registerRequest);
+        log.info("register service logic OK");
+        return ResponseEntity.ok("User registred successfully!");
+    }
+
+
+    @Operation(summary = "회원 가입 로직 이후 이메일 인증 전송로직", description = "users테이블에 code(인증번호)와 verify(Y) update")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "users테이블에 code(인증번호)와 verify(Y) update 성공"),
             @ApiResponse(responseCode = "400", description = "입력값 오류"),
             @ApiResponse(responseCode = "409", description = "이미 존재하는 사용자"),
             @ApiResponse(responseCode = "500", description = "서버오류"),
@@ -71,10 +88,9 @@ public class AuthController {
     @PostMapping("/signup")
     public String sendVerificationCode(@RequestBody RegisterRequest registerRequest, @RequestParam String message) throws MessagingException {
 
-        System.out.println("유효성 평가 ");
-
-        authService.beforesendVerificationCode(registerRequest);
-        System.out.println("회원가입 하기 위해 인증코드 전송 ");
+        log.info("유효성 평가 ");
+//        authService.beforesendVerificationCode(registerRequest);
+        log.info("회원가입 하기 위해 인증코드 전송 ");
         String email = registerRequest.getEmail();
         // 랜덤 인증 코드 생성
         String verificationCode = authService.sendVerificationCode(email);
@@ -82,14 +98,14 @@ public class AuthController {
         emailVerificationMap.put(email, verificationCode);
 
         // 이메일 전송 시뮬레이션(실제 서비스에서는 이메일 전송 API)
-        System.out.println("이메일 전송: " + email);
-        System.out.println("메시지: " + message);
+        log.info("이메일 전송: " + email);
+        log.info("메시지: " + message);
 
         String savedCode = emailVerificationMap.get(email);
         return "인증 코드가 다음 이메일로 전송되었습니다." + email;
     }
 
-    @Operation(summary = "get방식의 /signUp", description = "get 회원가입페이지.")
+    @Operation(summary = "get방식의 /signUp", description = "url에서 signUp이 잘 되는지 테스트.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "성공"),
             @ApiResponse(responseCode = "400", description = "입력값 오류"),
@@ -99,7 +115,7 @@ public class AuthController {
     @GetMapping("/signUp")
     public String sendVerificationCodeByGet(@RequestBody RegisterRequest registerRequest, @RequestParam String message) throws MessagingException {
 
-        System.out.println("get 테스트 회원가입 하기 위해 인증코드 전송 ");
+        log.info("get 테스트 회원가입 하기 위해 인증코드 전송 ");
         String email = registerRequest.getEmail();
 
         String verificationCode = authService.sendVerificationCode(email);
@@ -108,15 +124,19 @@ public class AuthController {
     }
 
 
-    @Operation(summary = "회원 가입", description = "새로운 회원을 등록한다.")
+    @Operation(summary = "회원 가입 인증 번호 확인", description = "회원 가입 인증 번호를 확인.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "회원가입 성공"),
+            @ApiResponse(responseCode = "201", description = "회원 가입 인증  번호 확인 성공"),
             @ApiResponse(responseCode = "400", description = "입력값 오류"),
             @ApiResponse(responseCode = "409", description = "이미 존재하는 사용자"),
             @ApiResponse(responseCode = "500", description = "서버오류"),
     })
     @PostMapping("/verify-code")
     public ResponseEntity<String> verifyCode(@RequestBody RegisterRequest request){
+        if (request.getEmail() == null || request.getCode() == null) {
+            return ResponseEntity.badRequest().body("이메일 또는 인증 코드가 누락되었습니다.");
+        }
+
         boolean isValid = authService.verifyCode(request.getEmail(), request.getCode());
         if (isValid) {
             return ResponseEntity.ok("인증 성공!");
@@ -125,21 +145,22 @@ public class AuthController {
         }
     }
 
-    @Operation(summary = "회원 가입", description = "새로운 회원을 등록한다.")
+    @Operation(summary = "회원 가입 인증  번호 재전송", description = "회원 가입 인증  번호 다시확인한다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "회원가입 성공"),
+            @ApiResponse(responseCode = "201", description = "회원 가입 인증  번호 재전송 성공"),
             @ApiResponse(responseCode = "400", description = "입력값 오류"),
             @ApiResponse(responseCode = "409", description = "이미 존재하는 사용자"),
             @ApiResponse(responseCode = "500", description = "서버오류"),
     })
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
-        System.out.println("인증후 회원가입 진입");
-
-        System.out.println("registerRequest: " + registerRequest);
-        authService.register(registerRequest);
-        System.out.println("register service logic OK");
-        return ResponseEntity.ok("User registred successfully!");
+    @PostMapping("/resend-code")
+    public ResponseEntity<String> resendVerificationCode(@RequestBody RegisterRequest request) {
+        try {
+            authService.resendVerification(request.getEmail());
+            return ResponseEntity.ok("✅ 새 인증코드가 이메일로 전송되었습니다!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("❌ 인증코드 재전송에 실패했습니다.");
+        }
     }
 
     @Operation(summary = "회원 탈퇴", description = "사용자 계정의 del_yn flag를 'Y' -> 'N'로 표시한다.")
@@ -151,10 +172,10 @@ public class AuthController {
     })
     @PostMapping("/non-user")
     public ResponseEntity<String> nonUser(@RequestBody RegisterRequest registerRequest) {
-        System.out.println("회원탈퇴 요청 진입: " + registerRequest);
-        System.out.println("회원탈퇴 진입");
+        log.info("회원탈퇴 요청 진입: " + registerRequest);
+        log.info("회원탈퇴 진입");
         if (registerRequest.getUserId() == null || registerRequest.getUserId().isEmpty()) {
-            System.out.println("회원탈퇴 실패: userId가 비어 있음");
+            log.info("회원탈퇴 실패: userId가 비어 있음");
             return ResponseEntity.badRequest().body("회원 아이디가 필요합니다.");
         }
 
@@ -162,39 +183,13 @@ public class AuthController {
             authService.nonMember(registerRequest);
             return ResponseEntity.ok("회원탈퇴 성공");
         } catch (IllegalArgumentException e) {
-            System.out.println("회원탈퇴 실패: " + e.getMessage());
+            log.info("회원탈퇴 실패: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            System.out.println("회원탈퇴 실패: 서버 내부 오류");
+            log.info("회원탈퇴 실패: 서버 내부 오류");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
         }
 
     }
 
-
-    @PostMapping("/send")
-    public String sendEmail(@RequestBody EmailRequest emailRequest) {
-        authService.sendEmail(emailRequest.getTo(), emailRequest.getSubject(), emailRequest.getBody());
-        return "Email sent successfully";
-    }
-
-    @PostMapping("/send-html")
-    public String sendHtmlEmail(@RequestBody EmailRequest emailRequest) {
-        try {
-            authService.sendHtmlEmail(emailRequest.getTo(), emailRequest.getSubject(), emailRequest.getBody(), emailRequest.getImagePath());
-            return "HTML Email sent successfully!";
-        } catch (MessagingException e) {
-            return "Failed to send email: " + e.getMessage();
-        }
-    }
-    @PostMapping("/verify")
-    public String verifyCode(@RequestBody verificationRequest request) {
-        String saveCode = emailVerificationMap.get(request.getEmail());
-        if (saveCode != null && saveCode.equals(request.getCode())) {
-            emailVerificationMap.remove(request.getEmail()); // 인증 성공 시 코드 제거
-            return "이메일 인증 성공!";
-        } else {
-            return "인증 실패 : 잘못된 코드입니다.";
-        }
-    }
 }

@@ -21,7 +21,7 @@ import java.util.Map;
 @Service
 public class KakaoService {
     private final UserMapper userMapper;
-    private final Logger log = LoggerFactory.getLogger(KakaoController.class);
+    private final Logger log = LoggerFactory.getLogger(KakaoService.class);
 
     public KakaoService(UserMapper userMapper) {
         this.userMapper = userMapper;

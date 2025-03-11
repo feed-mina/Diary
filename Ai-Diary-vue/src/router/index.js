@@ -39,7 +39,6 @@ const routes = [
     {path: "/mypage/confirmPassword", name: "ConfirmPassword", component: ConfirmPassword},
     {path: "/mypage/confirmPassword2", name: "ConfirmPassword2", component: ConfirmPassword2},
     {path: "/edit/newPassword", name: "EditNewPassword", component: EditNewPassword}, //EditNewPassword.vue
-   
   { path: '/email-verification', name: 'EmailVerificationPage', component: EmailVerificationPage }, {},
     {path: "/edit/password", name: "EditPassword", component: EditPassword},
     {
@@ -50,7 +49,7 @@ const routes = [
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(),
     routes,
 });
 

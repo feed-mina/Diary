@@ -76,7 +76,6 @@ public class KakaoService {
         }
 
         User user = User.builder()
-                .userId("kakao_" + kakaoUserInfo.getEmail())
                 .password(accessToken)
                 .hashedPassword(PasswordUtil.sha256(accessToken))
                 .email(kakaoUserInfo.getEmail())

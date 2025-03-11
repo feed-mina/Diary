@@ -1,6 +1,7 @@
 package com.domain.demo_backend.util;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,9 +34,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         System.out.println("Authorization Header: " + authorizationHeader);
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            String token = authorizationHeader.substring(7);
+            System.out.println("올바른 Authorization 헤더가 없음.");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid Authorization Header");
+            return;
+        }
 
-            System.out.println("token : " + token);
+        String token = authorizationHeader.substring(7);
+        System.out.println("추출된 JWT 토큰: " + token);
             try {
                 Claims claims = jwtUtil.validateToken(token); // 토큰 검증
                 // 유효하지 않은 토큰 예외 처리
@@ -60,7 +66,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
-            } catch (Exception e) {
+
+            } catch (ExpiredJwtException e) {
+                System.err.println("만료된 JWT 토큰: " + e.getMessage());
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Expired JWT Token. Please login again.");
+                return;
+            }catch (Exception e) {
                 // 유효하지 않은 토큰 예외 처리
                 System.err.println("Invalid JWT token: " + e.getMessage());
                 e.printStackTrace();
@@ -68,8 +80,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 response.getWriter().write("Invalid JWT Token");
                 return;
             }
-        }
-        filterChain.doFilter(request, response); // 다음 필터로 이동
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response); // 토큰이 없으면 다음 필터로 넘김
+            return;
+        }// 다음 필터로 이동
         System.out.println("request: " + request);
         System.out.println("response: " + response);
     }

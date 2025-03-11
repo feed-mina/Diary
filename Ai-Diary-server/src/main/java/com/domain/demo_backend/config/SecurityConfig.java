@@ -45,12 +45,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // 인증 관리자 빈 설정
-//    @Bean
-//    protected AuthenticationManager authManager(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
-//    }
-
     @Bean
     public AuthenticationManager authManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -62,13 +56,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 적용
-                .csrf(csrf -> csrf.disable())  // CSRF 비활성화
+                .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())) // ✅ 최신 CORS 설정
+                .csrf(csrf -> csrf.disable()) // ✅ 최신 CSRF 설정
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()  // Swagger 관련 URL 허용
-                        .requestMatchers(HttpMethod.GET, "/api/auth/**", "/api/diary/**").permitAll() // GET 요청 허용 , 로그인, 회원가입 허용
-                        .requestMatchers(HttpMethod.POST, "/api/auth/**", "/api/diary/**").permitAll() // POST 요청 허용 , 로그인, 회원가입 허용
-                        .requestMatchers(HttpMethod.POST, "/api/kakao/**").permitAll()  //  추가!
+                        .requestMatchers(HttpMethod.GET, "/api/auth/**", "/api/kakao/**", "/api/timer/**").permitAll() // GET 요청 허용 , 로그인, 회원가입, 타이머 허용
+                        .requestMatchers(HttpMethod.POST, "/api/auth/**", "/api/kakao/**", "/api/diary/**", "/api/timer/**").permitAll() // POST 요청 허용 , 로그인, 회원가입 허용
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/api/timer/now", "/api/timer/health").permitAll() // 인증 없이 접근 가능하도록 설정
                         .requestMatchers("/resources/**", "/static/**", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -76,16 +71,6 @@ public class SecurityConfig {
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable()) // formLogin 끄기!
                 .logout(logout -> logout.disable()); // 로그아웃 기능도 끄기 (API라면 필요없을 수 있음)
 
-//                .formLogin(form -> form
-//                        .loginPage("/login") // 로그인 페이지 설정
-//                        .defaultSuccessUrl("/", true) // 로그인 성공 시 이동할 페이지
-//                        .failureUrl("/login?error=true") // 로그인 실패 시 이동할 페이지
-//                        .permitAll()
-//                )
-//                .logout(logout -> logout
-//                        .logoutSuccessUrl("/login?logout=true") // 로그아웃 성공 시 이동할 페이지
-//                        .permitAll()
-//                );
         return http.build();
     }
 

@@ -1,9 +1,8 @@
 package com.domain.demo_backend.user.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import lombok.*;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -12,15 +11,19 @@ import java.time.LocalDateTime;
 
 @Setter
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {
     private BigInteger userSqno;         // user_sqno
     private String userId;              // user_id
+    @NotBlank
     private String password;            // password
     private String hashedPassword;      // hashed_password
     private String role;                // role
     private String username;            // username
+    @Pattern(regexp = "^\\d{10,11}$", message = "전화번호는 10~11자리 숫자여야 합니다.")
     private String phone;               // phone
+    @NotBlank
     private String email;               // email
     private String repassword;          // repassword
     private String nickname;

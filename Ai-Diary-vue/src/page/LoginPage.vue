@@ -40,62 +40,45 @@
        }
    
    
-// 이메일 주소 업데이트 로직
-const updateFullEmail = () => {
-  if (loginData.value.emailDomain === "custom") {
+   // 이메일 주소 업데이트 로직
+   const updateFullEmail = () => {
+   if (loginData.value.emailDomain === "custom") {
     loginData.value.email = `${loginData.value.emailPrefix}@${loginData.value.customDomain}`;
-  } else {
+   } else {
     loginData.value.email = `${loginData.value.emailPrefix}@${loginData.value.emailDomain}`;
-  }
-};
+   }
+   };
        
    
        const onClickLoginButton = async () => {
          console.log("로그인 데이터 :", loginData.value);
-         if (!loginData.value.email) {
-           Swal.fire({
-             title: "이메일 오류",
-             text: "이메일를 입력해주세요",
-             icon: "warning",
-             confirmButtonText: "확인",
-             confirmButtonColor: "#FF5733"
-           });
-           return;
-         }
+         if (!loginData.value.email || !loginData.value.password) {
+        Swal.fire("입력 오류", "이메일과 비밀번호를 입력해주세요.", "warning");
+        return;
+      }
+
    
-         if (!loginData.value.password) {
-           // alert("비밀번호를 입력해주세요.");
-   
-           Swal.fire({
-             title: "비밀번호 오류",
-             text: "비밀번호를 입력해주세요",
-             icon: "warning",
-             confirmButtonText: "확인",
-             confirmButtonColor: "#FF5733"
-           });
-           return;
-         }
-   
-         try {
            // API 호출 및 응답 처리
-           const jwtToken = await sendLoginData();
+       
+           try {
+           const response = await axios.post("http://localhost:8080/api/auth/login",   
+           {
+            email: loginData.value.email,
+           password: loginData.value.password,
+           });
+       
+           //  const jwtToken = await sendLoginData();
            console.log("로그인 성공, JWT:", jwtToken);
    
            // JWT 토큰을 쿠키 또는 localStorage에 저장
          //   cookies.set("jwt", jwtToken, {path: "/"});
-           localStorage.setItem("email", loginData.value.email);
-           localStorage.setItem("password", loginData.value.password);
+            localStorage.setItem("jwt", response.data);
+          //  localStorage.setItem("email", loginData.value.email);
+          //  localStorage.setItem("password", loginData.value.password);
+        Swal.fire("로그인 성공", "로그인을 완료했습니다", "success");
    
            // alert("로그인을 완료했습니다.");
-   
-           Swal.fire({
-             title: "로그인 성공",
-             text: "로그인을 완료했습니다",
-             icon: "success",
-             confirmButtonText: "확인",
-             confirmButtonColor: "#357abd",
-           });
-           console.log('router이동');
+        
           router.push("/diary/common").then(() => {
              location.reload(); // 새로고침
            });
@@ -103,39 +86,12 @@ const updateFullEmail = () => {
            // 에러 처리
            console.error("로그인 실패:", error);
            // alert(error.response?.data?.message || "로그인에 실패했습니다.");
-   
-           Swal.fire({
-             title: "로그인 실패",
-             text: "로그인을 실패했습니다.",
-             icon: "warning",
-             confirmButtonText: "확인",
-             confirmButtonColor: "#FF5733"
-           });
+           Swal.fire("로그인 실패", error.response?.data?.message || "로그인 실패", "error");
+
          }
        };
    
-   
-       // 로그인 API 호출
-       const sendLoginData = async () => {
-         try {
-           const response = await axios.post("http://localhost:8080/api/auth/login",   
-           {
-            email: loginData.value.email,
-           password: loginData.value.password,
-           });
-           return response.data; // 응답 데이터를 반환합니다.
-         } catch (error) {
-           console.error("API 호출 실패:", error.response?.data || error.message);
-    if (error.response.data.message === '이메일 인증이 필요합니다.') {
-      alert('이메일 인증을 먼저 해주세요!');
-    } else {
-      alert('로그인 실패');
-    }
-           throw error; // 예외를 던져서 상위에서 처리하도록 합니다.
-         }
-       };
-   
-   
+    
    
        onMounted(() => {
          console.log('로그인 페이지 진입');
@@ -162,67 +118,35 @@ const updateFullEmail = () => {
              success: async function (authObj) {
            const kakaoAccessToken = authObj.access_token;
             console.log("카카오 AccessToken:", kakaoAccessToken);
-               const token = authObj.access_token;
-               console.log('token: ', token);
-               console.log('로그인 성공');
-         localStorage.setItem("token", token);
-               notyf.success("로그인 성공!");
    
-               try {
            console.log('카카오 로그인 api 호출도입');
            const response = await axios.post("http://localhost:8080/api/kakao/login",  {
                 accessToken: kakaoAccessToken
               });
    
-              const jwtToken = response.data; // 서버에서 발급한 JWT
-              cookies.set("jwt", jwtToken, { path: "/" });
            console.log('response: ', response);
-           Swal.fire({
-             title: "로그인 성공",
-             text: "로그인을 완료했습니다",
-             icon: "success",
-             confirmButtonText: "확인",
-             confirmButtonColor: "#357abd",
-           });
+           Swal.fire("카카오 로그인 성공", "로그인을 완료했습니다", "success");
                  // 페이지 이동
            console.log('router이동');
              //    router.push("/diary/common").then(() => location.reload());
    
-               } catch (error) {
-                 console.error("API 호출 실패:", error.response?.data || error.message);
-              notyf.error("카카오 로그인 실패");
-   
-                 throw error; // 예외를 던져서 상위에서 처리하도록 합니다.
-               }
-             },
+            },
              fail: function (err) {
-               notyf.error("❌ 로그인 실패", err);
+              Swal.fire("로그인 실패", "카카오 로그인 실패", "error");
                console.error('❌ 로그인 실패', err);
              }
            });
          } else {
-           notyf.error("❌ 로그인 실패");
+          Swal.fire("로그인 실패", "카카오 로그인 실패", "error");
            console.error('카카오 SDK가 아직 로드되지 않았어요!');
          }
        }
-       // 로그인 API 호출
-       const sendKakaoLoginData = async () => {
-         try {
-          console.log('카카오 로그인 api 호출도입');
-           const response = await axios.post("http://localhost:8080/api/kakao/login", loginData.value);
-           return response.data; // 응답 데이터를 반환합니다.
-         } catch (error) {
-           console.error("API 호출 실패:", error.response?.data || error.message);
-           throw error; // 예외를 던져서 상위에서 처리하도록 합니다.
-         }
-       };
-   
        return {
          isLoginPg,
          loginData,
          errorWarning,
          showPassword,
-         handleLoginData,
+         updateFullEmail,
          idErrorMessage,
          passwordErrorMessage,
          togglePasswordVisibility,
@@ -242,36 +166,32 @@ const updateFullEmail = () => {
          <form @submit.prevent="onClickLoginButton" class="login_form_box">
             <!--ID-->
             <<!-- 이메일 입력 폼 -->
-<div class="login-session">
-  <div class="login-label">
-    <label for="email" class="form-label">Email</label>
-  </div>
-  <div style="display: flex; gap: 10px; align-items: center;">
-    <!-- 이메일 아이디 부분 -->
-    <input size="20" type="text" v-model="loginData.emailPrefix" @input="updateFullEmail"
-           class="login_form-input" name="emailPrefix" id="emailPrefix" placeholder="이메일 앞부분"/>
-
-    <span>@</span>
-
-    <!-- 이메일 도메인 선택 -->
-    <select v-model="loginData.emailDomain" @change="updateFullEmail" class="login_form-input">
-      <option value="" disabled selected>이메일 선택</option>
-      <option value="naver.com">naver.com</option>
-      <option value="gmail.com">gmail.com</option>
-      <option value="nate.com">nate.com</option>
-      <option value="hanmail.net">hanmail.net</option>
-      <option value="daum.net">daum.net</option>
-      <option value="custom">직접 입력</option>
-    </select>
-
-    <!-- 직접 입력 -->
-    <input size="30" type="text" v-if="loginData.emailDomain === 'custom'"
-           v-model="loginData.customDomain" @input="updateFullEmail"
-           class="login_form-input" name="customDomain" id="customDomain"
-           placeholder="도메인 입력"/>
-  </div>
-</div>
-
+            <div class="login-session">
+               <div class="login-label">
+                  <label for="email" class="form-label">Email</label>
+               </div>
+               <div style="display: flex; gap: 10px; align-items: center;">
+                  <!-- 이메일 아이디 부분 -->
+                  <input size="20" type="text" v-model="loginData.emailPrefix" @input="updateFullEmail"
+                     class="login_form-input" name="emailPrefix" id="emailPrefix" placeholder="이메일 앞부분"/>
+                  <span>@</span>
+                  <!-- 이메일 도메인 선택 -->
+                  <select v-model="loginData.emailDomain" @change="updateFullEmail" class="login_form-input">
+                     <option value="" disabled selected>이메일 선택</option>
+                     <option value="naver.com">naver.com</option>
+                     <option value="gmail.com">gmail.com</option>
+                     <option value="nate.com">nate.com</option>
+                     <option value="hanmail.net">hanmail.net</option>
+                     <option value="daum.net">daum.net</option>
+                     <option value="custom">직접 입력</option>
+                  </select>
+                  <!-- 직접 입력 -->
+                  <input size="30" type="text" v-if="loginData.emailDomain === 'custom'"
+                     v-model="loginData.customDomain" @input="updateFullEmail"
+                     class="login_form-input" name="customDomain" id="customDomain"
+                     placeholder="도메인 입력"/>
+               </div>
+            </div>
             <!--패스워드-->
             <div class="login-session">
                <div class="login-label">
@@ -346,7 +266,6 @@ const updateFullEmail = () => {
    border: 1px solid #4a90e2;
    outline: none;
    }
-
    .kakao-button,
    .login_form_button {
    width: 100%; /* 버튼이 컨테이너에 맞춰짐 */
@@ -357,17 +276,16 @@ const updateFullEmail = () => {
    cursor: pointer;
    transition: background-color 0.3s ease;
    }
-
-.kakao-button img {
-  width: 100%; /* 카카오 로고 크기 조정 */
-  height: 50px;
-}
+   .kakao-button img {
+   width: 100%; /* 카카오 로고 크기 조정 */
+   height: 50px;
+   }
    .login_form_button {
    background-color: #4a90e2;
    color: white;
    padding: 0.8rem 1.5rem;
-    font-weight: 600;
-    font-size: large;
+   font-weight: 600;
+   font-size: large;
    }
    .login_form_button:hover {
    background-color: #357abd;

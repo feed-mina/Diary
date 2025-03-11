@@ -106,7 +106,11 @@ export default {
       phone() {
         const {first, middle, last} = signUpData.value.phone;
         errorState.value.phone = !(first.length === 3 && middle.length === 4 && last.length === 4);
+        
+        
         errorMessage.value.phone = errorState.value.phone ? "휴대폰 번호를 정확히 입력해주세요." : "";
+
+
       },
     };
 

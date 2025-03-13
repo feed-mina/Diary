@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Mapper
 public interface UserMapper {
-    User findByEmail(String email);
+    User findByUserId(String userId);
 
     User findByUserPhone(String phone);
 

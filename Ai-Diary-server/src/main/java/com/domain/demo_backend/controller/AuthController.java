@@ -174,8 +174,8 @@ public class AuthController {
     public ResponseEntity<String> nonUser(@RequestBody RegisterRequest registerRequest) {
         log.info("회원탈퇴 요청 진입: " + registerRequest);
         log.info("회원탈퇴 진입");
-        if (registerRequest.getEmail() == null || registerRequest.getEmail().isEmpty()) {
-            log.info("회원탈퇴 실패: email가 비어 있음");
+        if (registerRequest.getUserId() == null || registerRequest.getUserId().isEmpty()) {
+            log.info("회원탈퇴 실패: userId가 비어 있음");
             return ResponseEntity.badRequest().body("회원 아이디가 필요합니다.");
         }
 

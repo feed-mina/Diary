@@ -1,7 +1,6 @@
 package com.domain.demo_backend.util;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,62 +25,54 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.jwtUtil = jwtUtil;
     }
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String authorizationHeader = request.getHeader("Authorization");
-        System.out.println("📌 Authorization Header: " + authorizationHeader);
+        System.out.println("Authorization Header: " + authorizationHeader);
 
-        // ✅ 올바른 Authorization 헤더 검증
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            System.out.println("⛔ JWT 토큰이 존재하지 않거나 올바른 형식이 아닙니다.");
-            filterChain.doFilter(request, response); // 다음 필터로 넘김
-            return;
-        }
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String token = authorizationHeader.substring(7);
 
-        String token = authorizationHeader.substring(7);
-        System.out.println("✅ 추출된 JWT 토큰: " + token);
+            System.out.println("token : " + token);
+            try {
+                Claims claims = jwtUtil.validateToken(token); // 토큰 검증
+                // 유효하지 않은 토큰 예외 처리
+                System.out.println("claims: " + claims);
+                String username = claims.getSubject();
+                System.out.println("username : " + username);
+                String userId = claims.get("userId", String.class);
+                String userSqnoStr = claims.get("userSqno", String.class); // String으로 읽기
+                System.out.println("userSqnoStr : " + userSqnoStr);
+                BigInteger userSqno = new BigInteger(userSqnoStr);
+                System.out.println("userSqno : " + userSqno);
 
-        try {
-            // ✅ 토큰 검증
-            Claims claims = jwtUtil.validateToken(token);
-            System.out.println("✅ claims: " + claims);
+                if (username != null) {
+                    List<GrantedAuthority> authorities = List.of(() -> "ROLE_USER");
+                    System.out.println("authorities: " + authorities);
+                    CustomUserDetails userDetails = new CustomUserDetails(username, userSqno, userId, List.of(new SimpleGrantedAuthority("ROLE_USER")));
 
-            // ✅ 사용자 정보 추출
-            String username = claims.getSubject();
-            String userId = claims.get("userId", String.class);
-            String userSqnoStr = claims.get("userSqno", String.class);
-            BigInteger userSqno = new BigInteger(userSqnoStr);
+                    System.out.println("userDetails: " + userDetails);
+                    // 인증 토큰 생성
+                    Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    System.out.println("authentication: " + authentication);
 
-            System.out.println("👤 username: " + username);
-            System.out.println("🔑 userId: " + userId);
-            System.out.println("🆔 userSqno: " + userSqno);
-
-            if (username != null) {
-                // ✅ 사용자 권한 설정
-                List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
-
-                // ✅ 사용자 정보 저장
-                CustomUserDetails userDetails = new CustomUserDetails(username, userSqno, userId, authorities);
-                Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-
-                System.out.println("✅ 사용자 인증 성공: " + authentication);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (Exception e) {
+                // 유효하지 않은 토큰 예외 처리
+                System.err.println("Invalid JWT token: " + e.getMessage());
+                e.printStackTrace();
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 응답 반환
+                response.getWriter().write("Invalid JWT Token");
+                return;
             }
-
-        } catch (ExpiredJwtException e) {
-            System.err.println("⛔ 만료된 JWT 토큰: " + e.getMessage());
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Expired JWT Token. Please login again.");
-            return;
-        } catch (Exception e) {
-            System.err.println("⛔ 유효하지 않은 JWT 토큰: " + e.getMessage());
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Invalid JWT Token");
-            return;
         }
-
-        // ✅ 모든 검증이 끝나면 필터 체인 진행
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request, response); // 다음 필터로 이동
+        System.out.println("request: " + request);
+        System.out.println("response: " + response);
     }
+
+
 }

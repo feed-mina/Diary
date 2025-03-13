@@ -1,6 +1,8 @@
 package com.domain.demo_backend.util;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +16,6 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.Date;
@@ -37,16 +38,13 @@ public class JwtUtil {
     private static final String SALT = "mySaltValue"; // 🔹 SALT 값
 
     @PostConstruct
-    public void init()
-    {
-        // JWT 서명 키를 올바르게 변환하여 설정
-        byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
-        this.secretKey = Keys.hmacShaKeyFor(keyBytes); // 올바른 변환 방식 적용
+    public void init() {
+        this.secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret));
     }
-//    public String generateToken(String email, boolean useKakaoIssuer) {
+//    public String generateToken(String userId, boolean useKakaoIssuer) {
 //        String tokenIssuer = useKakaoIssuer ? "https://kauth.kakao.com" : this.issuer; // Kakao 발급자 사용 여부에 따라 설정
 //        return Jwts.builder()
-//                .setSubject(email)
+//                .setSubject(userId)
 //                .setIssuer(issuer)
 //                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
 //                .signWith(SignatureAlgorithm.HS256, secretKey)
@@ -59,13 +57,12 @@ public class JwtUtil {
                 .claim("userSqno", userSqno.toString()) // 사용자 고유 식별자 추가
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10시간 유효
-                .signWith(Keys.hmacShaKeyFor(secretKey.getEncoded()), SignatureAlgorithm.HS256) // ✅ 최신 방식 적용
-                //  .signWith(secretKey, SignatureAlgorithm.HS256) // secretKey 사용
+                .signWith(secretKey, SignatureAlgorithm.HS256) // secretKey 사용
                 .compact();
     }
 
     // 토큰생성
-    public String createToken(String username, BigInteger userSqno, String email) {
+    public String createToken(String username, BigInteger userSqno, String userId) {
         Claims claims = Jwts.claims().setSubject(username);
         Date now = new Date();
         Date validity = new Date(now.getTime() + 1000 * 60 * 60 * 24);
@@ -73,7 +70,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setClaims(claims)
                 .claim("userSqno", userSqno.toString()) //
-                .claim("email", email)// 사용자 고유 식별자 추가
+                .claim("userId", userId)// 사용자 고유 식별자 추가
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(secretKey, SignatureAlgorithm.HS256)
@@ -81,32 +78,13 @@ public class JwtUtil {
     }
 
     public Claims validateToken(String token) {
-        System.out.println("검증할 JWT 토큰: " + token);
-
-        if (token == null || !token.contains(".")) {
-            System.out.println("올바르지 않은 JWT 토큰 형식");
-            throw new MalformedJwtException("Invalid JWT format");
-        }
-
-
-        try {
-            return Jwts.parserBuilder()
-                    .setSigningKey(Keys.hmacShaKeyFor(secretKey.getEncoded())) // ✅ 올바른 서명 키 사용
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch (ExpiredJwtException e) {
-            throw new MalformedJwtException("JWT 토큰이 만료되었습니다.");
-        } catch (UnsupportedJwtException e) {
-            throw new MalformedJwtException("지원되지 않는 JWT 토큰 형식입니다.");
-        } catch (MalformedJwtException e) {
-            throw new MalformedJwtException("올바르지 않은 JWT 토큰입니다.");
-        } catch (SignatureException e) {
-            throw new MalformedJwtException("JWT 서명이 잘못되었습니다.");
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new MalformedJwtException("JWT 검증 실패: " + e.getMessage());
-        }
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
+
     public BigInteger getUserSqnoFromToken(String token) {
         Claims claims = validateToken(token); // 토큰 검증 및 클레임 추출
         // userSqno 값을 BigInteger로 변환
@@ -120,9 +98,7 @@ public class JwtUtil {
      */
     public static String encryptAesByBase64(String strToEncrypt) {
         try {
-            SecureRandom secureRandom = new SecureRandom();
-            byte[] iv = new byte[16];
-            secureRandom.nextBytes(iv); // ✅ 랜덤 IV 생성
+            byte[] iv = new byte[16]; // 초기화 백터 (IV)
             IvParameterSpec ivspec = new IvParameterSpec(iv);
 
             SecretKeySpec secretKey = getSecretKey();
@@ -131,16 +107,15 @@ public class JwtUtil {
 
             byte[] encryptedText = cipher.doFinal(strToEncrypt.getBytes(StandardCharsets.UTF_8));
 
-            byte[] combined = new byte[iv.length + encryptedText.length];
-            System.arraycopy(iv, 0, combined, 0, iv.length);
-            System.arraycopy(encryptedText, 0, combined, iv.length, encryptedText.length);
+            //Base64 인코딩 후 반환
+            return Base64.getEncoder().encodeToString(encryptedText);
 
-            return Base64.getEncoder().encodeToString(combined);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+
     // AES56으로 암호화된 문자열을 복호화 하는 메서드
     public static String decryptAesByBase64(String strToDecrypt) {
         try {

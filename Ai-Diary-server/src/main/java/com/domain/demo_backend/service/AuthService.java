@@ -46,11 +46,11 @@ public class AuthService {
 
     public String login(LoginRequest loginRequest) {
 
-        User user = userMapper.findByEmail(loginRequest.getEmail());
+        User user = userMapper.findByUserId(loginRequest.getUserId());
         // 카카오 로그인 로직 ? 로그인 type이 social / normal 구분 > normal 안에서 찾아야함
         // 디버깅
         log.info("DB에서 가져온 User: " + user);
-        log.info("LoginRequest email: " + loginRequest.getEmail());
+        log.info("LoginRequest UserID: " + loginRequest.getUserId());
         log.info("DB 해시값: " + user.getHashedPassword());
         log.info("입력된 해시값: " + PasswordUtil.sha256(loginRequest.getPassword()));
 
@@ -69,7 +69,7 @@ public class AuthService {
         }
         log.info("JWT 성공");
         // 비밀번호를 포함하지 않은 사용자 정보를 JWT에 포함
-        return jwtUtil.createToken(user.getUsername(), user.getUserSqno(), user.getEmail());
+        return jwtUtil.createToken(user.getUsername(), user.getUserSqno(), user.getUserId());
     }
 
     public class DuplicateEmailException extends RuntimeException {
@@ -86,7 +86,7 @@ public class AuthService {
         if (userMapper.findByUserEmail(registerRequest.getEmail()) != null) {
             throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
         }
-//        if (userMapper.findByEmail(registerRequest.getEmail()) != null) {
+//        if (userMapper.findByUserId(registerRequest.getUserId()) != null) {
 //            log.info("존재하는 아이디 실패");
 //
 //            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
@@ -98,6 +98,7 @@ public class AuthService {
 
         log.info("유효성 통과");
         User user = User.builder()
+                .userId(registerRequest.getUserId())
                 .username(registerRequest.getUsername())
                 .password(registerRequest.getPassword())
                 .hashedPassword(PasswordUtil.sha256(registerRequest.getPassword()))
@@ -256,8 +257,8 @@ public class AuthService {
     // 이미 존재하는 사용자 아이디인지 확인하고 중복되면 예외 발생
     @Transactional
     public void nonMember(RegisterRequest registerRequest) {
-        log.info("회원탈퇴 서비스 진입: " + registerRequest.getEmail());
-        User existingUser = userMapper.findByEmail(registerRequest.getEmail());
+        log.info("회원탈퇴 서비스 진입: " + registerRequest.getUserId());
+        User existingUser = userMapper.findByUserId(registerRequest.getUserId());
         if (existingUser == null) {
             log.info("회원탈퇴 실패: 해당 사용자가 존재하지 않습니다.");
             throw new IllegalArgumentException("해당 사용자가 존재하지 않습니다.");

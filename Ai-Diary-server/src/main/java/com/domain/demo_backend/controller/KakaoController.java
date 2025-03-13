@@ -31,6 +31,12 @@ public class KakaoController {
     private final AuthService authService;
     private final JwtUtil jwtUtil;
 
+    // 생성자 주입
+    @Autowired
+    public KakaoController(KakaoService kakaoService, JwtUtil jwtUtil) {
+        this.kakaoService = kakaoService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @Value("${KAKAO_CLIENT_ID}")
     private String clientId;
@@ -43,74 +49,30 @@ public class KakaoController {
     private static final String KAKAO_URL = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
 
 
-    @Autowired
-    public KakaoController(KakaoService kakaoService, AuthService authService, JwtUtil jwtUtil) {
-        this.kakaoService = kakaoService;
-        this.authService = authService;
-        this.jwtUtil = jwtUtil;
-    }
-
     @PostMapping("/login")
-    public ResponseEntity<?> kakaoLogin(@RequestBody Map<String, String> requestBody) {
-        log.info("🔹 카카오 로그인 시작");
-
-        String kakaoAccessToken = requestBody.get("token");
-        System.out.println("📌 카카오에서 받은 access_token: " + kakaoAccessToken);
-
-        if (kakaoAccessToken == null || kakaoAccessToken.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Invalid Kakao Token"));
-        }
-
-        // 🔹 카카오 토큰 검증
-        String kakaoResponse = validateKakaoToken(kakaoAccessToken);
-        if (kakaoResponse == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid Kakao Token"));
-        }
-
-        // 🔹 사용자 정보 가져오기
-        KakaoUserInfo kakaoUserInfo = kakaoService.getKakaoUserInfo(kakaoAccessToken);
-        if (kakaoUserInfo == null) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to get user info"));
-        }
-
+    public ResponseEntity<?> kakaoLogin(@RequestBody KakaoAuthRequest kakaoAuthRequest) {
         log.info("@@@@@@@@@@@@@@@@@@@@@@@@");
         log.info("kakao login");
         log.info("client_id : " + clientId);
         log.info("redirectUri : " + redirectUri);
 
-        // 🔹 사용자 등록 또는 조회
-        User user = kakaoService.registerKakaoUser(kakaoUserInfo, kakaoAccessToken);
+        // 1. 받은 AccessToken 으로 사용자 정보 가져오기
+        KakaoUserInfo kakaoUserInfo = kakaoService.getKakaoUserInfo(kakaoAuthRequest.getAccessToken());
 
-        // 🔹 JWT 발급
+        // 2. 사용자 DB 저장 또는 조회
+        User user = kakaoService.registerKakaoUser(kakaoUserInfo, kakaoAuthRequest.getAccessToken());
+
+
+        // 회원가입 대신 카카오 로그인을 사용한다면 > clientId, kakaoAcessToken 을 password, HashedPassword로 저장하기
         String jwtToken = jwtUtil.createToken(user.getUsername(), user.getUserSqno(), user.getUserId());
-        return ResponseEntity.ok(Map.of("jwtToken", jwtToken));
+
+
+        // 3. JWT 발급 또는 성공 메시지 반환
+        return ResponseEntity.ok("카카오 로그인 성공! 사용자: " + user.getUsername());
+
+        //  return "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=" + redirectUri + "&response_type=code&scope=account_email,gender";
+        //    return null;
     }
-
-    // ✅ 카카오 토큰 유효성 검사
-    public String validateKakaoToken(String kakaoAccessToken) {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + kakaoAccessToken);
-
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        try {
-            ResponseEntity<String> response = restTemplate.exchange(
-                    "https://kapi.kakao.com/v1/user/access_token_info",
-                    HttpMethod.GET,
-                    entity,
-                    String.class
-            );
-
-            System.out.println("✅ 카카오 토큰 검증 성공: " + response.getBody());
-            return response.getBody();
-        } catch (HttpClientErrorException e) {
-            System.err.println("❌ 카카오 토큰 검증 실패: " + e.getMessage());
-            return null;
-        }
-    }
-
-
 
     @GetMapping("/callback")
     public String getAccessToken(@RequestParam String code) {
@@ -148,12 +110,10 @@ public class KakaoController {
         return "Access Token 발급 성공! : " + accessToken;
     }
 
-
     @PostMapping("/sendRecord")
     public ResponseEntity<String> sendRecord(
             @RequestHeader(value = "Authorization", required = true) String authorization,
-            @RequestBody Map<String, Object> data)
-    {
+            @RequestBody Map<String, Object> data) {
 
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("카카오 토큰이 필요");

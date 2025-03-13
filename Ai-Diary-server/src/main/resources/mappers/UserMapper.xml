@@ -13,6 +13,12 @@
                 IFNULL(#{nickname}, #{userId}), #{role}, #{username}, #{createdAt}, #{updatedAt}, 'N');
     </insert>
 
+    <insert id="insertKakaoUser" parameterType="com.domain.demo_backend.user.domain.User">
+        INSERT INTO users (user_id, password, hashed_password, email, phone, nickname, role, username, created_at,   updated_at, socialType)
+        VALUES (#{userId}, #{password}, #{hashedPassword}, #{email}, #{phone},
+                IFNULL(#{nickname}, #{userId}), #{role}, #{username}, #{createdAt}, #{updatedAt}, 'K');
+    </insert>
+
 
     <update id="updateUserSocialType" parameterType="com.domain.demo_backend.user.domain.User">
         UPDATE users

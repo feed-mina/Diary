@@ -9,7 +9,7 @@ import "notyf/notyf.min.css";
 
 const notyf = new Notyf();
 const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_JS_KEY || "";
-const REDIRECT_URI = window.location.origin + "/project2/oauth/callback";
+const REDIRECT_URI = window.location.origin + "/project1/oauth/callback";
 console.log("Kakao API Key:", KAKAO_CLIENT_ID);
 console.log("API URL:", import.meta.env.VITE_API_URL);
 

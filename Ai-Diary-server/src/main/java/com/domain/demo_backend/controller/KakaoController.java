@@ -28,7 +28,6 @@ public class KakaoController {
     // application.properties 에 있는 값 불러오기
 
     private final KakaoService kakaoService;
-    private final AuthService authService;
     private final JwtUtil jwtUtil;
 
     // 생성자 주입
@@ -70,8 +69,7 @@ public class KakaoController {
         // 3. JWT 발급 또는 성공 메시지 반환
         return ResponseEntity.ok("카카오 로그인 성공! 사용자: " + user.getUsername());
 
-        //  return "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=" + redirectUri + "&response_type=code&scope=account_email,gender";
-        //    return null;
+
     }
 
     @GetMapping("/callback")

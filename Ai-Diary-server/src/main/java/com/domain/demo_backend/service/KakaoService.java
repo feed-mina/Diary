@@ -44,6 +44,7 @@ public class KakaoService {
                 Map.class
         );
 
+        log.info("response : " + response);
         Map<String, Object> body = response.getBody();
 
         if (body == null) {
@@ -53,34 +54,57 @@ public class KakaoService {
         log.info("body : " + body);
         log.info("response : " + response);
 
-        Map<String, Object> kakaoAccount = (Map<String, Object>) response.getBody().get("kakao_account");
+
+        // 카카오 계정 정보 추출
+        Map<String, Object> kakaoAccount = (Map<String, Object>) body.get("kakao_account");
         Map<String, Object> properties = (Map<String, Object>) body.get("properties");
 
+        Long id = ((Number) body.get("id")).longValue();
+        String connectedAt = (String) body.get("connected_at");
+        String nickname = (String) properties.get("nickname");
         String email = (String) kakaoAccount.get("email");
-        String nickname = (String) ((Map<String , Object>) response.getBody().get("properties")).get("nickname");
-        log.info("kakaoAccount : " + kakaoAccount);
-        log.info("properties : " + properties);
+        boolean hasEmail = (Boolean) kakaoAccount.getOrDefault("has_email", false);
+        boolean isEmailValid = (Boolean) kakaoAccount.getOrDefault("is_email_valid", false);
+        boolean isEmailVerified = (Boolean) kakaoAccount.getOrDefault("is_email_verified", false);
+        boolean hasAgeRange = (Boolean) kakaoAccount.getOrDefault("has_age_range", false);
+        boolean hasBirthday = (Boolean) kakaoAccount.getOrDefault("has_birthday", false);
+        boolean hasGender = (Boolean) kakaoAccount.getOrDefault("has_gender", false);
 
         log.info("nickname : " + nickname);
         log.info("email : " + email);
 
-        return  new KakaoUserInfo(email, nickname);
+        return new KakaoUserInfo(
+                id, connectedAt, nickname, email, hasEmail, isEmailValid, isEmailVerified, hasAgeRange, hasBirthday, hasGender
+        );
     }
 
 
     @Transactional
     public User registerKakaoUser(KakaoUserInfo kakaoUserInfo, String accessToken){
 //        이 로직대로라면 일반회원가입한 사람은 소셜 회원가입할때 이메일이 같으면 회원가입이 어려운데 이럴때 어떻게 일반회원가입한 사람이 카카오로 로그인도 가능하게 할까?
-        if(userMapper.findByUserEmail(kakaoUserInfo.getEmail()) != null){
-            throw new utility.DuplicateEmailException("이미 존재하는 이메일입니다.");
+        String email = kakaoUserInfo.getEmail();
+
+        if (email == null || email.isEmpty()) {
+            throw new RuntimeException("카카오 계정에 이메일 정보가 없습니다.");
         }
 
+        User existingUser = userMapper.findByUserEmail(kakaoUserInfo.getEmail());
+
+        if (existingUser != null) {
+            // 기존 회원이 존재하면 소셜 정보를 업데이트 (예: 일반 가입한 유저가 카카오 로그인 추가)
+            existingUser.setSocialType("K");
+            existingUser.setVerifyYn("Y");
+            userMapper.updateUser(existingUser);
+            return existingUser;
+        }
+
+
         User user = User.builder()
-                .userId("kakao_" + kakaoUserInfo.getEmail())
+                .userId("kakao_" + (kakaoUserInfo.getId() != null ? kakaoUserInfo.getId() : email))
                 .password(accessToken)
                 .hashedPassword(PasswordUtil.sha256(accessToken))
-                .email(kakaoUserInfo.getEmail())
-                .username(kakaoUserInfo.getNickname())
+                .email(email)
+                .username(kakaoUserInfo.getNickname() != null ? kakaoUserInfo.getNickname() : "카카오 사용자")
                 .role("ROLE_USER")
                 .verifyYn("Y") // 카카오는 인증 완료니까 Y!
                 .socialType("K") // 소셜 타입은 K!
@@ -88,7 +112,7 @@ public class KakaoService {
                 .build();
 
 
-        userMapper.insertUser(user);
+        userMapper.insertKakaoUser(user);
         return user;
     }
 

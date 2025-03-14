@@ -63,6 +63,9 @@ public class JwtUtil {
 
     // 토큰생성
     public String createToken(String username, BigInteger userSqno, String userId) {
+        if (userSqno == null) {
+            throw new IllegalArgumentException("userSqno 값이 존재하지 않습니다.");
+        }
         Claims claims = Jwts.claims().setSubject(username);
         Date now = new Date();
         Date validity = new Date(now.getTime() + 1000 * 60 * 60 * 24);

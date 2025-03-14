@@ -152,6 +152,7 @@ export default {
               console.log("카카오 로그인 응답:", response);
               Swal.fire("카카오 로그인 성공", "로그인을 완료했습니다", "success");
 
+              localStorage.setItem("kakaoAccessToken", kakaoAccessToken);
               router.push("/diary/common").then(() => {
                 location.reload();
               });

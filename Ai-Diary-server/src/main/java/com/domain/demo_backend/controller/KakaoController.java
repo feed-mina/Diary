@@ -63,7 +63,7 @@ public class KakaoController {
 
 
         // 회원가입 대신 카카오 로그인을 사용한다면 > clientId, kakaoAcessToken 을 password, HashedPassword로 저장하기
-        String jwtToken = jwtUtil.createToken(user.getUsername(), user.getUserSqno(), user.getUserId());
+//        String jwtToken = jwtUtil.createToken(user.getUsername(), user.getUserSqno(), user.getUserId());
 
 
         // 3. JWT 발급 또는 성공 메시지 반환

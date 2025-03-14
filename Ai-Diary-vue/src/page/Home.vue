@@ -10,18 +10,21 @@ export default {
     const router = useRouter();
     const cookies = new Cookies(); // 쿠키 객체 생성
 
-    // 쿠키 변경 시 로그인 상태 업데이트
-    const updateLoginStatus = () => {
-      isLoggedIn.value = !!cookies.get("jwt");
-    };
-    onMounted(() => {
-      console.log('Home cookiess.getAll', cookies.getAll());
-      updateLoginStatus(); // 초기 상태 설정
+    const isLoggedIn = (() => {
+      const userId = localStorage.getItem("userId");
+      const kakaoAccessToken = localStorage.getItem("kakaoAccessToken");
+
+      // userId가 없으면 kakaoAccessToken을 확인
+      return !!userId || !!kakaoAccessToken;
     });
+    // 쿠키 변경 시 로그인 상태 업데이트
+    // const updateLoginStatus = () => {isLoggedIn.value = !!cookies.get("jwt");};
+    // onMounted(() => {console.log('Home cookiess.getAll', cookies.getAll());
+      // updateLoginStatus(); // 초기 상태 설정});
 
     //const isLoggedIn = computed(() => !!cookies.get("jwt"));
     // 로그인 상태 관리
-    const isLoggedIn = ref(!!cookies.get("jwt")); // 초기 상태 확인
+    // const isLoggedIn = ref(!!cookies.get("jwt")); // 초기 상태 확인
 
     console.log('isLoggedIn', isLoggedIn);
     console.log('cookies.get("jwt")', cookies.get("jwt"));
@@ -40,14 +43,14 @@ export default {
     watch(
         () => cookies.get("jwt"),
         () => {
-          console.log("JWT 쿠키 상태 변경 감지");
-          updateLoginStatus();
+          // console.log("JWT 쿠키 상태 변경 감지");
+          // updateLoginStatus();
         }
     );
     return {
       navigateTo,
       isLoggedIn,
-      login
+      // login
     }
   }
 };
@@ -112,12 +115,13 @@ export default {
 
 /* Bubble styling */
 .home-bubble {
+    margin-top: 5rem;
+    width: 30rem;
   display: flex;
   flex-direction: column; /* 수직 정렬 */
   justify-content: center;
   background: #e0f7fa;
   border-radius: 10px;
-  padding: 3rem;
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

@@ -1,52 +1,3 @@
-
-<script>
-import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
-import Cookies from "universal-cookie";
-
-export default {
-  name: "DiaryNav",
-  setup() {
-    const router = useRouter();
-    const cookies = new Cookies();
-
-    // ✅ 일반 로그인(userId) 또는 카카오 로그인(kakaoAccessToken) 여부 확인
-    const isLoggedIn = computed(() => {
-      const userId = localStorage.getItem("userId");
-      const kakaoAccessToken = localStorage.getItem("kakaoAccessToken");
-
-      // userId가 없으면 kakaoAccessToken을 확인
-      return !!userId || !!kakaoAccessToken;
-    });
-
-    const navigateTo = (route) => {
-      router.push(route);
-    };
-
-    const logout = () => {
-      // 로컬스토리지에서 userId, kakaoAccessToken 삭제
-      localStorage.removeItem("userId");
-      localStorage.removeItem("kakaoAccessToken");
-
-      // 쿠키에서 JWT 삭제
-      cookies.remove("jwt", { path: "/" });
-
-      // 홈으로 이동 후 새로고침
-      router.push("/").then(() => {
-        location.reload();
-      });
-    };
-
-    return {
-      isLoggedIn,
-      navigateTo,
-      logout
-    };
-  }
-};
-</script>
-
-
 <template>
   <div class="nav-wrap">
     <div class="signup-button-wrap">
@@ -69,6 +20,49 @@ export default {
     </nav>
   </div>
 </template>
+
+<script>
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+
+export default {
+  name: "DiaryNav",
+  setup() {
+    const router = useRouter();
+
+    // ✅ `localStorage`에서 로그인 상태 확인 (JWT 없이)
+    const isLoggedIn = computed(() => {
+      const userId = localStorage.getItem("email");
+      const kakaoAccessToken = localStorage.getItem("kakaoAccessToken");
+
+      // userId 또는 kakaoAccessToken이 있으면 로그인 상태
+      return !!userId || !!kakaoAccessToken;
+    });
+
+    const navigateTo = (route) => {
+      router.push(route);
+    };
+
+    const logout = () => {
+      // ✅ `localStorage`에서 로그인 정보 삭제
+      localStorage.removeItem("userId");
+      localStorage.removeItem("kakaoAccessToken");
+
+      // ✅ 홈으로 이동 후 새로고침
+      router.push("/").then(() => {
+        location.reload();
+      });
+    };
+
+    return {
+      isLoggedIn,
+      navigateTo,
+      logout
+    };
+  }
+};
+</script>
+
 <style>
 .nav-wrap {
   flex-shrink: 0;
@@ -111,7 +105,6 @@ button:hover {
   transform: scale(1.05);
 }
 
-
 .post-it-nav1,
 .post-it-nav2 {
   margin-top: 1rem;
@@ -120,5 +113,4 @@ button:hover {
   align-items: center;
   gap: 1rem; /* 버튼 간격 */
 }
-
 </style>

@@ -62,7 +62,7 @@ public class JwtUtil {
     }
 
     // 토큰생성
-    public String createToken(String username, BigInteger userSqno, String userId) {
+    public String createToken(String username, BigInteger userSqno, String email) {
         if (userSqno == null) {
             throw new IllegalArgumentException("userSqno 값이 존재하지 않습니다.");
         }
@@ -73,7 +73,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setClaims(claims)
                 .claim("userSqno", userSqno.toString()) //
-                .claim("userId", userId)// 사용자 고유 식별자 추가
+                .claim("email", email)// 사용자 고유 식별자 추가
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(secretKey, SignatureAlgorithm.HS256)

@@ -69,7 +69,7 @@ export default {
       try {
         // API 호출 및 응답 처리
         const jwtToken = await sendEditData();
-        const userId = localStorage.getItem("userId");
+        const userId = localStorage.getItem("email");
         const userPassword = localStorage.getItem("password");
         console.log("성공, JWT:", jwtToken);
 

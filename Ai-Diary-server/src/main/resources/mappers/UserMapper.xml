@@ -29,7 +29,7 @@
     <select id="findByUserId" resultType="com.domain.demo_backend.user.domain.User">
         SELECT *
         FROM users
-        WHERE user_id = #{userId}
+        WHERE email = #{email}
     </select>
 
     <select id="findByUserPhone" resultType="com.domain.demo_backend.user.domain.User">
@@ -78,7 +78,7 @@
         UPDATE users
         SET delYn      = 'Y',
             updated_at = NOW()
-        WHERE user_id = #{userId}
+        WHERE email = #{email}
     </update>
 
 </mapper>

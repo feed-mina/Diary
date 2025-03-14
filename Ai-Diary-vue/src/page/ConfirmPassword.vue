@@ -32,7 +32,7 @@ export default {
     }
     // 로그인 상태 확인 후 리다이렉트
     onMounted(() => {
-      const userId = localStorage.getItem("userId");
+      const userId = localStorage.getItem("email");
       if (!userId) {
         confirmData.value = {
           checkId: "",

@@ -81,6 +81,7 @@ export default {
         console.log("로그인 성공, JWT:", jwtToken);
 
         localStorage.setItem("jwt", jwtToken);
+        localStorage.setItem("email",loginData.value.email);
         Swal.fire("로그인 성공", "로그인을 완료했습니다", "success");
 
         router.push("/diary/common").then(() => {

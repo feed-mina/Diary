@@ -15,7 +15,7 @@ export default {
     const router = useRouter();
     // 쿠키 객체 생성
     const cookies = new Cookies();
-    const userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem("email");
     console.log("userId : ", userId);
     const diaryContentData = ref({
       userId: userId || "",

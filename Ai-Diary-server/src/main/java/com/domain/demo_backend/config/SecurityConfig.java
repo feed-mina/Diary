@@ -93,13 +93,16 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4000")); // 프론트엔드 도메인
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "x-forwarded-for")); // 헤더 추가
-        configuration.setAllowCredentials(true);
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        configuration.setAllowCredentials(true);
+        configuration.addAllowedOrigin("http://localhost:4000");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", configuration);
+//        configuration.setAllowedOrigins(List.of("http://localhost:4000")); // 프론트엔드 도메인
+//        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+//        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "x-forwarded-for")); // 헤더 추가
         return source;
     }
 

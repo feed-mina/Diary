@@ -5,6 +5,7 @@ import com.domain.demo_backend.service.AuthService;
 import com.domain.demo_backend.service.KakaoService;
 import com.domain.demo_backend.user.domain.User;
 import com.domain.demo_backend.user.dto.KakaoAuthRequest;
+import com.domain.demo_backend.user.dto.KakaoAuthResponse;
 import com.domain.demo_backend.user.dto.KakaoUserInfo;
 import com.domain.demo_backend.user.dto.RegisterRequest;
 import com.domain.demo_backend.util.JwtUtil;
@@ -28,7 +29,6 @@ public class KakaoController {
     // application.properties 에 있는 값 불러오기
 
     private final KakaoService kakaoService;
-    private final AuthService authService;
     private final JwtUtil jwtUtil;
 
     // 생성자 주입
@@ -47,31 +47,23 @@ public class KakaoController {
     private String accessToken;
 
     private static final String KAKAO_URL = "https://kapi.kakao.com/v2/api/talk/memo/default/send";
-
-
     @PostMapping("/login")
     public ResponseEntity<?> kakaoLogin(@RequestBody KakaoAuthRequest kakaoAuthRequest) {
-        log.info("@@@@@@@@@@@@@@@@@@@@@@@@");
+        // 로그로 디버그 정보 출력
         log.info("kakao login");
         log.info("client_id : " + clientId);
         log.info("redirectUri : " + redirectUri);
 
-        // 1. 받은 AccessToken 으로 사용자 정보 가져오기
+        // 1. 받은 AccessToken으로 카카오에서 사용자 정보를 가져와
         KakaoUserInfo kakaoUserInfo = kakaoService.getKakaoUserInfo(kakaoAuthRequest.getAccessToken());
 
-        // 2. 사용자 DB 저장 또는 조회
-        User user = kakaoService.registerKakaoUser(kakaoUserInfo, kakaoAuthRequest.getAccessToken());
+        // 2. 사용자 정보를 이용해 DB에 회원가입 또는 조회를 진행해
+        // JWT 토큰을 발급받아
+        String jwtToken = kakaoService.registerKakaoUser(kakaoUserInfo, kakaoAuthRequest.getAccessToken());
 
-
-        // 회원가입 대신 카카오 로그인을 사용한다면 > clientId, kakaoAcessToken 을 password, HashedPassword로 저장하기
-        String jwtToken = jwtUtil.createToken(user.getUsername(), user.getUserSqno(), user.getUserId());
-
-
-        // 3. JWT 발급 또는 성공 메시지 반환
-        return ResponseEntity.ok("카카오 로그인 성공! 사용자: " + user.getUsername());
-
-        //  return "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=" + redirectUri + "&response_type=code&scope=account_email,gender";
-        //    return null;
+        // 3. JWT 토큰을 클라이언트에 응답으로 보내줘
+        KakaoAuthResponse response = new KakaoAuthResponse(kakaoUserInfo, jwtToken);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/callback")

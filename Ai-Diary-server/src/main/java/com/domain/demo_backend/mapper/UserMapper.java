@@ -2,6 +2,7 @@ package com.domain.demo_backend.mapper;
 
 import com.domain.demo_backend.user.domain.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +17,8 @@ public interface UserMapper {
     void insertUser(User user);
 
     User findByUsername(String username);
+    void updateUpdatedAt(@Param("email") String email);
+
 
 
     void updateVerifyYn(String email);

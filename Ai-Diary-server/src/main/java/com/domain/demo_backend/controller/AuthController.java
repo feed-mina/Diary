@@ -2,6 +2,7 @@ package com.domain.demo_backend.controller;
 
 import com.domain.demo_backend.service.AuthService;
 import com.domain.demo_backend.user.dto.*;
+import com.domain.demo_backend.util.JwtUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -34,7 +35,6 @@ public class AuthController {
         this.authService = authService;
     }
 
-
     @Operation(summary = "회원 로그인", description = "id와 password와 haspassword가 일치하다면 로그인, 아니면 팝업 경고창이 뜬다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "일반 회원 로그인 성공"),
@@ -45,10 +45,14 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
-            String jwt = authService.login(loginRequest);
-
+            String jwtToken =  authService.login(loginRequest);
             log.info("로그인 성공");
-            return ResponseEntity.ok(new LoginResponse(jwt));
+//            return ResponseEntity.ok(new LoginResponse(jwt));
+            // 회원가입 대신 카카오 로그인을 사용한다면 > clientId, kakaoAcessToken 을 password, HashedPassword로 저장하기
+
+
+            // 3. JWT 발급 또는 성공 메시지 반환
+            return ResponseEntity.ok(jwtToken);
         } catch (RuntimeException e) {
             // 명확한 에러 메시지 반환
             Map<String, String> errorResponse = new HashMap<>();

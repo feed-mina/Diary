@@ -30,33 +30,33 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String authorizationHeader = request.getHeader("Authorization");
-        System.out.println("Authorization Header: " + authorizationHeader);
+        System.out.println("@@@@Authorization Header: " + authorizationHeader);
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String token = authorizationHeader.substring(7);
 
-            System.out.println("token : " + token);
+            System.out.println("@@@@token : " + token);
             try {
                 Claims claims = jwtUtil.validateToken(token); // 토큰 검증
                 // 유효하지 않은 토큰 예외 처리
-                System.out.println("claims: " + claims);
+                System.out.println("@@@@claims: " + claims);
                 String username = claims.getSubject();
-                System.out.println("username : " + username);
+                System.out.println("@@@@username : " + username);
                 String userId = claims.get("userId", String.class);
                 String userSqnoStr = claims.get("userSqno", String.class); // String으로 읽기
-                System.out.println("userSqnoStr : " + userSqnoStr);
+                System.out.println("@@@@userSqnoStr : " + userSqnoStr);
                 BigInteger userSqno = new BigInteger(userSqnoStr);
-                System.out.println("userSqno : " + userSqno);
+                System.out.println("@@@@userSqno : " + userSqno);
 
                 if (username != null) {
                     List<GrantedAuthority> authorities = List.of(() -> "ROLE_USER");
-                    System.out.println("authorities: " + authorities);
+                    System.out.println("@@@@authorities: " + authorities);
                     CustomUserDetails userDetails = new CustomUserDetails(username, userSqno, userId, List.of(new SimpleGrantedAuthority("ROLE_USER")));
 
-                    System.out.println("userDetails: " + userDetails);
+                    System.out.println("@@@@userDetails: " + userDetails);
                     // 인증 토큰 생성
                     Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    System.out.println("authentication: " + authentication);
+                    System.out.println("@@@@authentication: " + authentication);
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
@@ -70,8 +70,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response); // 다음 필터로 이동
-        System.out.println("request: " + request);
-        System.out.println("response: " + response);
+        System.out.println("@@@@request: " + request);
+        System.out.println("@@@@response: " + response);
     }
 
 

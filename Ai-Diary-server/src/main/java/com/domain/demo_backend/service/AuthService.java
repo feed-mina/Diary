@@ -46,12 +46,12 @@ public class AuthService {
 
     public String login(LoginRequest loginRequest) {
 
-        User user = userMapper.findByUserId(loginRequest.getUserId());
+        User user = userMapper.findByUserEmail(loginRequest.getEmail());
         // 카카오 로그인 로직 ? 로그인 type이 social / normal 구분 > normal 안에서 찾아야함
         // 디버깅
         log.info("DB에서 가져온 User: " + user);
-        log.info("LoginRequest UserID: " + loginRequest.getUserId());
-        log.info("DB 해시값: " + user.getHashedPassword());
+//        log.info("LoginRequest UserID: " + loginRequest.getUserId());
+//        log.info("DB 해시값: " + user.getHashedPassword());
         log.info("입력된 해시값: " + PasswordUtil.sha256(loginRequest.getPassword()));
 
         if (user == null) {
@@ -68,7 +68,7 @@ public class AuthService {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
         log.info("JWT 성공");
-        // 비밀번호를 포함하지 않은 사용자 정보를 JWT에 포함
+        // 비밀번호를 포함하지 않은 사용자 정보를 JWT에 포함 users의 값은 전부 받아온다.
         return jwtUtil.createToken(user.getUsername(), user.getUserSqno(), user.getUserId());
     }
 
@@ -99,9 +99,9 @@ public class AuthService {
         log.info("유효성 통과");
         User user = User.builder()
                 .userId(registerRequest.getUserId())
-                .username(registerRequest.getUsername())
                 .password(registerRequest.getPassword())
                 .hashedPassword(PasswordUtil.sha256(registerRequest.getPassword()))
+                .username(registerRequest.getUsername())
                 .phone(registerRequest.getPhone())
                 .email(registerRequest.getEmail())
                 .role("ROLE_USER")

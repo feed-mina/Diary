@@ -29,10 +29,7 @@ export default {
     const fetchDiaryList = async () => {
       try {
         const response = await axios.get('http://localhost:8080/api/diary/viewDiaryList', {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-            'Content-Type': 'application/json',
-          },
+       
           params: {
             userId: showOnlyMine.value ? loggedInUserId : null,
             pageNo: page.value.pageNo,

@@ -102,6 +102,15 @@ public class KakaoController {
         return "Access Token 발급 성공! : " + accessToken;
     }
 
+    @GetMapping("/pomoklogin")
+    public String pomoklogin() {
+        log.info("@@@@@@@@@@@@@@@@@@@@@@@@");
+        log.info("kakao login");
+        log.info("client_id : " + clientId);
+        log.info("redirectUri : " + redirectUri);
+
+        return "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=" + redirectUri;
+    }
     @PostMapping("/sendRecord")
     public ResponseEntity<String> sendRecord(
             @RequestHeader(value = "Authorization", required = true) String authorization,

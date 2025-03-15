@@ -120,10 +120,10 @@ public class DiaryService {
      */
 
 
-    public Set<DiaryResponse> findDiaryById(String diaryId, BigInteger userId) {
+    public Set<DiaryResponse> findDiaryById(BigInteger diaryId, String userId) {
 
         DiaryRequest diaryReq = new DiaryRequest();
-        return diaryMapper.findDiaryItemById(diaryReq.getDiaryId())
+        return diaryMapper.findDiaryItemById(String.valueOf(diaryReq.getDiaryId()))
                 .stream() // set을 stream으로 변환
                 .map(this::convertToDto) // DTO 변환 적용
                 .collect(Collectors.toSet());  // 다시 Set으로 변환

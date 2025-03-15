@@ -1,9 +1,7 @@
 <script>
 import {computed, ref} from 'vue'; // 사용하지 않는 reactive, onMounted 삭제
 import Home from '@/page/Home.vue';
-import About from '@/page/About.vue';
 import NotFound from '@/page/NotFound.vue';
-import ComponentC from '@/components/ComponentC.vue';
 import DiaryList from "@/page/DiaryList.vue";
 
 import DiaryHeader from "@/components/Header.vue";
@@ -20,10 +18,8 @@ export default {
     // 라우터 튜토리얼
     const routes = {
       '/': Home,
-      '/about': About,
       '/notFound': NotFound,
       '/diary/common': DiaryList,
-      '/componentC': ComponentC,
     };
 
     const currentPath = ref(window.location.hash);

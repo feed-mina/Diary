@@ -66,7 +66,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())  // CSRF 비활성화
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()  // Swagger 관련 URL 허용
-                        .requestMatchers(HttpMethod.GET, "/api/auth/**", "/api/diary/**").permitAll() // GET 요청 허용 , 로그인, 회원가입 허용
+                        .requestMatchers(HttpMethod.GET, "/api/timer/**","/api/auth/**", "/api/diary/**").permitAll() // GET 요청 허용 , 로그인, 회원가입 허용
                         .requestMatchers(HttpMethod.POST, "/api/auth/**", "/api/diary/**").permitAll() // POST 요청 허용 , 로그인, 회원가입 허용
                         .requestMatchers(HttpMethod.POST, "/api/kakao/**").permitAll()  //  추가!
                         .requestMatchers("/resources/**", "/static/**", "/error").permitAll()

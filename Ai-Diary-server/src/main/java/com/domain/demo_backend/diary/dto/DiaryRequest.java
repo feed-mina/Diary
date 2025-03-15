@@ -17,7 +17,7 @@ public class DiaryRequest {
     private int pageNo = 1;
     // 페이지 크기
     private int pageSize = 10;
-    private String diaryId;
+    private BigInteger diaryId;
     // 검색 타입(ID, Name, Title)
     private String searchType;
     // 검색어

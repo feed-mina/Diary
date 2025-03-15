@@ -104,17 +104,19 @@ export default {
       await fetchDiaryList();
     };
 
-    const viewDiary = async (diaryId, userId) => {
+    const viewDiary = async (diaryId, diaryUserId) => {
+      console.log("선택한 일기의 userId:", diaryUserId);
       // userId를 동적으로 반영하여 URL 생성
-      const requestUrl = `http://localhost:8080/api/diary/viewDiaryItem/${diaryId}?userId=${loggedInUserId}`;
+      const requestUrl = `http://localhost:8080/api/diary/viewDiaryItem/${diaryId}?userId=${diaryUserId}`;
 
       console.log("📌 요청 URL:", requestUrl);
 
+      // cookies.set("diaryUserId", diaryUserId);
       cookies.set("diaryId", diaryId);
       cookies.set("loggedInUserId", loggedInUserId);  // 필요하면 쿠키에도 저장 가능
 
       await fetchDiaryList();
-      router.push(`/diary/view/${diaryId}?userId=${loggedInUserId}`); // userId 포함하여 이동
+      router.push(`/diary/view/${diaryId}?userId=${diaryUserId}`); // userId 포함하여 이동
     };
     // 컴포넌트 마운트 시 일기 목록 로드
 

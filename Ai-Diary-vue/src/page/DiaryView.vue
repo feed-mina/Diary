@@ -62,12 +62,14 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`http://localhost:8080/api/diary/getDiaryItem/${diaryId}?userId=${userId}`, {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-            'Content-Type': 'application/json',
-          }
-        });
+        const response = await axios.get(`http://localhost:8080/api/diary/getDiaryItem/${diaryId}?userId=${userId}`
+        // , {
+        //   headers: {
+        //     Authorization: `Bearer ${jwtToken}`,
+        //     'Content-Type': 'application/json',
+        //   }
+        // }
+      );
 
         diaryData.value = response.data;
         console.log("📌 서버 응답 데이터:", diaryData.value);
@@ -89,11 +91,12 @@ export default {
       }
 
       try {
-        const response = await axios.get(`http://localhost:8080/api/diary/viewDiaryItem/${diaryId}`, {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-            'Content-Type': 'application/json',
-          },
+        const response = await axios.get(`http://localhost:8080/api/diary/viewDiaryItem/${diaryId}`
+        , {
+          // headers: {
+          //   Authorization: `Bearer ${jwtToken}`,
+          //   'Content-Type': 'application/json',
+          // },
           params: {
             userId: userId, // 체크박스 상태에 따라 userId필터링
           },
@@ -170,15 +173,17 @@ export default {
         };
         console.log('diaryDataToSave', diaryDataToSave);
 
-        const response = await axios.post(`http://localhost:8080/api/diary/getDiaryList2/${diaryContentItem.value.diaryId}/${userId}`, diaryDataToSave, {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-            "Content-Type": "application/json",
-            "X-Forwarded-For": "127.0.0.1",
-          },
-          withCredentials: true, // 쿠키 인증 허용
+        const response = await axios.post(`http://localhost:8080/api/diary/getDiaryList2/${diaryContentItem.value.diaryId}/${userId}`, diaryDataToSave
+        // ,{
+        //   headers: {
+        //     Authorization: `Bearer ${jwtToken}`,
+        //     "Content-Type": "application/json",
+        //     "X-Forwarded-For": "127.0.0.1",
+        //   },
+        //   withCredentials: true, // 쿠키 인증 허용
 
-        });
+        // }
+      );
 
         console.log('response', response);
         // alert("일기장이 저장되었습니다");

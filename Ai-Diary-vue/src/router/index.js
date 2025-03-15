@@ -1,10 +1,7 @@
-import {createRouter, createWebHistory} from "vue-router";
+import {createRouter, createWebHistory, createWebHashHistory } from "vue-router";
 import Home from "@/page/Home.vue";
 import About from "@/page/About.vue";
 import NotFound from "@/page/NotFound.vue";
-import ComponentA from "@/components/ComponentA.vue";
-import ComponentB from "@/components/ComponentB.vue";
-import ComponentC from "@/components/ComponentC.vue";
 import Tutorial from "@/page/Tutorial.vue";
 import Signin from "@/page/Signin.vue";
 import LoginPage from "@/page/LoginPage.vue";
@@ -18,15 +15,14 @@ import EditPassword from "@/page/EditPassword.vue";
 import ConfirmPassword from "@/page/ConfirmPassword.vue";
 import ConfirmPassword2 from "@/page/ConfirmPassword2.vue";
 import EditNewPassword from "@/page/EditNewPassword.vue";
+import LoginView from '../components/LoginView.vue';
+import MainView from '../components/MainView.vue';
 
 import EmailVerificationPage from '@/page/VerificationPage.vue';
 const routes = [
     {path: "/", name: "Home", component: Home},
     {path: "/about", name: "About", component: About},
     {path: "/notFound", name: "NotFound", component: NotFound},
-    {path: "/componentA", name: "ComponentA", component: ComponentA},
-    {path: "/componentB", name: "ComponentB", component: ComponentB},
-    {path: "/componentC", name: "ComponentC", component: ComponentC},
     {path: "/diary/tutorial", name: "Tutorial", component: Tutorial},
     {path: "/signin", name: "Signin", component: Signin},
     {path: "/login", name: "LoginPage", component: LoginPage},
@@ -39,6 +35,8 @@ const routes = [
     {path: "/mypage/confirmPassword", name: "ConfirmPassword", component: ConfirmPassword},
     {path: "/mypage/confirmPassword2", name: "ConfirmPassword2", component: ConfirmPassword2},
     {path: "/edit/newPassword", name: "EditNewPassword", component: EditNewPassword}, //EditNewPassword.vue
+    { path: '/pomoLogin', component: LoginView },
+    { path: '/pomoMain', component: MainView },
    
   { path: '/email-verification', name: 'EmailVerificationPage', component: EmailVerificationPage }, {},
     {path: "/edit/password", name: "EditPassword", component: EditPassword},
@@ -50,7 +48,7 @@ const routes = [
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(),
     routes,
 });
 

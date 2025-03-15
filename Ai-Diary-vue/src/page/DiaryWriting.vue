@@ -14,6 +14,8 @@ export default {
   },
   setup() {
     const router = useRouter();
+    const loginToken = localStorage.getItem('jwtToken'); // 저장된 토큰 가져오기
+
     // 쿠키 객체 생성
     const cookies = new Cookies();
     const userId = localStorage.getItem("userId");
@@ -43,27 +45,27 @@ export default {
     ];
 
 
-    axios.interceptors.request.use(
-        (config) => {
-          console.log("Axios 요청 설정:", config);
-          return config;
-        },
-        (error) => {
-          console.error("Axios 요청 에러:", error);
-          return {success: false, error: error.response?.data || "오류가 발생했습니다."};
-        }
-    );
+    // axios.interceptors.request.use(
+    //     (config) => {
+    //       console.log("Axios 요청 설정:", config);
+    //       return config;
+    //     },
+    //     (error) => {
+    //       console.error("Axios 요청 에러:", error);
+    //       return {success: false, error: error.response?.data || "오류가 발생했습니다."};
+    //     }
+    // );
 
-    axios.interceptors.response.use(
-        (response) => {
-          console.log("Axios 응답 데이터:", response);
-          return response;
-        },
-        (error) => {
-          console.error("Axios 응답 에러:", error);
-          return Promise.reject(error);
-        }
-    );
+    // axios.interceptors.response.use(
+    //     (response) => {
+    //       console.log("Axios 응답 데이터:", response);
+    //       return response;
+    //     },
+    //     (error) => {
+    //       console.error("Axios 응답 에러:", error);
+    //       return Promise.reject(error);
+    //     }
+    // );
 
     const showValidationError = (message) => {
       Swal.fire({
@@ -147,9 +149,10 @@ export default {
           diaryStatus: hidden ? "true" : "false", // Boolean을 문자열로 변환
         }
         console.log('diaryDataToSave', diaryDataToSave);
-        const jwtToken = cookies.get("jwt")?.jwt; // 쿠키에서 jwt 속성 가져오기
-        console.log("jwtToken: ", jwtToken);
-        if (!jwtToken) {
+
+        // const jwtToken = cookies.get("jwt")?.jwt; // 쿠키에서 jwt 속성 가져오기
+        console.log("jwtToken: ", loginToken);
+        if (!loginToken) {
           // alert("JWT 토큰이 없습니다. 다시 로그인해주세요.");
           Swal.fire({
             title: "로그인 필요!",
@@ -163,16 +166,18 @@ export default {
           return;
         }
 
-        const response = await axios.post("http://localhost:8080/api/diary/addDiaryList", diaryDataToSave, {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-            "Content-Type": "application/json",
-            "X-Forwarded-For": "127.0.0.1",
-          },
-          withCredentials: true, // 쿠키 인증 허용
-        });
+        const response = await axios.post("http://localhost:8080/api/diary/addDiaryList", diaryDataToSave
+        // , {
+        //   headers: {
+        //     Authorization: `Bearer ${jwtToken}`,
+        //     "Content-Type": "application/json",
+        //     "X-Forwarded-For": "127.0.0.1",
+        //   },
+        //   withCredentials: true, // 쿠키 인증 허용
+        // }
+      );
 
-        console.log("jwtToken: ", jwtToken);
+        console.log("jwtToken: ", loginToken);
         console.log('response', response);
 
         // alert("일기가 저장되었습니다.");

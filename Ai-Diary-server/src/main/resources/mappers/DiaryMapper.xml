@@ -78,30 +78,12 @@
         ORDER BY reg_dt DESC
     </select>
 
-    <!-- 일기 List 보기-->
-    <select id="findDiaryList" parameterType="string" resultType="com.domain.demo_backend.diary.dto.DiaryResponse">
-        SELECT
-        diary_id AS diaryID,
-        user_sqno AS userSqno,
-        title,
-        content,
-        diary_status AS diaryStatus,
-        diary_type AS diaryType,
-        reg_dt AS regDt,
-        updt_dt AS updtDt
-        FROM diary
-        WHERE del_yn = 'N'
-        <if test="title != null and title != ''">
-            AND title LIKE CONCAT('%', #{title}, '%')
-        </if>
-        ORDER BY reg_dt DESC
-    </select>
 
     <!-- selectDiaryItem : 일기 상세 보기-->
     <select id="selectDiaryItem" parameterType="string" resultType="com.domain.demo_backend.diary.dto.DiaryResponse">
         SELECT
         diary_id AS diaryID,
-        user_id AS userID9,
+        user_id AS userID,
         user_sqno AS userSqno,
         title,
         content,
@@ -111,7 +93,7 @@
         updt_dt AS updtDt
         FROM diary
         WHERE diary_id = #{diaryId}
-        AND (user_sqno = #{userSqno} OR #{userSqno} IS NULL)
+        AND (user_id = #{userID} OR #{userID} IS NULL)
         AND del_yn = 'N'
     </select>
 

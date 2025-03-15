@@ -24,7 +24,7 @@ public class CustomUserDetails extends User {
     // Constructor for CustomUserDetails
     public CustomUserDetails(String username, BigInteger userSqno, String userId, Collection<? extends GrantedAuthority> authorities) {
         // Call the superclass (User) constructor
-        super(username, userId, authorities);
+        super(username, "dummy_password", authorities);
         this.username = username;
         this.userId = userId;
         this.userSqno = userSqno;

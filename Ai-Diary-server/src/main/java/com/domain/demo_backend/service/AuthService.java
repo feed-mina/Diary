@@ -46,23 +46,12 @@ public class AuthService {
 
     public String login(LoginRequest loginRequest) {
 
-<<<<<<< HEAD
         User user = userMapper.findByUserEmail(loginRequest.getEmail());
         // 카카오 로그인 로직 ? 로그인 type이 social / normal 구분 > normal 안에서 찾아야함
         // 디버깅
         log.info("DB에서 가져온 User: " + user);
 //        log.info("LoginRequest UserID: " + loginRequest.getUserId());
 //        log.info("DB 해시값: " + user.getHashedPassword());
-=======
-        User user = userMapper.findByUserId(loginRequest.getEmail());
-        // 카카오 로그인 로직 ? 로그인 type이 social / normal 구분 > normal 안에서 찾아야함
-        // 디버깅
-        log.info("DB에서 가져온 User: " + user);
-        log.info("LoginRequest UserID: " + loginRequest.getEmail());
-
-        log.info("LoginRequest UserID: " + loginRequest.getUserId());
-        log.info("DB 해시값: " + user.getHashedPassword());
->>>>>>> rebase-branch
         log.info("입력된 해시값: " + PasswordUtil.sha256(loginRequest.getPassword()));
 
         if (user == null) {
@@ -79,13 +68,8 @@ public class AuthService {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
         log.info("JWT 성공");
-<<<<<<< HEAD
         // 비밀번호를 포함하지 않은 사용자 정보를 JWT에 포함 users의 값은 전부 받아온다.
         return jwtUtil.createToken(user.getUsername(), user.getUserSqno(), user.getUserId());
-=======
-        // 비밀번호를 포함하지 않은 사용자 정보를 JWT에 포함
-        return jwtUtil.createToken(user.getUsername(), user.getUserSqno(), user.getEmail());
->>>>>>> rebase-branch
     }
 
     public class DuplicateEmailException extends RuntimeException {

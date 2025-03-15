@@ -92,13 +92,10 @@ public class DiaryService {
     }
 */
 
+    public Set<DiaryResponse> findDiaryById(DiaryRequest diaryReq) {
 
-
-
-    public Set<DiaryResponse> findDiaryById(BigInteger diaryId, String userId) {
-
-        DiaryRequest diaryReq = new DiaryRequest();
-        return diaryMapper.findDiaryItemById(String.valueOf(diaryReq.getDiaryId()))
+//        return diaryMapper.findDiaryItemById(String.valueOf(diaryReq.getUserId()))
+        return diaryMapper.selectDiaryItem(diaryReq)
                 .stream() // set을 stream으로 변환
                 .map(this::convertToDto) // DTO 변환 적용
                 .collect(Collectors.toSet());  // 다시 Set으로 변환
@@ -122,4 +119,37 @@ public class DiaryService {
                 .collect(Collectors.toSet());  // 다시 Set으로 변환
 
     }
+
+
+
+    public void addDiary(DiaryRequest diaryRequest, String ip, Authentication authentication) {
+
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        System.out.println("userDetails-다이어리서비스: " + userDetails);
+        diaryRequest.setUserSqno(userDetails.getUserSqno());
+
+        // 로깅을 위해 추가
+        System.out.println("diaryRequest-다이어리서비스: " + diaryRequest);
+        System.out.println("diaryRequest.toDiary()-다이어리서비스: " + diaryRequest.toDiary());
+        Diary diary = Diary.builder()
+                .userSqno(diaryRequest.getUserSqno() != null ? diaryRequest.getUserSqno() : userDetails.getUserSqno())
+                .title(diaryRequest.getTitle() != null ? diaryRequest.getTitle() : "Untitled")
+                .author(diaryRequest.getAuthor() != null ? diaryRequest.getAuthor() : "Undefined")
+                .userId(diaryRequest.getUserId() != null ? diaryRequest.getUserId() : "Undefined")
+                .content(diaryRequest.getContent() != null ? diaryRequest.getContent() : "")
+                .tag1(diaryRequest.getTag1() != null ? diaryRequest.getTag1() : "")
+                .tag2(diaryRequest.getTag2() != null ? diaryRequest.getTag2() : "")
+                .tag3(diaryRequest.getTag3() != null ? diaryRequest.getTag3() : "")
+                .emotion(diaryRequest.getEmotion() != null ? diaryRequest.getEmotion() : 0)
+                .diaryStatus(diaryRequest.getDiaryStatus() != null ? diaryRequest.getDiaryStatus() : "false")
+                .frstRegIp(ip != null ? ip : "127.0.0.1")
+                .frstRgstUspsSqno(userDetails.getUserSqno() != null ? userDetails.getUserSqno() : BigInteger.ZERO)
+                .build();
+
+
+        System.out.println("Diary 객체 생성 값: " + diary);
+
+        diaryMapper.insertDiary(diary);
+    }
+
 }

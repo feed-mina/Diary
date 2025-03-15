@@ -15,7 +15,7 @@ export default defineConfig({
     server: {
         port: 4000, // 포트 확인
     },
-  base: '/project1/', // <-- S3에서 사용될 프로젝트 폴더 지정
+  base: '/', // <-- S3에서 사용될 프로젝트 폴더 지정
     resolve: {
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url))

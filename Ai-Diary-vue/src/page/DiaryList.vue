@@ -30,58 +30,35 @@ export default {
     const fetchDiaryList = async () => {
       try {
         const response = await axios.get('http://localhost:8080/api/diary/viewDiaryList', {
-       
           params: {
             userId: showOnlyMine.value ? loggedInUserId : null,
             pageNo: page.value.pageNo,
             pageSize: page.value.pageSize,
           },
         });
+
         console.log("API 응답 데이터: ", response.data);
 
-        console.log("diaryList : ", response.data.diaryList, response.data.diaryList.length, "개");
+        // `diaryList`가 없을 경우 대비하여 기본값을 빈 배열로 설정
+        const diaryList = response.data.diaryList || [];
+        const total = response.data.total || 0;
+        const pageSize = response.data.pageSize || 5;
+        const pageNum = response.data.page || 1;
 
-        const {diaryList, total, pageSize, page: pageNum} = response.data;
-        // diaries.value = diaryList || [];
+        console.log("diaryList 개수: ", diaryList.length);
 
+        // `diaryList`에서 `diaryStatus`가 true이거나, showOnlyMine 조건에 맞는 데이터만 필터링
         diaries.value = diaryList.filter(diary => {
-          if (diary.diaryStatus) {
-            return true;
-          }
-          if (showOnlyMine.value && diary.userId === loggedInUserId) {
-            return true;
-          }
-          return false;
-        })
+          if (diary.diaryStatus) return true;
+          return showOnlyMine.value && diary.userId === loggedInUserId;
+        });
 
-        page.value = {pageNo: pageNum, pageSize, total};
+        page.value = { pageNo: pageNum, pageSize, total };
+
+        // 사용자 ID 배열 추출
         const userIds = diaryList.map(diary => diary.userId);
 
-        for (let i = 0; i < response.data.diaryList.length; i++) {
-          console.log("diaryList : ", diaryList);
-          console.log("diaryList : ", diaryList[i].userId);
-          console.log("userIds: ", userIds);
-          console.log("userId : ", userIds[i]);
-          if (diaryList[i].userId == loggedInUserId) {
-            console.log('localStorage에 매칭되는 id', diaryList[i].userId);
-            console.log("userId : ", userIds[i]);
-          }
-          // else {
-          //   console.log("showOnlyMine : ",showOnlyMine.value);
-          //   console.log("내 일기가 없음");
-          //   diaries.value = [];
-          //   page.value.total = 0;
-          // }
-        }
-        // userId 배열 추출
-
-        // const showMineEqualsList = response.data.diaryList;
-
-
-        // 내가 쓴 일기가 없을 경우 처리
         if (userIds.length === 0) {
-
-          console.log("showOnlyMine : ", showOnlyMine.value);
           console.log("내 일기가 없음");
           diaries.value = [];
           page.value.total = 0;
@@ -157,8 +134,9 @@ export default {
     <!-- 일기 목록 -->
     <div class="diaryList_content">
       <main class="diaryOtherList">
-        <div class="diaryListSection" v-if="filteredDiaries.length > 0">
-          <div v-for="diary in filteredDiaries" :key="diary.diaryId" @click="viewDiary(diary.diaryId)">
+        <!-- v-if로 존재 여부 확인 -->
+        <div class="diaryListSection" v-if="diaries.length > 0">
+          <div v-for="diary in diaries" :key="diary.diaryId" @click="viewDiary(diary.diaryId, diary.userId)">
             <div class="diary-post">
               <header>
                 <h3>{{ diary.author || '익명' }}</h3>
@@ -170,6 +148,7 @@ export default {
           </div>
         </div>
         <div v-else>일기가 없습니다.</div>
+
       </main>
 
       <!-- 페이지네이션 -->

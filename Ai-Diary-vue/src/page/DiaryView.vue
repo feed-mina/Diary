@@ -1,7 +1,6 @@
 <script>
-
-import {onMounted, ref} from 'vue';
-import {useRouter} from 'vue-router';
+import {onMounted, ref, watchEffect} from 'vue';
+import {useRouter, useRoute} from 'vue-router';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 
@@ -66,13 +65,13 @@ export default {
       }
       try {
         const response = await axios.get(`http://localhost:8080/api/diary/getDiaryItem/${diaryId}?userId=${userId}`
-        // , {
-        //   headers: {
-        //     Authorization: `Bearer ${jwtToken}`,
-        //     'Content-Type': 'application/json',
-        //   }
-        // }
-      );
+            // , {
+            //   headers: {
+            //     Authorization: `Bearer ${jwtToken}`,
+            //     'Content-Type': 'application/json',
+            //   }
+            // }
+        );
 
         diaryData.value = response.data;
         console.log("📌 서버 응답 데이터:", diaryData.value);
@@ -95,15 +94,15 @@ export default {
 
       try {
         const response = await axios.get(`http://localhost:8080/api/diary/viewDiaryItem/${diaryId}`
-        , {
-          // headers: {
-          //   Authorization: `Bearer ${jwtToken}`,
-          //   'Content-Type': 'application/json',
-          // },
-          params: {
-            userId: userId, // 체크박스 상태에 따라 userId필터링
-          },
-        });
+            , {
+              // headers: {
+              //   Authorization: `Bearer ${jwtToken}`,
+              //   'Content-Type': 'application/json',
+              // },
+              params: {
+                userId: userId, // 체크박스 상태에 따라 userId필터링
+              },
+            });
 
         Object.assign(diaryContentItem.value, response.data);
         // 응답 데이터 설정
@@ -148,7 +147,7 @@ export default {
     const sendDiaryContentItem = async () => {
 
       try {
-        // const { title, date, author, tags, emotion, content, hidden} = diaryContentData.value; 
+        // const { title, date, author, tags, emotion, content, hidden} = diaryContentData.value;
 
         console.log("jwtToken: ", jwtToken);
         if (!jwtToken) {
@@ -177,16 +176,16 @@ export default {
         console.log('diaryDataToSave', diaryDataToSave);
 
         const response = await axios.post(`http://localhost:8080/api/diary/getDiaryList2/${diaryContentItem.value.diaryId}/${userId}`, diaryDataToSave
-        // ,{
-        //   headers: {
-        //     Authorization: `Bearer ${jwtToken}`,
-        //     "Content-Type": "application/json",
-        //     "X-Forwarded-For": "127.0.0.1",
-        //   },
-        //   withCredentials: true, // 쿠키 인증 허용
+            // ,{
+            //   headers: {
+            //     Authorization: `Bearer ${jwtToken}`,
+            //     "Content-Type": "application/json",
+            //     "X-Forwarded-For": "127.0.0.1",
+            //   },
+            //   withCredentials: true, // 쿠키 인증 허용
 
-        // }
-      );
+            // }
+        );
 
         console.log('response', response);
         // alert("일기장이 저장되었습니다");
@@ -214,7 +213,7 @@ export default {
         });
         if (error.response && error.response.status === 400) {
           // alert("일기장 저장이 되지 않았습니다. 다시 시도해주세요.");
-          // alert(error.response.data); 
+          // alert(error.response.data);
           Swal.fire({
             title: "저장 불가",
             text: error.response.data,
@@ -227,7 +226,7 @@ export default {
           // errorMessage.value.email = error.response.data;
         } else {
           console.error("API 호출 실패", error);
-          // alert("일기장 저장이 되지 않았습니다. 다시 시도해주세요.");      
+          // alert("일기장 저장이 되지 않았습니다. 다시 시도해주세요.");
           Swal.fire({
             title: "API 호출 실패",
             text: error.response.data,
@@ -252,7 +251,6 @@ export default {
   }
 }
 </script>
-
 <template>
   <div class="diaryView">
     <div class="diaryView_content">

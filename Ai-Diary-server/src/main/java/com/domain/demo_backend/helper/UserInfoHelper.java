@@ -13,17 +13,10 @@ public class UserInfoHelper {
 
     public static CustomUserDetails getMemberInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-<<<<<<< HEAD
-        // 인증 정보 확인 로그 추가
-        System.out.println("인증 객체: " + authentication);
-=======
 
->>>>>>> rebase-branch
         if (authentication == null || authentication.getPrincipal() == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "인증되지 않은 사용자입니다.");
         }
-        // principal의 클래스 정보 로그 추가
-        System.out.println("인증 객체의 principal 클래스: " + authentication.getPrincipal().getClass().getName());
 
         if (!(authentication.getPrincipal() instanceof CustomUserDetails)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "사용자 정보가 유효하지 않습니다.");

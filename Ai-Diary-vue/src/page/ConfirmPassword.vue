@@ -32,7 +32,7 @@ export default {
     }
     // 로그인 상태 확인 후 리다이렉트
     onMounted(() => {
-      const userId = localStorage.getItem("userId");
+      const userId = localStorage.getItem("email");
       if (!userId) {
         confirmData.value = {
           checkId: "",
@@ -175,7 +175,6 @@ export default {
   justify-content: center;
   align-items: center;
   height: 5rem;
-  color: var(--int-gray900);
   font-size: 2rem;
   font-weight: 700;
 }
@@ -199,19 +198,15 @@ export default {
 
 .confirmTitle {
   margin-bottom: 3.2rem;
-  color: var(--int-gray900);
   font-size: 2.2rem;
   font-weight: 700;
 }
 
 .checkId input:read-only {
-  border-color: var(--int-gray500);
   cursor: default;
 }
 
 .checkId input:disabled {
-  background-color: var(--int-gray100);
-  color: var(--int-gray800);
 }
 
 .checkId input {
@@ -220,10 +215,7 @@ export default {
   padding-left: 1.6rem;
   padding-right: 1.6rem;
   font-size: 1.6rem;
-  background-color: var(--int-gray0);
   border-radius: 1.2rem;
-  border: 0.1rem solid var(--int-gray500);
-  color: var(--int-gray900);
 }
 
 .gapCheckInput {
@@ -241,9 +233,7 @@ export default {
   padding-left: 1.6rem;
   padding-right: 6.2rem;
   font-size: 1.6rem;
-  background-color: var(--int-gray0);
   border-radius: 1.2rem;
-  border: 0.1rem solid var(--int-gray500);
 }
 
 .inputInnerWrap {
@@ -263,28 +253,5 @@ export default {
   height: 2rem;
 }
 
-.confirmButtonWrap {
-  z-index: var(--int-zindex-floating);
-  width: 100%;
-  height: var(--floating-button-height);
-  padding: 1.6rem 2rem;
-  background-color: var(--int-gray0);
-  box-sizing: border-box;
-
-}
-
-.confirmButton {
-  background-color: var(--int-blue500);
-  color: var(--int-gray0);
-  line-height: 1.5;
-  text-align: center;
-  font-weight: 700;
-  height: 4.8rem;
-  font-size: 1.6rem;
-  border-radius: 1.2rem;
-  padding: 0px 1.6rem;
-  width: 100%;
-  display: block;
-}
 
 </style>

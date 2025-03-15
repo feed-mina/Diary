@@ -60,7 +60,7 @@ public class DiaryService {
         // PageInfo 객체로 페이징 결과를 반환
         diaryMapper.insertDiary(diary);
     }
-
+/*
     public void addDiary(DiaryRequest diaryRequest, String ip, Authentication authentication) {
 
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -90,34 +90,9 @@ public class DiaryService {
 
         diaryMapper.insertDiary(diary);
     }
+*/
 
-    public void updateDiaryDel(Set<Diary> diaryRemoveList, Diary diary) {
-        diaryMapper.updateDiaryDel(diaryRemoveList, diary);
-        diaryMapper.updateDiarMnpsDel(diaryRemoveList, diary);
-    }
 
-    /**
-     * public ApiResponseDto<String> createDiary(){
-     * // 기본 응답 초기화
-     * ApiResponseDto<String> response = ApiResponseCode.DEFAULT_OK;
-     * try{
-     * // 데이터베이스에서 객체 리스트를 가져온다.
-     * List<DiaryResponse> list = diaryMapper.selectDiaryList(new DiaryRequest());
-     * // 리스트를 userSqno(고유번호)로 그룹화한다.
-     * Map<BigInteger, List<DiaryResponse>> diaryRequestMap = list.stream()
-     * .sorted(Comparator.comparing(DiaryResponse::getUserSqno))
-     * .collect(Collectors.groupingBy(DiaryResponse::getUserSqno));
-     * <p>
-     * // 결과 리스트 처리
-     * List<DiaryResponse> diaryResponseList = new ArrayList<>();
-     * System.out.println("Diary Request Map : "+diaryRequestMap);
-     * } catch (Exception e) {
-     * response = ApiResponseDto.error("Internal Server Error");
-     * throw new RuntimeException("Diary creatuib failed",e);
-     * }
-     * return response;
-     * }
-     */
 
 
     public Set<DiaryResponse> findDiaryById(BigInteger diaryId, String userId) {

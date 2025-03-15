@@ -28,4 +28,7 @@ public interface UserMapper {
     void deleteVerification(String email);
     void updateUserSocialType(User user);
 
+    void updateUser(User existingUser);
+
+    void insertKakaoUser(User user);
 }

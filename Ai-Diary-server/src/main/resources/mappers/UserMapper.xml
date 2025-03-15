@@ -14,11 +14,21 @@
                 IFNULL(#{nickname}, #{userId}), #{role}, #{username}, #{createdAt}, #{updatedAt}, #{socialType});
     </insert>
 
+<<<<<<< HEAD
     <update id="updateUpdatedAt" parameterType="string">
         UPDATE users
         SET updated_at = NOW()
         WHERE email = #{email}
     </update>
+=======
+    <insert id="insertKakaoUser" parameterType="com.domain.demo_backend.user.domain.User">
+        INSERT INTO users (user_id, password, hashed_password, email, phone, nickname, role, username, created_at,   updated_at, socialType)
+        VALUES (#{userId}, #{password}, #{hashedPassword}, #{email}, #{phone},
+                IFNULL(#{nickname}, #{userId}), #{role}, #{username}, #{createdAt}, #{updatedAt}, 'K');
+    </insert>
+
+
+>>>>>>> rebase-branch
     <update id="updateUserSocialType" parameterType="com.domain.demo_backend.user.domain.User">
         UPDATE users
         SET socialType = 'K', password = #{password}, hashed_password = #{hashedPassword}, updated_at = NOW()
@@ -28,7 +38,7 @@
     <select id="findByUserId" resultType="com.domain.demo_backend.user.domain.User">
         SELECT *
         FROM users
-        WHERE user_id = #{userId}
+        WHERE email = #{email}
     </select>
 
     <select id="findByUserEmail" resultType="com.domain.demo_backend.user.domain.User">
@@ -78,7 +88,7 @@
         UPDATE users
         SET delYn      = 'Y',
             updated_at = NOW()
-        WHERE user_id = #{userId}
+        WHERE email = #{email}
     </update>
 
 </mapper>

@@ -29,8 +29,6 @@ export default {
   name: "DiaryNav",
   setup() {
     const router = useRouter();
-     
-
      const loginEmail = localStorage.getItem('email');
      const loginPassword = localStorage.getItem('password')
      const loginToken = localStorage.getItem('jwtToken'); // 저장된 토큰 가져오기
@@ -42,9 +40,14 @@ console.log("loginEmail : ", loginEmail);
 console.log("loggedInUserId : ", loggedInUserId);
 
     // ✅ `localStorage`에서 로그인 상태 확인 (JWT 없이)
+
+    // ✅ `localStorage`에서 로그인 상태 확인 (JWT 없이)
     const isLoggedIn = computed(() => {
+      const userId = localStorage.getItem("email");
+      const kakaoAccessToken = localStorage.getItem("kakaoAccessToken");
+
       // userId 또는 kakaoAccessToken이 있으면 로그인 상태
-      return !!loggedInUserId || !!loginToken;
+      return !!userId || !!kakaoAccessToken;
     });
 
     const navigateTo = (route) => {
@@ -56,7 +59,7 @@ console.log("loggedInUserId : ", loggedInUserId);
       localStorage.removeItem("userId");
       localStorage.removeItem("jwtToken");
    
-      // localStorage.removeItem("kakaoAccessToken");
+      localStorage.removeItem("kakaoAccessToken");
 
       // ✅ 홈으로 이동 후 새로고침
       router.push("/").then(() => {

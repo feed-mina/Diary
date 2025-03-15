@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <script>
 import {onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
@@ -75,7 +76,6 @@ export default {
         // userId 배열 추출
 
         // const showMineEqualsList = response.data.diaryList;
-        // console.log("showMineEqualsList: ",showMineEqualsList)
 
 
         // 내가 쓴 일기가 없을 경우 처리
@@ -144,49 +144,37 @@ export default {
 
 <template>
   <div class="diaryList">
-    <h1>일기장 리스트</h1>
+    <h1>📖 일기장 리스트</h1>
+
+    <!-- 내가 쓴 일기만 보기 -->
     <div class="filter-section">
       <label class="filter-checkbox">
-        <input type="checkbox" v-model="showOnlyMine" @change="toggleFilter"/>
+        <input type="checkbox" v-model="showOnlyMine" @change="toggleFilter" />
         내가 쓴 일기만 보기
       </label>
-      <!-- <p>필터 상태: {{ showOnlyMine }}</p> -->
     </div>
+
+    <!-- 일기 목록 -->
     <div class="diaryList_content">
       <main class="diaryOtherList">
-        <div class="diaryListSection" v-if="diaries.length > 0">
-          <div v-for="diary in diaries" :key="diary.diaryId">
-            <div @click="viewDiary(diary.diaryId, diary.userId)" class="diary-post">
-              일기보여주기 : {{ diary.diaryStatus }} false면 숨기기
+        <div class="diaryListSection" v-if="filteredDiaries.length > 0">
+          <div v-for="diary in filteredDiaries" :key="diary.diaryId" @click="viewDiary(diary.diaryId)">
+            <div class="diary-post">
               <header>
-                <div>
-                  <!-- {{ diary.userId }} -->
-                  <h3 class="diaryAuthor">
-                    {{ diary.author || '익명' }}
-                    {{ diary.userId }}
-                  </h3>
-                  <span class="diaryTitle">
-                {{ diary.title ? diary.title.substring(0, 10) : '제목 없음' }}...
-              </span>
-                </div>
-                <time class="diaryTime" :dateTime="diary.regDt">
-                  {{ new Date(diary.regDt || diary.date).toLocaleDateString() }}
-                </time>
+                <h3>{{ diary.author || '익명' }}</h3>
+                <span class="diaryTitle">{{ diary.title ? diary.title.substring(0, 10) + '...' : '제목 없음' }}</span>
+                <time class="diaryTime">{{ new Date(diary.date).toLocaleDateString() }}</time>
               </header>
-              <p class="diaryContent">{{ diary.content ? diary.content.substring(0, 50) : '내용 없음' }}</p>
+              <p class="diaryContent">{{ diary.content ? diary.content.substring(0, 50) + '...' : '내용 없음' }}</p>
             </div>
           </div>
         </div>
         <div v-else>일기가 없습니다.</div>
       </main>
+
       <!-- 페이지네이션 -->
       <div class="pagination" v-if="page.total > page.pageSize">
-        <button
-            v-for="p in Math.ceil(page.total / page.pageSize)"
-            :key="p"
-            :class="{ active: p === page.pageNo }"
-            @click="changePage(p)"
-        >
+        <button v-for="p in Math.ceil(page.total / page.pageSize)" :key="p" :class="{ active: p === page.pageNo }" @click="changePage(p)">
           {{ p }}
         </button>
       </div>
@@ -194,72 +182,50 @@ export default {
   </div>
 </template>
 
-<style scoped>
 
+<style scoped>
+/* 필터 체크박스 스타일 */
 .filter-section {
   display: flex;
-  justify-content: flex-end; /* 오른쪽 정렬 */
+  justify-content: flex-end;
   padding: 10px;
 }
 
 .filter-checkbox {
-  margin-left: 2rem;
-  color: aliceblue;
   display: flex;
   align-items: center;
-  padding: 10px;
   background-color: cadetblue;
-  border: 1px solid #ccc;
+  color: white;
+  padding: 10px;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.filter-checkbox input[type='checkbox'] {
+.filter-checkbox input {
   margin-right: 10px;
 }
 
+/* 일기 목록 스타일 */
 .diaryList {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  min-width: 700px;
-  margin: 0 auto;
-  border-radius: 2em;
-  overflow: hidden;
 }
 
 .diaryListSection {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(1, 1fr); /* 기본적으로 한 줄에 한 개 */
-
-}
-
-.diaryList_content {
-  width: 97%;
-  background: linear-gradient(transparent, transparent 28px, #eee7db 28px);
-  background-size: 30px 30px;
-  display: flex;
-  flex-direction: column;
-}
-
-.diaryOtherList {
-  margin-top: 2rem;
-  padding: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  flex-direction: column;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 10px;
+  width: 100%;
+  max-width: 800px;
 }
 
 .diary-post {
-  background: #ffffff;
-  border: solid 1px #ccc;
-  border-radius: 8px;
+  background: white;
+  border: 1px solid #ccc;
   padding: 1rem;
-  width: 100%;
-  max-width: 500px; /* 카드가 너무 커지지 않도록 */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
   cursor: pointer;
   transition: transform 0.3s ease-in-out;
 }
@@ -268,32 +234,13 @@ export default {
   transform: scale(1.05);
 }
 
-.diary-post header h3 {
-  /* margin-bottom: 0.5em; */
-  white-space: nowrap; /* 내용 길게 표시 방지 */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: left; /* 제목 중앙 정렬 */
-}
-
-.diary-post header span {
-  font: message-box;
-  display: block;
-  /* margin-top: 0.5em; */
-  white-space: nowrap; /* 내용 길게 표시 방지 */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  /* text-align: left;  부제목 중앙 정렬 */
-}
-
-.diary-post p {
-  /* text-align: left;  내용 왼쪽 정렬 */
-  margin-top: auto; /* 아래로 밀기 */
-  white-space: nowrap; /* 내용 길게 표시 방지 */
+.diaryTitle, .diaryContent {
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* 페이지네이션 */
 .pagination {
   margin-top: 1em;
   display: flex;
@@ -304,42 +251,13 @@ export default {
   margin: 0.5em;
   padding: 0.5em 1em;
   border: none;
-  background-color: #c1ab86;
+  background-color: #00796b;
   color: white;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.diaryTime {
-  font-size: 1em;
-}
-
-.diaryTitle {
-  font-size: 1em;
-}
-
-.diaryAuthor {
-  font-size: 1em;
-}
-
-.diaryContent {
-  font-size: 1em;
-}
-
 .pagination button.active {
-  background-color: #805a3b;
+  background-color: #004d40;
 }
-
-.pagination button:hover {
-  background-color: #a8835b;
-}
-
-/* 1020px 이상일 때 한 줄에 2개 배치 */
-@media screen and (min-width: 1020px) {
-  .diaryListSection {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-
 </style>

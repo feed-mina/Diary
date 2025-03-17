@@ -1351,3 +1351,331 @@ java.sql.SQLIntegrityConstraintViolationException: Cannot add or update a child 
 2025-03-17 13:40:51 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=59s760ms298µs200ns).
 2025-03-17 13:44:41 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2025-03-17 13:44:42 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-03-17 17:27:51 [main] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 17956 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-17 17:27:51 [main] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-17 17:27:58 [main] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-17 17:27:58 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-17 17:27:58 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-17 17:27:58 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-17 17:27:58 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-17 17:27:58 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-17 17:27:58 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-17 17:28:00 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-17 17:28:00 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-17 17:28:00 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-17 17:28:00 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-17 17:28:01 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-17 17:28:01 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 9700 ms
+2025-03-17 17:28:02 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-17 17:28:03 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-17 17:28:04 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4aa3fc9a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@70f4f89e, org.springframework.security.web.context.SecurityContextHolderFilter@2b2a4332, org.springframework.security.web.header.HeaderWriterFilter@3957d88b, org.springframework.web.filter.CorsFilter@634aa81e, com.domain.demo_backend.util.JwtAuthenticationFilter@74b1838, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4cb24e2, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1d283d1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@52d96367, org.springframework.security.web.access.ExceptionTranslationFilter@496cedbb, org.springframework.security.web.access.intercept.AuthorizationFilter@59ec7020]
+2025-03-17 17:28:05 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-17 17:28:06 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-17 17:28:06 [main] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 17.089 seconds (process running for 22.736)
+2025-03-17 17:33:41 [main] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 9432 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-17 17:33:41 [main] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-17 17:33:43 [main] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-17 17:33:43 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-17 17:33:43 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-17 17:33:43 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-17 17:33:43 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-17 17:33:43 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-17 17:33:43 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-17 17:33:45 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-17 17:33:45 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-17 17:33:45 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-17 17:33:45 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-17 17:33:45 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-17 17:33:45 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3904 ms
+2025-03-17 17:33:46 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-17 17:33:46 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-17 17:33:47 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@c758a2d, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@d0b814d, org.springframework.security.web.context.SecurityContextHolderFilter@5b7308aa, org.springframework.security.web.header.HeaderWriterFilter@334540a0, org.springframework.web.filter.CorsFilter@6ce15112, com.domain.demo_backend.util.JwtAuthenticationFilter@ba4f370, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@6164e137, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6987a133, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2ba024cb, org.springframework.security.web.access.ExceptionTranslationFilter@6fef75c6, org.springframework.security.web.access.intercept.AuthorizationFilter@3c17bd0b]
+2025-03-17 17:33:48 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-17 17:33:48 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-17 17:33:48 [main] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 9.047 seconds (process running for 13.341)
+2025-03-17 18:06:32 [main] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 752 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-17 18:06:32 [main] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-17 18:06:34 [main] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-17 18:06:34 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-17 18:06:34 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-17 18:06:34 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-17 18:06:34 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-17 18:06:34 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-17 18:06:34 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-17 18:06:35 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-17 18:06:35 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-17 18:06:35 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-17 18:06:35 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-17 18:06:36 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-17 18:06:36 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3641 ms
+2025-03-17 18:06:36 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-17 18:06:36 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-17 18:06:37 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@223967ea, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4a6a6a69, org.springframework.security.web.context.SecurityContextHolderFilter@388f1258, org.springframework.security.web.header.HeaderWriterFilter@6e068ac9, org.springframework.web.filter.CorsFilter@5d7f1e59, com.domain.demo_backend.util.JwtAuthenticationFilter@53e93fb7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@aca2fc3, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@639cb788, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@3a861417, org.springframework.security.web.access.ExceptionTranslationFilter@18026052, org.springframework.security.web.access.intercept.AuthorizationFilter@8ac12e6]
+2025-03-17 18:06:38 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-17 18:06:38 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-17 18:06:38 [main] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 8.969 seconds (process running for 12.005)
+2025-03-17 18:07:30 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-17 18:07:30 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-03-17 18:07:30 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-03-17 18:08:01 [http-nio-8080-exec-2] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 18:08:01 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-03-17 18:08:02 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5a3af1c7
+2025-03-17 18:08:02 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-03-17 18:08:33 [http-nio-8080-exec-5] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 18:10:18 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m45s398ms362µs900ns).
+2025-03-17 18:10:19 [http-nio-8080-exec-8] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 18:14:37 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=49s94ms992µs500ns).
+2025-03-17 18:14:47 [http-nio-8080-exec-1] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 18:16:42 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=50s366ms163µs100ns).
+2025-03-17 18:16:42 [http-nio-8080-exec-3] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 18:16:42 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-03-17 18:16:42 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-03-17 18:20:11 [main] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 992 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-17 18:20:11 [main] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-17 18:20:14 [main] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-17 18:20:14 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-17 18:20:14 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-17 18:20:14 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-17 18:20:14 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-17 18:20:14 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-17 18:20:14 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-17 18:20:15 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-17 18:20:16 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-17 18:20:16 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-17 18:20:16 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-17 18:20:16 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-17 18:20:16 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 4847 ms
+2025-03-17 18:20:17 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-17 18:20:17 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-17 18:20:18 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@36df4c26, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@76828577, org.springframework.security.web.context.SecurityContextHolderFilter@14ed7ddf, org.springframework.security.web.header.HeaderWriterFilter@5e385b6f, org.springframework.web.filter.CorsFilter@38732372, com.domain.demo_backend.util.JwtAuthenticationFilter@639cb788, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@446c8c72, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2c8a445b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2fee69a1, org.springframework.security.web.access.ExceptionTranslationFilter@4d4df0f4, org.springframework.security.web.access.intercept.AuthorizationFilter@388f1258]
+2025-03-17 18:20:19 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-17 18:20:19 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-17 18:20:19 [main] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 10.118 seconds (process running for 12.503)
+2025-03-17 18:20:32 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-17 18:20:32 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-03-17 18:20:32 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 15 ms
+2025-03-17 18:20:52 [http-nio-8080-exec-2] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 18:20:52 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-03-17 18:20:52 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@df14f9f
+2025-03-17 18:20:52 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-03-17 18:21:10 [http-nio-8080-exec-4] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 18:26:50 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m4s141ms996µs400ns).
+2025-03-17 18:27:43 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=52s754ms897µs800ns).
+2025-03-17 18:32:00 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=4m17s30ms28µs700ns).
+2025-03-17 18:32:38 [http-nio-8080-exec-2] INFO  c.d.d.controller.KakaoController - kakao login
+2025-03-17 18:32:38 [http-nio-8080-exec-2] INFO  c.d.d.controller.KakaoController - client_id : 2d22c7fa1d59eb77a5162a3948a0b6fe
+2025-03-17 18:32:38 [http-nio-8080-exec-2] INFO  c.d.d.controller.KakaoController - redirectUri : http://localhost:4000/oauth/callback
+2025-03-17 18:32:38 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - @@@@@@@@@@@@@@@@@@@@@@@@
+2025-03-17 18:32:38 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - getKakaoUserInfo
+2025-03-17 18:32:38 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - accessToken : jSRn_HyX-VR1MjawmzHvb3oWlKAXlra5AAAAAQoNIBsAAAGVo3Kz_BKZRqbpl2cW
+2025-03-17 18:32:38 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - request : <[Authorization:"Bearer jSRn_HyX-VR1MjawmzHvb3oWlKAXlra5AAAAAQoNIBsAAAGVo3Kz_BKZRqbpl2cW"]>
+2025-03-17 18:32:39 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - body : {id=3944659658, connected_at=2025-03-02T12:02:11Z, properties={nickname=예린}, kakao_account={profile_nickname_needs_agreement=false, profile_image_needs_agreement=true, profile={nickname=예린, is_default_nickname=false}, has_email=true, email_needs_agreement=false, is_email_valid=true, is_email_verified=true, email=myeliln12@naver.com, has_age_range=true, age_range_needs_agreement=true, has_birthday=true, birthday_needs_agreement=true, has_gender=true, gender_needs_agreement=true}}
+2025-03-17 18:32:39 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - response : <200 OK OK,{id=3944659658, connected_at=2025-03-02T12:02:11Z, properties={nickname=예린}, kakao_account={profile_nickname_needs_agreement=false, profile_image_needs_agreement=true, profile={nickname=예린, is_default_nickname=false}, has_email=true, email_needs_agreement=false, is_email_valid=true, is_email_verified=true, email=myeliln12@naver.com, has_age_range=true, age_range_needs_agreement=true, has_birthday=true, birthday_needs_agreement=true, has_gender=true, gender_needs_agreement=true}},[Date:"Mon, 17 Mar 2025 09:32:39 GMT", Server:"Apache", Access-Control-Allow-Origin:"*", Access-Control-Allow-Methods:"GET, POST, PUT, DELETE, OPTIONS", Access-Control-Allow-Headers:"Content-Type,X-Requested-With,Accept,Authorization,Origin,KA,Cache-Control,Pragma", X-Request-ID:"dbef4633-ea91-40a9-97a8-b9241a6bdf6c", Quota-Type:"INC_AND_CHECK", Content-Type:"application/json;charset=UTF-8", Content-Length:"524", Keep-Alive:"timeout=10, max=500", Connection:"Keep-Alive"]>
+2025-03-17 18:32:39 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - kakaoAccount : {profile_nickname_needs_agreement=false, profile_image_needs_agreement=true, profile={nickname=예린, is_default_nickname=false}, has_email=true, email_needs_agreement=false, is_email_valid=true, is_email_verified=true, email=myeliln12@naver.com, has_age_range=true, age_range_needs_agreement=true, has_birthday=true, birthday_needs_agreement=true, has_gender=true, gender_needs_agreement=true}
+2025-03-17 18:32:39 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - properties : {nickname=예린}
+2025-03-17 18:32:39 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - nickname : 예린
+2025-03-17 18:32:39 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - email : myeliln12@naver.com
+2025-03-17 18:32:40 [http-nio-8080-exec-4] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 18:32:42 [http-nio-8080-exec-5] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 18:33:54 [http-nio-8080-exec-1] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 18:34:00 [http-nio-8080-exec-3] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 18:34:00 [http-nio-8080-exec-3] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 18:41:16 [http-nio-8080-exec-9] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 18:41:48 [http-nio-8080-exec-5] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 18:41:56 [http-nio-8080-exec-7] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 18:41:56 [http-nio-8080-exec-7] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 18:45:12 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-03-17 18:45:12 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-03-17 19:05:42 [main] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 13228 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-17 19:05:42 [main] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-17 19:05:46 [main] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-17 19:05:46 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-17 19:05:46 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-17 19:05:46 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-17 19:05:46 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-17 19:05:46 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-17 19:05:46 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-17 19:05:47 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-17 19:05:47 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-17 19:05:47 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-17 19:05:47 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-17 19:05:47 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-17 19:05:47 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 4830 ms
+2025-03-17 19:05:48 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-17 19:05:48 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-17 19:05:49 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4d25f816, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6c6c2a73, org.springframework.security.web.context.SecurityContextHolderFilter@ca546a1, org.springframework.security.web.header.HeaderWriterFilter@446c8c72, org.springframework.web.filter.CorsFilter@6a4af081, com.domain.demo_backend.util.JwtAuthenticationFilter@36b53f08, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@356b6b5d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@18e4551, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@54329480, org.springframework.security.web.access.ExceptionTranslationFilter@14ed7ddf, org.springframework.security.web.access.intercept.AuthorizationFilter@38732372]
+2025-03-17 19:05:50 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-17 19:05:50 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-17 19:05:50 [main] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 11.437 seconds (process running for 14.387)
+2025-03-17 19:09:22 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-17 19:09:22 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-03-17 19:09:22 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 28 ms
+2025-03-17 19:09:23 [http-nio-8080-exec-2] INFO  c.d.d.controller.KakaoController - kakao login
+2025-03-17 19:11:42 [http-nio-8080-exec-2] INFO  c.d.d.controller.KakaoController - client_id : 2d22c7fa1d59eb77a5162a3948a0b6fe
+2025-03-17 19:11:42 [http-nio-8080-exec-2] INFO  c.d.d.controller.KakaoController - redirectUri : http://localhost:4000/oauth/callback
+2025-03-17 19:11:53 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - @@@@@@@@@@@@@@@@@@@@@@@@
+2025-03-17 19:11:54 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - getKakaoUserInfo
+2025-03-17 19:11:54 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - accessToken : vnxN_HnvB5N-DECw96hYkVnl8DjbDL8nAAAAAQoNFN0AAAGVo5RP8BKZRqbpl2cW
+2025-03-17 19:11:55 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - request : <[Authorization:"Bearer vnxN_HnvB5N-DECw96hYkVnl8DjbDL8nAAAAAQoNFN0AAAGVo5RP8BKZRqbpl2cW"]>
+2025-03-17 19:12:08 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - body : {id=3944659658, connected_at=2025-03-02T12:02:11Z, properties={nickname=예린}, kakao_account={profile_nickname_needs_agreement=false, profile_image_needs_agreement=true, profile={nickname=예린, is_default_nickname=false}, has_email=true, email_needs_agreement=false, is_email_valid=true, is_email_verified=true, email=myeliln12@naver.com, has_age_range=true, age_range_needs_agreement=true, has_birthday=true, birthday_needs_agreement=true, has_gender=true, gender_needs_agreement=true}}
+2025-03-17 19:12:11 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - response : <200 OK OK,{id=3944659658, connected_at=2025-03-02T12:02:11Z, properties={nickname=예린}, kakao_account={profile_nickname_needs_agreement=false, profile_image_needs_agreement=true, profile={nickname=예린, is_default_nickname=false}, has_email=true, email_needs_agreement=false, is_email_valid=true, is_email_verified=true, email=myeliln12@naver.com, has_age_range=true, age_range_needs_agreement=true, has_birthday=true, birthday_needs_agreement=true, has_gender=true, gender_needs_agreement=true}},[Date:"Mon, 17 Mar 2025 10:11:56 GMT", Server:"Apache", Access-Control-Allow-Origin:"*", Access-Control-Allow-Methods:"GET, POST, PUT, DELETE, OPTIONS", Access-Control-Allow-Headers:"Content-Type,X-Requested-With,Accept,Authorization,Origin,KA,Cache-Control,Pragma", X-Request-ID:"431f3686-3e84-4d20-8ad7-df2363b61856", Quota-Type:"INC_AND_CHECK", Content-Type:"application/json;charset=UTF-8", Content-Length:"524", Keep-Alive:"timeout=10, max=500", Connection:"Keep-Alive"]>
+2025-03-17 19:13:34 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - kakaoAccount : {profile_nickname_needs_agreement=false, profile_image_needs_agreement=true, profile={nickname=예린, is_default_nickname=false}, has_email=true, email_needs_agreement=false, is_email_valid=true, is_email_verified=true, email=myeliln12@naver.com, has_age_range=true, age_range_needs_agreement=true, has_birthday=true, birthday_needs_agreement=true, has_gender=true, gender_needs_agreement=true}
+2025-03-17 19:13:35 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - properties : {nickname=예린}
+2025-03-17 19:13:44 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - nickname : 예린
+2025-03-17 19:13:47 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - email : myeliln12@naver.com
+2025-03-17 19:13:51 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-03-17 19:13:52 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@66bdc796
+2025-03-17 19:13:52 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-03-17 19:14:23 [http-nio-8080-exec-4] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 19:14:24 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-03-17 19:14:24 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-03-17 19:36:24 [main] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 20564 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-17 19:36:24 [main] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-17 19:36:28 [main] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-17 19:36:28 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-17 19:36:28 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-17 19:36:28 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-17 19:36:28 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-17 19:36:28 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-17 19:36:28 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-17 19:36:30 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-17 19:36:30 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-17 19:36:30 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-17 19:36:30 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-17 19:36:30 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-17 19:36:30 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 6390 ms
+2025-03-17 19:36:31 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-17 19:36:31 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-17 19:36:33 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@6c96403e, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7babed9e, org.springframework.security.web.context.SecurityContextHolderFilter@27bb4dc5, org.springframework.security.web.header.HeaderWriterFilter@2a0963be, org.springframework.web.filter.CorsFilter@2353354a, com.domain.demo_backend.util.JwtAuthenticationFilter@7c7ed72a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@64910b2d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@334540a0, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@22b7ef2b, org.springframework.security.web.access.ExceptionTranslationFilter@dd737ea, org.springframework.security.web.access.intercept.AuthorizationFilter@69ffdaa8]
+2025-03-17 19:36:34 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-17 19:36:34 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-17 19:36:34 [main] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 13.329 seconds (process running for 18.839)
+2025-03-17 19:53:32 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-17 19:53:32 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-03-17 19:53:32 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 105 ms
+2025-03-17 19:54:11 [http-nio-8080-exec-2] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 19:54:11 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-03-17 19:54:11 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7de11d97
+2025-03-17 19:54:11 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-03-17 19:54:37 [main] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 2324 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-17 19:54:37 [main] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-17 19:54:42 [main] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-17 19:54:42 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-03-17 19:54:42 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-03-17 19:54:42 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-03-17 19:54:42 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-03-17 19:54:42 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-03-17 19:54:42 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-03-17 19:54:44 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-17 19:54:44 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-17 19:54:44 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-17 19:54:44 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-17 19:54:45 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-17 19:54:45 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 7181 ms
+2025-03-17 19:54:46 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-03-17 19:54:46 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-03-17 19:54:48 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@38732372, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@639cb788, org.springframework.security.web.context.SecurityContextHolderFilter@446c8c72, org.springframework.security.web.header.HeaderWriterFilter@45dde6ac, org.springframework.web.filter.CorsFilter@2fee69a1, com.domain.demo_backend.util.JwtAuthenticationFilter@4d25f816, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@11d2714a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@37b1149b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6c6c2a73, org.springframework.security.web.access.ExceptionTranslationFilter@5e385b6f, org.springframework.security.web.access.intercept.AuthorizationFilter@aca2fc3]
+2025-03-17 19:54:50 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-17 19:54:50 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-17 19:54:50 [main] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 17.287 seconds (process running for 25.033)
+2025-03-17 20:01:44 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-17 20:01:44 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-03-17 20:01:44 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 45 ms
+2025-03-17 20:01:44 [http-nio-8080-exec-2] INFO  c.d.d.controller.KakaoController - kakao login
+2025-03-17 20:01:48 [http-nio-8080-exec-2] INFO  c.d.d.controller.KakaoController - client_id : 2d22c7fa1d59eb77a5162a3948a0b6fe
+2025-03-17 20:01:49 [http-nio-8080-exec-2] INFO  c.d.d.controller.KakaoController - redirectUri : http://localhost:4000/oauth/callback
+2025-03-17 20:01:52 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - @@@@@@@@@@@@@@@@@@@@@@@@
+2025-03-17 20:01:53 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - getKakaoUserInfo
+2025-03-17 20:01:54 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - accessToken : BZG0A-eAVkIlTo1LIR2F7fMoTLDUymjFAAAAAQo9cusAAAGVo8RFfRKZRqbpl2cW
+2025-03-17 20:01:55 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - request : <[Authorization:"Bearer BZG0A-eAVkIlTo1LIR2F7fMoTLDUymjFAAAAAQo9cusAAAGVo8RFfRKZRqbpl2cW"]>
+2025-03-17 20:02:18 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - body : {id=3944659658, connected_at=2025-03-02T12:02:11Z, properties={nickname=예린}, kakao_account={profile_nickname_needs_agreement=false, profile_image_needs_agreement=true, profile={nickname=예린, is_default_nickname=false}, has_email=true, email_needs_agreement=false, is_email_valid=true, is_email_verified=true, email=myeliln12@naver.com, has_age_range=true, age_range_needs_agreement=true, has_birthday=true, birthday_needs_agreement=true, has_gender=true, gender_needs_agreement=true}}
+2025-03-17 20:02:19 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - response : <200 OK OK,{id=3944659658, connected_at=2025-03-02T12:02:11Z, properties={nickname=예린}, kakao_account={profile_nickname_needs_agreement=false, profile_image_needs_agreement=true, profile={nickname=예린, is_default_nickname=false}, has_email=true, email_needs_agreement=false, is_email_valid=true, is_email_verified=true, email=myeliln12@naver.com, has_age_range=true, age_range_needs_agreement=true, has_birthday=true, birthday_needs_agreement=true, has_gender=true, gender_needs_agreement=true}},[Date:"Mon, 17 Mar 2025 11:02:05 GMT", Server:"Apache", Access-Control-Allow-Origin:"*", Access-Control-Allow-Methods:"GET, POST, PUT, DELETE, OPTIONS", Access-Control-Allow-Headers:"Content-Type,X-Requested-With,Accept,Authorization,Origin,KA,Cache-Control,Pragma", X-Request-ID:"0fd3b781-95f7-488a-a722-86fb2f55137f", Quota-Type:"INC_AND_CHECK", Content-Type:"application/json;charset=UTF-8", Content-Length:"524", Keep-Alive:"timeout=10, max=500", Connection:"Keep-Alive"]>
+2025-03-17 20:02:26 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - kakaoAccount : {profile_nickname_needs_agreement=false, profile_image_needs_agreement=true, profile={nickname=예린, is_default_nickname=false}, has_email=true, email_needs_agreement=false, is_email_valid=true, is_email_verified=true, email=myeliln12@naver.com, has_age_range=true, age_range_needs_agreement=true, has_birthday=true, birthday_needs_agreement=true, has_gender=true, gender_needs_agreement=true}
+2025-03-17 20:02:27 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - properties : {nickname=예린}
+2025-03-17 20:02:27 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - nickname : 예린
+2025-03-17 20:02:28 [http-nio-8080-exec-2] INFO  c.d.d.service.KakaoService - email : myeliln12@naver.com
+2025-03-17 20:02:32 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-03-17 20:02:35 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@eba8c8
+2025-03-17 20:02:35 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-03-17 20:05:29 [http-nio-8080-exec-3] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:05:29 [http-nio-8080-exec-6] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:06:32 [http-nio-8080-exec-10] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:10:47 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m45s350ms706µs900ns).
+2025-03-17 20:15:00 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m52s801ms662µs100ns).
+2025-03-17 20:16:51 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m10s69ms8µs500ns).
+2025-03-17 20:20:28 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m25s924ms189µs).
+2025-03-17 20:30:58 [http-nio-8080-exec-3] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:32:35 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m6s702ms70µs400ns).
+2025-03-17 20:34:21 [http-nio-8080-exec-8] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:35:44 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m35s825ms5µs900ns).
+2025-03-17 20:36:07 [http-nio-8080-exec-5] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:36:23 [http-nio-8080-exec-5] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:40:34 [http-nio-8080-exec-1] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:44:33 [http-nio-8080-exec-3] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:45:04 [http-nio-8080-exec-6] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:45:04 [http-nio-8080-exec-6] INFO  c.d.demo_backend.service.AuthService - DB에서 가져온 User: com.domain.demo_backend.user.domain.User@30b7530
+2025-03-17 20:45:04 [http-nio-8080-exec-6] INFO  c.d.demo_backend.service.AuthService - 입력된 해시값: 5751a44782594819e4cb8aa27c2c9d87a420af82bc6a5a05bc7f19c3bb00452b
+2025-03-17 20:45:04 [http-nio-8080-exec-6] INFO  c.d.demo_backend.service.AuthService - JWT 성공
+2025-03-17 20:45:08 [http-nio-8080-exec-6] INFO  c.d.d.controller.AuthController - 로그인 성공
+2025-03-17 20:45:24 [http-nio-8080-exec-8] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:45:24 [http-nio-8080-exec-7] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:52:14 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m27s408ms787µs200ns).
+2025-03-17 20:52:14 [http-nio-8080-exec-5] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:52:14 [http-nio-8080-exec-9] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:52:14 [http-nio-8080-exec-6] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:59:02 [http-nio-8080-exec-9] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:59:03 [http-nio-8080-exec-6] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:59:03 [http-nio-8080-exec-8] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:59:04 [http-nio-8080-exec-10] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 20:59:05 [http-nio-8080-exec-7] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:35:07 [http-nio-8080-exec-7] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:35:13 [http-nio-8080-exec-3] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:35:18 [http-nio-8080-exec-2] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:35:34 [http-nio-8080-exec-8] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:35:38 [http-nio-8080-exec-1] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:35:38 [http-nio-8080-exec-1] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:35:47 [http-nio-8080-exec-5] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:35:50 [http-nio-8080-exec-9] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:36:34 [http-nio-8080-exec-10] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:36:41 [http-nio-8080-exec-3] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:36:45 [http-nio-8080-exec-5] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:36:45 [http-nio-8080-exec-5] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:48:56 [http-nio-8080-exec-9] INFO  c.d.d.controller.KakaoController - kakao login
+2025-03-17 21:48:56 [http-nio-8080-exec-9] INFO  c.d.d.controller.KakaoController - client_id : 2d22c7fa1d59eb77a5162a3948a0b6fe
+2025-03-17 21:48:56 [http-nio-8080-exec-9] INFO  c.d.d.controller.KakaoController - redirectUri : http://localhost:4000/oauth/callback
+2025-03-17 21:48:56 [http-nio-8080-exec-9] INFO  c.d.d.service.KakaoService - @@@@@@@@@@@@@@@@@@@@@@@@
+2025-03-17 21:48:56 [http-nio-8080-exec-9] INFO  c.d.d.service.KakaoService - getKakaoUserInfo
+2025-03-17 21:48:56 [http-nio-8080-exec-9] INFO  c.d.d.service.KakaoService - accessToken : 4wUrSW1MtyNNl5z_2040bIhZhH5sBkU3AAAAAQoNIdkAAAGVpCZqpBKZRqbpl2cW
+2025-03-17 21:48:56 [http-nio-8080-exec-9] INFO  c.d.d.service.KakaoService - request : <[Authorization:"Bearer 4wUrSW1MtyNNl5z_2040bIhZhH5sBkU3AAAAAQoNIdkAAAGVpCZqpBKZRqbpl2cW"]>
+2025-03-17 21:48:57 [http-nio-8080-exec-9] INFO  c.d.d.service.KakaoService - body : {id=3944659658, connected_at=2025-03-02T12:02:11Z, properties={nickname=예린}, kakao_account={profile_nickname_needs_agreement=false, profile_image_needs_agreement=true, profile={nickname=예린, is_default_nickname=false}, has_email=true, email_needs_agreement=false, is_email_valid=true, is_email_verified=true, email=myeliln12@naver.com, has_age_range=true, age_range_needs_agreement=true, has_birthday=true, birthday_needs_agreement=true, has_gender=true, gender_needs_agreement=true}}
+2025-03-17 21:48:57 [http-nio-8080-exec-9] INFO  c.d.d.service.KakaoService - response : <200 OK OK,{id=3944659658, connected_at=2025-03-02T12:02:11Z, properties={nickname=예린}, kakao_account={profile_nickname_needs_agreement=false, profile_image_needs_agreement=true, profile={nickname=예린, is_default_nickname=false}, has_email=true, email_needs_agreement=false, is_email_valid=true, is_email_verified=true, email=myeliln12@naver.com, has_age_range=true, age_range_needs_agreement=true, has_birthday=true, birthday_needs_agreement=true, has_gender=true, gender_needs_agreement=true}},[Date:"Mon, 17 Mar 2025 12:48:57 GMT", Server:"Apache", Access-Control-Allow-Origin:"*", Access-Control-Allow-Methods:"GET, POST, PUT, DELETE, OPTIONS", Access-Control-Allow-Headers:"Content-Type,X-Requested-With,Accept,Authorization,Origin,KA,Cache-Control,Pragma", X-Request-ID:"0a4a3bfb-ebee-4021-9c37-92936a0b8c9e", Quota-Type:"INC_AND_CHECK", Content-Type:"application/json;charset=UTF-8", Content-Length:"524", Keep-Alive:"timeout=10, max=500", Connection:"Keep-Alive"]>
+2025-03-17 21:48:57 [http-nio-8080-exec-9] INFO  c.d.d.service.KakaoService - kakaoAccount : {profile_nickname_needs_agreement=false, profile_image_needs_agreement=true, profile={nickname=예린, is_default_nickname=false}, has_email=true, email_needs_agreement=false, is_email_valid=true, is_email_verified=true, email=myeliln12@naver.com, has_age_range=true, age_range_needs_agreement=true, has_birthday=true, birthday_needs_agreement=true, has_gender=true, gender_needs_agreement=true}
+2025-03-17 21:48:57 [http-nio-8080-exec-9] INFO  c.d.d.service.KakaoService - properties : {nickname=예린}
+2025-03-17 21:48:57 [http-nio-8080-exec-9] INFO  c.d.d.service.KakaoService - nickname : 예린
+2025-03-17 21:48:57 [http-nio-8080-exec-9] INFO  c.d.d.service.KakaoService - email : myeliln12@naver.com
+2025-03-17 21:48:58 [http-nio-8080-exec-8] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:49:00 [http-nio-8080-exec-10] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:49:54 [http-nio-8080-exec-3] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:49:54 [http-nio-8080-exec-3] INFO  c.d.demo_backend.service.AuthService - DB에서 가져온 User: com.domain.demo_backend.user.domain.User@7d7fc358
+2025-03-17 21:49:54 [http-nio-8080-exec-3] INFO  c.d.demo_backend.service.AuthService - 입력된 해시값: 5751a44782594819e4cb8aa27c2c9d87a420af82bc6a5a05bc7f19c3bb00452b
+2025-03-17 21:49:54 [http-nio-8080-exec-3] INFO  c.d.demo_backend.service.AuthService - JWT 성공
+2025-03-17 21:49:54 [http-nio-8080-exec-3] INFO  c.d.d.controller.AuthController - 로그인 성공
+2025-03-17 21:49:55 [http-nio-8080-exec-4] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:49:58 [http-nio-8080-exec-5] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:52:02 [http-nio-8080-exec-6] INFO  c.d.d.controller.KakaoController - kakao login
+2025-03-17 21:52:02 [http-nio-8080-exec-6] INFO  c.d.d.controller.KakaoController - client_id : 2d22c7fa1d59eb77a5162a3948a0b6fe
+2025-03-17 21:52:02 [http-nio-8080-exec-6] INFO  c.d.d.controller.KakaoController - redirectUri : http://localhost:4000/oauth/callback
+2025-03-17 21:52:02 [http-nio-8080-exec-6] INFO  c.d.d.service.KakaoService - @@@@@@@@@@@@@@@@@@@@@@@@
+2025-03-17 21:52:02 [http-nio-8080-exec-6] INFO  c.d.d.service.KakaoService - getKakaoUserInfo
+2025-03-17 21:52:02 [http-nio-8080-exec-6] INFO  c.d.d.service.KakaoService - accessToken : 3lio01I1lfNSOASrfYZZnfK0uFhfIryVAAAAAQorDNMAAAGVpClB5hKZRqbpl2cW
+2025-03-17 21:52:02 [http-nio-8080-exec-6] INFO  c.d.d.service.KakaoService - request : <[Authorization:"Bearer 3lio01I1lfNSOASrfYZZnfK0uFhfIryVAAAAAQorDNMAAAGVpClB5hKZRqbpl2cW"]>
+2025-03-17 21:52:02 [http-nio-8080-exec-6] INFO  c.d.d.service.KakaoService - body : {id=3944659658, connected_at=2025-03-02T12:02:11Z, properties={nickname=예린}, kakao_account={profile_nickname_needs_agreement=false, profile_image_needs_agreement=true, profile={nickname=예린, is_default_nickname=false}, has_email=true, email_needs_agreement=false, is_email_valid=true, is_email_verified=true, email=myeliln12@naver.com, has_age_range=true, age_range_needs_agreement=true, has_birthday=true, birthday_needs_agreement=true, has_gender=true, gender_needs_agreement=true}}
+2025-03-17 21:52:02 [http-nio-8080-exec-6] INFO  c.d.d.service.KakaoService - response : <200 OK OK,{id=3944659658, connected_at=2025-03-02T12:02:11Z, properties={nickname=예린}, kakao_account={profile_nickname_needs_agreement=false, profile_image_needs_agreement=true, profile={nickname=예린, is_default_nickname=false}, has_email=true, email_needs_agreement=false, is_email_valid=true, is_email_verified=true, email=myeliln12@naver.com, has_age_range=true, age_range_needs_agreement=true, has_birthday=true, birthday_needs_agreement=true, has_gender=true, gender_needs_agreement=true}},[Date:"Mon, 17 Mar 2025 12:52:02 GMT", Server:"Apache", Access-Control-Allow-Origin:"*", Access-Control-Allow-Methods:"GET, POST, PUT, DELETE, OPTIONS", Access-Control-Allow-Headers:"Content-Type,X-Requested-With,Accept,Authorization,Origin,KA,Cache-Control,Pragma", X-Request-ID:"7476788e-c941-4cea-befd-3e68f6f3d584", Quota-Type:"INC_AND_CHECK", Content-Type:"application/json;charset=UTF-8", Content-Length:"524", Keep-Alive:"timeout=10, max=500", Connection:"Keep-Alive"]>
+2025-03-17 21:52:02 [http-nio-8080-exec-6] INFO  c.d.d.service.KakaoService - kakaoAccount : {profile_nickname_needs_agreement=false, profile_image_needs_agreement=true, profile={nickname=예린, is_default_nickname=false}, has_email=true, email_needs_agreement=false, is_email_valid=true, is_email_verified=true, email=myeliln12@naver.com, has_age_range=true, age_range_needs_agreement=true, has_birthday=true, birthday_needs_agreement=true, has_gender=true, gender_needs_agreement=true}
+2025-03-17 21:52:02 [http-nio-8080-exec-6] INFO  c.d.d.service.KakaoService - properties : {nickname=예린}
+2025-03-17 21:52:02 [http-nio-8080-exec-6] INFO  c.d.d.service.KakaoService - nickname : 예린
+2025-03-17 21:52:02 [http-nio-8080-exec-6] INFO  c.d.d.service.KakaoService - email : myeliln12@naver.com
+2025-03-17 21:52:02 [http-nio-8080-exec-10] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:52:04 [http-nio-8080-exec-7] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-17 21:54:36 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-03-17 21:54:36 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

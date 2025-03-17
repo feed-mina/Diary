@@ -39,59 +39,64 @@ public class DiaryController {
     }
     @GetMapping("/viewDiaryList")
     public ResponseEntity<?> viewDiaryList(
-                                           @RequestParam(value = "userId", required = false) String userId,
-                                           @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
-                                           @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
+            @RequestParam(value = "userId", required = false) String userId,
+            @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
 
+        System.out.println("@@@@@@ viewDiaryList 진입 ");
         Map<String, Object> response = new HashMap<>();
         CustomUserDetails currentUser = UserInfoHelper.getMemberInfo();
         System.out.println("currentUser 값: " + currentUser);
-
-        String currentUserName = currentUser.getUsername();
-        String currentUserId = currentUser.getUserId();
+        String currentUserName = currentUser.getUsername(); // email을 받는다
+        String currentUserId = currentUser.getUserId(); // 일반로그인에서는 아이디를 받는다
         System.out.println("@@@현재 로그인한 사용자 ID: " + currentUserId);
         System.out.println("@@@currentUserName 값: " + currentUserName);
+        System.out.println("@@@loggedUserId 값: " + currentUserName.split("@")[0]);
 
+        String loggedInUserID = currentUserName.split("@")[0];
+
+        // 내가 쓴 일기만 보기 > null 이나 empty 값 체크하기
         try {
-            // 모든 다이어리 리스트 조회
-            PageInfo<DiaryResponse> diaryList = diaryService.selectDiaryList(currentUserId, pageNo, pageSize);
+            // 🔹 "내가 쓴 일기만 보기" 체크 시 > showOnlyMine.value가 false 로 되면 userId는 "" 가 된다. 이때가 default값 - 모든 일기를 볼 수있다.
+            // 내가 쓴 일기 보기 showOnlyMine.value가 true이면 , 즉, userId가 null 이 아니면 또는 "" 값이 아니면 정말 userId랑 로그인한 id가 같은지 파악, 여기서 로그인은 이메일 앞 값이여야한다.
 
-            // 🔹 "내가 쓴 일기만 보기" 체크 시
-            if (userId != null) {
-                if (!userId.equals(currentUserId)) {
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("잘못된 접근입니다.");
+            // vue에서 userId가 loggedInUserId(이메일 split한 id값)값이 비동기로 받아진다
+            if ( userId != "") {
+                if (userId.equals(loggedInUserID)) {
+                    // 요청받은 userId가 현재 로그인한 사용자 ID와 일치하지 않는다.
+//                  우선 로그 먼저 보기
+                    // 모든 다이어리 리스트 조회
+                    PageInfo<DiaryResponse> diaryList = diaryService.selectDiaryList(loggedInUserID, pageNo, pageSize);
+
+                    if (diaryList.getList().isEmpty()) {
+                        // 일치했는데 작성한 일기가 없다.
+                        response.put("diaryList", new ArrayList<>()); // 빈 리스트 반환
+                        response.put("message", "작성한 일기가 없습니다.");
+                        response.put("diaryList", "작성한 일기가 없습니다.");
+                        response.put("total", 0);
+                        response.put("page", 1);
+//                        response.put("pageSize", pageSize);
+                        return  ResponseEntity.ok(response);
+                    }
                 }
-
-            // 요청받은 userId가 현재 로그인한 사용자 ID와 일치하는지 검증
-                if (diaryList.getList().isEmpty()) {
-                response.put("diaryList", new ArrayList<>()); // 빈 리스트 반환
-                    response.put("message", "작성한 일기가 없습니다.");
-                response.put("total", 0);
-                response.put("page", 1);
-                response.put("pageSize", pageSize);
-                return  ResponseEntity.ok(response);
-            }
             }
 
-
+            // 모든 다이어리 리스트 조회
+            PageInfo<DiaryResponse> diaryList = diaryService.selectDiaryList(userId, pageNo, pageSize);
             response.put("diaryList", diaryList.getList());
             response.put("total", diaryList.getTotal());
             response.put("page", diaryList.getPageNum());
             response.put("pageSize", diaryList.getPageSize());
-
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-      // 만약 로그인한 유저가 일기를 하나도 작성하지 않았을때 > 메인으로 튕기는 현상
+            // 만약 로그인한 유저가 일기를 하나도 작성하지 않았을때 > 메인으로 튕기는 현상
             System.out.println("@@@일기 조회 중 오류 발생: " + e.getMessage());
             response.put("diaryList", new ArrayList<>());
             response.put("message", "일기 조회 중 오류 발생");
             response.put("total", 0);
             response.put("page", 1);
             response.put("pageSize", pageSize);
-
             return  ResponseEntity.ok(response);
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("일기 조회 중 오류 발생");
-
         }
     }
 
@@ -108,7 +113,7 @@ public class DiaryController {
         // 현재 사용자의 고유번호를 가져옴
         // 🚨 본인만 볼 수 있도록 차단하는 코드 추가
         if (!userId.equals(currentUserId)) {
-                System.out.println("@@@다른 사용자의 일기를 조회할 권한이 없습니다 : " + currentUserId);
+            System.out.println("@@@다른 사용자의 일기를 조회할 권한이 없습니다 : " + currentUserId);
             //            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("다른 사용자의 일기를 조회할 권한이 없습니다.");
         }
 
@@ -123,7 +128,7 @@ public class DiaryController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-             Set<DiaryResponse> diaryItem = diaryService.viewDiaryItem(diaryReq);
+            Set<DiaryResponse> diaryItem = diaryService.viewDiaryItem(diaryReq);
 //            Set<DiaryResponse> diaryItem = diaryService.findDiaryById(diaryReq);
             System.out.println("@@@6--selectDiaryList 서비스:: " + diaryItem);
             response.put("diaryItem", diaryItem);

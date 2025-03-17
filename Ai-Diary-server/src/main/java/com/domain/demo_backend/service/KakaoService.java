@@ -94,7 +94,7 @@ public class KakaoService {
             System.out.println("@@@@@@@@@userMapper.findByUSerEmail"+extiUser);
 
 
-            String jwtToken = jwtUtil.createToken(extiUser.getHashedPassword(), extiUser.getUserId(), extiUser.getEmail());
+            String jwtToken = jwtUtil.createToken(extiUser.getEmail(),extiUser.getHashedPassword(), extiUser.getUserId());
             return jwtToken;
 
         }
@@ -106,6 +106,7 @@ public class KakaoService {
                 .hashedPassword(PasswordUtil.sha256(accessToken))
                 .email(kakaoUserInfo.getEmail())
                 .phone("111-111-111")
+                .verificationCode("K" + accessToken)
                 .username(kakaoUserInfo.getNickname())
                 .role("ROLE_USER")
                 .verifyYn("Y") // 카카오는 이미 인증이 완료됐으니까 'Y'를 설정해
@@ -113,7 +114,7 @@ public class KakaoService {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-            System.out.println("@@@ kakao_login_user.getUserSqno() != null"  + user.getUserSqno() != null);
+        System.out.println("@@@ kakao_login_user.getUserSqno() != null"  + user.getUserSqno() != null);
         System.out.println("@@@ kakao_user!" + user);
         // DB에 저장 후 자동 생성된 사용자 고유 번호(userSqno)가 있으면
         if(user.getUserSqno() != null) {

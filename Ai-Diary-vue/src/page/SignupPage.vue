@@ -64,7 +64,8 @@ export default {
     const toggleVisibility = (key) => {
       visibility.value[key] = !visibility.value[key];
     };
- 
+
+
 
     const validateField = {
       email() {
@@ -105,6 +106,7 @@ export default {
       },
       phone() {
         const {first, middle, last} = signUpData.value.phone;
+        signUpData.value.phone = first + middle + last;
         errorState.value.phone = !(first.length === 3 && middle.length === 4 && last.length === 4);
         
         
@@ -156,7 +158,7 @@ export default {
           userId,
           email: `${email.emailPrefix}@${email.emailDomain === 'custom' ? email.customDomain : email.emailDomain}`,
           password,
-          phone: `${phone.first}${phone.middle}${phone.last}`,
+          phone: `${phone.first}-${phone.middle}-${phone.last}`,
           username,
         };
 

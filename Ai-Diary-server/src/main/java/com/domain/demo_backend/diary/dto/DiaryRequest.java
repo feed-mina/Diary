@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.math.BigInteger;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -47,7 +48,7 @@ public class DiaryRequest {
     private String title;
 
     private String content;
-
+    private Map<String, String> tags;
     // 테그1, 테그2, 테그3
     private String tag1;
     private String tag2;
@@ -64,6 +65,7 @@ public class DiaryRequest {
                 .email(this.email)
                 .title(this.title)
                 .content(this.content)
+                .tags(this.tags)
                 .tag1(this.tag1)
                 .tag2(this.tag2)
                 .tag3(this.tag3)

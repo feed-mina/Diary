@@ -1,8 +1,72 @@
+
+<script>
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+
+export default {
+  name: "DiaryNav",
+  setup() {
+    const router = useRouter();
+    const loginPassword = localStorage.getItem('password')
+    const loginToken = localStorage.getItem('jwtToken'); // 저장된 토큰 가져오기
+    const loggedInUserId = localStorage.getItem('userId');
+    const kakaoAccessToken = localStorage.getItem('kakaoAccessToken');
+    const email = localStorage.getItem("email");
+
+    console.log("loginPassword : ", loginPassword);
+    console.log("loginToken : ", loginToken);
+    console.log("loggedInUserId : ", loggedInUserId);
+
+    // userId 또는 kakaoAccessToken이 있으면 로그인 상태
+    const isLoggedIn = computed(() => {
+      return !!email || !!kakaoAccessToken;
+    });
+
+    const isKakaoLogin = computed(()=>{
+      return  !!kakaoAccessToken;
+    })
+    const isNormalUser = computed(() => {
+      const email = localStorage.getItem("email");
+      return !!email && !kakaoAccessToken;
+    });
+    console.log('isKakaoLogin : ', isKakaoLogin.value);
+    console.log('isNormalUser : ', isKakaoLogin.value);
+    const navigateTo = (route) => {
+      router.push(route);
+    };
+
+    const logout = () => {
+      // ✅ `localStorage`에서 로그인 정보 삭제
+      localStorage.removeItem("userId");
+      localStorage.removeItem("jwtToken");
+      localStorage.removeItem("email");
+      localStorage.removeItem("password");
+      localStorage.removeItem("kakaoAccessToken");
+      localStorage.removeItem("nickname");
+
+      // ✅ 홈으로 이동 후 새로고침
+      router.push("/").then(() => {
+        location.reload();
+      });
+    };
+
+    return {
+      isLoggedIn,
+      isKakaoLogin,
+      isNormalUser,
+      navigateTo,
+      logout
+    };
+  }
+};
+</script>
+
+
 <template>
   <div class="nav-wrap">
     <div class="signup-button-wrap">
       <button class="signup-nav" v-if="!isLoggedIn" @click="navigateTo('/signup')">회원가입</button>
-      <button class="nonuser-nav" v-if="isKakaoLogin" @click="navigateTo('/memberOut')">회원탈퇴</button>
+      <button class="nonuser-nav" v-if="isNormalUser" @click="navigateTo('/memberOut')">회원탈퇴</button>
     </div>
 
     <nav>
@@ -20,68 +84,6 @@
     </nav>
   </div>
 </template>
-
-<script>
-import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
-
-export default {
-  name: "DiaryNav",
-  setup() {
-    const router = useRouter();
-     const loginEmail = localStorage.getItem('email');
-     const loginPassword = localStorage.getItem('password')
-     const loginToken = localStorage.getItem('jwtToken'); // 저장된 토큰 가져오기
-     const loggedInUserId = localStorage.getItem('userId');
-     const kakaoAccessToken = localStorage.getItem('kakaoAccessToken');
-
-console.log("loginPassword : ", loginPassword);
-console.log("loginToken : ", loginToken);
-console.log("loginEmail : ", loginEmail);
-console.log("loggedInUserId : ", loggedInUserId);
-
-    // ✅ `localStorage`에서 로그인 상태 확인 (JWT 없이)
-
-    // ✅ `localStorage`에서 로그인 상태 확인 (JWT 없이)
-    const isLoggedIn = computed(() => {
-      const email = localStorage.getItem("email");
-      const kakaoAccessToken = localStorage.getItem("kakaoAccessToken");
-
-      // userId 또는 kakaoAccessToken이 있으면 로그인 상태
-      return !!email || !!kakaoAccessToken;
-    });
-
-    const isKakaoLogin = computed(()=>{
-      const email = localStorage.getItem("email");
-      const kakaoAccessToken = localStorage.getItem("kakaoAccessToken");
-      return !!email ||  !!kakaoAccessToken;
-    })
-    const navigateTo = (route) => {
-      router.push(route);
-    };
-
-    const logout = () => {
-      // ✅ `localStorage`에서 로그인 정보 삭제
-      localStorage.removeItem("userId");
-      localStorage.removeItem("jwtToken");
-      localStorage.removeItem("email");
-      localStorage.removeItem("password");
-      localStorage.removeItem("kakaoAccessToken");
-
-      // ✅ 홈으로 이동 후 새로고침
-      router.push("/").then(() => {
-        location.reload();
-      });
-    };
-
-    return {
-      isLoggedIn,
-      navigateTo,
-      logout
-    };
-  }
-};
-</script>
 
 <style>
 .nav-wrap {

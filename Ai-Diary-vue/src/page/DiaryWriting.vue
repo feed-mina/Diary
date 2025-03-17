@@ -1,62 +1,6 @@
-<template>
-  <div class="diaryWriting">
-    <div class="diaryWriting_content">
-      <div class="diaryTuto">
-        <div class="diaryWriting_container">
-          <form>
-            <div class="diaryWritingTitle">✍ 감정 다이어리 작성</div>
-            <!-- 날짜 입력 -->
-            <div class="section">
-              <label>일기 날짜</label>
-              <Datepicker v-model="diaryContentData.date" :format="'yyyy-MM-dd'" :auto-apply="true" :locale="'ko'" />
-            </div>
-            <!-- 작성자 & 제목 입력 -->
-            <div class="section">
-              <label>작성자</label>
-              <input type="text" v-model="diaryContentData.author" placeholder="작성자 이름 입력" />
-              <label>제목</label>
-              <input type="text" v-model="diaryContentData.title" placeholder="일기 제목 입력" />
-            </div>
-            <!-- 태그 입력 -->
-            <div class="section">
-              <label>오늘의 감정 태그</label>
-              <input type="text" v-model="diaryContentData.tags.tag1" placeholder="태그1" />
-              <input type="text" v-model="diaryContentData.tags.tag2" placeholder="태그2" />
-              <input type="text" v-model="diaryContentData.tags.tag3" placeholder="태그3" />
-            </div>
-            <!-- 감정 선택 -->
-            <div class="section">
-              <label>감정지수</label>
-              <select v-model="diaryContentData.emotion">
-                <option v-for="emotion in emotionItems" :key="emotion.value" :value="emotion.value">
-                  {{ emotion.text }}
-                </option>
-              </select>
-            </div>
-            <!-- 본문 입력 -->
-            <div class="section">
-              <label>일기 내용</label>
-              <textarea v-model="diaryContentData.content" rows="5" placeholder="오늘의 감정을 기록하세요"></textarea>
-            </div>
-            <!-- 공개 여부 선택 -->
-            <div class="section">
-              <label>공개 설정</label>
-              <button type="button" :class="{'active-button': diaryContentData.hidden}" @click.prevent="diaryContentData.hidden = true">비공개</button>
-              <button type="button" :class="{'active-button': !diaryContentData.hidden}" @click.prevent="diaryContentData.hidden = false">공개</button>
-            </div>
-            <!-- 저장 버튼 -->
-            <div class="section">
-              <button type="button" class="save-button" @click="onClickSaveDiary">📝 기록하기</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
 <script>
 import axios from "axios";
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, reactive } from 'vue';
 import { useRouter } from "vue-router";
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
@@ -82,7 +26,7 @@ export default {
     const kakaoToken = ref(localStorage.getItem("kakaoToken")  || "");
 
     // ✅ 초기 다이어리 데이터
-    const diaryContentData = ref({
+    const diaryContentData = reactive({
       email : email.value,
       userId: userId.value,
       token : token.value,
@@ -96,6 +40,8 @@ export default {
       hidden: true, // 기본적으로 비공개
     });
 
+    const tagsAsMap = new Map(Object.entries(diaryContentData.tags));
+    console.log("tagsAsMap :", tagsAsMap);
     const emotionItems = [
       { text: "😁 기분이 좋아요", value: "1" },
       { text: "😂 너무 웃겨요", value: "2" },
@@ -143,7 +89,8 @@ export default {
 
 
         const response = await axios.post(`${apiUrl}/api/diary/addDiaryList`,
-              JSON.stringify(diaryContentData.value),
+            diaryContentData,
+            // JSON.stringify(diaryContentData.value),
             {
               headers: {
                 "Content-Type": "application/json",
@@ -151,17 +98,24 @@ export default {
             }
         )
         console.log("diaryContentData.value:", diaryContentData.value);
+        console.log("@@@일기 저장 응답:", response.data);
         console.log("JSON 데이터:", JSON.stringify(diaryContentData.value));
 
-        if (!response.ok) {
-          throw new Error(`서버 오류: ${response.status}`);
-        }
+        // if (!response.ok) {
+        //   throw new Error(`서버 오류: ${response.status}`);
+        // }
 
-        const data = await response.json();
-        console.log("일기 저장 결과:", data);
-        Swal.fire("기록 완료!", "일기가 저장되었습니다.", "success").then(() => {
-          router.push("/diary/common");
-        });
+        // const data = await response.json();
+        //  console.log("일기 저장 결과:", data);
+
+        if (response.data.success) {
+
+          Swal.fire("기록 완료!", "일기가 저장되었습니다.", "success").then(() => {
+            router.push("/diary/common");
+          });
+        } else {
+          Swal.fire("저장 실패!", "일기 저장 중 오류가 발생했습니다.", "error");
+        }
       } catch (error) {
         console.error("일기 저장 실패:", error);
         Swal.fire("저장 실패!", "일기 저장 중 오류가 발생했습니다.", "error");
@@ -176,6 +130,66 @@ export default {
   }
 };
 </script>
+<template>
+  <div class="diaryWriting">
+    <div class="diaryWriting_content">
+      <div class="diaryTuto">
+        <div class="diaryWriting_container">
+          <form>
+            <div class="diaryWritingTitle">✍ 감정 다이어리 작성</div>
+            <!-- 날짜 입력 -->
+            <div class="section">
+              <label>일기 날짜</label>
+              <Datepicker v-model="diaryContentData.date" :format="'yyyy-MM-dd'" :auto-apply="true" :locale="'ko'"/>
+            </div>
+            <!-- 작성자 & 제목 입력 -->
+            <div class="section">
+              <label>작성자</label>
+              <input type="text" v-model="diaryContentData.author" placeholder="작성자 이름 입력"/>
+              <label>제목</label>
+              <input type="text" v-model="diaryContentData.title" placeholder="일기 제목 입력"/>
+            </div>
+            <!-- 태그 입력 -->
+            <div class="section">
+              <label>오늘의 감정 태그</label>
+              <input type="text" v-model="diaryContentData.tags.tag1" placeholder="태그1"/>
+              <input type="text" v-model="diaryContentData.tags.tag2" placeholder="태그2"/>
+              <input type="text" v-model="diaryContentData.tags.tag3" placeholder="태그3"/>
+            </div>
+            <!-- 감정 선택 -->
+            <div class="section">
+              <label>감정지수</label>
+              <select v-model="diaryContentData.emotion">
+                <option v-for="emotion in emotionItems" :key="emotion.value" :value="emotion.value">
+                  {{ emotion.text }}
+                </option>
+              </select>
+            </div>
+            <!-- 본문 입력 -->
+            <div class="section">
+              <label>일기 내용</label>
+              <textarea v-model="diaryContentData.content" rows="5" placeholder="오늘의 감정을 기록하세요"></textarea>
+            </div>
+            <!-- 공개 여부 선택 -->
+            <div class="section_status">
+              <label>공개 설정</label>
+              <button type="button" :class="{'active-button': diaryContentData.hidden}"
+                      @click.prevent="diaryContentData.hidden = true">비공개
+              </button>
+              <button type="button" :class="{'active-button': !diaryContentData.hidden}"
+                      @click.prevent="diaryContentData.hidden = false">공개
+              </button>
+            </div>
+            <!-- 저장 버튼 -->
+            <div class="section">
+              <button type="button" class="save-button" @click="onClickSaveDiary">📝 기록하기</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
 <style scoped>
 .section {
   margin-bottom: 15px;
@@ -200,5 +214,26 @@ input, textarea, select {
 .active-button {
   background-color: #a48f7a;
   color: white;
+}
+
+.section_status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 3rem;
+}
+
+.section_status button {
+  padding: 10px 15px;
+  border-radius: 1em;
+  background: #eee7db;
+  color: black;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.section_status button.active-button {
+  color: #fff;
+  background: #A5778F;
 }
 </style>

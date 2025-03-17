@@ -64,18 +64,19 @@ export default {
     const toggleVisibility = (key) => {
       visibility.value[key] = !visibility.value[key];
     };
- 
+
+
 
     const validateField = {
       email() {
         const emailPrefix = signUpData.value.email.emailPrefix;
         const emailDomain = signUpData.value.email.emailDomain === "custom"
             ? signUpData.value.email.customDomain : signUpData.value.email.emailDomain;
-            
+
         const testEmail = `${emailPrefix}@${emailDomain}`;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          errorState.value.email = !emailRegex.test(testEmail);
-          errorMessage.value.email = errorState.value.email ? "유효하지 않은 이메일 형식입니다." : "";
+        errorState.value.email = !emailRegex.test(testEmail);
+        errorMessage.value.email = errorState.value.email ? "유효하지 않은 이메일 형식입니다." : "";
 
         const fullEmail = `${emailPrefix}@${emailDomain}`;
 
@@ -105,9 +106,10 @@ export default {
       },
       phone() {
         const {first, middle, last} = signUpData.value.phone;
+        signUpData.value.phone = first + middle + last;
         errorState.value.phone = !(first.length === 3 && middle.length === 4 && last.length === 4);
-        
-        
+
+
         errorMessage.value.phone = errorState.value.phone ? "휴대폰 번호를 정확히 입력해주세요." : "";
 
 
@@ -156,7 +158,7 @@ export default {
           userId,
           email: `${email.emailPrefix}@${email.emailDomain === 'custom' ? email.customDomain : email.emailDomain}`,
           password,
-          phone: `${phone.first}${phone.middle}${phone.last}`,
+          phone: `${phone.first}-${phone.middle}-${phone.last}`,
           username,
         };
 
@@ -174,7 +176,7 @@ export default {
         console.error("API 호출 실패", error);
         if (error.response && error.response.status === 400) {
           notify.error("회원가입에 실패했습니다. 다시 시도해주세요.");
-          console.log('error: ',error.response.data); // 서버에서 보낸 메시지: "이미 존재하는 이메일입니다."
+          console.log('error: ', error.response.data); // 서버에서 보낸 메시지: "이미 존재하는 이메일입니다."
           focusEmailField.value.focus();
           errorState.value.email = true;
           errorMessage.value.email = error.response.data;
@@ -198,7 +200,7 @@ export default {
 
         console.log('emailDomain : ', emailDomain);
         // const fullEmail = `${emailPrefix}@${emailDomain}`;
-      
+
         await sendSignUpData();
 
         fullEmail.value = `${emailPrefix}@${emailDomain}`;
@@ -210,9 +212,9 @@ export default {
             email: fullEmail.value,
             message: "인증코드를 보내드립니다."
           },
-        headers: {
-          'Content-Type': 'application/json'
-        }
+          headers: {
+            'Content-Type': 'application/json'
+          }
         });
 
         signUpData.value.message = "인증코드를 보내드립니다.";
@@ -223,8 +225,8 @@ export default {
         console.error(error);
         notify.error("인증 코드 전송 중 오류 발생!");
       }
-     router.push(`/email-verification?email=${fullEmail.value}`);
-   
+      router.push(`/email-verification?email=${fullEmail.value}`);
+
 
     }
 

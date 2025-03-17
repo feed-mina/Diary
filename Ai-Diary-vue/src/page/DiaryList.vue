@@ -65,53 +65,56 @@ export default {
           diaries.value = [];
         } else {
           noDiaryMessage.value = "";
-          // `diaryList`에서 `diaryStatus`가 true이거나, showOnlyMine 조건에 맞는 데이터만 필터링
-        diaries.value = diaryList.filter(diary => {
-          if (diary.diaryStatus) return true; //  모든 유저가 볼 수 있음
-            return true; // diaryStatus가 true 이면 모든 유저가 볼 수 있도록 유지
+          // `diaryList`에서 `diaryStatus`가 true(비공개)일 경우 본인만 볼 수 있도록 필터링
+          diaries.value = diaryList.filter(diary => {
+            if (diary.diaryStatus === "true" && diary.userId !== loggedInUserId) {
+              return false; // 로그인한 사용자의 것이 아니라면 숨김
+            }
+            return true; // (hidden)diaryStatus가 false 이면 모든 유저가 볼 수 있도록 유지
             console.log("diary.diaryStatus : ",diary.diaryStatus);
-          return showOnlyMine.value && diary.userId === loggedInUserId; // ✅ 내가 쓴 일기만 보기 활성화 시
 
-          if(showOnlyMine.value && diary.userId === loggedInUserId){
-            return true;  // 체크박스가 활성화된 경우, 본인의 일기만 표시
+            if(showOnlyMine.value && diary.userId === loggedInUserId){
+              return true;  // 체크박스가 활성화된 경우, 본인의 일기만 표시
+
+            }
 
             console.log("showOnlyMine.value : ",showOnlyMine.value);
-            console.log("diary.userId : ",diary.userId);
-          }
-
-          console.log("showOnlyMine.value : ",showOnlyMine.value);
-          console.log("diary : ",diary);
-          // diaryStatys가 false면 기본적으로 숨김 처리
-          // 사용자 ID 배열 추출
-          const userIds = diaryList.map(diary => diary.userId);
+            console.log("diary : ",diary);
+            // diaryStatys가 false면 기본적으로 숨김 처리
+            // 사용자 ID 배열 추출
+            const userIds = diaryList.map(diary => diary.userId);
 
 
-        });
+          });
         }
-        page.value = { pageNo: pageNum, pageSize, total };
+
+        // 필터링된 데이터에서 페이지네이션 적용
+        const startIdx = (page.value.pageNo - 1) * page.value.pageSize;
+        const endIdx = startIdx + page.value.pageSize;
+        diaries.value = filteredDiaries.slice(startIdx, endIdx);
+
+        //  전체 필터링된 데이터 개수를 total로 설정 (페이지네이션 반영)
+        page.value.total = filteredDiaries.length;
+        // page.value = { pageNo: pageNum, pageSize, total };
       } catch (error) {
-        // if (userIds.length === 0) {
-        //   console.log("내 일기가 없음");
-        //   diaries.value = [];
-          // page.value.total = 0;
-        //   router.push('/'); }
 
         console.error('Error fetching diary list: ', error);
         noDiaryMessage.value = "일기를 불러오는 중 오류가 발생했습니다.";
         diaries.value = [];
-        // router.push('/');
+        router.push('/');
       }
     };
 
     // 체크박스 변경 시 호출
     const toggleFilter = async () => {
+      page.value.pageNo = 1; // ✅ 필터링하면 첫 페이지부터 다시 시작
       await fetchDiaryList();
     };
 
 // 페이지 변경 시 호출
     const changePage = async (newPage) => {
       page.value.pageNo = newPage;
-      await fetchDiaryList();
+       fetchDiaryList();
     };
 
     // 특정 상세 일기 보기 진입점
@@ -180,7 +183,7 @@ export default {
     <div class="diaryList_content">
       <main class="diaryOtherList">
         <!-- v-if로 존재 여부 확인 -->
-        <div class="diaryListSection" v-if="diaries.length > 0">
+        <div v-if="diaries.length > 0" class="diaryListSection">
           <div v-for="diary in diaries" :key="diary.diaryId" @click="viewDiary(diary.diaryId, diary.userId)">
             <div class="diary-post">
               <header>
@@ -192,7 +195,7 @@ export default {
             </div>
           </div>
         </div>
-        <div v-else>{{ noDiaryMessage }}</div>
+        <div v-else>  <p class="no-diary-message">{{ noDiaryMessage }}</p></div>
       </main>
 
       <!-- 페이지네이션 -->
@@ -207,6 +210,13 @@ export default {
 
 
 <style scoped>
+.no-diary-message {
+  text-align: center;
+  font-size: 18px;
+  color: gray;
+  margin-top: 20px;
+}
+
 /* 필터 체크박스 스타일 */
 .filter-section {
   display: flex;

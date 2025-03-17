@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @NoArgsConstructor
 @Getter
@@ -14,6 +15,7 @@ public class Diary {
     private BigInteger diaryId;
     private String title;
     private String content;
+    private Map<String, String> tags;
     private String tag1;
     private String tag2;
     private String tag3;
@@ -48,6 +50,7 @@ public class Diary {
                 .email(this.email)
                 .title(this.title)
                 .content(this.content)
+                .tags(this.tags)
                 .tag1(this.tag1)
                 .tag2(this.tag2)
                 .tag3(this.tag3)
@@ -61,10 +64,11 @@ public class Diary {
     }
 
     @Builder
-    public Diary(BigInteger diaryId, String title, String content, String tag1, String tag2, String tag3, String date, String userId, String email,String username, BigInteger userSqno, String sbsceDt, String lastUpdtDt, String roleCd, String roleNm, LocalDateTime regDt, LocalDateTime updtDt, String diaryStatus, String diaryType, String delYn, LocalDateTime delDt, LocalDateTime frstRegDt, String frstRegIp, String lastUpdtIp, BigInteger frstRgstUspsSqno, Long lastUpdtUspsSqno, String author, Integer emotion) {
+    public Diary(BigInteger diaryId, String title, String content, Map tags, String tag1, String tag2, String tag3, String date, String userId, String email,String username, BigInteger userSqno, String sbsceDt, String lastUpdtDt, String roleCd, String roleNm, LocalDateTime regDt, LocalDateTime updtDt, String diaryStatus, String diaryType, String delYn, LocalDateTime delDt, LocalDateTime frstRegDt, String frstRegIp, String lastUpdtIp, BigInteger frstRgstUspsSqno, Long lastUpdtUspsSqno, String author, Integer emotion) {
         this.diaryId = diaryId;
         this.title = title;
         this.content = content;
+        this.tags = tags;
         this.tag1 = tag1;
         this.tag2 = tag2;
         this.tag3 = tag3;

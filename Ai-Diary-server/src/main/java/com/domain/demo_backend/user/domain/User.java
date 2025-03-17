@@ -35,7 +35,7 @@ public class User {
 
 
     @Builder
-    public User(String userId, String password, String hashedPassword, String role, String username, String phone, String email, String verifyYn, String socialType, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public User(String userId, String password, String hashedPassword, String role, String username, String phone, String email, String verifyYn, String socialType, LocalDateTime createdAt, LocalDateTime updatedAt, String verificationCode) {
         this.userId = userId;
         this.password = password;
         this.hashedPassword = hashedPassword;
@@ -47,6 +47,7 @@ public class User {
         this.socialType = socialType;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.verificationCode= verificationCode;
     }
 
 }

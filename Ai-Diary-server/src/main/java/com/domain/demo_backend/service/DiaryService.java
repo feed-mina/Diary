@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -122,7 +124,7 @@ public class DiaryService {
 
         //  String email = claims.getSubject();
         String email = userDetails.getUsername();
-    BigInteger correctUserSqno =  userMapper.findIndexByEmail(email);
+        BigInteger correctUserSqno =  userMapper.findIndexByEmail(email);
         System.out.println("@@@ userSqno: " + correctUserSqno);
         HttpServletRequest request;
 //        String authorizationHeader = request.getHeader("Authorization");
@@ -136,6 +138,7 @@ public class DiaryService {
                 .author(diaryRequest.getAuthor() != null ? diaryRequest.getAuthor() : "Undefined")
                 .userId(diaryRequest.getUserId() != null ? diaryRequest.getUserId() : "Undefined")
                 .content(diaryRequest.getContent() != null ? diaryRequest.getContent() : "")
+                .tags(Optional.ofNullable(diaryRequest.getTags()).orElse(new HashMap<>()))
                 .tag1(diaryRequest.getTag1() != null ? diaryRequest.getTag1() : "")
                 .tag2(diaryRequest.getTag2() != null ? diaryRequest.getTag2() : "")
                 .tag3(diaryRequest.getTag3() != null ? diaryRequest.getTag3() : "")

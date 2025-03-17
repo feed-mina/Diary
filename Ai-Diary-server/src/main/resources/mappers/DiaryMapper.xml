@@ -75,27 +75,28 @@
         where del_yn = 'N'
           AND (#{userId} IS NULL OR #{userId} = '' OR user_id = #{userId})
         ORDER BY reg_dt DESC
+            LIMIT #{pageSize} OFFSET (#{pageNo} - 1) * #{pageSize}
     </select>
 
 
     <!-- selectDiaryItem : 일기 상세 보기-->
     <select id="selectDiaryItem" parameterType="string" resultType="com.domain.demo_backend.diary.dto.DiaryResponse">
         SELECT
-        diary_id AS diaryId,
-        user_id AS userId,
-        user_sqno AS userSqno,
-        title,
-        content,
-        diary_status AS diaryStatus,
-        reg_dt AS regDt,
-        tag1,
-        tag2,
-        tag3,
-        emotion
+            diary_id AS diaryId,
+            user_id AS userId,
+            user_sqno AS userSqno,
+            title,
+            content,
+            diary_status AS diaryStatus,
+            reg_dt AS regDt,
+            tag1,
+            tag2,
+            tag3,
+            emotion
         FROM diary
         WHERE diary_id = #{diaryId}
-        AND user_id = #{userId}
-        AND del_yn = 'N'
+          AND user_id = #{userId}
+          AND del_yn = 'N'
     </select>
 
 </mapper>

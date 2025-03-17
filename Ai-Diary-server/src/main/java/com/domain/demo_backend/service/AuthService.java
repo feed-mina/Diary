@@ -144,9 +144,9 @@ public class AuthService {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
         helper.setTo(email);
-        // 🚀 Your GitHub launch code
+        //  Your GitHub launch code
 
-        helper.setSubject("\uD83D\uDE80 이메일 인증 코드");
+        helper.setSubject("📨 이메일 인증 코드 발송");
 
         String emailContent = "<div style='padding:20px; font-family:Arial; text-align:center;'>"
                 + "<h2>🚀 회원가입 인증 코드</h2>"
@@ -272,21 +272,5 @@ public class AuthService {
         log.info("user 탈퇴 처리 완료: " + existingUser);
     }
 
-
-
-    public void sendHtmlEmail(String to, String subject, String body, String imagePath) throws MessagingException {
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(body, true);
-
-        // Inline 이미지 추가
-        File imageFile = new File(imagePath);
-        helper.addInline("imageId", imageFile);
-
-        mailSender.send(mimeMessage);
-    }
 
 }

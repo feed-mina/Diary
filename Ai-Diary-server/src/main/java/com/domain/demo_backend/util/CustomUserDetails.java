@@ -17,17 +17,17 @@ public class CustomUserDetails extends User {
     // Spring Security의 SecurityContextHolder에서 인증 정보 가져오기
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    private String username;
-    private BigInteger userSqno;
+    private String email;
+    private String hashedPassword;
     private String userId;
 
     // Constructor for CustomUserDetails
-    public CustomUserDetails(String username, BigInteger userSqno, String userId, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetails(String email, String hashedPassword, String userId, Collection<? extends GrantedAuthority> authorities) {
         // Call the superclass (User) constructor
-        super(username, "dummy_password", authorities);
-        this.username = username;
+        super(email, "dummy_password", authorities);
+        this.email = email;
         this.userId = userId;
-        this.userSqno = userSqno;
+        this.hashedPassword = hashedPassword;
     }
 
 

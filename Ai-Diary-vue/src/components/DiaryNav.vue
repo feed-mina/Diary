@@ -2,7 +2,7 @@
   <div class="nav-wrap">
     <div class="signup-button-wrap">
       <button class="signup-nav" v-if="!isLoggedIn" @click="navigateTo('/signup')">회원가입</button>
-      <button class="nonuser-nav" v-if="isLoggedIn" @click="navigateTo('/memberOut')">회원탈퇴</button>
+      <button class="nonuser-nav" v-if="isKakaoLogin" @click="navigateTo('/memberOut')">회원탈퇴</button>
     </div>
 
     <nav>
@@ -33,6 +33,7 @@ export default {
      const loginPassword = localStorage.getItem('password')
      const loginToken = localStorage.getItem('jwtToken'); // 저장된 토큰 가져오기
      const loggedInUserId = localStorage.getItem('userId');
+     const kakaoAccessToken = localStorage.getItem('kakaoAccessToken');
 
 console.log("loginPassword : ", loginPassword);
 console.log("loginToken : ", loginToken);
@@ -43,13 +44,18 @@ console.log("loggedInUserId : ", loggedInUserId);
 
     // ✅ `localStorage`에서 로그인 상태 확인 (JWT 없이)
     const isLoggedIn = computed(() => {
-      const userId = localStorage.getItem("email");
+      const email = localStorage.getItem("email");
       const kakaoAccessToken = localStorage.getItem("kakaoAccessToken");
 
       // userId 또는 kakaoAccessToken이 있으면 로그인 상태
-      return !!userId || !!kakaoAccessToken;
+      return !!email || !!kakaoAccessToken;
     });
 
+    const isKakaoLogin = computed(()=>{
+      const email = localStorage.getItem("email");
+      const kakaoAccessToken = localStorage.getItem("kakaoAccessToken");
+      return !!email ||  !!kakaoAccessToken;
+    })
     const navigateTo = (route) => {
       router.push(route);
     };
@@ -58,7 +64,8 @@ console.log("loggedInUserId : ", loggedInUserId);
       // ✅ `localStorage`에서 로그인 정보 삭제
       localStorage.removeItem("userId");
       localStorage.removeItem("jwtToken");
-   
+      localStorage.removeItem("email");
+      localStorage.removeItem("password");
       localStorage.removeItem("kakaoAccessToken");
 
       // ✅ 홈으로 이동 후 새로고침

@@ -4,12 +4,14 @@ import com.domain.demo_backend.diary.domain.Diary;
 import com.domain.demo_backend.diary.dto.DiaryRequest;
 import com.domain.demo_backend.diary.dto.DiaryResponse;
 import com.domain.demo_backend.mapper.DiaryMapper;
+import com.domain.demo_backend.mapper.UserMapper;
 import com.domain.demo_backend.util.CustomUserDetails;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -21,13 +23,15 @@ import java.util.stream.Collectors;
 public class DiaryService {
     @Autowired
     private DiaryMapper diaryMapper;
+    private UserMapper userMapper;
 
-    public DiaryService(DiaryMapper diaryMapper) {
+    public DiaryService(DiaryMapper diaryMapper, UserMapper userMapper) {
         this.diaryMapper = diaryMapper;
+        this.userMapper = userMapper;
     }
 
-    public PageInfo<DiaryResponse> selectDiaryList(String userId, int pageNo, int pageSize, DiaryRequest diaryReq) {
-        System.out.println("다이어리 서비스 selectDiaryList진입");
+    public PageInfo<DiaryResponse> selectDiaryList(String userId, int pageNo, int pageSize) {
+        System.out.println("@@@다이어리 서비스 selectDiaryList진입");
 
         PageHelper.startPage(pageNo, pageSize);
         List<DiaryResponse> diaryResponseList;
@@ -35,7 +39,7 @@ public class DiaryService {
 
             // 일기 목록 가져오기
             diaryResponseList = diaryMapper.selectDiaryList(userId);
-            System.out.println("1--diaryResponseList:: " + diaryResponseList);
+            System.out.println("@@@1--diaryResponseList:: " + diaryResponseList);
             // PageInfo 객체로 페이징 결과를 반환
             return new PageInfo<>(diaryResponseList);
         } catch (Exception e) {
@@ -46,12 +50,12 @@ public class DiaryService {
     }
 
     public void selectDiaryItem(DiaryRequest diaryReq, String userId, Diary diary) {
-        System.out.println("다이어리 서비스 selectDiaryItem진입");
+        System.out.println("@@@다이어리 서비스 selectDiaryItem진입");
         List<DiaryResponse> diaryResponseItem = null;
         try {
             diaryResponseItem = diaryMapper.selectDiaryList(userId);
 
-            System.out.println("2--diaryResponseItem:: " + diaryResponseItem);
+            System.out.println("@@@2--diaryResponseItem:: " + diaryResponseItem);
         } catch (Exception e) {
             System.err.println("Error fetching diary list: " + e.getMessage());
             throw new RuntimeException("일기를 조회하는 도중 오류가 발생했습니다.", e);
@@ -64,12 +68,12 @@ public class DiaryService {
     public void addDiary(DiaryRequest diaryRequest, String ip, Authentication authentication) {
 
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        System.out.println("userDetails-다이어리서비스: " + userDetails);
+        System.out.println("@@@userDetails-다이어리서비스: " + userDetails);
         diaryRequest.setUserSqno(userDetails.getUserSqno());
 
         // 로깅을 위해 추가
-        System.out.println("diaryRequest-다이어리서비스: " + diaryRequest);
-        System.out.println("diaryRequest.toDiary()-다이어리서비스: " + diaryRequest.toDiary());
+        System.out.println("@@@diaryRequest-다이어리서비스: " + diaryRequest);
+        System.out.println("@@@diaryRequest.toDiary()-다이어리서비스: " + diaryRequest.toDiary());
         Diary diary = Diary.builder()
                 .userSqno(diaryRequest.getUserSqno() != null ? diaryRequest.getUserSqno() : userDetails.getUserSqno())
                 .title(diaryRequest.getTitle() != null ? diaryRequest.getTitle() : "Untitled")
@@ -86,7 +90,7 @@ public class DiaryService {
                 .build();
 
 
-        System.out.println("Diary 객체 생성 값: " + diary);
+        System.out.println("@@@Diary 객체 생성 값: " + diary);
 
         diaryMapper.insertDiary(diary);
     }
@@ -94,8 +98,12 @@ public class DiaryService {
 
     public Set<DiaryResponse> findDiaryById(DiaryRequest diaryReq) {
 
-//        return diaryMapper.findDiaryItemById(String.valueOf(diaryReq.getUserId()))
-        return diaryMapper.selectDiaryItem(diaryReq)
+        System.out.println("@@@@@@findDiaryById 서비스 로직 진입 diaryReq:: " + diaryReq);
+
+        System.out.println("@@@findDiaryItemById sql시작" + diaryReq);
+
+//     return diaryMapper.selectDiaryItem(diaryReq)
+        return diaryMapper.findDiaryItemById(diaryReq.getUserId())
                 .stream() // set을 stream으로 변환
                 .map(this::convertToDto) // DTO 변환 적용
                 .collect(Collectors.toSet());  // 다시 Set으로 변환
@@ -111,7 +119,11 @@ public class DiaryService {
         return dto;
     }
 
+    @Transactional
     public Set<DiaryResponse> viewDiaryItem(DiaryRequest diaryReq) {
+
+        System.out.println("@@@viewDiaryItem 서비스 로직 진입 diaryReq:: " + diaryReq);
+        System.out.println("@@@selectDiaryItem sql시작" + diaryReq);
 
         return diaryMapper.selectDiaryItem(diaryReq)
                 .stream() // set을 stream으로 변환
@@ -121,18 +133,30 @@ public class DiaryService {
     }
 
 
-
+    @Transactional
     public void addDiary(DiaryRequest diaryRequest, String ip, Authentication authentication) {
 
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         System.out.println("userDetails-다이어리서비스: " + userDetails);
-        diaryRequest.setUserSqno(userDetails.getUserSqno());
+//        diaryRequest.setEmail(userDetails.getUsername());
 
         // 로깅을 위해 추가
-        System.out.println("diaryRequest-다이어리서비스: " + diaryRequest);
-        System.out.println("diaryRequest.toDiary()-다이어리서비스: " + diaryRequest.toDiary());
+        System.out.println("@@@diaryRequest-다이어리서비스: " + diaryRequest);
+        System.out.println("@@@diaryRequest.toDiary()-다이어리서비스: " + diaryRequest.toDiary());
+
+        String email = userDetails.getUsername();
+    BigInteger correctUserSqno =  userMapper.findIndexByEmail(email);
+        System.out.println("@@@ userSqno: " + correctUserSqno);
+
+//                        .userSqno(diaryRequest.getUserSqno() != null ? diaryRequest.getUserSqno() : userDetails.getUserSqno())
+//                .userSqno(diaryRequest.getUserSqno())
+//                currentUser.Username=myelin24@naver.com
+
+
         Diary diary = Diary.builder()
-                .userSqno(diaryRequest.getUserSqno() != null ? diaryRequest.getUserSqno() : userDetails.getUserSqno())
+                .userSqno(diaryRequest.getUserSqno() != null
+                        ? diaryRequest.getUserSqno()
+                        : correctUserSqno)
                 .title(diaryRequest.getTitle() != null ? diaryRequest.getTitle() : "Untitled")
                 .author(diaryRequest.getAuthor() != null ? diaryRequest.getAuthor() : "Undefined")
                 .userId(diaryRequest.getUserId() != null ? diaryRequest.getUserId() : "Undefined")
@@ -143,11 +167,10 @@ public class DiaryService {
                 .emotion(diaryRequest.getEmotion() != null ? diaryRequest.getEmotion() : 0)
                 .diaryStatus(diaryRequest.getDiaryStatus() != null ? diaryRequest.getDiaryStatus() : "false")
                 .frstRegIp(ip != null ? ip : "127.0.0.1")
-                .frstRgstUspsSqno(userDetails.getUserSqno() != null ? userDetails.getUserSqno() : BigInteger.ZERO)
                 .build();
 
 
-        System.out.println("Diary 객체 생성 값: " + diary);
+        System.out.println("@@@Diary 객체 생성 값: " + diary);
 
         diaryMapper.insertDiary(diary);
     }

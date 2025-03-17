@@ -61,9 +61,8 @@ export default {
 
         message.value = '인증 성공 !';
         resendEnabled.value = false; // 인증 성공하면 재전송 버튼 숨김
-        // await sendSignUpData(); 
         console.log('로그인페이지로 이동');
-        // router.push('/login').then(()=> location.reload());
+        router.push('/login').then(()=> location.reload());
       } catch {
         message.value = '인증 실패! 코드를 다시 확인해주세요.';
         resendEnabled.value = true; // 인증실패하면 재전송 가능하게
@@ -82,10 +81,6 @@ export default {
         };
 
         console.log("회원가입 데이터:", signUpDataToSave);
-
-        // const response = await axios.post("http://localhost:8080/api/auth/register", signUpDataToSave);
-
-        // console.log('회원가입 response : ', response);
         notify.success("회원가입이 완료되었습니다!");
 
         // router.push("/login").then(() => location.reload());

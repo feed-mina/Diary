@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.awt.desktop.SystemEventListener;
 import java.time.LocalDateTime;
 import java.util.Map;
 @Service
@@ -93,14 +94,14 @@ public class KakaoService {
             System.out.println("@@@@@@@@@userMapper.findByUSerEmail"+extiUser);
 
 
-            String jwtToken = jwtUtil.createToken(extiUser.getUsername(), extiUser.getUserSqno(), extiUser.getUserId());
+            String jwtToken = jwtUtil.createToken(extiUser.getHashedPassword(), extiUser.getUserId(), extiUser.getEmail());
             return jwtToken;
 
         }
 
         // 새로운 사용자 객체 생성 (빌더 패턴 사용)
         User user = User.builder()
-                .userId("kakao_" + kakaoUserInfo.getEmail())
+                .userId(kakaoUserInfo.getEmail().split("@")[0])
                 .password(accessToken)
                 .hashedPassword(PasswordUtil.sha256(accessToken))
                 .email(kakaoUserInfo.getEmail())
@@ -112,16 +113,24 @@ public class KakaoService {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-
+            System.out.println("@@@ kakao_login_user.getUserSqno() != null"  + user.getUserSqno() != null);
+        System.out.println("@@@ kakao_user!" + user);
         // DB에 저장 후 자동 생성된 사용자 고유 번호(userSqno)가 있으면
         if(user.getUserSqno() != null) {
             // 사용자 정보를 DB에 저장해
             userMapper.insertUser(user);
+
             // JWT 토큰을 생성해 반환해
-            String jwtToken = jwtUtil.createToken(user.getUsername(), user.getUserSqno(), user.getUserId());
+            String jwtToken =  jwtUtil.createToken(user.getEmail(),user.getHashedPassword(), user.getUserId() );
             return jwtToken;
         } else {
-            throw new RuntimeException("userSqno가 null입니다.");
+            // 사용자 정보를 DB에 저장해
+            userMapper.insertUser(user);
+
+            // JWT 토큰을 생성해 반환해
+            String jwtToken =  jwtUtil.createToken(user.getEmail(),user.getHashedPassword(), user.getUserId() );
+            return jwtToken ;
+//            throw new RuntimeException("userSqno가 null입니다.");
         }
     }
 

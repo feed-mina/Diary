@@ -28,6 +28,7 @@ public class DiaryRequest {
     private BigInteger userSqno;
     // 글쓴이
     private String userId;
+    private String email;
     // 최초 등록 IP
     private String frstRegstIp;
 
@@ -60,6 +61,7 @@ public class DiaryRequest {
                 .diaryId(this.diaryId)
                 .userSqno(this.userSqno)
                 .userId(this.userId)
+                .email(this.email)
                 .title(this.title)
                 .content(this.content)
                 .tag1(this.tag1)

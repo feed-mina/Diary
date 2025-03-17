@@ -118,9 +118,9 @@ export default {
               localStorage.setItem("jwtToken", kakao_token);
               Swal.fire("카카오 로그인 성공", "로그인을 완료했습니다", "success");
               // 페이지 이동 (필요하면 추가)
-              //  router.push("/diary/common").then(() => {
-              //    location.reload();
-              //  });
+              router.push("/diary/common").then(() => {
+                 location.reload();
+               });
             } catch (error) {
               Swal.fire("로그인 실패", error.response?.data?.message || "카카오 로그인 실패", "error");
               console.error("❌ 카카오 로그인 실패", error);

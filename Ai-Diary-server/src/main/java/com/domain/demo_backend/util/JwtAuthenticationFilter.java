@@ -40,18 +40,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Claims claims = jwtUtil.validateToken(token); // 토큰 검증
                 // 유효하지 않은 토큰 예외 처리
                 System.out.println("@@@@claims: " + claims);
-                String username = claims.getSubject();
-                System.out.println("@@@@username : " + username);
+                String email = claims.getSubject();
+                System.out.println("@@@@email : " + email);
                 String userId = claims.get("userId", String.class);
-                String userSqnoStr = claims.get("userSqno", String.class); // String으로 읽기
-                System.out.println("@@@@userSqnoStr : " + userSqnoStr);
-                BigInteger userSqno = new BigInteger(userSqnoStr);
-                System.out.println("@@@@userSqno : " + userSqno);
+                String hashedPassword = claims.get("hashedPassword", String.class); // String으로 읽기
+                System.out.println("@@@@userSqnoStr : " + hashedPassword);
 
-                if (username != null) {
+                if (email != null) {
                     List<GrantedAuthority> authorities = List.of(() -> "ROLE_USER");
                     System.out.println("@@@@authorities: " + authorities);
-                    CustomUserDetails userDetails = new CustomUserDetails(username, userSqno, userId, List.of(new SimpleGrantedAuthority("ROLE_USER")));
+                    CustomUserDetails userDetails = new CustomUserDetails(email, hashedPassword, userId, List.of(new SimpleGrantedAuthority("ROLE_USER")));
 
                     System.out.println("@@@@userDetails: " + userDetails);
                     // 인증 토큰 생성

@@ -69,7 +69,7 @@ public class AuthService {
         }
         log.info("JWT 성공");
         // 비밀번호를 포함하지 않은 사용자 정보를 JWT에 포함 users의 값은 전부 받아온다.
-        return jwtUtil.createToken(user.getUsername(), user.getUserSqno(), user.getUserId());
+        return jwtUtil.createToken(user.getEmail(),user.getHashedPassword(), user.getUserId() );
     }
 
     public class DuplicateEmailException extends RuntimeException {
@@ -95,10 +95,10 @@ public class AuthService {
             log.info("회원가입 핸드폰 실패");
             throw new IllegalArgumentException("이미 존재하는 핸드폰 번호입니다.");
         }
-
+//.getEmail()
         log.info("유효성 통과");
         User user = User.builder()
-                .userId(registerRequest.getUserId())
+                .userId(registerRequest.getEmail().split("@")[0])
                 .password(registerRequest.getPassword())
                 .hashedPassword(PasswordUtil.sha256(registerRequest.getPassword()))
                 .username(registerRequest.getUsername())

@@ -19,6 +19,7 @@ public class Diary {
     private String tag3;
     private String date;
     private String userId;
+    private String email;
     private String username;
     private BigInteger userSqno;
     private String sbsceDt;
@@ -44,6 +45,7 @@ public class Diary {
         return Diary.builder()
                 .userSqno(this.userSqno)
                 .userId(this.userId)
+                .email(this.email)
                 .title(this.title)
                 .content(this.content)
                 .tag1(this.tag1)
@@ -59,7 +61,7 @@ public class Diary {
     }
 
     @Builder
-    public Diary(BigInteger diaryId, String title, String content, String tag1, String tag2, String tag3, String date, String userId, String username, BigInteger userSqno, String sbsceDt, String lastUpdtDt, String roleCd, String roleNm, LocalDateTime regDt, LocalDateTime updtDt, String diaryStatus, String diaryType, String delYn, LocalDateTime delDt, LocalDateTime frstRegDt, String frstRegIp, String lastUpdtIp, BigInteger frstRgstUspsSqno, Long lastUpdtUspsSqno, String author, Integer emotion) {
+    public Diary(BigInteger diaryId, String title, String content, String tag1, String tag2, String tag3, String date, String userId, String email,String username, BigInteger userSqno, String sbsceDt, String lastUpdtDt, String roleCd, String roleNm, LocalDateTime regDt, LocalDateTime updtDt, String diaryStatus, String diaryType, String delYn, LocalDateTime delDt, LocalDateTime frstRegDt, String frstRegIp, String lastUpdtIp, BigInteger frstRgstUspsSqno, Long lastUpdtUspsSqno, String author, Integer emotion) {
         this.diaryId = diaryId;
         this.title = title;
         this.content = content;
@@ -68,6 +70,7 @@ public class Diary {
         this.tag3 = tag3;
         this.date = date;
         this.userId = userId;
+        this.email = email;
         this.username = username;
         this.userSqno = userSqno;
         this.sbsceDt = sbsceDt;

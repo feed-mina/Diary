@@ -43,7 +43,8 @@ export default {
 
     const diaryId = route.params.diaryId;
     const userId = route.query.userId;
-    const jwtToken = cookies.get("jwt")?.jwt; // 쿠키에서 jwt 속성 가져오기
+    const jwtToken = localStorage.getItem("jwtToken")
+    // const jwtToken = cookies.get("jwt")?.jwt; // 쿠키에서 jwt 속성 가져오기
 
     console.log("🛠 route.params: ", route.params);
     console.log("🛠 Extracted diaryId:", diaryId);
@@ -64,14 +65,17 @@ export default {
         return;
       }
       try {
-        const response = await axios.get(`http://localhost:8080/api/diary/getDiaryItem/${diaryId}?userId=${userId}`
-            // , {
-            //   headers: {
-            //     Authorization: `Bearer ${jwtToken}`,
-            //     'Content-Type': 'application/json',
-            //   }
-            // }
-        );
+        console.log(`📌 요청 URL1:  http://localhost:8080/api/diary/getDiaryItem/${diaryId}?userId=${userId}`);
+        const response = await axios.get(`http://localhost:8080/api/diary/getDiaryItem/${diaryId}`
+            , {
+              // headers: {
+              //   Authorization: `Bearer ${jwtToken}`,
+              //   'Content-Type': 'application/json',
+              // },
+              params: {
+                userId: userId, // 체크박스 상태에 따라 userId필터링
+              },
+            });
 
         diaryData.value = response.data;
         console.log("📌 서버 응답 데이터:", diaryData.value);
@@ -93,6 +97,8 @@ export default {
       }
 
       try {
+        console.log(`📌 요청 URL2: http://localhost:8080/api/diary/viewDiaryItem/${diaryId}?userId=${userId}`);
+
         const response = await axios.get(`http://localhost:8080/api/diary/viewDiaryItem/${diaryId}`
             , {
               // headers: {
@@ -123,6 +129,7 @@ export default {
 
         }
         return response.data;
+        diaryData.value = response.data;
       } catch (error) {
         console.error('Error fetching diary list: ', error);
       }
@@ -133,15 +140,15 @@ export default {
       if (diaryId) {
         console.log("diaryId 감지됨:", diaryId);
         getDiaryItem();
-        fetchDiaryDetails();
+        // fetchDiaryDetails();
       }
     });
 
     onMounted(async () => {
-      const requestUrl = `http://localhost:8080/api/diary/getDiaryItem/${diaryId}?userId=${userId}`;
-      console.log("📌 상세 페이지 요청 URL:", requestUrl);
-
-      await fetchDiaryDetails(diaryId, userId);
+      console.log("@@@@@@ onMounted");
+      // console.log(`📌 요청 URL1:  http://localhost:8080/api/diary/getDiaryItem/${diaryId}?userId=${userId}`);
+      // await fetchDiaryDetails(diaryId, userId);
+      getDiaryItem();
     });
 
     const sendDiaryContentItem = async () => {
@@ -165,27 +172,6 @@ export default {
           // alert("로그인한 사람만 가능합니다.");
           return;
         }
-
-        const diaryDataToSave = {
-          // pageNo: 1,
-          // pageSize: 10,
-          ...sendDiaryContentItem.value,
-          diaryStatus: diaryContentItem.value.hidden ? 'true' : 'false', // Boolean을 문자열로 변환
-          userId,
-        };
-        console.log('diaryDataToSave', diaryDataToSave);
-
-        const response = await axios.post(`http://localhost:8080/api/diary/getDiaryList2/${diaryContentItem.value.diaryId}/${userId}`, diaryDataToSave
-            // ,{
-            //   headers: {
-            //     Authorization: `Bearer ${jwtToken}`,
-            //     "Content-Type": "application/json",
-            //     "X-Forwarded-For": "127.0.0.1",
-            //   },
-            //   withCredentials: true, // 쿠키 인증 허용
-
-            // }
-        );
 
         console.log('response', response);
         // alert("일기장이 저장되었습니다");
@@ -239,10 +225,6 @@ export default {
         }
       }
     };
-
-    console.log(`📌 요청 URL1:  http://localhost:8080/api/diary/getDiaryItem/${diaryId}?userId=${userId}`);
-
-    console.log(`📌 요청 URL2: http://localhost:8080/api/diary/viewDiaryItem/${diaryId}?userId=${userId}`);
     return {
       diaryContent: diaryContentItem,
       showOnlyMine,

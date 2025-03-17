@@ -7,6 +7,7 @@ import DiaryList from "@/page/DiaryList.vue";
 import DiaryHeader from "@/components/Header.vue";
 import DiaryNav from "@/components/DiaryNav.vue";
 import DiaryFooter from "@/components/Footer.vue"
+import axios from "axios";
 
 export default {
   components: {
@@ -15,6 +16,27 @@ export default {
     DiaryFooter,
   },
   setup() {
+console.log("@@@@App inerceptors");
+// 요청 인터셉터 추가: 모든 요청 전에 토큰을 헤더에 넣어줌
+    axios.interceptors.request.use(
+        config => {
+          // 일반 로그인 토큰과 카카오 로그인 토큰 중 사용 가능한 토큰 선택하기
+          const token = localStorage.getItem("jwtToken") || localStorage.getItem("kakaoToken");
+
+          console.log("@@@@App inerceptors token", token);
+          if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+          }
+          return config;
+          console.log("@@@@App inerceptors config", config);
+        },
+        error => {
+          return Promise.reject(error);
+          console.log("@@@@App inerceptors error", Promise.reject(error));
+        }
+    );
+
+
     // 라우터 튜토리얼
     const routes = {
       '/': Home,

@@ -61,6 +61,7 @@ import { useRouter } from "vue-router";
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import Swal from 'sweetalert2';
+import {apiUrl} from "@/api/index.js";
 
 export default {
   name: "DiaryWriting",
@@ -75,10 +76,17 @@ export default {
 
     // ✅ 로그인한 유저 ID 확인
     const userId = ref(localStorage.getItem("userId")  || "");
+    const token = ref(localStorage.getItem("jwtToken")  || "");
+    const nickname = ref(localStorage.getItem("nickname")  || "");
+    const email = ref(localStorage.getItem("email")  || "");
+    const kakaoToken = ref(localStorage.getItem("kakaoToken")  || "");
 
     // ✅ 초기 다이어리 데이터
     const diaryContentData = ref({
+      email : email.value,
       userId: userId.value,
+      token : token.value,
+      nickname : nickname.value,
       date: "",
       author: "",
       title: "",
@@ -119,10 +127,6 @@ export default {
     // ✅ 일기 저장 함수
     const onClickSaveDiary = async () => {
 
-      let token = localStorage.getItem("jwtToken");  // 일반 로그인
-      let email = localStorage.getItem("email");  // 일반 로그인
-      let kakaoToken = localStorage.getItem("kakaoAccessLogin"); // 카카오 로그인
-
       let headers = {
         "Content-Type": "application/json",
       };
@@ -136,11 +140,18 @@ export default {
       }
 
       try {
-        const response = await fetch("/addDiaryList", {
-          method: "POST",
-          // headers: headers,
-          body: JSON.stringify(diaryContentData.value),
-        });
+
+
+        const response = await axios.post(`${apiUrl}/api/diary/addDiaryList`,
+              JSON.stringify(diaryContentData.value),
+            {
+              headers: {
+                "Content-Type": "application/json",
+              }
+            }
+        )
+        console.log("diaryContentData.value:", diaryContentData.value);
+        console.log("JSON 데이터:", JSON.stringify(diaryContentData.value));
 
         if (!response.ok) {
           throw new Error(`서버 오류: ${response.status}`);

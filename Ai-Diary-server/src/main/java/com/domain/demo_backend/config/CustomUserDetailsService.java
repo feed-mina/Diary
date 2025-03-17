@@ -40,8 +40,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         return new CustomUserDetails(
-                user.getUsername(),
-                user.getUserSqno(),
+                user.getEmail(),
+                user.getPassword(),
                 user.getUserId(),
                 getAuthorities(user.getRole())
         ); // CustomUserDetails 객체 반환

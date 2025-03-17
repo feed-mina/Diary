@@ -51,29 +51,30 @@ public class JwtUtil {
 //                .compact();
 //    }
 
-    public String generateToken(String username, BigInteger userSqno) {
-        return Jwts.builder()
-                .setSubject(username)
-                .claim("userSqno", userSqno.toString()) // 사용자 고유 식별자 추가
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10시간 유효
-                .signWith(secretKey, SignatureAlgorithm.HS256) // secretKey 사용
-                .compact();
-    }
+//    public String generateToken(String username, BigInteger userSqno) {
+//        return Jwts.builder()
+//                .setSubject(username)
+//                .claim("userSqno", userSqno.toString()) // 사용자 고유 식별자 추가
+//                .setIssuedAt(new Date())
+//                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10시간 유효
+//                .signWith(secretKey, SignatureAlgorithm.HS256) // secretKey 사용
+//                .compact();
+//    }
 
     // 토큰생성
-    public String createToken(String username, BigInteger userSqno, String email) {
-        if (userSqno == null) {
-            throw new IllegalArgumentException("userSqno 값이 존재하지 않습니다.");
+    public String createToken(String email, String hashedPassword, String userId) {
+        if (userId == null) {
+            throw new IllegalArgumentException("unique_userId값이 존재하지 않습니다.");
         }
-        Claims claims = Jwts.claims().setSubject(username);
+        Claims claims = Jwts.claims().setSubject(email);
         Date now = new Date();
         Date validity = new Date(now.getTime() + 1000 * 60 * 60 * 24);
 
         return Jwts.builder()
                 .setClaims(claims)
-                .claim("userSqno", userSqno.toString()) //
-                .claim("email", email)// 사용자 고유 식별자 추가
+                .claim("email", email) // 사용자 고유 식별자 추가
+                .claim("hashedPassword", hashedPassword)
+                .claim("userId", userId) //
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(secretKey, SignatureAlgorithm.HS256)
@@ -88,13 +89,6 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public BigInteger getUserSqnoFromToken(String token) {
-        Claims claims = validateToken(token); // 토큰 검증 및 클레임 추출
-        // userSqno 값을 BigInteger로 변환
-        String userSqnoStr = claims.get("userSqno", String.class); // String으로 클레임 읽기
-        return new BigInteger(userSqnoStr); // BigInteger로 변환
-
-    }
 
     /**
      * AES-256으로 문자열을 암호화 하는 메서드

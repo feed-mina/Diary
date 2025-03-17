@@ -4,6 +4,7 @@ import com.domain.demo_backend.user.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Mapper
@@ -31,4 +32,6 @@ public interface UserMapper {
     void updateUser(User existingUser);
 
     void insertKakaoUser(User user);
+    BigInteger findIndexByEmail(String email);
+
 }

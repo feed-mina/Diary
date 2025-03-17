@@ -27,7 +27,7 @@ public class UserInfoHelper {
 
 
     // 현재 사용자의 userSqno 일련번호를 가져온다. @Return BigIntiger 사용자 일련번호
-    public static BigInteger getCurrentUserSeq() {
-        return getMemberInfo().getUserSqno();
+    public static String getCurrentUserEmail() {
+        return getMemberInfo().getEmail();
     }
 }

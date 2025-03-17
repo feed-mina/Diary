@@ -1,4 +1,3 @@
-
 <script>
 import axios from "axios";
 import { ref, computed, onMounted, reactive } from 'vue';
@@ -131,7 +130,6 @@ export default {
   }
 };
 </script>
-
 <template>
   <div class="diaryWriting">
     <div class="diaryWriting_content">
@@ -142,21 +140,21 @@ export default {
             <!-- 날짜 입력 -->
             <div class="section">
               <label>일기 날짜</label>
-              <Datepicker v-model="diaryContentData.date" :format="'yyyy-MM-dd'" :auto-apply="true" :locale="'ko'" />
+              <Datepicker v-model="diaryContentData.date" :format="'yyyy-MM-dd'" :auto-apply="true" :locale="'ko'"/>
             </div>
             <!-- 작성자 & 제목 입력 -->
             <div class="section">
               <label>작성자</label>
-              <input type="text" v-model="diaryContentData.author" placeholder="작성자 이름 입력" />
+              <input type="text" v-model="diaryContentData.author" placeholder="작성자 이름 입력"/>
               <label>제목</label>
-              <input type="text" v-model="diaryContentData.title" placeholder="일기 제목 입력" />
+              <input type="text" v-model="diaryContentData.title" placeholder="일기 제목 입력"/>
             </div>
             <!-- 태그 입력 -->
             <div class="section">
               <label>오늘의 감정 태그</label>
-              <input type="text" v-model="diaryContentData.tags.tag1" placeholder="태그1" />
-              <input type="text" v-model="diaryContentData.tags.tag2" placeholder="태그2" />
-              <input type="text" v-model="diaryContentData.tags.tag3" placeholder="태그3" />
+              <input type="text" v-model="diaryContentData.tags.tag1" placeholder="태그1"/>
+              <input type="text" v-model="diaryContentData.tags.tag2" placeholder="태그2"/>
+              <input type="text" v-model="diaryContentData.tags.tag3" placeholder="태그3"/>
             </div>
             <!-- 감정 선택 -->
             <div class="section">
@@ -175,8 +173,12 @@ export default {
             <!-- 공개 여부 선택 -->
             <div class="section_status">
               <label>공개 설정</label>
-              <button type="button" :class="{'active-button': diaryContentData.hidden}" @click.prevent="diaryContentData.hidden = true">비공개</button>
-              <button type="button" :class="{'active-button': !diaryContentData.hidden}" @click.prevent="diaryContentData.hidden = false">공개</button>
+              <button type="button" :class="{'active-button': diaryContentData.hidden}"
+                      @click.prevent="diaryContentData.hidden = true">비공개
+              </button>
+              <button type="button" :class="{'active-button': !diaryContentData.hidden}"
+                      @click.prevent="diaryContentData.hidden = false">공개
+              </button>
             </div>
             <!-- 저장 버튼 -->
             <div class="section">
@@ -214,17 +216,12 @@ input, textarea, select {
   color: white;
 }
 
-
-
-
 .section_status {
   display: flex;
   align-items: center;
   gap: 1rem;
   padding-bottom: 3rem;
 }
-
-
 
 .section_status button {
   padding: 10px 15px;
@@ -239,5 +236,4 @@ input, textarea, select {
   color: #fff;
   background: #A5778F;
 }
-
 </style>

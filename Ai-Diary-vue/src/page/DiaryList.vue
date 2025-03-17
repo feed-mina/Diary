@@ -1,5 +1,5 @@
 <script>
-import {onMounted, ref} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
@@ -17,6 +17,17 @@ export default {
     const noDiaryMessage = ref(""); // "작성한 일기가 없습니다." 메시지
 
 
+    // ✅ 로그인 상태 체크 (localStorage 활용)
+    const isLoggedIn = computed(() => {
+      return !!localStorage.getItem("jwtToken") || !!localStorage.getItem("kakaoAccessToken");
+    });
+
+    // ✅ 로그인한 유저 ID 확인
+    const userId = ref(localStorage.getItem("userId")  || "");
+    const token = ref(localStorage.getItem("jwtToken")  || "");
+    const nickname = ref(localStorage.getItem("nickname")  || "");
+    const email = ref(localStorage.getItem("email")  || "");
+    const kakaoToken = ref(localStorage.getItem("kakaoToken")  || "");
     const page = ref({
       pageNo: 1,
       pageSize: 5, // 한 페이지당 5개의 일기
@@ -25,13 +36,14 @@ export default {
 
     const loggedInUserId = localStorage.getItem('userId');
 
+    console.log("나만 보기: ", showOnlyMine.value);
     console.log("로그인한 사용자 ID  : ", loggedInUserId);
     // loggedInUserId와 response.data.diaryList.list.userId같은지, 같다면 내가 쓴 일기만 보기 체크박스 누를때 두개가 같은 것만 response.data.diaryList 보이기
     const fetchDiaryList = async () => {
       try {
         const response = await axios.get('http://localhost:8080/api/diary/viewDiaryList',{
           params: {
-            userId: showOnlyMine.value ? loggedInUserId : null,
+            userId: showOnlyMine.value ? loggedInUserId : "",
             pageNo: page.value.pageNo,
             pageSize: page.value.pageSize,
           },
@@ -102,7 +114,6 @@ export default {
       await fetchDiaryList();
     };
 
-
     // 특정 상세 일기 보기 진입점
     console.log("특정 상세 일기 보기 진입점");
     const viewDiary = async (diaryId, diaryUserId) => {
@@ -116,16 +127,25 @@ export default {
       cookies.set("diaryId", diaryId);
       // cookies.set("loggedInUserId", loggedInUserId);  // 로그인한 유저  cookie담는거
       cookies.set("diaryUserId", diaryUserId);
-
-      // await fetchDiaryList();
       router.push(`/diary/view/${diaryId}?userId=${diaryUserId}`); // userId 포함하여 이동
     };
     // 컴포넌트 마운트 시 일기 목록 로드
 
+
+    // ✅ 로그인되지 않은 경우 로그인 페이지로 이동
     onMounted(() => {
-      if (!loggedInUserId) {
-        router.push('/');
-      } else {
+      if (!isLoggedIn.value) {
+        Swal.fire({
+          title: "로그인이 필요합니다!",
+          text: "로그인 후 일기를 작성할 수 있습니다.",
+          icon: "warning",
+          confirmButtonText: "로그인하기",
+          confirmButtonColor: "#FF5733",
+        }).then(() => {
+          router.push('/');
+        });
+      }
+      else {
         fetchDiaryList();
       }
     });

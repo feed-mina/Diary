@@ -67,6 +67,7 @@ console.log("loggedInUserId : ", loggedInUserId);
       localStorage.removeItem("email");
       localStorage.removeItem("password");
       localStorage.removeItem("kakaoAccessToken");
+      localStorage.removeItem("nickname");
 
       // ✅ 홈으로 이동 후 새로고침
       router.push("/").then(() => {

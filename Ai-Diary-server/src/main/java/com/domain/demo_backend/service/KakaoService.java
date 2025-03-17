@@ -94,7 +94,7 @@ public class KakaoService {
             System.out.println("@@@@@@@@@userMapper.findByUSerEmail"+extiUser);
 
 
-            String jwtToken = jwtUtil.createToken(extiUser.getHashedPassword(), extiUser.getUserId(), extiUser.getEmail());
+            String jwtToken = jwtUtil.createToken(extiUser.getEmail(),extiUser.getHashedPassword(), extiUser.getUserId());
             return jwtToken;
 
         }

@@ -73,8 +73,7 @@
                reg_dt AS date
         FROM diary
         where del_yn = 'N'
-          AND (#{userId} IS NULL
-           OR user_id = #{userId})
+          AND (#{userId} IS NULL OR #{userId} = '' OR user_id = #{userId})
         ORDER BY reg_dt DESC
     </select>
 

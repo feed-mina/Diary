@@ -6,8 +6,11 @@ import com.domain.demo_backend.diary.dto.DiaryResponse;
 import com.domain.demo_backend.mapper.DiaryMapper;
 import com.domain.demo_backend.mapper.UserMapper;
 import com.domain.demo_backend.util.CustomUserDetails;
+import com.domain.demo_backend.util.JwtUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import jakarta.servlet.http.HttpServletRequest;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -25,9 +28,13 @@ public class DiaryService {
     private DiaryMapper diaryMapper;
     private UserMapper userMapper;
 
-    public DiaryService(DiaryMapper diaryMapper, UserMapper userMapper) {
+    private final JwtUtil jwtUtil;
+
+
+    public DiaryService(DiaryMapper diaryMapper, UserMapper userMapper,JwtUtil jwtUtil) {
         this.diaryMapper = diaryMapper;
         this.userMapper = userMapper;
+        this.jwtUtil = jwtUtil;
     }
 
     public PageInfo<DiaryResponse> selectDiaryList(String userId, int pageNo, int pageSize) {
@@ -37,7 +44,7 @@ public class DiaryService {
         List<DiaryResponse> diaryResponseList;
         try {
 
-            // 일기 목록 가져오기
+           // 일기 목록 가져오기
             diaryResponseList = diaryMapper.selectDiaryList(userId);
             System.out.println("@@@1--diaryResponseList:: " + diaryResponseList);
             // PageInfo 객체로 페이징 결과를 반환
@@ -64,38 +71,6 @@ public class DiaryService {
         // PageInfo 객체로 페이징 결과를 반환
         diaryMapper.insertDiary(diary);
     }
-/*
-    public void addDiary(DiaryRequest diaryRequest, String ip, Authentication authentication) {
-
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        System.out.println("@@@userDetails-다이어리서비스: " + userDetails);
-        diaryRequest.setUserSqno(userDetails.getUserSqno());
-
-        // 로깅을 위해 추가
-        System.out.println("@@@diaryRequest-다이어리서비스: " + diaryRequest);
-        System.out.println("@@@diaryRequest.toDiary()-다이어리서비스: " + diaryRequest.toDiary());
-        Diary diary = Diary.builder()
-                .userSqno(diaryRequest.getUserSqno() != null ? diaryRequest.getUserSqno() : userDetails.getUserSqno())
-                .title(diaryRequest.getTitle() != null ? diaryRequest.getTitle() : "Untitled")
-                .author(diaryRequest.getAuthor() != null ? diaryRequest.getAuthor() : "Undefined")
-                .userId(diaryRequest.getUserId() != null ? diaryRequest.getUserId() : "Undefined")
-                .content(diaryRequest.getContent() != null ? diaryRequest.getContent() : "")
-                .tag1(diaryRequest.getTag1() != null ? diaryRequest.getTag1() : "")
-                .tag2(diaryRequest.getTag2() != null ? diaryRequest.getTag2() : "")
-                .tag3(diaryRequest.getTag3() != null ? diaryRequest.getTag3() : "")
-                .emotion(diaryRequest.getEmotion() != null ? diaryRequest.getEmotion() : 0)
-                .diaryStatus(diaryRequest.getDiaryStatus() != null ? diaryRequest.getDiaryStatus() : "false")
-                .frstRegIp(ip != null ? ip : "127.0.0.1")
-                .frstRgstUspsSqno(userDetails.getUserSqno() != null ? userDetails.getUserSqno() : BigInteger.ZERO)
-                .build();
-
-
-        System.out.println("@@@Diary 객체 생성 값: " + diary);
-
-        diaryMapper.insertDiary(diary);
-    }
-*/
-
     public Set<DiaryResponse> findDiaryById(DiaryRequest diaryReq) {
 
         System.out.println("@@@@@@findDiaryById 서비스 로직 진입 diaryReq:: " + diaryReq);
@@ -137,20 +112,20 @@ public class DiaryService {
     public void addDiary(DiaryRequest diaryRequest, String ip, Authentication authentication) {
 
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        System.out.println("userDetails-다이어리서비스: " + userDetails);
-//        diaryRequest.setEmail(userDetails.getUsername());
 
         // 로깅을 위해 추가
         System.out.println("@@@diaryRequest-다이어리서비스: " + diaryRequest);
         System.out.println("@@@diaryRequest.toDiary()-다이어리서비스: " + diaryRequest.toDiary());
 
+
+        // Claims claims = jwtUtil.validateToken(token); 토큰 검증
+
+        //  String email = claims.getSubject();
         String email = userDetails.getUsername();
     BigInteger correctUserSqno =  userMapper.findIndexByEmail(email);
         System.out.println("@@@ userSqno: " + correctUserSqno);
-
-//                        .userSqno(diaryRequest.getUserSqno() != null ? diaryRequest.getUserSqno() : userDetails.getUserSqno())
-//                .userSqno(diaryRequest.getUserSqno())
-//                currentUser.Username=myelin24@naver.com
+        HttpServletRequest request;
+//        String authorizationHeader = request.getHeader("Authorization");
 
 
         Diary diary = Diary.builder()

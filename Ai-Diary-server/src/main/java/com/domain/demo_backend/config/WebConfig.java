@@ -18,14 +18,16 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(remoteIpResolver);
-    }
-
-    ;
+    };
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE");
+                .allowedOrigins("http://localhost:4000",
+                        "http://web-2025-version1.s3-website.ap-northeast-2.amazonaws.com",
+                        "https://justsaying.co.kr","http://justsaying.co.kr")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     };
 }

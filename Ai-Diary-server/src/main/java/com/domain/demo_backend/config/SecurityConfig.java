@@ -21,6 +21,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+
 import java.util.List;
 
 @Configuration
@@ -45,18 +46,10 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // 인증 관리자 빈 설정
-//    @Bean
-//    protected AuthenticationManager authManager(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
-//    }
-
     @Bean
     public AuthenticationManager authManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
-
     }
-
 
     // Spring Security 필터 체인 설정
     @Bean
@@ -66,26 +59,17 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())  // CSRF 비활성화
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()  // Swagger 관련 URL 허용
-                        .requestMatchers(HttpMethod.GET, "/api/timer/**","/api/auth/**", "/api/diary/**").permitAll() // GET 요청 허용 , 로그인, 회원가입 허용
-                        .requestMatchers(HttpMethod.POST, "/api/auth/**", "/api/diary/**").permitAll() // POST 요청 허용 , 로그인, 회원가입 허용
-                        .requestMatchers(HttpMethod.POST, "/api/kakao/**").permitAll()  //  추가!
+                        .requestMatchers(HttpMethod.GET,"/api/**").permitAll() // 모든 GET요청 허용
+                        .requestMatchers(HttpMethod.POST, "/api/**").permitAll() // 모든 POST 요청 허용
+                        .requestMatchers(HttpMethod.PUT, "/api/**").permitAll() // 모든 PUT 요청 허용POST 요청 허용
+                        .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll() // 모든 PUT 요청 허용
                         .requestMatchers("/resources/**", "/static/**", "/error").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable()) // formLogin 끄기!
-                .logout(logout -> logout.disable()); // 로그아웃 기능도 끄기 (API라면 필요없을 수 있음)
+                .logout(logout -> logout.disable()); //로그아웃 비활성화 (API 방식)
 
-//                .formLogin(form -> form
-//                        .loginPage("/login") // 로그인 페이지 설정
-//                        .defaultSuccessUrl("/", true) // 로그인 성공 시 이동할 페이지
-//                        .failureUrl("/login?error=true") // 로그인 실패 시 이동할 페이지
-//                        .permitAll()
-//                )
-//                .logout(logout -> logout
-//                        .logoutSuccessUrl("/login?logout=true") // 로그아웃 성공 시 이동할 페이지
-//                        .permitAll()
-//                );
         return http.build();
     }
 
@@ -93,16 +77,14 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
         configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin("http://localhost:4000");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
+        configuration.setAllowedOrigins(List.of("http://localhost:4000",
+                "http://web-2025-version1.s3-website.ap-northeast-2.amazonaws.com",
+                "https://justsaying.co.kr","http://justsaying.co.kr"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
-//        configuration.setAllowedOrigins(List.of("http://localhost:4000")); // 프론트엔드 도메인
-//        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "x-forwarded-for")); // 헤더 추가
         return source;
     }
 

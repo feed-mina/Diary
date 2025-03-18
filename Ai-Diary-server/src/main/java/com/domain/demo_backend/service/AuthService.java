@@ -253,12 +253,11 @@ public class AuthService {
         return user;
     }
 
-    // 새 사용자 정보를 해시처리 후 데이터베이스에 저장
-    // 이미 존재하는 사용자 아이디인지 확인하고 중복되면 예외 발생
+    // 이미 존재하는 사용자인지 email(외래키),jwtToken 확인하고  update문으로 delyn,updateAt 값 변경
     @Transactional
     public void nonMember(RegisterRequest registerRequest) {
-        log.info("회원탈퇴 서비스 진입: " + registerRequest.getUserId());
-        User existingUser = userMapper.findByUserId(registerRequest.getUserId());
+        log.info("@@@@@회원탈퇴 서비스 진입 email: " + registerRequest.getEmail());
+        User existingUser = userMapper.findByUserEmail(registerRequest.getEmail());
         if (existingUser == null) {
             log.info("회원탈퇴 실패: 해당 사용자가 존재하지 않습니다.");
             throw new IllegalArgumentException("해당 사용자가 존재하지 않습니다.");

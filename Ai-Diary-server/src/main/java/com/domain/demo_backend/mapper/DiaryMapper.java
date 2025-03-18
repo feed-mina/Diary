@@ -6,6 +6,7 @@ import com.domain.demo_backend.diary.dto.DiaryResponse;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Set;
 
@@ -17,9 +18,12 @@ public interface DiaryMapper {
 
     List<DiaryResponse> selectDiaryList(@Param("userId") String userId);
 
-    void updateDiarMnpsDel(Set<Diary> diaryRemoveList, Diary diary);
 
     Set<DiaryResponse> findDiaryItemById(String diaryReq);
 
-    Set<DiaryResponse> selectDiaryItem(DiaryRequest diaryReq);
+//    Set<DiaryResponse> selectDiaryItem(DiaryRequest diaryReq);
+
+    List<DiaryResponse> selectDiaryList(@Param("userId") String userId, int pageSize, int offset);
+
+    DiaryResponse selectDiaryItem(Long diaryId, String userId, char delYn);
 }

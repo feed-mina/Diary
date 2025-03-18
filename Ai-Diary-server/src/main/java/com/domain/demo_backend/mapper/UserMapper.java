@@ -32,6 +32,6 @@ public interface UserMapper {
     void updateUser(User existingUser);
 
     void insertKakaoUser(User user);
-    BigInteger findIndexByEmail(String email);
+    Long findIndexByEmail(String email);
 
 }

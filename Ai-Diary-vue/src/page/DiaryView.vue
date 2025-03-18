@@ -54,37 +54,6 @@ export default {
       return;
     }
 
-
-    const fetchDiaryDetails = async () => {
-      if (!diaryId) {
-        console.warn("🚨 diaryId가 없음 (API 요청 중단)");
-        return;
-      }
-      if (!userId) {
-        console.warn("🚨 userId가 없음 (API 요청 중단)");
-        return;
-      }
-      try {
-        console.log(`📌 요청 URL1:  http://localhost:8080/api/diary/getDiaryItem/${diaryId}?userId=${userId}`);
-        const response = await axios.get(`http://localhost:8080/api/diary/getDiaryItem/${diaryId}`
-            , {
-              // headers: {
-              //   Authorization: `Bearer ${jwtToken}`,
-              //   'Content-Type': 'application/json',
-              // },
-              params: {
-                userId: userId, // 체크박스 상태에 따라 userId필터링
-              },
-            });
-
-        diaryData.value = response.data;
-        console.log("📌 서버 응답 데이터:", diaryData.value);
-      } catch (error) {
-        console.error('Error fetching diary details:', error);
-      }
-    };
-
-
     const getDiaryItem = async () => {
       if (!diaryId) {
         console.warn("🚨 diaryId가 없음 (API 요청 중단)");
@@ -97,43 +66,27 @@ export default {
       }
 
       try {
-        console.log(`📌 요청 URL2: http://localhost:8080/api/diary/viewDiaryItem/${diaryId}?userId=${userId}`);
+        console.log(`📌 요청 URL: http://localhost:8080/api/diary/viewDiaryItem/${diaryId}?userId=${userId}`);
 
         const response = await axios.get(`http://localhost:8080/api/diary/viewDiaryItem/${diaryId}`
             , {
-              // headers: {
-              //   Authorization: `Bearer ${jwtToken}`,
-              //   'Content-Type': 'application/json',
-              // },
               params: {
                 userId: userId, // 체크박스 상태에 따라 userId필터링
               },
             });
 
+        console.log("📌 서버 응답 데이터:", diaryData.value);
+        console.log("📌 서버 diaryData 데이터:", diaryData.value);
+        console.log("@@@viewDiaryItem_response",response);
         Object.assign(diaryContentItem.value, response.data);
         // 응답 데이터 설정
         const objectResponse = Object.assign(diaryContentItem.value, response.data);
-        console.log(objectResponse);
-        // 숨겨진 일기인지 확인
-        if (diaryContentItem.value.hidden && diaryContentItem.value.userId !== userId) {
-          alert('접근 권한이 없습니다.');
-          Swal.fire({
-            title: "본인확인",
-            text: '접근 권한이 없습니다.',
-            icon: "warning",
-            confirmButtonText: "취소",
-            confirmButtonColor: "#FFA500",
-            background: "#f5f5f5",
-            color: "#999"
-          });
-
-        }
+        console.log("@@@viewDiaryItem_objectResponse",objectResponse);
         return response.data;
         diaryData.value = response.data;
       } catch (error) {
         console.error('Error fetching diary list: ', error);
       }
-
     };
 
     watchEffect(() => {
@@ -146,15 +99,13 @@ export default {
 
     onMounted(async () => {
       console.log("@@@@@@ onMounted");
-      // console.log(`📌 요청 URL1:  http://localhost:8080/api/diary/getDiaryItem/${diaryId}?userId=${userId}`);
-      // await fetchDiaryDetails(diaryId, userId);
       getDiaryItem();
     });
 
     const sendDiaryContentItem = async () => {
 
       try {
-        // const { title, date, author, tags, emotion, content, hidden} = diaryContentData.value;
+        const { title, date, author, tags, emotion, content, hidden} = diaryContentItem.value;
 
         console.log("jwtToken: ", jwtToken);
         if (!jwtToken) {
@@ -169,12 +120,10 @@ export default {
           }).then(() => {
             router.push("/login");
           })
-          // alert("로그인한 사람만 가능합니다.");
           return;
         }
 
         console.log('response', response);
-        // alert("일기장이 저장되었습니다");
         Swal.fire({
           title: "로그인 필요!",
           text: "로그인한 사람만 가능합니다.",
@@ -198,8 +147,6 @@ export default {
           color: "#999"
         });
         if (error.response && error.response.status === 400) {
-          // alert("일기장 저장이 되지 않았습니다. 다시 시도해주세요.");
-          // alert(error.response.data);
           Swal.fire({
             title: "저장 불가",
             text: error.response.data,
@@ -209,10 +156,8 @@ export default {
             background: "#f5f5f5",
             color: "#999"
           });
-          // errorMessage.value.email = error.response.data;
         } else {
           console.error("API 호출 실패", error);
-          // alert("일기장 저장이 되지 않았습니다. 다시 시도해주세요.");
           Swal.fire({
             title: "API 호출 실패",
             text: error.response.data,

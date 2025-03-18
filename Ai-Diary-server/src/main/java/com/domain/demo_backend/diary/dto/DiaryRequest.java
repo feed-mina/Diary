@@ -18,7 +18,7 @@ public class DiaryRequest {
     private int pageNo = 1;
     // 페이지 크기
     private int pageSize = 10;
-    private BigInteger diaryId;
+    private Long diaryId;
     // 검색 타입(ID, Name, Title)
     private String searchType;
     // 검색어
@@ -26,7 +26,7 @@ public class DiaryRequest {
 
     private String diaryStatus;
     // 사용자 일련번호
-    private BigInteger userSqno;
+    private Long userSqno;
     // 글쓴이
     private String userId;
     private String email;
@@ -62,6 +62,7 @@ public class DiaryRequest {
                 .diaryId(this.diaryId)
                 .userSqno(this.userSqno)
                 .userId(this.userId)
+                .delYn(this.delYn)
                 .email(this.email)
                 .title(this.title)
                 .content(this.content)

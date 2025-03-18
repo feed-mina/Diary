@@ -11,6 +11,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import io.jsonwebtoken.Claims;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -42,12 +43,13 @@ public class DiaryService {
     public PageInfo<DiaryResponse> selectDiaryList(String userId, int pageNo, int pageSize) {
         System.out.println("@@@다이어리 서비스 selectDiaryList진입");
 
-        PageHelper.startPage(pageNo, pageSize);
+//        PageHelper.startPage(pageNo, pageSize);
         List<DiaryResponse> diaryResponseList;
+        int offset = (pageNo - 1) * pageSize; // ✅ OFFSET 미리 계산
         try {
 
            // 일기 목록 가져오기
-            diaryResponseList = diaryMapper.selectDiaryList(userId);
+            diaryResponseList = diaryMapper.selectDiaryList(userId, pageSize, offset) ;
             System.out.println("@@@1--diaryResponseList:: " + diaryResponseList);
             // PageInfo 객체로 페이징 결과를 반환
             return new PageInfo<>(diaryResponseList);
@@ -57,23 +59,7 @@ public class DiaryService {
         }
 
     }
-
-    public void selectDiaryItem(DiaryRequest diaryReq, String userId, Diary diary) {
-        System.out.println("@@@다이어리 서비스 selectDiaryItem진입");
-        List<DiaryResponse> diaryResponseItem = null;
-        try {
-            diaryResponseItem = diaryMapper.selectDiaryList(userId);
-
-            System.out.println("@@@2--diaryResponseItem:: " + diaryResponseItem);
-        } catch (Exception e) {
-            System.err.println("Error fetching diary list: " + e.getMessage());
-            throw new RuntimeException("일기를 조회하는 도중 오류가 발생했습니다.", e);
-        }
-
-        // PageInfo 객체로 페이징 결과를 반환
-        diaryMapper.insertDiary(diary);
-    }
-    public Set<DiaryResponse> findDiaryById(DiaryRequest diaryReq) {
+     public Set<DiaryResponse> findDiaryById(DiaryRequest diaryReq) {
 
         System.out.println("@@@@@@findDiaryById 서비스 로직 진입 diaryReq:: " + diaryReq);
 
@@ -96,16 +82,34 @@ public class DiaryService {
         return dto;
     }
 
-    @Transactional
-    public Set<DiaryResponse> viewDiaryItem(DiaryRequest diaryReq) {
+    @Transactional(readOnly = true)
+    public DiaryResponse viewDiaryItem(DiaryRequest diaryReq) {
 
         System.out.println("@@@viewDiaryItem 서비스 로직 진입 diaryReq:: " + diaryReq);
         System.out.println("@@@selectDiaryItem sql시작" + diaryReq);
+        Long diaryId = diaryReq.getDiaryId().longValue();
+        System.out.println("userId: " + diaryReq.getUserId());
+        String userId = diaryReq.getUserId();
+        if (userId == null || userId.trim().isEmpty()) {
+            throw new IllegalArgumentException("userId 값이 올바르지 않습니다.");
+        }
+        try {
+            // 일기 조회
+            DiaryResponse diary = (DiaryResponse) diaryMapper.selectDiaryItem(
+                    diaryId,
+                    userId, 'N'
+            );
 
-        return diaryMapper.selectDiaryItem(diaryReq)
-                .stream() // set을 stream으로 변환
-                .map(this::convertToDto) // DTO 변환 적용
-                .collect(Collectors.toSet());  // 다시 Set으로 변환
+            // ❗ 조회된 데이터가 없을 경우 예외 처리 추가
+            if (diary == null) {
+                throw new NotFoundException("해당 일기를 찾을 수 없습니다.");
+            }
+
+            return diary;
+        } catch (Exception e) {
+            System.err.println("Error fetching diary item: " + e.getMessage());
+            throw new RuntimeException("일기를 조회하는 도중 오류가 발생했습니다.", e);
+        }
 
     }
 
@@ -124,7 +128,7 @@ public class DiaryService {
 
         //  String email = claims.getSubject();
         String email = userDetails.getUsername();
-        BigInteger correctUserSqno =  userMapper.findIndexByEmail(email);
+        Long correctUserSqno =  userMapper.findIndexByEmail(email);
         System.out.println("@@@ userSqno: " + correctUserSqno);
         HttpServletRequest request;
 //        String authorizationHeader = request.getHeader("Authorization");

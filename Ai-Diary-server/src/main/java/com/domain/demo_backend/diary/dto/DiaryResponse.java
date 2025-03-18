@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 @ToString
 @EqualsAndHashCode
 public class DiaryResponse {
-    private String diaryId;
-    private BigInteger userSqno;
+    private BigInteger diaryId;
+    private Long userSqno;
     private String userId;
     private String author;
     private String title;
@@ -46,7 +46,7 @@ public class DiaryResponse {
     }
 
     // 필요한 생성자 추가
-    public DiaryResponse(String diaryId, String title, String content, LocalDateTime regDt) {
+    public DiaryResponse(BigInteger diaryId, String title, String content, LocalDateTime regDt) {
         this.diaryId = diaryId;
         this.title = title;
         this.content = content;

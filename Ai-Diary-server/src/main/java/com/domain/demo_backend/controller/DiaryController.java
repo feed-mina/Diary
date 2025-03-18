@@ -101,7 +101,7 @@ public class DiaryController {
     }
 
     @GetMapping("/getDiaryItem/{diaryId}")
-    public ResponseEntity<?> getDiaryById(@PathVariable BigInteger  diaryId, @RequestHeader(value = "X-Current-User-Id", required = false) String currentUserId,  @RequestParam(value = "userId", required = false) String userId, HttpServletRequest request) {
+    public ResponseEntity<?> getDiaryById(@PathVariable Long  diaryId, @RequestHeader(value = "X-Current-User-Id", required = false) String currentUserId,  @RequestParam(value = "userId", required = false) String userId, HttpServletRequest request) {
         System.out.println("@@@ getDiaryItem 다이어리 컨트롤러 로직 진입");
         System.out.println("@@@ getDiaryItem diaryId"+diaryId);
         System.out.println("@@@ getDiaryItem userId"+userId);
@@ -128,7 +128,7 @@ public class DiaryController {
         Map<String, Object> response = new HashMap<>();
 
         try {
-            Set<DiaryResponse> diaryItem = diaryService.viewDiaryItem(diaryReq);
+            DiaryResponse diaryItem = diaryService.viewDiaryItem(diaryReq);
 //            Set<DiaryResponse> diaryItem = diaryService.findDiaryById(diaryReq);
             System.out.println("@@@6--selectDiaryList 서비스:: " + diaryItem);
             response.put("diaryItem", diaryItem);
@@ -144,12 +144,11 @@ public class DiaryController {
 
     @GetMapping("/viewDiaryItem/{diaryId}")
     @ResponseBody
-    public ResponseEntity<?> viewDiaryItem(@PathVariable("diaryId") BigInteger diaryId, @RequestParam(value = "userId", required = false) List<String> userIds,  @RequestHeader(value = "X-Current-User-Id", required = false) String currentUserId,  @RequestHeader(value = "Authorization", required = false) String authorizationHeader, HttpServletRequest request) {
-        String userId = userIds != null && !userIds.isEmpty() ? userIds.get(0) : null;
+    public ResponseEntity<?> viewDiaryItem(@PathVariable("diaryId") Long diaryId, @RequestParam(value = "userId", required = false) String userId,  @RequestHeader(value = "X-Current-User-Id", required = false) String currentUserId,  @RequestHeader(value = "Authorization", required = false) String authorizationHeader, HttpServletRequest request) {
+//        String userId = userIds != null && !userIds.isEmpty() ? userIds.get(0) : null;
 
         System.out.println("@@@@@@ viewDiaryItem diaryId"+diaryId);
         System.out.println("@@@ viewDiaryItem userId"+userId);
-        System.out.println("@@@ viewDiaryItem userIds"+userIds);
         System.out.println("@@@ viewDiaryItem currentUserId"+currentUserId);
         System.out.println("@@@ viewDiaryItem request"+request);
 
@@ -181,7 +180,7 @@ public class DiaryController {
         try {
             System.out.println("@@@viewDiaryItem 서비스 로직 진입");
 
-            Set<DiaryResponse> diaryItem = diaryService.viewDiaryItem(diaryReq);
+            DiaryResponse diaryItem = diaryService.viewDiaryItem(diaryReq);
             System.out.println("@@@6--selectDiaryList 서비스:: " + diaryItem);
             Map<String, Object> response = new HashMap<>();
             response.put("diaryItem", diaryItem);

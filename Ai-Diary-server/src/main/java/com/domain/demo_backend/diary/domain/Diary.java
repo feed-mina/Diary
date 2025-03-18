@@ -1,5 +1,7 @@
 package com.domain.demo_backend.diary.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,13 +10,16 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class Diary {
 
-    private BigInteger diaryId;
+    private Long diaryId;
+    private Long userSqno;
+
     private String title;
     private String content;
+    @JsonProperty("tags")
     private Map<String, String> tags;
     private String tag1;
     private String tag2;
@@ -23,7 +28,6 @@ public class Diary {
     private String userId;
     private String email;
     private String username;
-    private BigInteger userSqno;
     private String sbsceDt;
     private String lastUpdtDt;
     private LocalDateTime regDt;
@@ -55,6 +59,7 @@ public class Diary {
                 .tag2(this.tag2)
                 .tag3(this.tag3)
                 .diaryStatus(this.diaryStatus)
+                .delYn(this.delYn)
                 .frstRegIp(this.frstRegIp)
                 .frstRgstUspsSqno(this.frstRgstUspsSqno)
                 .regDt(this.regDt)
@@ -64,7 +69,7 @@ public class Diary {
     }
 
     @Builder
-    public Diary(BigInteger diaryId, String title, String content, Map tags, String tag1, String tag2, String tag3, String date, String userId, String email,String username, BigInteger userSqno, String sbsceDt, String lastUpdtDt, String roleCd, String roleNm, LocalDateTime regDt, LocalDateTime updtDt, String diaryStatus, String diaryType, String delYn, LocalDateTime delDt, LocalDateTime frstRegDt, String frstRegIp, String lastUpdtIp, BigInteger frstRgstUspsSqno, Long lastUpdtUspsSqno, String author, Integer emotion) {
+    public Diary(Long diaryId, String title, String content, Map tags, String tag1, String tag2, String tag3, String date, String userId, String email,String username, Long userSqno, String sbsceDt, String lastUpdtDt, String roleCd, String roleNm, LocalDateTime regDt, LocalDateTime updtDt, String diaryStatus, String diaryType, String delYn, LocalDateTime delDt, LocalDateTime frstRegDt, String frstRegIp, String lastUpdtIp, BigInteger frstRgstUspsSqno, BigInteger lastUpdtUspsSqno, String author, Integer emotion) {
         this.diaryId = diaryId;
         this.title = title;
         this.content = content;
@@ -80,6 +85,7 @@ public class Diary {
         this.sbsceDt = sbsceDt;
         this.lastUpdtDt = lastUpdtDt;
         this.diaryStatus = diaryStatus;
+        this.delYn = delYn;
         this.frstRgstUspsSqno = frstRgstUspsSqno;
         this.frstRegIp = frstRegIp;
         this.regDt = regDt;

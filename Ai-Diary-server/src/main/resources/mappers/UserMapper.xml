@@ -84,7 +84,7 @@
         UPDATE users
         SET delYn      = 'Y',
             updated_at = NOW()
-        WHERE user_id = #{userId}
+        WHERE email = #{email}
     </update>
 
 </mapper>

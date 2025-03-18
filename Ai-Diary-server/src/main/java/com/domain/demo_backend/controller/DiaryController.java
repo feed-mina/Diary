@@ -238,19 +238,16 @@ public class DiaryController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid JWT Token.");
         }
         String userSqnoStr = claims.get("hashedPassword", String.class); // String으로 읽기
-//        BigInteger currentUserSqno = new BigInteger(userSqnoStr);
-//        System.out.println("currentUserSqno 값: " + currentUserSqno);
+        System.out.println("@@@ diaryRequest.getTag1(): " + diaryRequest.getTag1());
+        System.out.println("@@@ diaryRequest.getTag2(): " + diaryRequest.getTag2());
+        System.out.println("@@@ diaryRequest.getTag3(): " + diaryRequest.getTag3());
 
-        // 현재 로그인된 사용자 ID 가져오기 er
         CustomUserDetails currentUser = UserInfoHelper.getMemberInfo();
         System.out.println("@@@currentUser 값: " + currentUser);
 
         String currentUserName = currentUser.getUsername(); // email을 받는다
         String currentUserId = currentUser.getUserId(); // 일반로그인에서는 아이디를 받는다
         System.out.println("@@@currentUserId : " +currentUserId);
-//        System.out.println("@@@현재 로그인된 사용자: userSqno=" + currentUserSqno);
-        // user_sqno 안받아진다 ?
-//        String diary_userid = currentUser.getUsername().split("@")[0];
 
         System.out.println("@@@diaryService 들어가기" + diaryRequest);
         try {

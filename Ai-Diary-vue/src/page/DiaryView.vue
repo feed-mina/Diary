@@ -2,64 +2,49 @@
 import {onMounted, ref, watchEffect} from 'vue';
 import {useRouter, useRoute} from 'vue-router';
 import axios from 'axios';
-import Cookies from 'universal-cookie';
 
 import Swal from "sweetalert2";
-import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 export default {
   name: 'DiaryView',
   setup() {
     const router = useRouter();
     const route = useRoute(); // 현재 라우트 정보 가져오기
-    const cookies = new Cookies();
     const diaryData = ref(null);
-    const diaryContentItem = ref({
-      date: '', // YYYY-MM-DD 형식으로 날짜 설정
-      author: '',
-      title: '',
-      tags: ({tag1: '', tag2: '', tag3: ''}),
-      emotion: '',
-      content: " ",
-      hidden: true,
-      emotionItems: [
-        {text: "😁 기분이 좋아요", value: "1"},
-        {text: "😂 너무 웃겨요", value: "2"},
-        {text: "😫 어떡해야 할까요?!", value: "3"},
-        {text: "😒 불쾌하고 지루해요", value: "4"},
-        {text: "😤 어떻게 이럴 수가", value: "5"},
-        {text: "😡 화가 나요", value: "6"},
-        {text: "🤯 여기서 벗어나고 싶어요...", value: "7"},
-        {text: "💖 사랑이 넘쳐요", value: "8"},
-        {text: "🤕 몸 상태가 좋지 않아요", value: "9"},
-        {text: "💙 우울해요", value: "10"}
-      ],
-    });
     const showOnlyMine = ref(false); // 내가 쓴 일기만 보기 체크박스
     // URL에서 diaryId 추출
-    // const diaryId = computed(() => {
-    //   return route.params.id || cookies.get("diaryId"); // URL 없으면 쿠키에서 가져옴
-    // });
-
     const diaryId = route.params.diaryId;
     const userId = route.query.userId;
-    const jwtToken = localStorage.getItem("jwtToken")
-    // const jwtToken = cookies.get("jwt")?.jwt; // 쿠키에서 jwt 속성 가져오기
+    // console.log("🛠 route.params: ", route.params);
+    // console.log("🛠 Extracted diaryId:", diaryId);
+    // console.log("🛠 Extracted userId:", userId);
 
-    console.log("🛠 route.params: ", route.params);
-    console.log("🛠 Extracted diaryId:", diaryId);
-    console.log("🛠 Extracted userId:", userId);
+    const emotionItems = [
+      { text: "😁 기분이 좋아요", value: "1" },
+      { text: "😂 너무 웃겨요", value: "2" },
+      { text: "😫 어떡해야 할까요?!", value: "3" },
+      { text: "😒 불쾌하고 지루해요", value: "4" },
+      { text: "😤 어떻게 이럴 수가", value: "5" },
+      { text: "😡 화가 나요", value: "6" },
+      { text: "🤯 여기서 벗어나고 싶어요...", value: "7" },
+      { text: "💖 사랑이 넘쳐요", value: "8" },
+      { text: "🤕 몸 상태가 좋지 않아요", value: "9" },
+      { text: "💙 우울해요", value: "10" }
+    ];
+    const getEmotionText = (emotionValue) => {
+      const found = emotionItems.find((item) => item.value === emotionValue.toString());
+      return found ? found.text : "기록 없음";
+    };
+
     if (!diaryId) {
       console.warn("🚨 diaryId가 없음 (API 요청 중단)");
       return;
     }
-
     const getDiaryItem = async () => {
       if (!diaryId) {
         console.warn("🚨 diaryId가 없음 (API 요청 중단)");
         return;
       }
-
       if (!userId) {
         console.warn("🚨 userId가 없음 (API 요청 중단)");
         return;
@@ -74,16 +59,10 @@ export default {
                 userId: userId, // 체크박스 상태에 따라 userId필터링
               },
             });
+  // diaryData 받기
+        diaryData.value = response.data.diaryItem;
 
-        console.log("📌 서버 응답 데이터:", diaryData.value);
         console.log("📌 서버 diaryData 데이터:", diaryData.value);
-        console.log("@@@viewDiaryItem_response",response);
-        Object.assign(diaryContentItem.value, response.data);
-        // 응답 데이터 설정
-        const objectResponse = Object.assign(diaryContentItem.value, response.data);
-        console.log("@@@viewDiaryItem_objectResponse",objectResponse);
-        return response.data;
-        diaryData.value = response.data;
       } catch (error) {
         console.error('Error fetching diary list: ', error);
       }
@@ -93,7 +72,6 @@ export default {
       if (diaryId) {
         console.log("diaryId 감지됨:", diaryId);
         getDiaryItem();
-        // fetchDiaryDetails();
       }
     });
 
@@ -101,79 +79,11 @@ export default {
       console.log("@@@@@@ onMounted");
       getDiaryItem();
     });
-
-    const sendDiaryContentItem = async () => {
-
-      try {
-        const { title, date, author, tags, emotion, content, hidden} = diaryContentItem.value;
-
-        console.log("jwtToken: ", jwtToken);
-        if (!jwtToken) {
-          Swal.fire({
-            title: "로그인 필요!",
-            text: "로그인한 사람만 가능합니다.",
-            icon: "warning",
-            confirmButtonText: "로그인페이지이동",
-            confirmButtonColor: "#FF5733",
-            background: "#f5f5f5",
-            color: "#999"
-          }).then(() => {
-            router.push("/login");
-          })
-          return;
-        }
-
-        console.log('response', response);
-        Swal.fire({
-          title: "로그인 필요!",
-          text: "로그인한 사람만 가능합니다.",
-          icon: "success",
-          confirmButtonText: "좋아요 !",
-          confirmButtonColor: "#A5778F",
-          background: "#f5f5f5",
-          color: "#999"
-        }).router.push("/diary/common").then(() => location.reload());
-        return response.data;
-      } catch (error) {
-        console.error("API 호출 실패", error);
-        // alert("일기장 저장 중 오류가 발생했습니다.");
-        Swal.fire({
-          title: "저장 실패!",
-          text: "일기장 저장 중 오류가 발생했습니다.",
-          icon: "error",
-          confirmButtonText: "확인",
-          confirmButtonColor: "#FF5733",
-          background: "#f5f5f5",
-          color: "#999"
-        });
-        if (error.response && error.response.status === 400) {
-          Swal.fire({
-            title: "저장 불가",
-            text: error.response.data,
-            icon: "warning",
-            confirmButtonText: "다시시도.",
-            confirmButtonColor: "#FFA500",
-            background: "#f5f5f5",
-            color: "#999"
-          });
-        } else {
-          console.error("API 호출 실패", error);
-          Swal.fire({
-            title: "API 호출 실패",
-            text: error.response.data,
-            icon: "warning",
-            confirmButtonText: "다시 시도",
-            confirmButtonColor: "#FFA500",
-            background: "#f5f5f5",
-            color: "#999"
-          });
-        }
-      }
-    };
     return {
-      diaryContent: diaryContentItem,
+      diaryContent: diaryData,
       showOnlyMine,
       diaryData,
+      getEmotionText
     };
   }
 }
@@ -185,10 +95,14 @@ export default {
         <div class="diaryView_container" v-if="diaryData">
           <div class="diaryViewTitle">📖 일기 상세 보기</div>
           <div class="diaryView_noDalle">
-            <p>날짜: {{ diaryData.date }}</p>
+            <p>날짜: {{ diaryData.date || '날짜 미정'}}</p>
             <p>작성자: {{ diaryData.author || '익명' }}</p>
             <p>제목: {{ diaryData.title }}</p>
             <p>내용: {{ diaryData.content }}</p>
+            <p>작성 날짜: {{ diaryData.date ? new Date(diaryData.date).toLocaleDateString() : '날짜 미정' }}</p>
+            <p>감정 상태: {{ getEmotionText(diaryData.emotion) }}</p>
+            <p>태그: {{ [diaryData.tag1, diaryData.tag2, diaryData.tag3].filter(Boolean).join(", ") }}</p>
+
           </div>
         </div>
         <div v-else>
@@ -198,3 +112,66 @@ export default {
     </div>
   </div>
 </template>
+
+<style scoped>
+.diaryView {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.diaryView_content {
+  max-width: 600px;
+  width: 100%;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.diaryViewTitle {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.diaryView_noDalle p {
+  font-size: 16px;
+  color: #555;
+  margin: 10px 0;
+}
+
+.diaryView_noDalle p strong {
+  font-weight: bold;
+  color: #333;
+}
+
+.diaryView_noDalle .content {
+  padding: 15px;
+  background: #f8f8f8;
+  border-radius: 8px;
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+.diaryView_container {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+</style>

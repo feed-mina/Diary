@@ -16,7 +16,6 @@ export default {
     const showOnlyMine = ref(false); // 내가 쓴 일기만 보기 체크박스
     const noDiaryMessage = ref(""); // "작성한 일기가 없습니다." 메시지
 
-
     // ✅ 로그인 상태 체크 (localStorage 활용)
     const isLoggedIn = computed(() => {
       return !!localStorage.getItem("jwtToken") || !!localStorage.getItem("kakaoAccessToken");
@@ -50,12 +49,6 @@ export default {
         });
 
         console.log("API 응답 데이터: ", response.data);
-
-        // `diaryList`가 없을 경우 대비하여 기본값을 빈 배열로 설정
-        // const diaryList = response.data.diaryList || [];
-        // const total = response.data.total || 0;
-        // const pageSize = response.data.pageSize || 5;
-        // const pageNum = response.data.page || 1;
         const { diaryList, total, pageSize, page: pageNum, message } = response.data;
 
         console.log("diaryList 개수: ", diaryList.length);
@@ -71,10 +64,8 @@ export default {
             return true; // diaryStatus가 true 이면 모든 유저가 볼 수 있도록 유지
             console.log("diary.diaryStatus : ",diary.diaryStatus);
             return showOnlyMine.value && diary.userId === loggedInUserId; // ✅ 내가 쓴 일기만 보기 활성화 시
-
             if(showOnlyMine.value && diary.userId === loggedInUserId){
               return true;  // 체크박스가 활성화된 경우, 본인의 일기만 표시
-
               console.log("showOnlyMine.value : ",showOnlyMine.value);
               console.log("diary.userId : ",diary.userId);
             }
@@ -84,22 +75,14 @@ export default {
             // diaryStatys가 false면 기본적으로 숨김 처리
             // 사용자 ID 배열 추출
             const userIds = diaryList.map(diary => diary.userId);
-
-
           });
         }
         page.value = { pageNo: pageNum, pageSize, total };
       } catch (error) {
-        // if (userIds.length === 0) {
-        //   console.log("내 일기가 없음");
-        //   diaries.value = [];
-        // page.value.total = 0;
-        //   router.push('/'); }
-
         console.error('Error fetching diary list: ', error);
         noDiaryMessage.value = "일기를 불러오는 중 오류가 발생했습니다.";
         diaries.value = [];
-        // router.push('/');
+         router.push('/');
       }
     };
 
@@ -108,7 +91,7 @@ export default {
       await fetchDiaryList();
     };
 
-// 페이지 변경 시 호출
+  // 페이지 변경 시 호출
     const changePage = async (newPage) => {
       page.value.pageNo = newPage;
       await fetchDiaryList();
@@ -119,20 +102,13 @@ export default {
     const viewDiary = async (diaryId, diaryUserId) => {
       console.log("선택한 일기의 userId:", diaryUserId);
       // userId를 동적으로 반영하여 URL 생성
-      // const requestUrl = `http://localhost:8080/api/diary/viewDiaryItem/${diaryId}?userId=${diaryUserId}`;
-
-      // console.log("📌 특정 상세 일기 보기 api 요청 URL:", requestUrl);
-
       cookies.set("diaryId", diaryId);
       cookies.set("diaryUserId", diaryUserId);
-
       console.log("diaryId", diaryId);
       console.log("diaryUserId", diaryUserId);
-
    router.push(`/diary/view/${diaryId}?userId=${diaryUserId}`); // userId 포함하여 이동
     };
     // 컴포넌트 마운트 시 일기 목록 로드
-
 
     // ✅ 로그인되지 않은 경우 로그인 페이지로 이동
     onMounted(() => {

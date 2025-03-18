@@ -12,9 +12,9 @@
             <if test="userId != null">user_id,</if>
             <if test="title != null">title,</if>
             <if test="content != null">content,</if>
-            <if test="tag1 != null">tag1,</if>
-            <if test="tag2 != null">tag2,</if>
-            <if test="tag3 != null">tag3,</if>
+            <if test="tag1 != null and tag1 != ''">tag1,</if>
+            <if test="tag2 != null and tag2 != ''">tag2,</if>
+            <if test="tag3 != null and tag3 != ''">tag3,</if>
             <if test="diaryStatus != null">diary_status,</if>
             <if test="frstRegIp != null">frst_reg_ip,</if>
             <if test="frstRgstUspsSqno != null">frst_rgst_usps_sqno,</if>
@@ -27,9 +27,9 @@
             <if test="userId != null">#{userId},</if>
             <if test="title != null">#{title},</if>
             <if test="content != null">#{content},</if>
-            <if test="tag1 != null">#{tag1},</if>
-            <if test="tag2 != null">#{tag2},</if>
-            <if test="tag3 != null">#{tag3},</if>
+            <if test="tag1 != null and tag1 != ''">#{tag1},</if>
+            <if test="tag2 != null and tag2 != ''">#{tag2},</if>
+            <if test="tag3 != null and tag3 != ''">#{tag3},</if>
             <if test="diaryStatus != null">#{diaryStatus},</if>
             <if test="frstRegIp != null">#{frstRegIp},</if>
             <if test="frstRgstUspsSqno != null">#{frstRgstUspsSqno},</if>

@@ -85,12 +85,26 @@ export default {
         headers["Authorization"] = `Bearer ${email}`;
       }
 
+      // ✅ tags를 개별 필드로 변환하여 전송
+      const diaryData = {
+        email: diaryContentData.email,
+        userId: diaryContentData.userId,
+        token: diaryContentData.token,
+        nickname: diaryContentData.nickname,
+        date: diaryContentData.date,
+        author: diaryContentData.author,
+        title: diaryContentData.title,
+        content: diaryContentData.content,
+        emotion: diaryContentData.emotion,
+        hidden: diaryContentData.hidden,
+        tag1: diaryContentData.tags.tag1,
+        tag2: diaryContentData.tags.tag2,
+        tag3: diaryContentData.tags.tag3,
+      };
+
       try {
-
-
         const response = await axios.post(`${apiUrl}/api/diary/addDiaryList`,
-            diaryContentData,
-            // JSON.stringify(diaryContentData.value),
+            diaryData,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -100,13 +114,6 @@ export default {
         console.log("diaryContentData.value:", diaryContentData.value);
         console.log("@@@일기 저장 응답:", response.data);
         console.log("JSON 데이터:", JSON.stringify(diaryContentData.value));
-
-        // if (!response.ok) {
-        //   throw new Error(`서버 오류: ${response.status}`);
-        // }
-
-        // const data = await response.json();
-        //  console.log("일기 저장 결과:", data);
 
         if (response.data.success) {
 

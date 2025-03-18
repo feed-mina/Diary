@@ -119,25 +119,17 @@ public class DiaryService {
 
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        // 로깅을 위해 추가
         System.out.println("@@@diaryRequest-다이어리서비스: " + diaryRequest);
         System.out.println("@@@diaryRequest.toDiary()-다이어리서비스: " + diaryRequest.toDiary());
-
-
-        // Claims claims = jwtUtil.validateToken(token); 토큰 검증
-
-        //  String email = claims.getSubject();
         String email = userDetails.getUsername();
-        Long correctUserSqno =  userMapper.findIndexByEmail(email);
+        BigInteger correctUserSqno =  userMapper.findIndexByEmail(email);
         System.out.println("@@@ userSqno: " + correctUserSqno);
         HttpServletRequest request;
-//        String authorizationHeader = request.getHeader("Authorization");
-
 
         Diary diary = Diary.builder()
                 .userSqno(diaryRequest.getUserSqno() != null
                         ? diaryRequest.getUserSqno()
-                        : correctUserSqno)
+                        : correctUserSqno.longValue())
                 .title(diaryRequest.getTitle() != null ? diaryRequest.getTitle() : "Untitled")
                 .author(diaryRequest.getAuthor() != null ? diaryRequest.getAuthor() : "Undefined")
                 .userId(diaryRequest.getUserId() != null ? diaryRequest.getUserId() : "Undefined")

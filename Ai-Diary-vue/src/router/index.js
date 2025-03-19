@@ -18,6 +18,8 @@ import ConfirmPassword2 from "@/page/ConfirmPassword2.vue";
 import EditNewPassword from "@/page/EditNewPassword.vue";
 import LoginView from '../components/LoginView.vue';
 import MainView from '../components/MainView.vue';
+import PomodoroTimer from "../components/PomodoroTimer.vue";
+import CurrentTime from "../components/CurrentTime.vue";
 
 import EmailVerificationPage from '@/page/VerificationPage.vue';
 const routes = [

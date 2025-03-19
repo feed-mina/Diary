@@ -3,6 +3,7 @@ import {computed, ref} from 'vue'; // 사용하지 않는 reactive, onMounted �
 import Home from '@/page/Home.vue';
 import NotFound from '@/page/NotFound.vue';
 import DiaryList from "@/page/DiaryList.vue";
+import { useRoute } from 'vue-router';
 
 import DiaryHeader from "@/components/Header.vue";
 import DiaryNav from "@/components/DiaryNav.vue";
@@ -16,27 +17,36 @@ export default {
     DiaryFooter,
   },
   setup() {
-console.log("@@@@App inerceptors");
+    const route = useRoute(); // 현재 라우트 정보 가져오기
+    console.log("@@@@App inerceptors");
 // 요청 인터셉터 추가: 모든 요청 전에 토큰을 헤더에 넣어줌
     axios.interceptors.request.use(
         config => {
-          // 일반 로그인 토큰과 카카오 로그인 토큰 중 사용 가능한 토큰 선택하기
-          const token = localStorage.getItem("jwtToken") || localStorage.getItem("kakaoToken");
+          const excludeUrls = ["/api/timer/now", "/api/timer/health"]; // 제외할 API 목록
+          const isExcluded = excludeUrls.some((url) => config.url.includes(url));
 
-          console.log("@@@@App inerceptors token", token);
-          if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`;
+          if (!isExcluded) {
+            let token = localStorage.getItem("jwtToken");
+
+            console.log("📡 Axios 인터셉터 실행 - JWT Token:", token);
+
+            if (token) {
+              if (!token.startsWith("Bearer ")) {
+                token = `Bearer ${token}`;
+              }
+              config.headers["Authorization"] = token;
+            }
+          } else {
+            console.log(`🛑 ${config.url} 요청에는 Authorization 헤더를 추가하지 않음.`);
           }
+
           return config;
-          console.log("@@@@App inerceptors config", config);
         },
-        error => {
+        (error) => {
+          console.error("❌ Axios 인터셉터 에러:", error);
           return Promise.reject(error);
-          console.log("@@@@App inerceptors error", Promise.reject(error));
         }
     );
-
-
     // 라우터 튜토리얼
     const routes = {
       '/': Home,
@@ -46,11 +56,18 @@ console.log("@@@@App inerceptors");
 
     const currentPath = ref(window.location.hash);
 
-    const currentView = computed(() => {
-      return routes[currentPath.value.slice(1) || '/'] || NotFound;
+    // pomoLogin 또는 pomoMain 페이지인지 확인
+    const isPomoPage = computed(() => {
+      return route.path === '/pomoLogin' || route.path === '/pomoMain';
     });
+    // const currentView = computed(() => {
+    //   return routes[currentPath.value.slice(1) || '/'] || NotFound;
+    // });
+
+
     return {
-      currentView,
+      // currentView,
+      isPomoPage,
     };
   },
 };
@@ -62,15 +79,16 @@ console.log("@@@@App inerceptors");
   <v-app>
     <div class="main-wrap">
       <div class="page-wrap">
-        <DiaryNav/> <!--왼쪽 고정 네비게이션-->
+        <!-- DiaryNav: pomoLogin, pomoMain 페이지가 아닐 때만 표시 -->
+        <DiaryNav v-if="!isPomoPage"/> <!--왼쪽 고정 네비게이션-->
         <div class="content-wrap">
-          <header>
+          <header v-if="!isPomoPage">
             <img alt="Vue logo" class="logo" src="@/assets/favicon.png" width="125" height="125"/>
           </header>
           <!-- <DiaryHeader/> -->
           <RouterView/> <!-- 현재 경로에 맞는 컴포넌트 렌더링 -->
         </div>
-        <DiaryFooter/>
+        <DiaryFooter v-if="!isPomoPage"/>
 
       </div>
     </div>

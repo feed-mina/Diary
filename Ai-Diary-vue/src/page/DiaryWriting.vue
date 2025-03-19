@@ -65,7 +65,9 @@ export default {
           confirmButtonText: "로그인하기",
           confirmButtonColor: "#FF5733",
         }).then(() => {
-          router.push("/login");
+          router.push("/").then(() => {
+            location.reload(); // 새로고침
+          });
         });
       }
     });

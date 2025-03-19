@@ -11,19 +11,19 @@ import * as directives from "vuetify/directives"; // Vuetify 디렉티브 등록
 import axios from 'axios';
 
 // 요청 인터셉터 추가: 모든 요청 전에 토큰을 헤더에 넣어줌
-axios.interceptors.request.use(
-  config => {
-    // 일반 로그인 토큰과 카카오 로그인 토큰 중 사용 가능한 토큰 선택하기
-    const token = localStorage.getItem("jwtToken") || localStorage.getItem("kakaoToken");
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
-    }
-    return config;
-  },
-  error => {
-    return Promise.reject(error);
-  }
-);
+// axios.interceptors.request.use(
+//   config => {
+//     // 일반 로그인 토큰과 카카오 로그인 토큰 중 사용 가능한 토큰 선택하기
+//     const token = localStorage.getItem("jwtToken") || localStorage.getItem("kakaoToken");
+//     if (token) {
+//       config.headers['Authorization'] = `Bearer ${token}`;
+//     }
+//     return config;
+//   },
+//   error => {
+//     return Promise.reject(error);
+//   }
+// );
 
 const vuetify = createVuetify({
     components,

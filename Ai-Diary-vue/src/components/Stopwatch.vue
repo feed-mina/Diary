@@ -5,9 +5,9 @@
 
    import { Notyf } from 'notyf';
    import 'notyf/notyf.min.css';
-   import alarmSound from "/src/assets/alarm.wav";
-   import toySound from "/src/assets/toy.mp3";
-   import birdSound from "/src/assets/bird.mp3";
+   import alarmSound from "../assets/alarm.wav";
+   import toySound from "../assets/toy.mp3";
+   import birdSound from "../assets/bird.mp3";
    
    // 알림, 소리 설정
    const notyf = new Notyf();
@@ -17,13 +17,10 @@
    const isRunning = ref(false);
    const kakaoToken = localStorage.getItem('kakaoAccessToken');
    const stopwatchSeconds = inject('stopwatchSeconds', ref(0));
-   
    const running = ref(false);
    let interval = null;
-   
- 
 
-function playAlarm() {
+   function playAlarm() {
   Pomoalarm.play();
   setTimeout(() => {
     Pomoalarm.pause();

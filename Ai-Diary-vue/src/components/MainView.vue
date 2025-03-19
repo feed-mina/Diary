@@ -15,10 +15,15 @@
    const isDarkMode = ref(false);
    const isTimeVisible = ref(false);
    const kakaoButtonEnabled = ref(false);
-   
-   const stopwatchSeconds = inject('stopwatchSeconds', ref(0));
-   const pomoSession = inject('pomoSession', ref(0));
 
+
+   // 스탑워치 및 뽀모도로 세션을 위한 `ref` 선언
+   const stopwatchSeconds = ref(0);
+   const pomoSession = ref(0);
+
+   // `provide`로 하위 컴포넌트에 데이터 제공
+   provide("stopwatchSeconds", stopwatchSeconds);
+   provide("pomoSession", pomoSession);
    
   const params = new URLSearchParams(window.location.search);
 
@@ -38,65 +43,68 @@
    
    // 기록 전송
    async function sendAllRecords() {
-   const kakaoToken = localStorage.getItem('kakaoAccessToken');
-   
-    console.log("카카오톡으로 기록 보냅니다!");
-    // 토큰 없으면 로그인 알림
-      if (!kakaoToken) {
-        notyf.error("로그인을 먼저 해주세요!");
-       // localStorage.clear();
-        return;
-      }
-      // 스탑워치와 뽀모도로 값이 모두 없으면 알림
-      if (!stopwatchSeconds.value && !pomoSession.value) {
-        notyf.error("보낼 기록이 없어요!");
-        setTimeout(() => notyf.dismissAll(), 2000);
-        return;
-      }
-      // 보낼 데이터 만들기 (값이 있는 것만 담기)
-      const requestData = {};
-      if(stopwatchSeconds.value > 0){
-        requestData.stopwatchTime = stopwatchSeconds.value; // 스탑워치 시간(초)
-      }
-      if(pomoSession.value > 0){
-        requestData.pomodoroCount = pomoSession.value; // 뽀모도로 회수
-        requestData.pomodoroTotalTime = pomoSession.value * 25; // 뽀모도로 총 시간
-      }
-      console.log("보내는 데이터 확인:", requestData);
-   
-      if (Object.keys(requestData).length === 0) {
-        notyf.error("보낼 기록이 없어요!");
-        return;
-      }
-   try {
-    const response = await axios.post(
-      `${apiUrl}/api/kakao/sendRecord`, 
-      requestData,
-      {
-        headers: {
-          'Authorization': 'Bearer ' + kakaoToken,
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-   
-    console.log("전송 성공!", response.data);
-    notyf.success("카카오톡으로 기록을 보냈어요!");
-   } catch (error) {
-      console.error("전송 실패!", error);
-      handleSendError(error);
-      // notyf.error("전송에 실패했어요!");
-      }
-   }
-   
+     const kakaoToken = localStorage.getItem('kakaoAccessToken');
+     console.log("카카오톡으로 기록 보냅니다!", kakaoToken);
 
-  // 오류 처리 함수
+     if (!kakaoToken) {
+       notyf.error("로그인을 먼저 해주세요!");
+       return;
+     }
+
+     console.log("pomoSession 값:", pomoSession.value);
+     console.log("stopwatchSeconds 값:", stopwatchSeconds.value);
+
+     if (!stopwatchSeconds.value && !pomoSession.value) {
+       notyf.error("보낼 기록이 없어요!");
+       setTimeout(() => notyf.dismissAll(), 2000);
+       // return;
+     }
+
+     const requestData = {};
+     if (stopwatchSeconds.value > 0) {
+       requestData.stopwatchTime = stopwatchSeconds.value;
+     }
+     if (pomoSession.value > 0) {
+       requestData.pomodoroCount = pomoSession.value;
+       requestData.pomodoroTotalTime = pomoSession.value * 25;
+     }
+
+     console.log("보내는 데이터 확인:", requestData);
+
+     if (Object.keys(requestData).length === 0) {
+       notyf.error("보낼 기록이 없어요!");
+       return;
+     }
+
+     try {
+       const response = await axios.post(
+           `${apiUrl}/api/kakao/sendRecord`,
+           requestData,
+           {
+             headers: {
+               'Authorization': `Bearer ${kakaoToken}`,
+               'Content-Type': 'application/json',
+             },
+           }
+       );
+
+       console.log("전송 성공!", response.data);
+       notyf.success("카카오톡으로 기록을 보냈어요!");
+     } catch (error) {
+       console.error("전송 실패!", error);
+       // handleSendError(error);
+     }
+   }
+
+
+   // 오류 처리 함수
   function handleSendError(error) {
     if (error.response) {
       if (error.response.status === 401) {
         const loginUrl = error.response.data;
         notyf.error("카카오 로그인이 필요해요! 로그인 페이지로 이동할게요.");
-        window.location.href = loginUrl;
+
+        // window.location.href = loginUrl;
       } else if (error.response.status === 500) {
         notyf.error("서버 환경설정 오류가 있어요. 관리자에게 알려주세요!");
       } else {

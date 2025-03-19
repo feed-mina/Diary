@@ -163,10 +163,7 @@ export default {
         };
 
         console.log("회원가입 데이터:", signUpDataToSave);
-
-
         const response = await axios.post("http://localhost:8080/api/auth/register", signUpDataToSave);
-
         console.log('회원가입 response : ', response);
         notify.success("인증번호를 전송했습니다.");
 
@@ -175,8 +172,23 @@ export default {
       } catch (error) {
         console.error("API 호출 실패", error);
         if (error.response && error.response.status === 400) {
-          notify.error("회원가입에 실패했습니다. 다시 시도해주세요.");
+          // notify.error("회원가입에 실패했습니다. 다시 시도해주세요.");
           console.log('error: ', error.response.data); // 서버에서 보낸 메시지: "이미 존재하는 이메일입니다."
+          const errorMsg = error.response.data.error;
+          notify.error(errorMsg); // 알림창에 에러 메시지 출력
+          console.log("서버 응답:", errorMsg);
+
+          // 이메일 중복 오류
+          if (errorMsg.includes("이메일")) {
+            errorState.value.email = true;
+            errorMessage.value.email = errorMsg;
+          }
+
+          // 핸드폰 중복 오류
+          if (errorMsg.includes("핸드폰")) {
+            errorState.value.phone = true;
+            errorMessage.value.phone = errorMsg;
+          }
           focusEmailField.value.focus();
           errorState.value.email = true;
           errorMessage.value.email = error.response.data;
@@ -247,7 +259,6 @@ export default {
 <template>
   <div class="signupPage">
     <div class="signUp_form">
-      <!-- <form @submit.prevent="onClickSignUpButton"> -->
       <form @submit.prevent="sendVerificationCode">
         <!--ID-->
         <div class="signUp-session">
@@ -260,38 +271,6 @@ export default {
                    id="userId"/>
             <div class="signUp_form-oo" :style="{ color: errorState.userId ? 'red' : 'black' }">
               {{ errorMessage.userId }}
-            </div>
-          </div>
-        </div>
-        <!--선택박스 사용해서 이메일 종류 선택이랑 input으로 직접입력하기 기능 -->
-        <!-- 이메일 -->
-        <div class="signUp-session">
-          <div class="signUp-label">
-            <label for="email" class="form-label">Emaill</label>
-          </div>
-          <div>
-            <div style="display:flex; gap: 10px; align-items: center;">
-              <!--이메일 앞부분-->
-              <!-- <input size="20"  type="text" ref="focusEmailField" v-model="signUpData.email.emailPrefix"  @input="validateField.email" class="signUp_form-input" name="emailPrefix" id="emailPrefix" aria-describedby="emailHelp"/> -->
-              <input v-model="signUpData.email.emailPrefix" @input="updateFullEmail"/>
-              <span>@</span>
-              <!--이메일 도메인 선택-->
-              <!-- <select v-model="signUpData.email.emailDomain"  @change="() => validateField.email()" class="signUp_form-input"> -->
-              <select v-model="signUpData.email.emailDomain" @change="updateFullEmail" class="signUp_form-input">
-                <option value="" disabled selected>이메일선택</option>
-                <option value="naver.com">naver.com</option>
-                <option value="gmail.com">gmail.com</option>
-                <option value="nate.com">nate.com</option>
-                <option value="hanmail.net">hanmail.net</option>
-                <option value="daum.net">daum.net</option>
-                <option value="custom">직접입력</option>
-              </select>
-              <input size="30" type="text" v-if="signUpData.email.emailDomain === 'custom'"
-                     v-model="signUpData.email.customDomain" @input="validateField.email" class="signUp_form-input"
-                     name="customDomain" id="customDomain" placeholder="도메인 입력" aria-describedby="emailHelp"/>
-              <div class="signUp_form-oo" :style="{ color: errorState.email ? 'red' : 'black' }">
-                {{ errorMessage.email }}
-              </div>
             </div>
           </div>
         </div>
@@ -383,8 +362,38 @@ export default {
             </div>
           </div>
         </div>
+        <!--선택박스 사용해서 이메일 종류 선택이랑 input으로 직접입력하기 기능 -->
+        <!-- 이메일 -->
+        <div class="signUp-session">
+          <div class="signUp-label">
+            <label for="email" class="form-label">Emaill</label>
+          </div>
+          <div>
+            <div style="display:flex; gap: 10px; align-items: center;">
+              <!--이메일 앞부분-->
+              <input  size="20" class="signUp_form-input"   id="emailPrefix" v-model="signUpData.email.emailPrefix" @input="updateFullEmail" aria-describedby="emailHelp"/>
+              <span>@</span>
+              <!--이메일 도메인 선택-->
+              <select v-model="signUpData.email.emailDomain" @change="updateFullEmail" class="signUp_form-input">
+                <option value="" disabled selected>이메일선택</option>
+                <option value="naver.com">naver.com</option>
+                <option value="gmail.com">gmail.com</option>
+                <option value="nate.com">nate.com</option>
+                <option value="hanmail.net">hanmail.net</option>
+                <option value="daum.net">daum.net</option>
+                <option value="custom">직접입력</option>
+              </select>
+              <input size="30" type="text" v-if="signUpData.email.emailDomain === 'custom'"
+                     v-model="signUpData.email.customDomain" @input="validateField.email" class="signUp_form-input"
+                     name="customDomain" id="customDomain" placeholder="도메인 입력" aria-describedby="emailHelp"/>
+              <div class="signUp_form-oo" :style="{ color: errorState.email ? 'red' : 'black' }">
+                {{ errorMessage.email }}
+              </div>
+            </div>
+          </div>
+        </div>
         <button type="button" @click="sendVerificationCode" class="verification_form_button">
-          인증 코드 보내기
+         이메일로 인증 코드 보내기
         </button>
       </form>
       <p v-if="signUpData.message">{{ signUpData.message }}</p>

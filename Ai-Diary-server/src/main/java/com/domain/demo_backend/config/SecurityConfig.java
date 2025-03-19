@@ -58,13 +58,15 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 적용
                 .csrf(csrf -> csrf.disable())  // CSRF 비활성화
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()  // Swagger 관련 URL 허용
-                        .requestMatchers(HttpMethod.GET,"/api/**").permitAll() // 모든 GET요청 허용
-                        .requestMatchers(HttpMethod.POST, "/api/**").permitAll() // 모든 POST 요청 허용
-                        .requestMatchers(HttpMethod.PUT, "/api/**").permitAll() // 모든 PUT 요청 허용POST 요청 허용
-                        .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll() // 모든 PUT 요청 허용
-                        .requestMatchers("/resources/**", "/static/**", "/error").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll() // 모든 요청 허용 (테스트중) > 테스트 성공하면 다시 기존 설정 복원하기
+
+//                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()  // Swagger 관련 URL 허용
+//                        .requestMatchers(HttpMethod.GET,"/api/**").permitAll() // 모든 GET요청 허용
+//                        .requestMatchers(HttpMethod.POST, "/api/**").permitAll() // 모든 POST 요청 허용
+//                        .requestMatchers(HttpMethod.PUT, "/api/**").permitAll() // 모든 PUT 요청 허용POST 요청 허용
+//                        .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll() // 모든 PUT 요청 허용
+//                        .requestMatchers("/resources/**", "/static/**", "/error").permitAll()
+//                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable()) // formLogin 끄기!

@@ -3,6 +3,7 @@ import {computed, onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import Swal from "sweetalert2";
 
 export default {
   name: 'DiaryList',
@@ -49,6 +50,11 @@ export default {
         });
 
         console.log("API 응답 데이터: ", response.data);
+
+        console.log(response.data.total);
+if(response.data.total = 0){
+  noDiaryMessage.value = "일기를 불러오는 중 오류가 발생했습니다.";
+}
         const { diaryList, total, pageSize, page: pageNum, message } = response.data;
 
         console.log("diaryList 개수: ", diaryList.length);
@@ -82,7 +88,9 @@ export default {
         console.error('Error fetching diary list: ', error);
         noDiaryMessage.value = "일기를 불러오는 중 오류가 발생했습니다.";
         diaries.value = [];
-         router.push('/');
+        router.push("/").then(() => {
+          location.reload(); // 새로고침
+        });
       }
     };
 
@@ -120,7 +128,9 @@ export default {
           confirmButtonText: "로그인하기",
           confirmButtonColor: "#FF5733",
         }).then(() => {
-          router.push('/');
+          router.push("/").then(() => {
+            location.reload(); // 새로고침
+          });
         });
       }
       else {
@@ -136,7 +146,8 @@ export default {
       changePage,
       viewDiary,
       toggleFilter,
-      showOnlyMine
+      showOnlyMine,
+      noDiaryMessage
     };
   },
 };
@@ -144,8 +155,7 @@ export default {
 
 <template>
   <div class="diaryList">
-    <h1>📖 일기장 리스트</h1>
-
+    <h1>📓 일기장 리스트</h1>
     <!-- 내가 쓴 일기만 보기 -->
     <div class="filter-section">
       <label class="filter-checkbox">

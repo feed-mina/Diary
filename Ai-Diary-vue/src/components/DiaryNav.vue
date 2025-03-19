@@ -28,8 +28,6 @@ export default {
       const email = localStorage.getItem("email");
       return !!email && !kakaoAccessToken;
     });
-    console.log('isKakaoLogin : ', isKakaoLogin.value);
-    console.log('isNormalUser : ', isKakaoLogin.value);
     const navigateTo = (route) => {
       router.push(route);
     };
@@ -48,6 +46,12 @@ export default {
         location.reload();
       });
     };
+
+    console.log('isKakaoLogin : ', isKakaoLogin.value);
+    console.log('isNormalUser : ', isKakaoLogin.value);
+    console.log("Saved kakaoToken:", localStorage.getItem("kakaoToken"));
+    console.log("Saved jwtToken:", localStorage.getItem("jwtToken"));
+
 
     return {
       isLoggedIn,

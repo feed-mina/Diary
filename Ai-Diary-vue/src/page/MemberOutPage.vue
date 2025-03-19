@@ -30,6 +30,22 @@ export default {
     const idErrorMessage = ref("");
     const passwordErrorMessage = ref("");
 
+    // 회원탈퇴 버튼 클릭 시 실행되는 함수
+    const deleteAccount = () => {
+      if (confirm("정말로 회원탈퇴 하시겠습니까?")) {
+        localStorage.removeItem("userId");
+        localStorage.removeItem("jwtToken");
+        localStorage.removeItem("email");
+        localStorage.removeItem("password");
+        localStorage.removeItem("kakaoAccessToken");
+        localStorage.removeItem("nickname");
+
+        alert("회원탈퇴가 완료되었습니다.");
+        router.push("/").then(() => {
+          location.reload();
+        });
+      }
+    };
     const signout = async () => {
       if (!isChecked.value) {
         Swal.fire({
@@ -48,33 +64,37 @@ export default {
           icon: "warning",
           confirmButtonText: "확인",
           confirmButtonColor: "#FF5733"
+        }).then(() => {
+          router.push("/").then(() => {
+            location.reload(); // 새로고침
+          });
         });
-        return;
       }
 
       try {
-        console.log("회원탈퇴 요청 데이터:", memberOutData.value);
 
-        // API 호출
-        const response = await axios.post("http://localhost:8080/api/auth/non-user", memberOutData.value);
-        console.log("회원탈퇴 응답: ", response);
-
-        Swal.fire({
-          title: "회원탈퇴 성공",
-          text: "회원탈퇴가 완료되었습니다.",
-          icon: "success",
-          confirmButtonText: "확인",
-        }).then(() => {
-          console.log("회원탈퇴 성공");
+        if (confirm("정말로 회원탈퇴 하시겠습니까?")) {
+          console.log("회원탈퇴 요청 데이터:", memberOutData.value);
+          // API 호출
+          const response = await axios.post("http://localhost:8080/api/auth/non-user", memberOutData.value);
+          console.log("회원탈퇴 응답: ", response);
           localStorage.removeItem("userId");
           localStorage.removeItem("jwtToken");
           localStorage.removeItem("email");
           localStorage.removeItem("password");
           localStorage.removeItem("kakaoAccessToken");
           localStorage.removeItem("nickname");
-          cookies.remove("jwt", { path: "/" });
-          router.push("/");
-        });
+
+          Swal.fire({
+            title: "회원탈퇴 성공",
+            text: "회원탈퇴가 완료되었습니다.",
+            icon: "success",
+            confirmButtonText: "확인",
+          });
+          router.push("/").then(() => {
+            location.reload();
+          });
+        }
       } catch (error) {
         console.error("API 호출 실패:", error.response?.data || error.message);
         Swal.fire({
@@ -90,8 +110,7 @@ export default {
       router.push(path);
     };
 
-    watch(() => cookies.get("jwt"), () => {});
-
+    // watch(() => cookies.get("jwt"), () => {});
     return {
       isChecked,
       signout,

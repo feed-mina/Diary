@@ -4,15 +4,16 @@
    import { Notyf } from "notyf";
    import "notyf/notyf.min.css";
    import { apiUrl } from "@/api/index.js";
-
-   
-   import alarmSound from "/src/assets/alarm.wav";
-   import toySound from "/src/assets/toy.mp3";
-   import birdSound from "/src/assets/bird.mp3";
-
- 
-
-   const kakaoToken = localStorage.getItem('kakaoAccessToken');
+   import alarmSound from "../assets/alarm.wav";
+   import toySound from "../assets/toy.mp3";
+   import birdSound from "../assets/bird.mp3";
+   // 알림ui 라이브러리 설정
+   const notyf = new Notyf();
+   const pomoSession = inject('pomoSession', ref(0));
+   // 뽀모도로 관련 상태 변수
+   const isPomodoroRunning = ref(false); // 중복 방지용
+   const pomodoroSeconds = ref(25 * 60); // 25분
+   const kakaoToken = localStorage.getItem('kakaoPomoAccessToken');
    const isTimeVisible = inject('isTimeVisible');
    const Pomoalarm = new Audio(alarmSound);
    const Toyalarm = new Audio(toySound);
@@ -40,14 +41,6 @@ function playAlarm3() {
     birdalarm.currentTime = 0;
   }, 2000);
 }
-       // 알림ui 라이브러리 설정
-       const notyf = new Notyf();
-   
-       // 뽀모도로 관련 상태 변수
-       const isPomodoroRunning = ref(false); // 중복 방지용
-   
-       const pomoSession = inject('pomoSession');
-       const pomodoroSeconds = ref(25 * 60); // 25분
        let interval = null;
        // 시간 포맷팅 (MM:SS)
        const formattedTime = computed(() => {

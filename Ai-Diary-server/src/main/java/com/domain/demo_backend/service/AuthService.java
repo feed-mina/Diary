@@ -7,6 +7,7 @@ import com.domain.demo_backend.user.domain.User;
 import com.domain.demo_backend.user.dto.KakaoUserInfo;
 import com.domain.demo_backend.user.dto.LoginRequest;
 import com.domain.demo_backend.user.dto.RegisterRequest;
+import com.domain.demo_backend.util.DuplicateEmailException;
 import com.domain.demo_backend.util.JwtUtil;
 import com.domain.demo_backend.util.PasswordUtil;
 import jakarta.mail.MessagingException;
@@ -45,6 +46,8 @@ public class AuthService {
     }
 
     public String login(LoginRequest loginRequest) {
+        // 탈퇴한 유저가 delYn ='N' 이면 계정정보가 없다 . 또는 에러가 나면 계정정보가 없다라고 떠야한다.
+
 
         User user = userMapper.findByUserEmail(loginRequest.getEmail());
         // 카카오 로그인 로직 ? 로그인 type이 social / normal 구분 > normal 안에서 찾아야함
@@ -72,11 +75,6 @@ public class AuthService {
         return jwtUtil.createToken(user.getEmail(),user.getHashedPassword(), user.getUserId() );
     }
 
-    public class DuplicateEmailException extends RuntimeException {
-        public DuplicateEmailException(String message) {
-            super(message);
-        }
-    }
 
     // 새 사용자 정보를 해시처리 후 데이터베이스에 저장
     // 이미 존재하는 사용자 아이디인지 확인하고 중복되면 예외 발생
@@ -86,11 +84,6 @@ public class AuthService {
         if (userMapper.findByUserEmail(registerRequest.getEmail()) != null) {
             throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
         }
-//        if (userMapper.findByUserId(registerRequest.getUserId()) != null) {
-//            log.info("존재하는 아이디 실패");
-//
-//            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
-//        }
         if (userMapper.findByUserPhone(registerRequest.getPhone()) != null) {
             log.info("회원가입 핸드폰 실패");
             throw new IllegalArgumentException("이미 존재하는 핸드폰 번호입니다.");
@@ -114,16 +107,6 @@ public class AuthService {
         userMapper.insertUser(user);
     }
 
-
-    @Transactional
-    public void beforesendVerificationCode(RegisterRequest registerRequest) {
-
-        if (userMapper.findByUserEmail(registerRequest.getEmail()) != null) {
-            log.info("회원가입 이메일 실패");
-
-            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
-        }
-    }
 
 
     public String sendVerificationCode(String email) throws MessagingException {
@@ -156,8 +139,6 @@ public class AuthService {
                 + "</div>";
 
         helper.setText(emailContent, true);   // 여기 true가 HTML이라는 뜻이야!
-
-        helper.setText("인증 코드: " + verificationCode, true);
 
         mailSender.send(message);
 

@@ -136,7 +136,7 @@ export default {
     <div class="code-inputs">
       <input v-for="(digit, index) in codeDigits" :key="index" :id="`code-${index}`" v-model="codeDigits[index]" maxlength="1"  type="text" class="code-box" @input="handleInput($event, index)"/>
     </div>
-    <button v-if="!resendEnabled"  @click="checkCode">확인</button>
+    <button class="checkButton" v-if="!resendEnabled"  @click="checkCode">확인</button>
 
     <button @click="resendCode" v-if="resendEnabled" >코드 재전송</button>
 
@@ -166,16 +166,17 @@ export default {
   gap: 8px;
   margin: 20px 0;
   background: beige;
-  border: green 1px solid;
 }
 .code-box {
-  width: 50px;
+  width: 3rem;
   height: 60px;
   font-size: 2rem;
   text-align: center;
-  border: #555 2px solid;
+  background: beige;
+  border: green 2px solid ;
 }
-button {
+
+.checkButton {
   padding: 12px 24px;
   font-size: 1.2rem;
   background-color: #2ea44f;
@@ -183,8 +184,10 @@ button {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  margin-bottom: 1rem;
 }
-button:hover {
+
+.checkButton:hover {
   background-color: #22863a;
 }
 .message {

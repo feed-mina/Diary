@@ -115,16 +115,43 @@ public class KakaoController {
     public ResponseEntity<String> sendRecord(
             @RequestHeader(value = "Authorization", required = true) String authorization,
             @RequestBody Map<String, Object> data) {
-
+        log.info("@@@@ Received Authorization header: " + authorization);
         if (authorization == null || !authorization.startsWith("Bearer ")) {
+            log.error("Authorization 헤더가 없거나 잘못됨: " + authorization);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("카카오 토큰이 필요");
         }
-        String accessToken = authorization.substring(7); // "Bearer " 이후 토큰 부분만 추출
+        String accessToken = authorization.substring(7); // "Bearer " 이후 토큰만 추출
 
         log.info("@@@@@@@@@@@@@@@@@@@@@@@@");
         log.info("kakao sendRecord");
         log.info("kakao sendRecord data:" + data);
         log.info("kakao sendRecord accessToken:" + accessToken);
+        if (accessToken.isEmpty()) {
+            log.error("추출한 accessToken이 비어 있음");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰");
+        }
+
+        log.info("kakao sendRecord accessToken: " + accessToken);
+
+        // Kakao 서비스에서 사용자 정보 가져오기
+        KakaoUserInfo kakaoUserInfo;
+        // 1. 받은 AccessToken으로 카카오에서 사용자 정보를 가져와
+
+        try {
+            kakaoUserInfo = kakaoService.getKakaoUserInfo(accessToken);
+        } catch (Exception e) {
+            log.error("카카오 사용자 정보 가져오기 실패", e);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("카카오 사용자 정보 조회 실패");
+        }
+        //   JWT 토큰을 클라이언트에 응답으로 보내줘
+//        KakaoAuthResponse response = new KakaoAuthResponse(kakaoUserInfo, jwtToken);
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("카카오 토큰이 필요");
+        }
+        // 2. 사용자 정보를 이용해 DB에 회원가입 또는 조회를 진행해
+        // JWT 토큰을 발급받아
+        String jwtToken = kakaoService.registerKakaoUser(kakaoUserInfo, authorization);
+
         // clientId, redirectUri 체크
         if (clientId == null || redirectUri == null) {
             String loginUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + clientId + "&redirect_uri=" + redirectUri;

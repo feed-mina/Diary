@@ -2,7 +2,7 @@
 import {onMounted, ref, watchEffect} from 'vue';
 import {useRouter, useRoute} from 'vue-router';
 import axios from 'axios';
-
+import { apiUrl } from "@/api/index.js";
 import Swal from "sweetalert2";
 import "notyf/notyf.min.css";
 export default {
@@ -51,9 +51,9 @@ export default {
       }
 
       try {
-        console.log(`📌 요청 URL: http://localhost:8080/api/diary/viewDiaryItem/${diaryId}?userId=${userId}`);
+        console.log(`📌 요청 URL: ${apiUrl}/api/diary/viewDiaryItem/${diaryId}?userId=${userId}`);
 
-        const response = await axios.get(`http://localhost:8080/api/diary/viewDiaryItem/${diaryId}`
+        const response = await axios.get(`${apiUrl}/api/diary/viewDiaryItem/${diaryId}`
             , {
               params: {
                 userId: userId, // 체크박스 상태에 따라 userId필터링

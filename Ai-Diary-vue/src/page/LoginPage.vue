@@ -3,6 +3,7 @@ import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Cookies from "universal-cookie";
 import axios from "axios";
+import { apiUrl } from "@/api/index.js";
 import Swal from "sweetalert2";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
@@ -62,7 +63,7 @@ export default {
 
       updateFullEmail();
       try {
-        const response = await axios.post("http://localhost:8080/api/auth/login", {
+        const response = await axios.post(`${apiUrl}/api/auth/login`, {
           email: loginData.value.email,
           password: loginData.value.password,
         });
@@ -96,7 +97,7 @@ export default {
               const kakaoAccessToken = authObj.access_token;
               console.log("카카오 AccessToken:", kakaoAccessToken);
               console.log("카카오 로그인 API 호출 시작");
-              const response = await axios.post("http://localhost:8080/api/kakao/login", {
+              const response = await axios.post(`${apiUrl}/api/kakao/login`, {
                 accessToken: kakaoAccessToken,
               });
 

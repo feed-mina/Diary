@@ -43,10 +43,10 @@
    
    // 기록 전송
    async function sendAllRecords() {
-     const kakaoToken = localStorage.getItem('kakaoAccessToken');
-     console.log("카카오톡으로 기록 보냅니다!", kakaoToken);
+     const kakaoAccessToken = localStorage.getItem('kakaoAccessToken');
+     console.log("카카오톡으로 기록 보냅니다!", kakaoAccessToken);
 
-     if (!kakaoToken) {
+     if (!kakaoAccessToken) {
        notyf.error("로그인을 먼저 해주세요!");
        return;
      }
@@ -80,12 +80,7 @@
        const response = await axios.post(
            `${apiUrl}/api/kakao/sendRecord`,
            requestData,
-           {
-             headers: {
-               'Authorization': `Bearer ${kakaoToken}`,
-               'Content-Type': 'application/json',
-             },
-           }
+
        );
 
        console.log("전송 성공!", response.data);
@@ -137,6 +132,7 @@
     
    
    onMounted(() => {
+     document.title = "뽀모도로";
      checkServer();
      checkServerTime();
   const  kakaoAccessToken = localStorage.getItem('kakaoAccessToken');

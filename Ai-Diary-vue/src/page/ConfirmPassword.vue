@@ -3,6 +3,7 @@ import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 import Cookies from "universal-cookie";
 import axios from "axios";
+import { apiUrl } from "@/api/index.js";
 import Swal from "sweetalert2";
 
 export default {
@@ -106,7 +107,7 @@ export default {
     // 로그인 API 호출
     const sendConfirmData = async () => {
       try {
-        const response = await axios.post("http://localhost:8080/api/auth/confirmData", confirmData.value);
+        const response = await axios.post(`${apiUrl}/api/auth/confirmData`, confirmData.value);
         return response.data; // 응답 데이터를 반환합니다.
       } catch (error) {
         console.error("API 호출 실패:", error.response?.data || error.message);

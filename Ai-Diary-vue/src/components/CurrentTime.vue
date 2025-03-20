@@ -1,6 +1,7 @@
 <script setup>
    import { ref, onMounted } from 'vue';
    import axios from 'axios';
+   import { apiUrl } from "@/api/index.js";
        
 
   // 서버 주소 설정
@@ -13,7 +14,7 @@
    
        function updateTime(){
          if (import.meta.env.VITE_APP_USE_API === 'true') {
-     axios.get(`${apiUrl}/api/timer/now`)
+        axios.get(`${apiUrl}/api/timer/now`)
        .then(response => {
          console.log("서버 시간:", response.data);
          currentTime.value = response.data;
@@ -31,8 +32,8 @@
    }
     
    }
-   
-     
+
+
        onMounted(() => {
            updateTime(); // 처음 화면에 들어왔을 때 시간 가져오기
            setInterval(updateTime, 1000);  // 1초마다 갱신

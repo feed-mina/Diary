@@ -3,6 +3,7 @@ import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import Cookies from "universal-cookie";
 import axios from "axios";
+import { apiUrl } from "@/api/index.js";
 import Swal from "sweetalert2";
 
 export default {
@@ -76,7 +77,7 @@ export default {
         if (confirm("정말로 회원탈퇴 하시겠습니까?")) {
           console.log("회원탈퇴 요청 데이터:", memberOutData.value);
           // API 호출
-          const response = await axios.post("http://localhost:8080/api/auth/non-user", memberOutData.value);
+          const response = await axios.post(`${apiUrl}/api/auth/non-user`, memberOutData.value);
           console.log("회원탈퇴 응답: ", response);
           localStorage.removeItem("userId");
           localStorage.removeItem("jwtToken");

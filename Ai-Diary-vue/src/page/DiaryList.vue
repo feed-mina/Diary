@@ -1,9 +1,10 @@
 <script>
 import {computed, onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
-import axios from 'axios';
 import Cookies from 'universal-cookie';
 import Swal from "sweetalert2";
+import axios from 'axios';
+import { apiUrl } from "@/api/index.js";
 
 export default {
   name: 'DiaryList',
@@ -41,7 +42,7 @@ export default {
     // loggedInUserId와 response.data.diaryList.list.userId같은지, 같다면 내가 쓴 일기만 보기 체크박스 누를때 두개가 같은 것만 response.data.diaryList 보이기
     const fetchDiaryList = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/diary/viewDiaryList',{
+        const response = await axios.get(`${apiUrl}/api/diary/viewDiaryList`,{
           params: {
             userId: showOnlyMine.value ? loggedInUserId : "",
             pageNo: page.value.pageNo,

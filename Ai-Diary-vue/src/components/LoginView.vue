@@ -3,12 +3,16 @@ import { useRouter } from 'vue-router';
 import { onMounted } from 'vue';
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
+import axios from "axios";
+import { apiUrl } from "@/api/index.js";
+import Swal from "sweetalert2";
 const notyf = new Notyf();
 const router = useRouter();
 
 const isElectron = !!(window && window.process && window.process.type);
 
 onMounted(() => {
+  document.title = "뽀모도로 로그인";
   if (!window.Kakao || !window.Kakao.isInitialized()) {
     const kakaoScript = document.createElement("script");
     kakaoScript.src = "https://developers.kakao.com/sdk/js/kakao.js";
@@ -23,68 +27,56 @@ onMounted(() => {
   }
 });
 
-function kakaoLogin() {
-  //  if (isElectron && ipcRenderer) {
-  //    ipcRenderer.send('login-success');
 
-
-  //    if (window.Kakao && window.Kakao.Auth) {
-  //      window.Kakao.Auth.login({
-  //        scope: "talk_message",
-  //        success: function(authObj) {
-  //          console.log('로그인 성공!', authObj);
-  //          notyf.success("로그인 성공!");
-  //          // 토큰 저장
-  //          localStorage.setItem('kakaoAccessToken', authObj.access_token);
-  //          window.location.href = '/main';
-  //          // emit('loginSuccess');
-  //        },
-  //        fail: function(err) {
-  //          console.error('❌ 로그인 실패', err);
-  //          notyf.error("❌ 로그인 실패");
-  //        }
-  //      });
-  //    } else {
-  //     notyf.error("❌ 로그인 실패");
-  //      console.error('카카오 SDK가 아직 로드되지 않았어요!');
-  //    }
-
-  //  } else {
-
-  console.log('🌐 웹에서는 그냥 페이지 이동!');
+// 카카오 로그인 함수
+async function kakaoLogin()  {
   if (window.Kakao && window.Kakao.Auth) {
+    console.log("🌐 웹에서는 그냥 페이지 이동!");
     window.Kakao.Auth.login({
-      scope: "talk_message",
-      success: function (authObj) {
-        console.log('로그인 성공!', authObj);
+      scope: "profile_nickname, account_email, talk_message",
+      success: async function (authObj) {
+        try {
+          const kakaoAccessToken = authObj.access_token;
+          const response = await axios.post(`${apiUrl}/api/kakao/login`, {
+            accessToken: kakaoAccessToken,
+          });
 
-        const token = authObj.access_token;
-        console.log('로그인 성공!', token);
-        notyf.success("로그인 성공!");
+          const jwtToken = response.data;
+          // console.log("email: ", response.data.kakaoUserInfo.email);
+          // console.log("nickname: ", response.data.kakaoUserInfo.nickname);
+          // console.log("jwtToken: ", response.data.jwtToken);
+          console.log("response: ", response);
 
-        // 토큰 저장
-        localStorage.setItem('kakaoAccessToken', authObj.access_token);
-        // emit('loginSuccess');
+          // const kakao_email = response.data.kakaoUserInfo.email;
+          // const kakao_nickname = response.data.kakaoUserInfo.nickname;
+          // const kakao_token = response.data.jwtToken;
+          // const [userId] = response.data.kakaoUserInfo.email.split("@");
+          // console.log("userId:", userId);
 
-        // Vue Router를 이용한 페이지 이동
-        // router.push('/pomoMain');
-        //  window.location.href = '/project2/main';
-        window.location.href = '/#/pomoMain';
-        // 토큰을 URL에 같이 넣어서 페이지 이동
-        //window.location.href = `/main?kakaoAccessToken=${token}`;
+          // 🟢 받은 JWT를 저장
+          localStorage.setItem("jwtToken", jwtToken);
+          localStorage.setItem("kakaoAccessToken", kakaoAccessToken);
+          // localStorage.setItem("userId", userId);
+          // localStorage.setItem("email", kakao_email);
+          Swal.fire("카카오 로그인 성공", "로그인을 완료했습니다", "success");
 
+          window.location.href = "/#/pomoMain";
+        } catch (error) {
+          Swal.fire("로그인 실패", error.response?.data?.message || "카카오 로그인 실패", "error");
+          console.error("❌ 카카오 로그인 실패", error);
+        }
       },
       fail: function (err) {
-        notyf.error("❌ 로그인 실패");
-        console.error('❌ 로그인 실패', err);
-      }
+        Swal.fire("로그인 실패", "카카오 로그인 실패", "error");
+        console.error("❌ 로그인 실패", err);
+      },
     });
   } else {
-    notyf.error("❌ 로그인 실패");
-    console.error('카카오 SDK가 아직 로드되지 않았어요!');
+    Swal.fire("로그인 실패", "카카오 로그인 실패", "error");
+    console.error("카카오 SDK가 아직 로드되지 않았어요!");
   }
+};
 
-}
 
 </script>
 <template>

@@ -15,7 +15,7 @@ export default {
   methods: {
     async sendEmail() {
       try {
-        const response = await axios.post('http://localhost:8080/api/auth/send', this.email);
+        const response = await axios.post(`${apiUrl}/api/auth/send`, this.email);
         alert(response.data);
       } catch (error) {
         console.error(error);
@@ -25,7 +25,7 @@ export default {
     },
     async semdHtmlEmail() {
       try {
-        const response = await axios.post('http://localhost:8080/api/email/send-html', {
+        const response = await axios.post(`${apiUrl}/api/email/send-html`, {
           to: 'receiver@example.com',
           subject: 'HTML Email',
           body: '<h1>Hello!</h1><p>This is an HTML email.</p>'
@@ -45,7 +45,7 @@ export default {
       formData.append('filePath', '/path/to/your/file.txt');
 
       try {
-        const response = await axios.post('http://localhost:8080/api/email/send-attachment', formData);
+        const response = await axios.post(`${apiUrl}/api/email/send-attachment`, formData);
         alert(response.data);
       } catch (error) {
         console.error(error);

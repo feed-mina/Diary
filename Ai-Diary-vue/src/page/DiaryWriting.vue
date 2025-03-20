@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import Swal from 'sweetalert2';
-import {apiUrl} from "@/api/index.js";
+// import {apiUrl} from "@/api/index.js";
 
 export default {
   name: "DiaryWriting",
@@ -105,7 +105,7 @@ export default {
       };
 
       try {
-        const response = await axios.post(`${apiUrl}/api/diary/addDiaryList`,
+        const response = await axios.post(`/api/diary/addDiaryList`,
             diaryData,
             {
               headers: {

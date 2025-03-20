@@ -1,7 +1,7 @@
 <script setup>
    import { ref, computed, inject } from 'vue';
    import axios from "axios";
-   import { apiUrl } from "@/api/index.js";
+   // import { apiUrl } from "@/api/index.js";
 
    import { Notyf } from 'notyf';
    import 'notyf/notyf.min.css';
@@ -109,7 +109,7 @@ function playAlarm3() {
        return;
      }
      try {
-       const response = await axios.post(`${apiUrl}/api/kakao/sendRecord`,
+       const response = await axios.post(`/api/kakao/sendRecord`,
          { stopwatchTime: stopwatchSeconds.value },
          {
            headers: {

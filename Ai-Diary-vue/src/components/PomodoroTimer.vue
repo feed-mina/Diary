@@ -3,7 +3,7 @@
    import axios from "axios";
    import { Notyf } from "notyf";
    import "notyf/notyf.min.css";
-   import { apiUrl } from "@/api/index.js";
+   // import { apiUrl } from "@/api/index.js";
    import alarmSound from "../assets/alarm.wav";
    import toySound from "../assets/toy.mp3";
    import birdSound from "../assets/bird.mp3";
@@ -132,7 +132,7 @@ function playAlarm3() {
      }
      const totalMinutes = Math.floor((25 * 60 * pomoSession.value) / 60);
      try {
-       const response = await axios.post(`${apiUrl}/api/kakao/sendRecord`,
+       const response = await axios.post(`/api/kakao/sendRecord`,
          {
            pomodoroCount: pomoSession.value,
            pomodoroTotalTime: totalMinutes ,

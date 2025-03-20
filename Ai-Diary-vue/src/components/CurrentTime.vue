@@ -1,7 +1,7 @@
 <script setup>
    import { ref, onMounted } from 'vue';
    import axios from 'axios';
-   import { apiUrl } from "@/api/index.js";
+   // import { apiUrl } from "@/api/index.js";
        
 
   // 서버 주소 설정
@@ -14,7 +14,7 @@
    
        function updateTime(){
          if (import.meta.env.VITE_APP_USE_API === 'true') {
-        axios.get(`${apiUrl}/api/timer/now`)
+        axios.get(`/api/timer/now`)
        .then(response => {
          console.log("서버 시간:", response.data);
          currentTime.value = response.data;

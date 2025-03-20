@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
 import { ref, onMounted} from 'vue';
-import { apiUrl } from "@/api/index.js";
+// import { apiUrl } from "@/api/index.js";
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
 export default {
@@ -56,7 +56,7 @@ export default {
       console.log("전송할 이메일:", email, "전송할 코드:", code);
 
       try {
-        const response = await axios.post(`${apiUrl}/api/auth/verify-code`, {email,code });
+        const response = await axios.post(`/api/auth/verify-code`, {email,code });
         console.log('response : ', response);
 
         message.value = '인증 성공 !';
@@ -105,7 +105,7 @@ export default {
       });
     const resendCode =async () =>{
       try{
-        await axios.post(`${apiUrl}/api/auth/resend-code`, {email});
+        await axios.post(`/api/auth/resend-code`, {email});
         message.value = ' 새 코드가 전송되었어요 ! ';
         codeDigits.value = ['','','','','','',''];
         timer.value = 180;

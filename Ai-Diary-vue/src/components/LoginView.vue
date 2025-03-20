@@ -4,7 +4,7 @@ import { onMounted } from 'vue';
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 import axios from "axios";
-import { apiUrl } from "@/api/index.js";
+// import { apiUrl } from "@/api/index.js";
 import Swal from "sweetalert2";
 const notyf = new Notyf();
 const router = useRouter();
@@ -37,7 +37,7 @@ async function kakaoLogin()  {
       success: async function (authObj) {
         try {
           const kakaoAccessToken = authObj.access_token;
-          const response = await axios.post(`${apiUrl}/api/kakao/login`, {
+          const response = await axios.post(`/api/kakao/login`, {
             accessToken: kakaoAccessToken,
           });
 

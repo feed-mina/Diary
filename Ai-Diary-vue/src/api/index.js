@@ -1,3 +1,1 @@
-export const apiUrl = import.meta.env.MODE === 'development'
-    ? 'http://localhost:8080'
-    : (window.location.protocol === 'https:' ? 'https://justsaying.co.kr' : 'http://justsaying.co.kr');
+export const apiUrl = window.__ENV__?.VUE_APP_API_BASE_URL || "https://default-url.com/api";

@@ -8,7 +8,7 @@
    import {Notyf} from 'notyf';
    import 'notyf/notyf.min.css';
 
-   import { apiUrl } from "@/api/index.js";
+   // import { apiUrl } from "@/api/index.js";
 
    const notyf = new Notyf();
    
@@ -29,7 +29,7 @@
 
    // 서버 시간 체크
    function checkServerTime() {
-      axios.get(`${apiUrl}/api/timer/now`)
+      axios.get(`/api/timer/now`)
         .then(() => {
         // console.log("서버 시간:", response.data);
            isTimeVisible.value = true;  // 서버 연결 성공하면 보임
@@ -78,7 +78,7 @@
 
      try {
        const response = await axios.post(
-           `${apiUrl}/api/kakao/sendRecord`,
+           `/api/kakao/sendRecord`,
            requestData,
 
        );
@@ -119,7 +119,7 @@
     // 서버 헬스 체크
     async function checkServer() {
       try {
-        const response = await fetch(`${apiUrl}/api/timer/health`); // 헬스 체크용 엔드포인트
+        const response = await fetch(`/api/timer/health`); // 헬스 체크용 엔드포인트
         if (response.ok) {
           kakaoButtonEnabled.value = true; // 버튼 활성화
         } else {

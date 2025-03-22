@@ -4,46 +4,52 @@
    import Stopwatch from "./Stopwatch.vue";
    import PomodoroTimer from "./PomodoroTimer.vue"; 
    import CurrentTime from "./CurrentTime.vue"; 
-   
+ 
+  // 알람 라이브러리 notyf 사용
+
    import {Notyf} from 'notyf';
    import 'notyf/notyf.min.css';
 
    // import { apiUrl } from "@/api/index.js";
-
+   // 알람객체 생성
    const notyf = new Notyf();
-   
+   // 다크모드, 시간표시,카카오 로그인 이후로 뽀모도로&타이머 페이지 진입 가능 활성화 변수 생성 
    const isDarkMode = ref(false);
    const isTimeVisible = ref(false);
    const kakaoButtonEnabled = ref(false);
 
 
-   // 스탑워치 및 뽀모도로 세션을 위한 `ref` 선언
+   // 스탑워치 및 뽀모도로 변수 생성, 0초부터 시작
    const stopwatchSeconds = ref(0);
    const pomoSession = ref(0);
 
+   // Mainview <= stopwatch,PomodoroTimer 로 값 관리
    // `provide`로 하위 컴포넌트에 데이터 제공
    provide("stopwatchSeconds", stopwatchSeconds);
    provide("pomoSession", pomoSession);
    
   const params = new URLSearchParams(window.location.search);
 
-   // 서버 시간 체크
+   // 서버 시간 체크, 서버랑 연결되는지 확인용 및 현재 시간 받음
    function checkServerTime() {
       axios.get(`/api/timer/now`)
         .then(() => {
         // console.log("서버 시간:", response.data);
-           isTimeVisible.value = true;  // 서버 연결 성공하면 보임
+           isTimeVisible.value = true;  
+// 서버 연결 성공하면 보임
        })
        .catch(error => {
          console.error(error);
          isTimeVisible.value = false;  // 서버 안되면 숨김
-         // this.nowTime = new Date().toLocaleTimeString(); // 서버 안되면 현재 시간
+         // this.nowTime = new Date().toLocaleTimeString(); 
+// 서버가 실행 안되면 현재 시간을 브라우저에서 받는다
        });
     }
    
    // 기록 전송
    async function sendAllRecords() {
-     const kakaoAccessToken = localStorage.getItem('kakaoAccessToken');
+   // 인증값=> 카카오로 나에게 보내기 기능에서 토큰 필요
+  const kakaoAccessToken = localStorage.getItem('kakaoAccessToken');
      console.log("카카오톡으로 기록 보냅니다!", kakaoAccessToken);
 
      if (!kakaoAccessToken) {
@@ -53,7 +59,7 @@
 
      console.log("pomoSession 값:", pomoSession.value);
      console.log("stopwatchSeconds 값:", stopwatchSeconds.value);
-
+// 뽀모도로나 스탑워치
      if (!stopwatchSeconds.value && !pomoSession.value) {
        notyf.error("보낼 기록이 없어요!");
        setTimeout(() => notyf.dismissAll(), 2000);

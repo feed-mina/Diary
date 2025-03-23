@@ -1,5 +1,4 @@
-import {createRouter, createWebHistory, createWebHashHistory } from "vue-router";
-
+import {createRouter, createWebHashHistory } from "vue-router";
 import Home from "@/page/Home.vue";
 import About from "@/page/About.vue";
 import NotFound from "@/page/NotFound.vue";
@@ -18,8 +17,11 @@ import ConfirmPassword2 from "@/page/ConfirmPassword2.vue";
 import EditNewPassword from "@/page/EditNewPassword.vue";
 import LoginView from '../components/LoginView.vue';
 import MainView from '../components/MainView.vue';
-
 import EmailVerificationPage from '@/page/VerificationPage.vue';
+const requireAuth = process.env.VUE_APP_REQUIRE_AUTH === "true"; // Boolean 변환
+
+
+
 const routes = [
     {path: "/", name: "Home", component: Home},
     {path: "/about", name: "About", component: About},
@@ -51,6 +53,16 @@ const routes = [
 const router = createRouter({
     history: createWebHashHistory(),
     routes,
+});
+router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem("jwtToken");
+
+    if (!token && to.meta.requiresAuth) {
+        console.log("🚨 로그인 필요! 하지만 강제 리디렉션하지 않음.");
+        next();
+    } else {
+        next();
+    }
 });
 
 export default router;

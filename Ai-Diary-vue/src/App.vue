@@ -47,8 +47,12 @@ export default {
 
           return config;
         },
-        (error) => {
-          console.error("❌ Axios 인터셉터 에러:", error);
+        response => response,
+        error => {
+          if (error.response && error.response.status === 401) {
+            console.log("🚨 401 Unauthorized 발생 - 로그인 페이지로 리디렉트");
+            alert("로그인이 필요합니다.");
+          }
           return Promise.reject(error);
         }
     );

@@ -52,50 +52,8 @@ export default {
 };
 </script>
 
-<style scoped>
-.home {
-  display: flex;
-  justify-content: center;
-  height: 100vh;
-  background-color: #f8f9fa;
-  padding: 1rem;
-}
 
-.main-content {
-  height: 70%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-.home-bubble {
-  margin-top: 5rem;
-  width: 30rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: #e0f7fa;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.home-button,
-.login-button,
-.diarywrite-button,
-.diarycommon-button {
-  margin: 10px;
-  padding: 10px 20px;
-  background: #00796b;
-  color: white;
-  border-radius: 20px;
-}
-
-button:hover {
-  background-color: #f9e9e9;
-  color: black;
-  transition: 0.3s;
-}
+<style>
+@import "@/assets/base.css";
 </style>
+

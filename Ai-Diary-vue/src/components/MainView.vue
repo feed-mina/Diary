@@ -98,8 +98,6 @@
       if (error.response.status === 401) {
         const loginUrl = error.response.data;
         notyf.error("카카오 로그인이 필요해요! 로그인 페이지로 이동할게요.");
-
-        // window.location.href = loginUrl;
       } else if (error.response.status === 500) {
         notyf.error("서버 환경설정 오류가 있어요. 관리자에게 알려주세요!");
       } else {

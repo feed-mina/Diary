@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -51,26 +52,22 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    // Spring Security 필터 체인 설정
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 적용
                 .csrf(csrf -> csrf.disable())  // CSRF 비활성화
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // 모든 요청 허용 (테스트중) > 테스트 성공하면 다시 기존 설정 복원하기
-
-//                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()  // Swagger 관련 URL 허용
-//                        .requestMatchers(HttpMethod.GET,"/api/**").permitAll() // 모든 GET요청 허용
-//                        .requestMatchers(HttpMethod.POST, "/api/**").permitAll() // 모든 POST 요청 허용
-//                        .requestMatchers(HttpMethod.PUT, "/api/**").permitAll() // 모든 PUT 요청 허용POST 요청 허용
-//                        .requestMatchers(HttpMethod.DELETE, "/api/**").permitAll() // 모든 PUT 요청 허용
-//                        .requestMatchers("/resources/**", "/static/**", "/error").permitAll()
-//                        .anyRequest().authenticated()
+                                .anyRequest().permitAll()
+//                        .requestMatchers("/api/auth/login", "/api/auth/register", "/public/**").permitAll() // 로그인/회원가입/공개 API 허용
+//                        .anyRequest().authenticated() // 나머지 요청은 인증 필요
+                )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(new Http403ForbiddenEntryPoint()) // 🚨 403 Forbidden 반환 (Redirect 방지)
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
-                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable()) // formLogin 끄기!
-                .logout(logout -> logout.disable()); //로그아웃 비활성화 (API 방식)
+                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable()) // 🚨 기본 로그인 폼 완전 비활성화
+                .logout(logout -> logout.disable()); // 🚨 로그아웃 비활성화 (API 방식 사용)
 
         return http.build();
     }
@@ -91,15 +88,15 @@ public class SecurityConfig {
     }
 
     // 사용자 정보 관리
-    @Bean
-    public UserDetailsService userDetailsService() {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withUsername("testUser")
-                .password(passwordEncoder().encode("testPassword"))
-                .roles("USER")
-                .build());
-        return manager;
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+//        manager.createUser(User.withUsername("testUser")
+//                .password(passwordEncoder().encode("testPassword"))
+//                .roles("USER")
+//                .build());
+//        return manager;
+//    }
 
 
 }

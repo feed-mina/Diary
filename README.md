@@ -142,6 +142,10 @@ npm install
 npm run dev
 ```
 
+## 배포 진행중에 있습니다.
+https://justsaying.co.kr 접속 시 정상 동작 여부 확인중
+백엔드: http:/15.165.179.197:8080
+프론트엔드: http://web-2025-version1.s3-website.ap-northeast-2.amazonaws.com
 ---
 
 ## 🔧 추가 기능 개선 아이디어

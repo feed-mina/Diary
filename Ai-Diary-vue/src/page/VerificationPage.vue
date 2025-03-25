@@ -134,7 +134,7 @@ export default {
     </p>
 
     <div class="code-inputs">
-      <input v-for="(digit, index) in codeDigits" :key="index" :id="`code-${index}`" v-model="codeDigits[index]" maxlength="1"  type="text" class="code-box" @input="handleInput($event, index)"/>
+      <input v-for="(digit, index) in codeDigits" :key="index" :id="`code-${index}`" v-model="codeDigits[index]" maxlength="1"  type="text" class="code-box" @input="handleInput($event, index)"  autocomplete="one-time-code"/>
     </div>
     <button class="checkButton" v-if="!resendEnabled"  @click="checkCode">확인</button>
 

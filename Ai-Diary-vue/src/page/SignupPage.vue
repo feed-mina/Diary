@@ -269,7 +269,7 @@ export default {
           <div>
             <input size="30" type="text" v-model="signUpData.userId"
                    @input="(e) => handleInput('userId', e.target.value)" class="signUp_form-input" name="userId"
-                   id="userId"/>
+                   id="userId" autocomplete="username"/>
             <div class="signUp_form-oo" :style="{ color: errorState.userId ? 'red' : 'black' }">
               {{ errorMessage.userId }}
             </div>
@@ -283,7 +283,7 @@ export default {
           <div>
             <input size="30" :type="visibility.showPassword ? 'text' : 'password'" v-model="signUpData.password"
                    @input="(e) => handleInput('password', e.target.value)" class="signUp_form-input" name="password"
-                   id="password"/>
+                   id="password"  autocomplete="new-password" />
             <button type="button" @click="() => toggleVisibility('showPassword')">
               {{ visibility.showPassword ? '숨기기' : '보기' }}
             </button>
@@ -301,7 +301,7 @@ export default {
           <div>
             <input size="30" :type="visibility.showRePassword ? 'text' : 'password'" v-model="signUpData.rePassword"
                    @input="(e) => handleInput('rePassword', e.target.value)" class="signUp_form-input" name="rePassword"
-                   id="rePassword" placeholder="비밀번호를 한 번 더 입력해 주세요.">
+                   id="rePassword" placeholder="비밀번호를 한 번 더 입력해 주세요."  autocomplete="new-password" />
             <button type="button" @click="() => toggleVisibility('showRePassword')">
               {{ visibility.showRePassword ? '숨기기' : '보기' }}
             </button>
@@ -355,7 +355,7 @@ export default {
           <div>
             <input size="30" type="text" v-model="signUpData.username"
                    @input="(e) => handleInput('username', e.target.value)" class="signUp_form-input" name="username"
-                   id="username" placeholder="이름을 입력해 주세요."/>
+                   id="username" placeholder="이름을 입력해 주세요." autocomplete="name"/>
             <div class="signUp_form-oo">
               <div v-if="errorState.username" :style="{ color: errorState.username ? 'red' : 'black' }">
                 {{ errorMessage.username }}
@@ -372,7 +372,7 @@ export default {
           <div>
             <div style="display:flex; gap: 10px; align-items: center;">
               <!--이메일 앞부분-->
-              <input  size="20" class="signUp_form-input"   id="emailPrefix" v-model="signUpData.email.emailPrefix" @input="updateFullEmail" aria-describedby="emailHelp"/>
+              <input  size="20" class="signUp_form-input"   id="emailPrefix" v-model="signUpData.email.emailPrefix" @input="updateFullEmail" aria-describedby="emailHelp" autocomplete="email"/>
               <span>@</span>
               <!--이메일 도메인 선택-->
               <select v-model="signUpData.email.emailDomain" @change="updateFullEmail" class="signUp_form-input">

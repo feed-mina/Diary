@@ -185,7 +185,7 @@ export default {
           <div style="display: flex; gap: 10px; align-items: center;">
             <!-- 이메일 아이디 부분 -->
             <input size="20" type="text" v-model="loginData.emailPrefix" @input="updateFullEmail"
-                   class="login_form-input" name="emailPrefix" id="emailPrefix" placeholder="이메일 앞부분"/>
+                   class="login_form-input" name="emailPrefix" id="emailPrefix" placeholder="이메일 앞부분"   autocomplete="email"/>
             <span>@</span>
             <!-- 이메일 도메인 선택 -->
             <select v-model="loginData.emailDomain" @change="updateFullEmail" class="login_form-input">
@@ -200,7 +200,7 @@ export default {
             <!-- 직접 입력 -->
             <input size="30" type="text" v-if="loginData.emailDomain === 'custom'"
                    v-model="loginData.customDomain" @input="updateFullEmail"
-                   class="login_form-input" name="customDomain" id="customDomain" placeholder="도메인 입력"/>
+                   class="login_form-input" name="customDomain" id="customDomain" placeholder="도메인 입력" autocomplete="email"/>
           </div>
         </div>
         <!-- 패스워드 -->
@@ -210,7 +210,7 @@ export default {
           </div>
           <div>
             <input size="30" :type="showPassword ? 'text' : 'password'" v-model="loginData.password"
-                   @input="handlePasswordChange" class="login_form-input" name="password" id="password"/>
+                   @input="handlePasswordChange" class="login_form-input" name="password" id="password" autocomplete="current-password"/>
             <button type="button" @click="togglePasswordVisibility">
               {{ showPassword ? "숨기기" : "보이기" }}
             </button>

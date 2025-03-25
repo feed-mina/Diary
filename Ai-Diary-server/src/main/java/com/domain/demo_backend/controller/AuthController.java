@@ -64,8 +64,6 @@ public class AuthController {
         }
     }
 
-
-
     @Operation(summary = "회원 가입페이지에서 회원가입 로직", description = "users 테이블에 insert한다..")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "users 테이블에 insert 성공"),
@@ -75,6 +73,8 @@ public class AuthController {
     })
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
+        log.info("registerRequest: {}", registerRequest); // 또는 개별 필드 확인
+
         log.info("registerRequest: " + registerRequest);
         authService.register(registerRequest);
         log.info("register service logic OK");

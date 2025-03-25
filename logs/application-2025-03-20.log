@@ -1,0 +1,43 @@
+2025-03-20 11:38:41 [main] INFO  c.d.d.DemoBackendApplication - Starting DemoBackendApplication using Java 17.0.12 with PID 21128 (C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server\target\classes started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue)
+2025-03-20 11:38:41 [main] INFO  c.d.d.DemoBackendApplication - No active profile set, falling back to 1 default profile: "default"
+2025-03-20 11:38:46 [main] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-20 11:38:48 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+2025-03-20 11:38:48 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-03-20 11:38:48 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-03-20 11:38:48 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.13]
+2025-03-20 11:38:49 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-03-20 11:38:49 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 7242 ms
+2025-03-20 11:38:53 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@b01cb8d, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@38c460e8, org.springframework.security.web.context.SecurityContextHolderFilter@4af7dd6a, org.springframework.security.web.header.HeaderWriterFilter@3f866f50, org.springframework.web.filter.CorsFilter@7a814310, com.domain.demo_backend.util.JwtAuthenticationFilter@4bbf38b8, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3b28b7b0, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@504497fa, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4e67cfe1, org.springframework.security.web.access.ExceptionTranslationFilter@350ff014, org.springframework.security.web.access.intercept.AuthorizationFilter@375084c9]
+2025-03-20 11:38:56 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-03-20 11:38:56 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+2025-03-20 11:38:56 [main] INFO  c.d.d.DemoBackendApplication - Started DemoBackendApplication in 18.088 seconds (process running for 28.195)
+2025-03-20 11:40:22 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-03-20 11:40:22 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-03-20 11:40:22 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2025-03-20 12:00:42 [http-nio-8080-exec-2] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-20 12:00:42 [http-nio-8080-exec-4] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-20 12:00:42 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-03-20 12:00:43 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@74c3b043
+2025-03-20 12:00:43 [http-nio-8080-exec-2] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-03-20 12:00:43 [http-nio-8080-exec-4] INFO  c.d.demo_backend.service.AuthService - DB에서 가져온 User: com.domain.demo_backend.user.domain.User@2dc159b6
+2025-03-20 12:00:43 [http-nio-8080-exec-2] INFO  c.d.demo_backend.service.AuthService - DB에서 가져온 User: com.domain.demo_backend.user.domain.User@357a7d53
+2025-03-20 12:00:43 [http-nio-8080-exec-4] INFO  c.d.demo_backend.service.AuthService - 입력된 해시값: 2c85c7a47fb54b1c1d6b11f1d7b5d5360cf40741f5ae37e4d83d9ac2dcf14894
+2025-03-20 12:00:43 [http-nio-8080-exec-2] INFO  c.d.demo_backend.service.AuthService - 입력된 해시값: 2c85c7a47fb54b1c1d6b11f1d7b5d5360cf40741f5ae37e4d83d9ac2dcf14894
+2025-03-20 12:00:43 [http-nio-8080-exec-4] INFO  c.d.demo_backend.service.AuthService - 비밀번호 실패
+2025-03-20 12:00:43 [http-nio-8080-exec-2] INFO  c.d.demo_backend.service.AuthService - 비밀번호 실패
+2025-03-20 12:00:43 [http-nio-8080-exec-2] INFO  c.d.d.controller.AuthController - 로그인 실패
+2025-03-20 12:00:43 [http-nio-8080-exec-4] INFO  c.d.d.controller.AuthController - 로그인 실패
+2025-03-20 12:01:18 [http-nio-8080-exec-7] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-20 12:01:22 [http-nio-8080-exec-7] INFO  c.d.demo_backend.service.AuthService - DB에서 가져온 User: com.domain.demo_backend.user.domain.User@385db2f9
+2025-03-20 12:01:23 [http-nio-8080-exec-7] INFO  c.d.demo_backend.service.AuthService - 입력된 해시값: 2c85c7a47fb54b1c1d6b11f1d7b5d5360cf40741f5ae37e4d83d9ac2dcf14894
+2025-03-20 12:02:35 [HikariPool-1 housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m17s23ms99µs400ns).
+2025-03-20 12:02:41 [http-nio-8080-exec-7] INFO  c.d.demo_backend.service.AuthService - 비밀번호 실패
+2025-03-20 12:02:45 [http-nio-8080-exec-7] INFO  c.d.d.controller.AuthController - 로그인 실패
+2025-03-20 12:03:10 [http-nio-8080-exec-6] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-20 12:03:13 [http-nio-8080-exec-6] INFO  c.d.demo_backend.service.AuthService - DB에서 가져온 User: com.domain.demo_backend.user.domain.User@9845986
+2025-03-20 12:03:14 [http-nio-8080-exec-6] INFO  c.d.demo_backend.service.AuthService - 입력된 해시값: 5751a44782594819e4cb8aa27c2c9d87a420af82bc6a5a05bc7f19c3bb00452b
+2025-03-20 12:03:17 [http-nio-8080-exec-6] INFO  c.d.demo_backend.service.AuthService - JWT 성공
+2025-03-20 12:03:27 [http-nio-8080-exec-6] INFO  c.d.d.controller.AuthController - 로그인 성공
+2025-03-20 12:03:28 [http-nio-8080-exec-10] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-20 12:24:52 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-03-20 12:24:52 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

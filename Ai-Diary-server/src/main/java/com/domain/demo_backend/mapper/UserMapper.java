@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 
 @Mapper
 public interface UserMapper {
-    User findByUserId(String userId);
-
     User findByUserPhone(String phone);
 
     User findByUserEmail(String email);

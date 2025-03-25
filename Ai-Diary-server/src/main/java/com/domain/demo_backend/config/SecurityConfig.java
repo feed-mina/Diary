@@ -76,27 +76,14 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(List.of("http://localhost:4000",
-                "http://web-2025-version1.s3-website.ap-northeast-2.amazonaws.com",
-                "https://justsaying.co.kr","http://justsaying.co.kr"));
+//         configuration.setAllowCredentials(true);configuration.setAllowedOrigins(List.of("http://localhost:4000"));
+       configuration.setAllowedOrigins(List.of("http://localhost:4000",                "http://web-2025-version1.s3-website.ap-northeast-2.amazonaws.com", "https://justsaying.co.kr","http://justsaying.co.kr"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-    // 사용자 정보 관리
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-//        manager.createUser(User.withUsername("testUser")
-//                .password(passwordEncoder().encode("testPassword"))
-//                .roles("USER")
-//                .build());
-//        return manager;
-//    }
 
 
 }

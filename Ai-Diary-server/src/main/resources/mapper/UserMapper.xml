@@ -25,12 +25,6 @@
         WHERE email = #{email};
     </update>
 
-    <select id="findByUserId" resultType="com.domain.demo_backend.user.domain.User">
-        SELECT *
-        FROM users
-        WHERE user_id = #{userId}
-    </select>
-
     <select id="findByUserEmail" resultType="com.domain.demo_backend.user.domain.User">
         SELECT *
         FROM users

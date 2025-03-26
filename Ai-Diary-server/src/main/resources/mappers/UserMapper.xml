@@ -31,7 +31,7 @@
         WHERE user_id = #{userId}
     </select>
 
-    <select id="findByUserEmail" resultType="com.domain.demo_backend.user.domain.User">
+    <select id="findByUserEmail"  parameterType="string" resultType="com.domain.demo_backend.user.domain.User">
         SELECT *
         FROM users
         WHERE email = #{email}

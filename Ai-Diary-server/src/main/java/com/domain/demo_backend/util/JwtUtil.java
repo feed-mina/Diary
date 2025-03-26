@@ -39,7 +39,10 @@ public class JwtUtil {
 
     @PostConstruct
     public void init() {
+
         this.secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret));
+        System.out.println("issuer 값: " + issuer);
+
     }
 //    public String generateToken(String userId, boolean useKakaoIssuer) {
 //        String tokenIssuer = useKakaoIssuer ? "https://kauth.kakao.com" : this.issuer; // Kakao 발급자 사용 여부에 따라 설정

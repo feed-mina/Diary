@@ -9,18 +9,14 @@ import java.time.LocalDateTime;
 
 @Mapper
 public interface UserMapper {
-    User findByUserId(String userId);
-
     User findByUserPhone(String phone);
 
-    User findByUserEmail(String email);
+    User findByUserEmail(@Param("email") String email);
 
     void insertUser(User user);
 
     User findByUsername(String username);
     void updateUpdatedAt(@Param("email") String email);
-
-
 
     void updateVerifyYn(String email);
     void nonMember(User user);

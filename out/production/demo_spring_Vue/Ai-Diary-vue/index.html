@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://developers.kakao.com https://kauth.kakao.com https://accounts.kakao.com https://t1.kakaocdn.net;
+      connect-src 'self' http://localhost:8080 http://justsaying.co.kr http://justsaying.co.kr https://kauth.kakao.com https://accounts.kakao.com https://developers.kakao.com https://t1.kakaocdn.net;
+    style-src 'self' 'unsafe-inline';
+    frame-src https://kauth.kakao.com https://accounts.kakao.com;
+  ">
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script src="/config.js"></script>
+    <title>다이어리</title>
+</head>
+<body>
+<div id="app"></div>
+<script type="module" src="/src/main.js"></script>
+
+</body>
+</html>

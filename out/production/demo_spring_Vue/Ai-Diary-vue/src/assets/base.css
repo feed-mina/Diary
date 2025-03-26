@@ -1,0 +1,465 @@
+/* 기본 밝은 테마 */
+body {
+  background-color: white;
+  color: black;
+  }
+  .dark button {
+  background-color: #333;
+  color: white;
+  }
+  /* color palette from <https://github.com/vuejs/theme> */
+  :root {
+  --vt-c-white: #ffffff;
+  --vt-c-white-soft: #f8f8f8;
+  --vt-c-white-mute: #f2f2f2;
+  --vt-c-black: #181818;
+  --vt-c-black-soft: #222222;
+  --vt-c-black-mute: #282828;
+  --vt-c-indigo: #2c3e50;
+  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
+  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
+  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
+  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+  --vt-c-text-light-1: var(--vt-c-indigo);
+  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
+  --vt-c-text-dark-1: var(--vt-c-white);
+  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+  }
+  /* semantic color variables for this project */
+  :root {
+  --color-background: var(--vt-c-white);
+  --color-background-soft: var(--vt-c-white-soft);
+  --color-background-mute: var(--vt-c-white-mute);
+  --color-border: var(--vt-c-divider-light-2);
+  --color-border-hover: var(--vt-c-divider-light-1);
+  --color-heading: var(--vt-c-text-light-1);
+  --color-text: var(--vt-c-text-light-1);
+  --section-gap: 160px;
+  }
+ 
+  body, html {
+  height: 100%;
+    overflow: auto; /* 또는 scroll */
+  margin: 0;
+  padding: 0;
+  }
+  @keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+  }
+  .mainView{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  justify-content: space-evenly;
+  }
+  .mainView{
+  height: 100vh;
+  overflow: hidden;
+  background-image: url('@/assets/back.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  animation: fadeIn 2s ease-in-out;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #4B2C2F;
+  }
+  .container {
+  text-align: center;
+  /* padding: 100px 20px; */
+  }
+  .currentTime{ 
+  padding-top: 1rem;
+  text-align: center;
+  font-weight: 800;
+  font-style: italic;
+  font-size: 1.5em;
+  } 
+  .currentTimetext{
+  font-size: 1.5em;
+  font-weight: 600;
+  padding: 0.7rem;
+  }
+  .dark .formattedTime{
+  font-weight: 600;
+  font-style: italic;
+  }
+  .pomodoro {
+  text-align: center;
+  } 
+  .stopwatch {
+  text-align: center;
+  } 
+  .stopwatchButton,
+  .pomobutton{
+  background-color: #FDBFBC;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  }
+  .stopwatchButton:hover,
+  .pomobutton:hover {
+  background-color: #F8BBD0;
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+  }
+  .timer h2 {
+  font-size: 48px;
+  }
+  .notification {
+  background-color: yellow;
+  padding: 10px;
+  /* margin-top: 20px; */
+  }
+  .kakaosendbutton {
+  background-color: #F8BBD0;
+  border: none;
+  border-radius: 10px;
+  margin: 5px;
+  transition: all 0.3s ease;
+  font-size: 1.5em;
+  font-weight: 600;
+  padding: 0.7rem;
+  transform: scale(1.05);
+  } 
+  .kakaosendbutton:hover {
+  background-color: #FEE500;
+  border: none;
+  border-radius: 10px;
+  margin: 5px;
+  border-radius: 10px;
+  font-size: 1.5em;
+  font-weight: 600;
+  padding: 0.7rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  transform: scale(1.05);
+  } 
+  .toggleMode{
+  background-color: #FADADD;
+  border: none;
+  border-radius: 10px;
+  transform: scale(1.05);
+  font-weight: 600;
+  font-style: italic;
+  font-size: 1.5em;
+  margin-top: 2rem;
+  padding: 0.7rem;
+  }
+  .dark .toggleMode{
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  transform: scale(1.05);
+  font-weight: 600;
+  font-style: italic;
+  font-size: 1.5em;
+  margin-top: 2rem;
+  padding: 0.7rem;
+  } 
+  /* 다크모드일 때 */
+  .dark body {
+  background-color: #1a202c;
+  color: white;
+  }
+  .dark .app {
+  background-color: rgba(0, 0, 0, 0.5); /* 어둡게 덧씌우기 */
+  backdrop-filter: blur(5px); /* 흐림 효과 */
+  }
+  .dark .mainView{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  justify-content: space-evenly;
+  }
+  .dark .mainView{
+  margin: 0;
+  padding: 0;
+  background-image: url('@/assets/back.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  backdrop-filter: blur(5px); /* 흐림 효과 */
+  animation: fadeIn 2s ease-in-out;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #f5f5f5;
+  }
+  .dark .container {
+  background-color: rgba(30, 30, 30, 0.8);/* 어둡게 덧씌우기 */
+  backdrop-filter: blur(5px); /* 흐림 효과 */
+  text-align: center;
+  /* padding: 100px 20px; */
+  }
+  .dark .formattedTime{
+  font-weight: 600;
+  font-style: italic;
+  }
+  /* .dark .currentTime{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  text-align: center;
+  font-weight: 800;
+  color: #555;
+  font-size: 1.5em;
+  } */
+  .dark .currentTimetext{
+  background-color: #FADADD;
+  transition: all 0.3s ease;
+  font-size: 1.5em;
+  font-weight: 600;
+  color: #555;
+  font-style: italic;
+  padding: 0.7rem;
+  transform: scale(1.05);
+  }
+  .dark .stopwatchButton:hover,
+  .dark .pomobutton:hover {
+  background-color: #F8BBD0;
+  transform: scale(1.05);
+  }
+  .dark .stopwatchButton,
+  .dark .pomobutton{
+  background-color: #333;
+  color: #fff;
+  border-radius: 50px;
+  padding: 10px 16px;
+  }
+  .dark .timer h2 {
+  font-size: 48px;
+  color: #f5f5f5;
+  }
+  .dark .notification {
+  background-color: #333;
+  color: #fff;
+  border-radius: 50px;
+  padding: 10px 16px;
+  }
+  /* 로그인 화면 */
+  .login-container {
+  height: 100vh; /* 화면 높이 전체 */
+  display: flex; /* flex로 정렬 */
+  justify-content: center; /* 가로 가운데 */
+  align-items: center; /* 세로 가운데 */
+  flex-direction: column; /* 위에서 아래로 정렬 */
+  background: linear-gradient(180deg, #ffe5f0, #fff);
+  padding: 0; /* 위에 필요 없는 여백 없애기 */
+  margin: 0; /* 기본 여백 없애기 */
+  }
+  .kakao-button { 
+  background-color: #fee500; /* 카카오톡 노랑 */
+  color: #3c1e1e; /* 카카오톡 글씨 색 */
+  border: none;
+  border-radius: 12px;
+  padding: 18px 40px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+    margin-bottom: 3rem;
+  }
+  .kakao-button:hover {
+  background-color: #ffde00;
+  transform: scale(1.05); /* 살짝 커짐 */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+   margin-bottom: 3rem;
+  }
+
+  .login-guide {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #555;
+  font-weight: 800;
+  }
+  @media (prefers-color-scheme: dark) {
+  :root {
+  --color-background: var(--vt-c-black);
+  --color-background-soft: var(--vt-c-black-soft);
+  --color-background-mute: var(--vt-c-black-mute);
+  --color-border: var(--vt-c-divider-dark-2);
+  --color-border-hover: var(--vt-c-divider-dark-1);
+  --color-heading: var(--vt-c-text-dark-1);
+  --color-text: var(--vt-c-text-dark-2);
+  }
+  }
+  *,
+  *::before,
+  *::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+  }
+  body {
+  /* min-height: 100vh; */
+  color: var(--color-text);
+  background: var(--color-background);
+  transition:
+  color 0.5s,
+  background-color 0.5s;
+  line-height: 1.6;
+  font-family:
+  Inter,
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  Roboto,
+  Oxygen,
+  Ubuntu,
+  Cantarell,
+  'Fira Sans',
+  'Droid Sans',
+  'Helvetica Neue',
+  sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  }
+  .app {
+  text-align: center;
+  /* margin-top: 50px; */
+  }
+
+
+.page-wrap {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  width: 100%;
+  /* height: 100%; */
+}
+
+.main-wrap {
+  display: flex;
+  /* width: 100vw; */
+  height: 100%;
+  /*height: 100vh;  전체 높이 맞추기 */
+  margin: 0; /* 혹시 있을 여백 제거 */
+  background-color: #ffffff;
+}
+
+.content-wrap {
+  flex: 1; /* 남은 공간을 본문이 차지 */
+  height: 100%; /* 부모 컨테이너의 높이를 100% 채움 */
+  padding: 20px; /* 본문에 여백 추가 */
+  margin-bottom: 2rem;
+  /* overflow-y: auto; 스크롤 가능 */
+}
+
+.DiaryNav {
+  width: 20%; /* 네비게이션의 너비 */
+  height: 100%;
+  background-color: #f4f4f4; /* 배경색 */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+}
+
+.text-decoration-line-through {
+  text-decoration: line-through;
+}
+
+header {
+  width: 100%;
+  /**
+  line-height: 1.5;
+  max-height: 100vh; */
+}
+
+footer {
+  width: 100%;
+  margin-top: auto;
+
+}
+
+.logo {
+  display: block;
+  margin: 0 auto 2rem;
+}
+
+@media (min-width: 1024px) {
+  header {
+    display: flex;
+    place-items: center;
+    padding-right: 1rem;
+    /* padding-right: calc(var(--section-gap) / 2); */
+    justify-content: space-between;
+  }
+
+  .logo {
+    margin: 0 2rem 0 0;
+  }
+
+  header .wrapper {
+    display: flex;
+    place-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .content-wrap {
+    flex: 1; /* 남은 공간을 본문이 차지 */
+    padding: 20px; /* 본문에 여백 추가 */
+    margin-bottom: 2rem;
+    /* overflow-y: auto; 스크롤 가능 */
+  }
+
+  .DiaryNav {
+    width: 250px; /* 네비게이션의 너비 */
+    height: 100%;
+    background-color: #f4f4f4; /* 배경색 */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  }
+
+  .home {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+    padding: 1rem;
+  }
+
+  .main-content {
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .home-bubble {
+    margin-top: 5rem;
+    width: 30rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #e0f7fa;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .home-button,
+  .login-button,
+  .diarywrite-button,
+  .diarycommon-button {
+    margin: 10px;
+    padding: 10px 20px;
+    background: #00796b;
+    color: white;
+    border-radius: 20px;
+  }
+
+  button:hover {
+    background-color: #f9e9e9;
+    color: black;
+    transition: 0.3s;
+  }
+}

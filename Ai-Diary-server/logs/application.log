@@ -20,3 +20,14 @@
 2025-03-24 21:54:15 [main] INFO  c.d.d.DemoBackendApplicationTests - Started DemoBackendApplicationTests in 7.659 seconds (process running for 10.681)
 2025-03-24 21:54:18 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2025-03-24 21:54:18 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-03-25 23:02:24 [main] INFO  c.d.d.DemoBackendApplicationTests - Starting DemoBackendApplicationTests using Java 17.0.12 with PID 18080 (started by Lee in C:\Users\leeyu\Project\speak_diary\demo_spring_Vue\Ai-Diary-server)
+2025-03-25 23:02:24 [main] INFO  c.d.d.DemoBackendApplicationTests - The following 1 profile is active: "local"
+2025-03-25 23:02:26 [main] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-03-25 23:02:26 [main] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-03-25 23:02:26 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-03-25 23:02:27 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@10f405ff
+2025-03-25 23:02:27 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-03-25 23:02:27 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@37d0d373, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4052913c, org.springframework.security.web.context.SecurityContextHolderFilter@23f60b7d, org.springframework.security.web.header.HeaderWriterFilter@5c5a91b4, org.springframework.web.filter.CorsFilter@99c4993, com.domain.demo_backend.util.JwtAuthenticationFilter@38089dae, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4aa3fc9a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@52d96367, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@9729a97, org.springframework.security.web.access.ExceptionTranslationFilter@6b3d9c38, org.springframework.security.web.access.intercept.AuthorizationFilter@1ffd0114]
+2025-03-25 23:02:28 [main] INFO  c.d.d.DemoBackendApplicationTests - Started DemoBackendApplicationTests in 4.554 seconds (process running for 6.259)
+2025-03-25 23:02:30 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-03-25 23:02:30 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

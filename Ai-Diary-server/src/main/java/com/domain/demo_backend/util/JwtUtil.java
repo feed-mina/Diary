@@ -1,11 +1,11 @@
 package com.domain.demo_backend.util;
 
+import com.domain.demo_backend.config.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
@@ -14,88 +14,64 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.Date;
-
-
 @Component
 public class JwtUtil {
 
-    private SecretKey secretKey;
+    private final JwtProperties jwtProperties;
+    private SecretKey hmacSecretKey;
 
-    @Value("${jwt.issuer}")
-    private String issuer;
-
-    @Value("${jwt.secret-key}")
-    private String secret;
-
-//    private static final String SCRET_kEY = "${jwt.secret-key}";
-
-    private static final String SECRET_KEY = "mySuperSecretKey"; // 🔹 비밀키 (32바이트)
-    private static final String SALT = "mySaltValue"; // 🔹 SALT 값
+    public JwtUtil(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
+    }
 
     @PostConstruct
     public void init() {
-        this.secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret));
-    }
-//    public String generateToken(String userId, boolean useKakaoIssuer) {
-//        String tokenIssuer = useKakaoIssuer ? "https://kauth.kakao.com" : this.issuer; // Kakao 발급자 사용 여부에 따라 설정
-//        return Jwts.builder()
-//                .setSubject(userId)
-//                .setIssuer(issuer)
-//                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
-//                .signWith(SignatureAlgorithm.HS256, secretKey)
-//                .compact();
-//    }
-
-//    public String generateToken(String username, BigInteger userSqno) {
-//        return Jwts.builder()
-//                .setSubject(username)
-//                .claim("userSqno", userSqno.toString()) // 사용자 고유 식별자 추가
-//                .setIssuedAt(new Date())
-//                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10시간 유효
-//                .signWith(secretKey, SignatureAlgorithm.HS256) // secretKey 사용
-//                .compact();
-//    }
-
-    // 토큰생성
-    public String createToken(String email, String hashedPassword, String userId) {
-        if (userId == null) {
-            throw new IllegalArgumentException("unique_userId값이 존재하지 않습니다.");
+        String key = jwtProperties.getSecretKey();
+        if (key == null || key.isEmpty()) {
+            throw new IllegalStateException("❗ jwt.secret-key 값이 없습니다!");
         }
+
+        this.hmacSecretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(key));
+    }
+
+    // JWT 토큰 생성 메서드
+    public String createToken(String email, String hashedPassword, String userId) {
         Claims claims = Jwts.claims().setSubject(email);
         Date now = new Date();
-        Date validity = new Date(now.getTime() + 1000 * 60 * 60 * 24);
+        Date validity = new Date(now.getTime() + jwtProperties.getExpiration());
 
         return Jwts.builder()
                 .setClaims(claims)
-                .claim("email", email) // 사용자 고유 식별자 추가
+                .claim("email", email)
                 .claim("hashedPassword", hashedPassword)
-                .claim("userId", userId) //
+                .claim("userId", userId)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .signWith(hmacSecretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
+    // JWT 토큰 검증 메서드
     public Claims validateToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(secretKey)
+                .setSigningKey(hmacSecretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
 
+    // 🔒 AES-256 관련 기능 --------------------------
 
-    /**
-     * AES-256으로 문자열을 암호화 하는 메서드
-     */
+    private static final String SECRET_KEY = "thisIsMySuperLongSecretKeyForJwt2025!!!!"; // 암호화용
+    private static final String SALT = "mySaltValue";
+
     public static String encryptAesByBase64(String strToEncrypt) {
         try {
-            byte[] iv = new byte[16]; // 초기화 백터 (IV)
+            byte[] iv = new byte[16];
             IvParameterSpec ivspec = new IvParameterSpec(iv);
 
             SecretKeySpec secretKey = getSecretKey();
@@ -103,27 +79,22 @@ public class JwtUtil {
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivspec);
 
             byte[] encryptedText = cipher.doFinal(strToEncrypt.getBytes(StandardCharsets.UTF_8));
-
-            //Base64 인코딩 후 반환
             return Base64.getEncoder().encodeToString(encryptedText);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    // AES56으로 암호화된 문자열을 복호화 하는 메서드
     public static String decryptAesByBase64(String strToDecrypt) {
         try {
-            byte[] iv = new byte[16]; // 초기화 백터 (IV)
+            byte[] iv = new byte[16];
             IvParameterSpec ivspec = new IvParameterSpec(iv);
 
             SecretKeySpec secretKey = getSecretKey();
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, secretKey, ivspec);
 
-            // Base64 디코딩 후 복호화
             byte[] decodedText = Base64.getDecoder().decode(strToDecrypt);
             return new String(cipher.doFinal(decodedText), StandardCharsets.UTF_8);
         } catch (Exception e) {
@@ -132,13 +103,10 @@ public class JwtUtil {
         return null;
     }
 
-
-    //      * AES-256 비밀키 생성 메서드
     private static SecretKeySpec getSecretKey() throws Exception {
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
         KeySpec spec = new PBEKeySpec(SECRET_KEY.toCharArray(), SALT.getBytes(), 65536, 256);
         SecretKey secretKey = factory.generateSecret(spec);
         return new SecretKeySpec(secretKey.getEncoded(), "AES");
     }
-
 }

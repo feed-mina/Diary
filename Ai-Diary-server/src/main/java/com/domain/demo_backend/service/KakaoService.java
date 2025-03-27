@@ -77,24 +77,23 @@ public class KakaoService {
         log.info("nickname : " + nickname);
         log.info("email : " + email);
 
-        return new KakaoUserInfo(
-                id, connectedAt, nickname, email, hasEmail, isEmailValid, isEmailVerified, hasAgeRange, hasBirthday, hasGender
-        );    }
+        return KakaoUserInfo.fromMap(body, accessToken);
+    }
 
     @Transactional
     public String  registerKakaoUser(KakaoUserInfo kakaoUserInfo, String accessToken){
+        log.info("registerKakaoUser 진입 , 이메일이 있는지 확인 : " );
         // DB에서 같은 이메일이 있는지 확인해
         if(userMapper.findByUserEmail(kakaoUserInfo.getEmail()) != null){
 
             // 이미 존재하는 경우 updated_at 갱신
             userMapper.updateUpdatedAt(kakaoUserInfo.getEmail());
-            System.out.println("@@@@@@@@@userMapper.findByUSerEmail"+userMapper.findByUserEmail(kakaoUserInfo.getEmail()));
 
             User extiUser = userMapper.findByUserEmail(kakaoUserInfo.getEmail());
             System.out.println("@@@@@@@@@userMapper.findByUSerEmail"+extiUser);
 
 
-            String jwtToken = jwtUtil.createToken(extiUser.getEmail(),extiUser.getHashedPassword(), extiUser.getUserId());
+            String jwtToken = jwtUtil.createToken(kakaoUserInfo.getEmail(),kakaoUserInfo.getHashedPassword(), String.valueOf(kakaoUserInfo.getUserId()));
             return jwtToken;
 
         }
@@ -103,10 +102,12 @@ public class KakaoService {
         User user = User.builder()
                 .userId(kakaoUserInfo.getEmail().split("@")[0])
                 .password(accessToken)
-                .hashedPassword(PasswordUtil.sha256(accessToken))
+                .hashedPassword(kakaoUserInfo.getHashedPassword())
+//                .hashedPassword(PasswordUtil.sha256(accessToken))
                 .email(kakaoUserInfo.getEmail())
                 .phone("111-111-111")
-                .verificationCode("K" + accessToken)
+                .verificationCode("K" + kakaoUserInfo.getPassword())
+//                .verificationCode("K" + accessToken)
                 .username(kakaoUserInfo.getNickname())
                 .role("ROLE_USER")
                 .verifyYn("Y") // 카카오는 이미 인증이 완료됐으니까 'Y'를 설정해

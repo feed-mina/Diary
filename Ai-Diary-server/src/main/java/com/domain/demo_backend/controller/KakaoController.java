@@ -65,7 +65,7 @@ public class KakaoController {
 
         // 3. JWT 토큰을 클라이언트에 응답으로 보내줘
         KakaoAuthResponse response = new KakaoAuthResponse(kakaoUserInfo, jwtToken);
-        return ResponseEntity.ok(jwtToken);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             log.error("❌ 카카오 로그인 실패", e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("카카오 로그인 실패");

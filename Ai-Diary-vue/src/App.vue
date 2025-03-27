@@ -21,8 +21,9 @@ export default {
     const route = useRoute(); // 현재 라우트 정보 가져오기
     console.log("@@@@App inerceptors");
 
-    axios.defaults.baseURL = import.meta.env.VITE_APP_API_BASE_URL;
+    // axios.defaults.baseURL = import.meta.env.VITE_APP_API_BASE_URL;
     // 서버 주소 적용
+    axios.defaults.baseURL = apiUrl;  // 서버 주소 적용
 
 
 // 요청 인터셉터 추가: 모든 요청 전에 토큰을 헤더에 넣어줌

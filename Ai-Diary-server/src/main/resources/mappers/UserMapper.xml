@@ -6,6 +6,31 @@
 <mapper namespace="com.domain.demo_backend.mapper.UserMapper">
     <!--일반 회원가입은 socailType을 'N'으로-->
 
+    <resultMap id="userResultMap" type="com.domain.demo_backend.user.domain.User">
+        <id property="userSqno" column="user_sqno"/>
+        <result property="userId" column="user_id"/>
+        <result property="password" column="password"/>
+        <result property="hashedPassword" column="hashed_password"/>
+        <result property="role" column="role"/>
+        <result property="username" column="username"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="repassword" column="repassword"/>
+        <result property="nickname" column="nickname"/>
+        <result property="delYn" column="del_yn"/>
+        <result property="verifyYn" column="verify_yn"/>
+        <result property="socialType" column="social_type"/>
+        <result property="verificationCode" column="verification_code"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <select id="findByUserEmail"  parameterType="string" resultType="com.domain.demo_backend.user.domain.User">
+        SELECT *
+        FROM users
+        WHERE email = #{email}
+    </select>
+
     <insert id="insertUser" parameterType="com.domain.demo_backend.user.domain.User"
             useGeneratedKeys="true" keyProperty="userSqno">
         INSERT INTO users (user_id, password, hashed_password, email, phone, nickname, role, username, created_at,
@@ -30,13 +55,6 @@
         FROM users
         WHERE user_id = #{userId}
     </select>
-
-    <select id="findByUserEmail"  parameterType="string" resultType="com.domain.demo_backend.user.domain.User">
-        SELECT *
-        FROM users
-        WHERE email = #{email}
-    </select>
-
     <select id="findByUserPhone" resultType="com.domain.demo_backend.user.domain.User">
         SELECT *
         FROM users

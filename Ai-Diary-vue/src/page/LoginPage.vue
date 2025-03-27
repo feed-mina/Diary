@@ -123,11 +123,15 @@ export default {
                  location.reload();
                });
             } catch (error) {
+              console.log("response: ", response);
+
               Swal.fire("로그인 실패", error.response?.data?.message || "카카오 로그인 실패", "error");
               console.error("❌ 카카오 로그인 실패", error);
             }
           },
           fail: function (err) {
+            console.log("response: ", response);
+
             Swal.fire("로그인 실패", "카카오 로그인 실패", "error");
             console.error("❌ 로그인 실패", err);
           },

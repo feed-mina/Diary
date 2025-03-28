@@ -105,7 +105,13 @@ export default {
               console.log("nickname: ", response.data.kakaoUserInfo.nickname);
               console.log("jwtToken: ", response.data.jwtToken);
               console.log("response: ", response);
+              const jwtToken = response.data.jwtToken;
 
+              if (jwtToken) {
+                localStorage.setItem("jwtToken", jwtToken);
+              } else {
+                console.log("⚠️ 서버에서 JWT 토큰이 안 왔어!");
+              }
               const kakao_email = response.data.kakaoUserInfo.email;
               const kakao_nickname = response.data.kakaoUserInfo.nickname;
               const kakao_userId = kakao_email.split("@");
@@ -123,15 +129,11 @@ export default {
                  location.reload();
                });
             } catch (error) {
-              console.log("response: ", response);
-
               Swal.fire("로그인 실패", error.response?.data?.message || "카카오 로그인 실패", "error");
               console.error("❌ 카카오 로그인 실패", error);
             }
           },
           fail: function (err) {
-            console.log("response: ", response);
-
             Swal.fire("로그인 실패", "카카오 로그인 실패", "error");
             console.error("❌ 로그인 실패", err);
           },

@@ -34,9 +34,7 @@ export default {
 
           if (!isExcluded) {
             let token = localStorage.getItem("jwtToken") || localStorage.getItem("kakaoAccessToken");
-
             console.log("📡 Axios 인터셉터 실행 - JWT Token:", token);
-
             if (token) {
               if (!token.startsWith("Bearer ")) {
                 token = `Bearer ${token}`;
@@ -49,7 +47,6 @@ export default {
 
           return config;
         },
-        response => response,
         error => {
           if (error.response && error.response.status === 401) {
             console.log("🚨 401 Unauthorized 발생 - 로그인 페이지로 리디렉트");
@@ -71,13 +68,7 @@ export default {
     const isPomoPage = computed(() => {
       return route.path === '/pomoLogin' || route.path === '/pomoMain';
     });
-    // const currentView = computed(() => {
-    //   return routes[currentPath.value.slice(1) || '/'] || NotFound;
-    // });
-
-
     return {
-      // currentView,
       isPomoPage,
     };
   },

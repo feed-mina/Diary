@@ -149,9 +149,9 @@ export default {
           <form>
             <div class="diaryWritingTitle">✍ 감정 다이어리 작성</div>
             <!-- 날짜 입력 -->
-            <div class="section">
+            <div class="section1">
+              <Datepicker id="datepickerInput" v-model="diaryContentData.date" :format="'yyyy-MM-dd'" :auto-apply="true" :locale="'ko'"/>
               <label>일기 날짜</label>
-              <Datepicker v-model="diaryContentData.date" :format="'yyyy-MM-dd'" :auto-apply="true" :locale="'ko'"/>
             </div>
             <!-- 작성자 & 제목 입력 -->
             <div class="section">
@@ -203,6 +203,15 @@ export default {
 </template>
 
 <style scoped>
+
+.section1{
+  display:flex;
+  margin-bottom: 2rem;
+}
+#datepickerInput{
+  width: 2rem;
+  height: 2rem;
+}
 .section {
   margin-bottom: 15px;
 }

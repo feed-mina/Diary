@@ -293,7 +293,7 @@ export default {
 .kakao-button,
 .login_form_button {
   width: 100%;
-  height: 50px;
+  //height: 50px;
   border: none;
   border-radius: 5px;
   font-size: 1rem;

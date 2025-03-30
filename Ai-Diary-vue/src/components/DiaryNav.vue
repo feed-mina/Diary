@@ -64,11 +64,11 @@ export default {
 };
 </script>
 <template>
+  <div class="signup-button-wrap">
+    <button class="signup-nav" v-if="!isLoggedIn" @click="navigateTo('/signup')">회원가입</button>
+    <button class="nonuser-nav" v-if="isNormalUser" @click="navigateTo('/memberOut')">회원탈퇴</button>
+  </div>
   <div class="nav-wrap">
-    <div class="signup-button-wrap">
-      <button class="signup-nav" v-if="!isLoggedIn" @click="navigateTo('/signup')">회원가입</button>
-      <button class="nonuser-nav" v-if="isNormalUser" @click="navigateTo('/memberOut')">회원탈퇴</button>
-    </div>
     <nav>
       <div class="post-it-nav1">
         <button class="diary-nav1" @click="navigateTo('/')">메인페이지</button>

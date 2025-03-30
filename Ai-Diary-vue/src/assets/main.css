@@ -278,8 +278,7 @@ button:hover {
         margin: 0 auto;
     }
 
-    .signup-nav, .nonuser-nav,
-    .diary-nav1, .diary-nav2, .diary-nav3, .diary-nav4, .login-nav {
+     .nonuser-nav,  .diary-nav1, .diary-nav2, .diary-nav3, .diary-nav4, .login-nav {
         width: auto;
         font-size: 0.75rem;
         padding: 0.5rem;
@@ -405,6 +404,14 @@ width: 100%;         /* 너비 채우기 */
     display: block;
 }
 
+    .signup-button-wrap {
+        margin-right: -1rem;
+        margin-top: 4rem;
+    }
+.signup-nav{
+    width: auto;
+    font-size: 0.75rem;
+}
 
     .main-content {
         padding-bottom: 5rem; /* 아래 네비 높이만큼 확보 */
@@ -444,8 +451,12 @@ width: 100%;         /* 너비 채우기 */
         margin-bottom: 10px;
     }
 
+
     .content-wrap {
+        flex: 1;
+        height: 100%;
         padding: 2rem;
+        margin-bottom: 2rem;
     }
 
     .tutorial {
@@ -470,9 +481,24 @@ width: 100%;         /* 너비 채우기 */
         padding: 0.8rem 1rem;
     }
 
+
+
+    /*
     .diaryListSection {
-        grid-template-columns: repeat(2, 1fr); /* 한 줄에 2개 */
-    }
+        display: flex;
+        gap: 10px;
+        width: 100%;
+        max-width: 30rem;
+    }  */
+
+.diaryListSection {
+          display: grid;
+         grid-template-columns: repeat(auto-fill, minmax(23rem, 1fr));
+          gap: 10px;
+          width: 100%;
+          max-width: 30rem;
+      }
+
     /* 인증 페이지 */
     .code-box {
         width: 2.5rem;
@@ -553,6 +579,15 @@ width: 100%;         /* 너비 채우기 */
         height: 1.8rem;
     }
 
+    .page-wrap {
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        align-items: center;
+        box-sizing: border-box;
+        width: 100%;
+
+    }
 }
 
 @media (hover: hover) {
@@ -570,7 +605,7 @@ width: 100%;         /* 너비 채우기 */
 
     #app {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        /*grid-template-columns: 1fr 1fr;*/
         padding: 3rem;
         max-width: 1280px;
     }
@@ -601,6 +636,8 @@ width: 100%;         /* 너비 채우기 */
     .page-wrap {
         display: flex;
         flex-direction: row;
+        align-content: center;
+        align-items: center;
         box-sizing: border-box;
         width: 100%;
 
@@ -613,7 +650,6 @@ width: 100%;         /* 너비 채우기 */
         margin: 0; /* 혹시 있을 여백 제거 */
         background-color: #ffffff;
     }
-
     .content-wrap {
         flex: 1;
         height: 100%; /* 부모 컨테이너의 높이를 100% 채움 */
@@ -634,7 +670,11 @@ width: 100%;         /* 너비 채우기 */
 
 
     .diaryListSection {
+        display: grid;
         grid-template-columns: repeat(auto-fill, minmax(23rem, 1fr));
+        gap: 10px;
+        width: 100%;
+        max-width: 30rem;
     }
 
     .login_form {
@@ -848,7 +888,7 @@ width: 100%;         /* 너비 채우기 */
     }
 
     .tutorial_noDalle {
-        width: 65%;
+        width: 90%;
         height: 100%;
         margin: 0em;
         float: left;
@@ -1308,15 +1348,6 @@ width: 100%;         /* 너비 채우기 */
         align-items: center;
         width: 100%;
     }
-
-    .diaryListSection {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(23rem, 1fr));
-        gap: 10px;
-        width: 100%;
-        max-width: 30rem;
-    }
-
     .diary-post {
         background: white;
         border: 1px solid #ccc;

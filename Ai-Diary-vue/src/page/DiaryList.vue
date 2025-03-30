@@ -200,6 +200,7 @@ if(response.data.total = 0){
 
 
 <style scoped>
+
 /* 필터 체크박스 스타일 */
 .filter-section {
   display: flex;

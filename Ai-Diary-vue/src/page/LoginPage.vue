@@ -239,3 +239,88 @@ export default {
     </div>
   </div>
 </template>
+<style scoped>
+
+.loginPage {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  background-color: #f8f9fa;
+  padding: 3rem;
+  flex-direction: column;
+}
+
+.login_form {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  padding: 3rem;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  justify-content: flex-start;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.login_form_box {
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.login-label {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.login_form-input {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.login_form-input:focus {
+  border: 1px solid #4a90e2;
+  outline: none;
+}
+
+.kakao-button,
+.login_form_button {
+  width: 100%;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.kakao-button img {
+  width: 100%;
+  height: 50px;
+}
+
+.login_form_button {
+  background-color: #4a90e2;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  font-weight: 600;
+  font-size: large;
+}
+
+.login_form_button:hover {
+  background-color: #357abd;
+}
+
+.login_form-oo {
+  font-size: 0.9rem;
+  color: red;
+  margin-top: 0.5rem;
+}
+</style>

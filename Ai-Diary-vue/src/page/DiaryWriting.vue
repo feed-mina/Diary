@@ -2,8 +2,10 @@
 import axios from "axios";
 import { ref, computed, onMounted, reactive } from 'vue';
 import { useRouter } from "vue-router";
+// Datepicker 컴포넌트 등록
 import Datepicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css';
+// import '@vuepic/vue-datepicker/dist/vue-datepicker.css';
+
 import Swal from 'sweetalert2';
 // import {apiUrl} from "@/api/index.js";
 
@@ -200,7 +202,50 @@ export default {
   </div>
 </template>
 
+<style scoped>
+.section {
+  margin-bottom: 15px;
+}
 
-<style>
-@import "../assets/main.css";
+input, textarea, select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.save-button {
+  width: 100%;
+  padding: 10px;
+  background: #00796b;
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.active-button {
+  background-color: #a48f7a;
+  color: white;
+}
+
+.section_status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 3rem;
+}
+
+.section_status button {
+  padding: 10px 15px;
+  border-radius: 1em;
+  background: #eee7db;
+  color: black;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.section_status button.active-button {
+  color: #fff;
+  background: #A5778F;
+}
 </style>

@@ -84,48 +84,4 @@ export default {
   </div>
 </template>
 <style>
-.nav-wrap {
-  flex-shrink: 0;
-  height: 100%;
-  background-color: beige;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding: 2rem;
-}
-.signup-button-wrap {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-.signup-nav, .nonuser-nav, .diary-nav1, .diary-nav2, .diary-nav3, .diary-nav4, .login-nav {
-  width: 120px;
-  height: 40px;
-  font-size: 1rem;
-  font-weight: bold;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-.signup-nav { background: #A5778F; }
-.nonuser-nav { background: #604e2e; }
-.diary-nav1 { background: linear-gradient(145deg, #89e73e, #73c234); }
-.diary-nav2 { background: linear-gradient(145deg, #fe676f, #d5565e); }
-.diary-nav3 { background: linear-gradient(145deg, #c841f7, #a837d0); }
-.diary-nav4 { background: linear-gradient(145deg, #5897f7, #4a7fd0); }
-.login-nav { background: #7E8C79; }
-button:hover {
-  transform: scale(1.05);
-}
-.post-it-nav1,
-.post-it-nav2 {
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem; /* 버튼 간격 */
-}
 </style>

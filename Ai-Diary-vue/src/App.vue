@@ -20,6 +20,8 @@ export default {
   setup() {
     const route = useRoute(); // 현재 라우트 정보 가져오기
     console.log("@@@@App inerceptors");
+    console.log(import.meta.env.VITE_API_URL);
+    console.log(import.meta.env.VUE_API_URL);
 
     // axios.defaults.baseURL = import.meta.env.VITE_APP_API_BASE_URL;
     // 서버 주소 적용

@@ -12,7 +12,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 로그 파일 일별로 생성 -->
             <fileNamePattern>logs/application-%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory> <!-- 30일 동안의 로그 파일 유지 -->
+            <maxHistory>3</maxHistory> <!-- 30일 동안의 로그 파일 유지 -->
         </rollingPolicy>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>

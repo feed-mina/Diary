@@ -42,22 +42,13 @@ async function kakaoLogin()  {
           });
 
           const jwtToken = response.data;
-          // console.log("email: ", response.data.kakaoUserInfo.email);
-          // console.log("nickname: ", response.data.kakaoUserInfo.nickname);
-          // console.log("jwtToken: ", response.data.jwtToken);
-          console.log("response: ", response);
+          console.log("@@@@ 카카오 로그인 응답 response: ", response);
 
-          // const kakao_email = response.data.kakaoUserInfo.email;
-          // const kakao_nickname = response.data.kakaoUserInfo.nickname;
-          // const kakao_token = response.data.jwtToken;
-          // const [userId] = response.data.kakaoUserInfo.email.split("@");
-          // console.log("userId:", userId);
 
+          console.log("@@@@ 카카오 로그인 토큰 저장");
           // 🟢 받은 JWT를 저장
           localStorage.setItem("jwtToken", jwtToken);
           localStorage.setItem("kakaoAccessToken", kakaoAccessToken);
-          // localStorage.setItem("userId", userId);
-          // localStorage.setItem("email", kakao_email);
           Swal.fire("카카오 로그인 성공", "로그인을 완료했습니다", "success");
 
           window.location.href = "/#/pomoMain";

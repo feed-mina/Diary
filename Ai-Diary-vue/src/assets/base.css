@@ -280,6 +280,73 @@ body {
   color: #555;
   font-weight: 800;
   }
+
+.loginPage {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  background-color: #f8f9fa;
+  padding: 3rem;
+  flex-direction: column;
+}
+
+.login_form {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  padding: 3rem;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  justify-content: flex-start;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.login_form_box {
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.login-label {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.login_form-input {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.login_form-input:focus {
+  border: 1px solid #4a90e2;
+  outline: none;
+}
+
+.login_form_button {
+  background-color: #4a90e2;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  font-weight: 600;
+  font-size: large;
+}
+
+.login_form_button:hover {
+  background-color: #357abd;
+}
+
+.login_form-oo {
+  font-size: 0.9rem;
+  color: red;
+  margin-top: 0.5rem;
+}
   @media (prefers-color-scheme: dark) {
   :root {
   --color-background: var(--vt-c-black);
@@ -384,6 +451,192 @@ footer {
   margin: 0 auto 2rem;
 }
 
+/* 필터 체크박스 스타일 */
+.filter-section {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  background-color: cadetblue;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.filter-checkbox input {
+  margin-right: 10px;
+}
+
+/* 일기 목록 스타일 */
+.diaryList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.diaryListSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 10px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.diary-post {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.diary-post:hover {
+  transform: scale(1.05);
+}
+
+.diaryTitle, .diaryContent {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 페이지네이션 */
+.pagination {
+  margin-top: 1em;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination button {
+  margin: 0.5em;
+  padding: 0.5em 1em;
+  border: none;
+  background-color: #00796b;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: #004d40;
+}
+
+
+
+.diaryView {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.diaryView_content {
+  max-width: 600px;
+  width: 100%;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.diaryViewTitle {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.diaryView_noDalle p {
+  font-size: 16px;
+  color: #555;
+  margin: 10px 0;
+}
+
+.diaryView_noDalle p strong {
+  font-weight: bold;
+  color: #333;
+}
+
+.diaryView_noDalle .content {
+  padding: 15px;
+  background: #f8f8f8;
+  border-radius: 8px;
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+.diaryView_container {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.section {
+  margin-bottom: 15px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.save-button {
+  width: 100%;
+  padding: 10px;
+  background: #00796b;
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.active-button {
+  background-color: #a48f7a;
+  color: white;
+}
+
+.section_status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 3rem;
+}
+
+.section_status button {
+  padding: 10px 15px;
+  border-radius: 1em;
+  background: #eee7db;
+  color: black;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.section_status button.active-button {
+  color: #fff;
+  background: #A5778F;
+}
+
 @media (min-width: 1024px) {
   header {
     display: flex;
@@ -463,3 +716,7 @@ footer {
     transition: 0.3s;
   }
 }
+
+
+
+

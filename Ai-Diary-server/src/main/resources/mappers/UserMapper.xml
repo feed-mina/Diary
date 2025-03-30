@@ -26,7 +26,22 @@
     </resultMap>
 
     <select id="findByUserEmail"  parameterType="string" resultType="com.domain.demo_backend.user.domain.User">
-        SELECT *
+        SELECT
+            user_sqno AS userSqno,
+            user_id  AS userId,
+            password,
+            hashed_password AS hashedPassword,
+            role,
+            username,
+            phone,
+            email,
+            nickname,
+            delYn,
+            verifyYn,
+            socialType,
+            verification_code AS verificationCode,
+            created_at AS createdAt,
+            updated_at AS updatedAt
         FROM users
         WHERE email = #{email}
     </select>
@@ -51,12 +66,42 @@
     </update>
 
     <select id="findByUserId" resultType="com.domain.demo_backend.user.domain.User">
-        SELECT *
+        SELECT
+            user_sqno AS userSqno,
+            user_id  AS userId,
+            password,
+            hashed_password AS hashedPassword,
+            role,
+            username,
+            phone,
+            email,
+            nickname,
+            delYn,
+            verifyYn,
+            socialType,
+            verification_code AS verificationCode,
+            created_at AS createdAt,
+            updated_at AS updatedAt
         FROM users
         WHERE user_id = #{userId}
     </select>
     <select id="findByUserPhone" resultType="com.domain.demo_backend.user.domain.User">
-        SELECT *
+        SELECT
+            user_sqno AS userSqno,
+            user_id  AS userId,
+            password,
+            hashed_password AS hashedPassword,
+            role,
+            username,
+            phone,
+            email,
+            nickname,
+            delYn,
+            verifyYn,
+            socialType,
+            verification_code AS verificationCode,
+            created_at AS createdAt,
+            updated_at AS updatedAt
         FROM users
         WHERE password = #{password}
     </select>

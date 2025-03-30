@@ -31,11 +31,12 @@ export default {
         config => {
           const excludeUrls = ["/api/timer/now", "/api/timer/health"]; // 제외할 API 목록
           const isExcluded = excludeUrls.some((url) => config.url.includes(url));
-
+          let token = localStorage.getItem("jwtToken") || localStorage.getItem("kakaoAccessToken");
+          console.log("🌐 현재 페이지:", window.location.href);
+          console.log("🧪 로컬스토리지 토큰:", token);
           if (!isExcluded) {
-            let token = localStorage.getItem("jwtToken") || localStorage.getItem("kakaoAccessToken");
-            console.log("📡 Axios 인터셉터 실행 - JWT Token:", token);
             if (token) {
+              console.log("📡 Axios 인터셉터 실행 로그인 전 - JWT Token:", token);
               if (!token.startsWith("Bearer ")) {
                 token = `Bearer ${token}`;
               }
@@ -98,5 +99,5 @@ export default {
 </template>
 
 <style>
-@import "@/assets/base.css";
+@import "./assets/main.css";
 </style>

@@ -42,12 +42,11 @@ public class DiaryService {
 
     public PageInfo<DiaryResponse> selectDiaryList(String userId, int pageNo, int pageSize) {
         System.out.println("@@@다이어리 서비스 selectDiaryList진입");
-
 //        PageHelper.startPage(pageNo, pageSize);
         List<DiaryResponse> diaryResponseList;
         int offset = (pageNo - 1) * pageSize; // ✅ OFFSET 미리 계산
+        System.out.println("@@@offset: " + offset);
         try {
-
            // 일기 목록 가져오기
             diaryResponseList = diaryMapper.selectDiaryList(userId, pageSize, offset) ;
             System.out.println("@@@1--diaryResponseList:: " + diaryResponseList);
@@ -57,7 +56,6 @@ public class DiaryService {
             System.err.println("Error fetching diary list: " + e.getMessage());
             throw new RuntimeException("일기를 조회하는 도중 오류가 발생했습니다.", e);
         }
-
     }
      public Set<DiaryResponse> findDiaryById(DiaryRequest diaryReq) {
 

@@ -194,6 +194,10 @@ if(response.data.total = 0){
   </div>
 </template>
 
+<!--<style>-->
+<!--@import "../assets/main.css";-->
+<!--</style>-->
+
 
 <style scoped>
 /* 필터 체크박스 스타일 */

@@ -63,14 +63,16 @@ export default {
 
       updateFullEmail();
       try {
-        const response = await axios.post(`/api/auth/login`, {
+        let response = await axios.post(`/api/auth/login`, {
           email: loginData.value.email,
           password: loginData.value.password,
         });
 
         const token = response.data;
-        const [userId] = loginData.value.email.split("@");
-        console.log("userId:", userId);
+        let [userId] = loginData.value.email.split("@");
+        console.log("@@@ 일반 로그인 응답 response:", response);
+
+        console.log("@@@@ 일반 로그인 토큰 저장");
         localStorage.setItem("userId", userId);
         localStorage.setItem("jwtToken", token);
         localStorage.setItem("email", loginData.value.email);
@@ -97,7 +99,7 @@ export default {
               const kakaoAccessToken = authObj.access_token;
               console.log("카카오 AccessToken:", kakaoAccessToken);
               console.log("카카오 로그인 API 호출 시작");
-              const response = await axios.post(`/api/kakao/login`, {
+              let response = await axios.post(`/api/kakao/login`, {
                 accessToken: kakaoAccessToken,
               });
 
@@ -112,11 +114,11 @@ export default {
               } else {
                 console.log("⚠️ 서버에서 JWT 토큰이 안 왔어!");
               }
-              const kakao_email = response.data.kakaoUserInfo.email;
-              const kakao_nickname = response.data.kakaoUserInfo.nickname;
-              const kakao_userId = kakao_email.split("@");
-              const kakao_token = response.data.jwtToken;
-              const [userId] = response.data.kakaoUserInfo.email.split("@");
+              let kakao_email = response.data.kakaoUserInfo.email;
+              let kakao_nickname = response.data.kakaoUserInfo.nickname;
+              let kakao_userId = kakao_email.split("@");
+              let kakao_token = response.data.jwtToken;
+              let [userId] = response.data.kakaoUserInfo.email.split("@");
               console.log("userId:", userId);
               localStorage.setItem("kakaoAccessToken", kakaoAccessToken);
               localStorage.setItem("userId", userId);
@@ -237,87 +239,3 @@ export default {
     </div>
   </div>
 </template>
-<style scoped>
-.loginPage {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 100%;
-  background-color: #f8f9fa;
-  padding: 3rem;
-  flex-direction: column;
-}
-
-.login_form {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  padding: 3rem;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  justify-content: flex-start;
-  flex-direction: column;
-  margin-bottom: 1.5rem;
-}
-
-.login_form_box {
-  height: 90%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-
-.login-label {
-  font-size: 1rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.login_form-input {
-  width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 0.5rem;
-  box-sizing: border-box;
-}
-
-.login_form-input:focus {
-  border: 1px solid #4a90e2;
-  outline: none;
-}
-
-.kakao-button,
-.login_form_button {
-  width: 100%;
-  height: 50px;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.kakao-button img {
-  width: 100%;
-  height: 50px;
-}
-
-.login_form_button {
-  background-color: #4a90e2;
-  color: white;
-  padding: 0.8rem 1.5rem;
-  font-weight: 600;
-  font-size: large;
-}
-
-.login_form_button:hover {
-  background-color: #357abd;
-}
-
-.login_form-oo {
-  font-size: 0.9rem;
-  color: red;
-  margin-top: 0.5rem;
-}
-</style>

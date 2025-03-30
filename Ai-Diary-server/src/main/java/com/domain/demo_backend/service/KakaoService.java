@@ -103,11 +103,9 @@ public class KakaoService {
                 .userId(kakaoUserInfo.getEmail().split("@")[0])
                 .password(accessToken)
                 .hashedPassword(kakaoUserInfo.getHashedPassword())
-//                .hashedPassword(PasswordUtil.sha256(accessToken))
                 .email(kakaoUserInfo.getEmail())
                 .phone("111-111-111")
                 .verificationCode("K" + kakaoUserInfo.getPassword())
-//                .verificationCode("K" + accessToken)
                 .username(kakaoUserInfo.getNickname())
                 .role("ROLE_USER")
                 .verifyYn("Y") // 카카오는 이미 인증이 완료됐으니까 'Y'를 설정해

@@ -32,6 +32,9 @@ export default {
       { text: "💙 우울해요", value: "10" }
     ];
     const getEmotionText = (emotionValue) => {
+      console.log("감정 상태 값 확인:", diaryData.value.emotion);
+
+      if (!emotionValue) return "기록 없음"; // 값이 없을 때
       const found = emotionItems.find((item) => item.value === emotionValue.toString());
       return found ? found.text : "기록 없음";
     };
@@ -112,65 +115,7 @@ export default {
   </div>
 </template>
 
-<style scoped>
-.diaryView {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f5f5f5;
-  padding: 20px;
-}
 
-.diaryView_content {
-  max-width: 600px;
-  width: 100%;
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.diaryViewTitle {
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.diaryView_noDalle p {
-  font-size: 16px;
-  color: #555;
-  margin: 10px 0;
-}
-
-.diaryView_noDalle p strong {
-  font-weight: bold;
-  color: #333;
-}
-
-.diaryView_noDalle .content {
-  padding: 15px;
-  background: #f8f8f8;
-  border-radius: 8px;
-  margin-top: 10px;
-  line-height: 1.6;
-}
-
-.diaryView_container {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
+<style>
+@import "../assets/main.css";
 </style>

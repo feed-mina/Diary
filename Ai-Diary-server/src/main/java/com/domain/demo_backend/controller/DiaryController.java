@@ -42,7 +42,6 @@ public class DiaryController {
             @RequestParam(value = "userId", required = false) String userId,
             @RequestParam(value = "pageNo", defaultValue = "1") int pageNo,
             @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
-
         System.out.println("@@@@@@ viewDiaryList 진입 ");
         Map<String, Object> response = new HashMap<>();
         CustomUserDetails currentUser = UserInfoHelper.getMemberInfo();
@@ -52,9 +51,8 @@ public class DiaryController {
         System.out.println("@@@현재 로그인한 사용자 ID: " + currentUserId);
         System.out.println("@@@currentUserName 값: " + currentUserName);
         System.out.println("@@@loggedUserId 값: " + currentUserName.split("@")[0]);
-
         String loggedInUserID = currentUserName.split("@")[0];
-
+        System.out.println("@@@loggedInUserID: " + loggedInUserID);
         // 내가 쓴 일기만 보기 > null 이나 empty 값 체크하기
         try {
             // 🔹 "내가 쓴 일기만 보기" 체크 시 > showOnlyMine.value가 false 로 되면 userId는 "" 가 된다. 이때가 default값 - 모든 일기를 볼 수있다.
@@ -67,7 +65,6 @@ public class DiaryController {
 //                  우선 로그 먼저 보기
                     // 모든 다이어리 리스트 조회
                     PageInfo<DiaryResponse> diaryList = diaryService.selectDiaryList(loggedInUserID, pageNo, pageSize);
-
                     if (diaryList.getList().isEmpty()) {
                         // 일치했는데 작성한 일기가 없다.
                         response.put("diaryList", new ArrayList<>()); // 빈 리스트 반환
@@ -75,18 +72,25 @@ public class DiaryController {
                         response.put("diaryList", "작성한 일기가 없습니다.");
                         response.put("total", 0);
                         response.put("page", 1);
-//                        response.put("pageSize", pageSize);
+                      response.put("pageSize", pageSize);
+                        System.out.println("@@@diaryListpageSize: " + pageSize);
+                        System.out.println("@@@diaryListresponse: " + response);
+                        System.out.println("@@@diaryList: " + diaryList);
                         return  ResponseEntity.ok(response);
                     }
                 }
             }
-
             // 모든 다이어리 리스트 조회
             PageInfo<DiaryResponse> diaryList = diaryService.selectDiaryList(userId, pageNo, pageSize);
             response.put("diaryList", diaryList.getList());
             response.put("total", diaryList.getTotal());
             response.put("page", diaryList.getPageNum());
             response.put("pageSize", diaryList.getPageSize());
+            System.out.println("@@@diaryList: " + diaryList);
+            System.out.println("@@@diaryList.getList(): " + diaryList.getList());
+            System.out.println("@@@diaryListgetPageNum: " + diaryList.getPageNum());
+            System.out.println("@@@diaryListgetPageSize: " + diaryList.getPageSize());
+            System.out.println("@@@response: " + response);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             // 만약 로그인한 유저가 일기를 하나도 작성하지 않았을때 > 메인으로 튕기는 현상

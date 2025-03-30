@@ -199,50 +199,8 @@ export default {
     </div>
   </div>
 </template>
-<style scoped>
-.section {
-  margin-bottom: 15px;
-}
 
-input, textarea, select {
-  width: 100%;
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-}
 
-.save-button {
-  width: 100%;
-  padding: 10px;
-  background: #00796b;
-  color: white;
-  border-radius: 5px;
-  font-weight: bold;
-}
-
-.active-button {
-  background-color: #a48f7a;
-  color: white;
-}
-
-.section_status {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding-bottom: 3rem;
-}
-
-.section_status button {
-  padding: 10px 15px;
-  border-radius: 1em;
-  background: #eee7db;
-  color: black;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.section_status button.active-button {
-  color: #fff;
-  background: #A5778F;
-}
+<style>
+@import "../assets/main.css";
 </style>

@@ -53,8 +53,7 @@ public class AuthService {
         // 카카오 로그인 로직 ? 로그인 type이 social / normal 구분 > normal 안에서 찾아야함
         // 디버깅
         log.info("DB에서 가져온 User: " + user);
-//        log.info("LoginRequest UserID: " + loginRequest.getUserId());
-//        log.info("DB 해시값: " + user.getHashedPassword());
+        log.info("DB 해시값: " + user.getHashedPassword());
         log.info("입력된 해시값: " + PasswordUtil.sha256(loginRequest.getPassword()));
 
         if (user == null) {

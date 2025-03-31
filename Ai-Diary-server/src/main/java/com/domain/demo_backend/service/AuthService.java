@@ -250,6 +250,7 @@ public class AuthService {
         // 회원탈퇴 처리
         existingUser.setDelYn("Y");
         existingUser.setUpdatedAt(LocalDateTime.now());
+        existingUser.setWithdrawAt(LocalDateTime.now());
         log.info("existingUser : " + existingUser);
         log.info("user Mapper nonMember 시작");
         userMapper.nonMember(existingUser);

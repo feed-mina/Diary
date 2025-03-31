@@ -59,6 +59,7 @@
     <!--  일기 목록  조회 가능 -->
     <select id="selectDiaryList" resultType="com.domain.demo_backend.diary.dto.DiaryResponse">
         SELECT
+            d.diary_id     AS diaryId,
             d.user_sqno    AS userSqno,
             d.title,
             d.content,

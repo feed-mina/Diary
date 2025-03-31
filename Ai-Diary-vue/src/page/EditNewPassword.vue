@@ -160,7 +160,7 @@ export default {
         <!--ID-->
         <div class="edit-session">
           <div class="edit-label">
-            <label for="id" class="form-label">새 비밀번호</label>
+            <label for="newPassword" class="form-label">새 비밀번호</label>
           </div>
           <div>
             <input size="30" type="text" v-model="editData.newPassword" @input="handleIdChange" class="edit_form-input"
@@ -175,9 +175,12 @@ export default {
         <!--패스워드-->
         <div class="edit-session">
 
+          <div class="edit-label">
+            <label for="newpassword2" class="form-label">패스워드가 맞는지 다시 적어주세요.</label>
+          </div>
           <div>
             <input size="30" :type="showPassword ? 'text' : 'password'" v-model="editData.checkNewPassword"
-                   @input="handlePasswordChange" class="edit_form-input" name="checkNewPassword" id="newpassword"
+                   @input="handlePasswordChange" class="edit_form-input" name="checkNewPassword" id="newpassword2"
                    placeholder="새 비밀번호 확인"/>
             <button type="button" @click="togglePasswordVisibility">
               {{ showPassword ? '숨기기' : '보기' }}
@@ -186,9 +189,11 @@ export default {
                  :style="{ color: errorWarning.checkNewPassword ? 'red' : 'black' }">
               {{ passwordErrorMessage }}
             </div>
+            <br/>
             <span>
           영문/숫자/특수문자를 포함하여 8~12자로 입력해주세요.
         </span>
+            <br/>
           </div>
         </div>
 

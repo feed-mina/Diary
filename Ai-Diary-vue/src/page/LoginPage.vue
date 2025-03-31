@@ -7,7 +7,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
-// import KakaoImg from '../assets/kakao_login_large_narrow.png';
+import KakaoImg from '/img/kakao_login_large_narrow.png';
 
 const notyf = new Notyf();
 
@@ -189,7 +189,7 @@ export default {
         <!-- 이메일 입력 폼 -->
         <div class="login-session">
           <div class="login-label">
-            <label for="email" class="form-label">Email</label>
+            <label for="emailPrefix" class="form-label">Email</label>
           </div>
           <div style="display: flex; gap: 10px; align-items: center;">
             <!-- 이메일 아이디 부분 -->
@@ -232,11 +232,9 @@ export default {
         <!-- 로그인 버튼 -->
         <button type="submit" class="login_form_button">로 그 인</button>
       </form>
-      <div>
+      <div class="kakaoLoginSection">
         <button class="kakao-button" @click="kakaoLogin">
-          <img alt="kakaoLogin" class="kakaoLogin_pomo" src="/img/kakao_login_large_narrow.png"/>
-
-<!--          <img src="/img/kakao_login_bt.png" alt="kakaoLogin" />-->
+          <img src="/img/kakao_login_large_narrow.png" alt="kakaoLogin" />
         </button>
       </div>
     </div>

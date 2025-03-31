@@ -1,5 +1,6 @@
 <script  setup>
-   import { ref, onMounted, provide, inject, computed } from "vue";
+   import { ref, onMounted, provide, inject,computed } from "vue";
+   import { useRoute } from 'vue-router';
    import axios from "axios";
    import Stopwatch from "./Stopwatch.vue";
    import PomodoroTimer from "./PomodoroTimer.vue"; 
@@ -10,6 +11,11 @@
    import {Notyf} from 'notyf';
    import 'notyf/notyf.min.css';
 
+   const route = useRoute();
+
+   const isPomoRoute = computed(() =>
+       ['/pomoLogin', '/pomoMain'].includes(route.path)
+   )
    // import { apiUrl } from "@/api/index.js";
    // 알람객체 생성
    const notyf = new Notyf();
@@ -74,7 +80,7 @@
        requestData.pomodoroCount = pomoSession.value;
        requestData.pomodoroTotalTime = pomoSession.value * 25;
      }
-
+     requestData.kakaoAccessToken = kakaoAccessToken;
      console.log("보내는 데이터 확인:", requestData);
 
      if (Object.keys(requestData).length === 0) {
@@ -153,12 +159,14 @@
    provide('isTimeVisible', isTimeVisible);
 </script>
 <template>
-  <div class="mainView" :class="{ dark: isDarkMode }">
-    <!-- ✅ 배경 SVG 삽입 -->
+  <div class="mainView" :class="{ dark: isDarkModeComputed }">
+
+    <!-- /pomoLogin, /pomoMain 일 때만 배경 표시 -->
     <img
+        v-if="isPomoRoute"
         :src="isDarkModeComputed ? '/img/back_dark.svg' : '/img/back.svg'"
-        alt="배경"
         class="background-image"
+        alt="배경"
     />
     <CurrentTime/>
       <h1>🕒 스탑워치 & 뽀모도로</h1>

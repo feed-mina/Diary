@@ -15,9 +15,10 @@
    const pomodoroSeconds = ref(25 * 60); // 25분
    const kakaoToken = localStorage.getItem('kakaoPomoAccessToken');
    const isTimeVisible = inject('isTimeVisible');
-   const Pomoalarm = new Audio(alarmSound);
-   const Toyalarm = new Audio(toySound);
-   const birdalarm = new Audio(birdSound);
+   const Pomoalarm = new Audio("/sound/alarm.wav");
+   const Toyalarm = new Audio("/sound/toy.mp3");
+   const birdalarm = new Audio("/sound/bird.mp3");
+
    function playAlarm() {
   Pomoalarm.play();
   setTimeout(() => {

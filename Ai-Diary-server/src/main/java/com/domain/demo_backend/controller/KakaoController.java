@@ -121,6 +121,8 @@ public class KakaoController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("카카오 토큰이 필요합니다.");
         }
 
+        String kakaoAccessToken = (String) data.get("kakaoAccessToken");
+        log.info("📩 Kakao AccessToken from body: {}", kakaoAccessToken);
         // ✅ JWT 검증
           String jwtToken = authorization.substring(7);
         log.info("✅ Extracted Access Token: {}", jwtToken);
@@ -134,12 +136,13 @@ public class KakaoController {
         // ✅ 카카오 사용자 정보 조회
         KakaoUserInfo kakaoUserInfo;
         try {
-            kakaoUserInfo = kakaoService.getKakaoUserInfo(accessToken);
+            kakaoUserInfo = kakaoService.getKakaoUserInfo(kakaoAccessToken);
             log.error("@@@@@kakaoUserInfo", kakaoUserInfo);
         } catch (Exception e) {
             log.error("❌ 카카오 사용자 정보 조회 실패", e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("카카오 사용자 정보 조회 실패");
         }
+
 
         // ✅ JWT 토큰 발급
 //        String Token = kakaoService.registerKakaoUser(kakaoUserInfo, accessToken);
@@ -184,7 +187,7 @@ public class KakaoController {
 
         // ✅ 카카오톡 메시지 전송 준비
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + accessToken);
+        headers.set("Authorization", "Bearer " + kakaoAccessToken);
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();

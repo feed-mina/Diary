@@ -133,7 +133,7 @@ export default {
         <h2 class="title">불편함이 있으셨나요?</h2>
         <p class="subtitle">아래 방법을 통해 해결하실 수 있습니다.</p>
         <div class="button-group">
-          <button type="button" class="button" @click="goToPage('/mypage/confirmPassword')">개인정보 수정</button>
+<!--          <button type="button" class="button" @click="goToPage('/mypage/confirmPassword')">개인정보 수정</button>-->
           <button type="button" class="button" @click="goToPage('/edit/password')">비밀번호 변경</button>
         </div>
       </section>
@@ -143,7 +143,7 @@ export default {
         <ul class="info-list">
           <li>등록된 게시물은 탈퇴 후에도 유지됩니다.</li>
           <li>관계법령에 따른 개인정보는 탈퇴 후 5년간 보존됩니다.</li>
-          <li>5년간 기존 아이디를 재사용할 수 없습니다.</li>
+<!--          <li>5년간 기존 아이디를 재사용할 수 없습니다.</li>-->
         </ul>
       </section>
 

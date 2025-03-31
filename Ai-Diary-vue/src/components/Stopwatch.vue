@@ -11,9 +11,10 @@
    
    // 알림, 소리 설정
    const notyf = new Notyf();
-   const Pomoalarm = new Audio(alarmSound);
-   const Toyalarm = new Audio(toySound);
-   const birdalarm = new Audio(birdSound);
+   const Pomoalarm = new Audio("/sound/alarm.wav");
+   const Toyalarm = new Audio("/sound/toy.mp3");
+   const birdalarm = new Audio("/sound/bird.mp3");
+
    const isRunning = ref(false);
    const kakaoToken = localStorage.getItem('kakaoAccessToken');
    const stopwatchSeconds = inject('stopwatchSeconds', ref(0));

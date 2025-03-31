@@ -1,9 +1,19 @@
 
-#app {
-    max-width: 80rem;
-    padding: 2rem;
-    font-weight: normal;
+html, body, #app {
+    margin: 0;
+    padding: 0;
 }
+
+.pomo-mode html,
+.pomo-mode body,
+.pomo-mode .v-application {
+    width: 100vw;
+    min-height: 100vh; /* height → min-height 로 변경 */
+    overflow-y: auto;  /* y축 스크롤 허용 */
+    overflow-x: hidden; /* 좌우는 숨기고 */
+}
+
+
 
 header {
     width: 100%;
@@ -47,6 +57,11 @@ input, textarea, select {
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #ddd;
+}
+
+.kakaoLoginSection{
+    display: flex;
+    justify-content: center;
 }
 /* ========== 네비게이션 스타일 ========== */
 .nav-wrap {
@@ -322,10 +337,6 @@ button:hover {
         width: 90%;
     }
 
-    .kakao-button {
-        font-size: 1rem;
-        padding: 1rem 2rem;
-    }
 
 
     /* 일기 리스트 */
@@ -459,10 +470,9 @@ button:hover {
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
+        width: 100vw;
+        min-height: 100vh;
+        object-fit: cover;
     }
 
     .container {
@@ -555,10 +565,9 @@ button:hover {
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
+        width: 100vw;
+        min-height: 100vh;
+        object-fit: cover;
     }
 
     /*backdrop-filter: blur(5px);  흐림 효과 */
@@ -817,11 +826,12 @@ button:hover {
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none; /* 클릭 막지 않게 함 */
+        width: 100vw;
+        min-height: 100vh;
+        object-fit: cover;
     }
+
+
     .mainView > *:not(.background-image) {
         position: relative;
         z-index: 1;
@@ -1065,6 +1075,27 @@ button:hover {
     .login_form {
         flex-direction: row;
         justify-content: space-around;
+    }
+
+    .kakao-button {
+        width: 100%;
+        background-color: #fee500;
+        color: #3c1e1e;
+        border: none;
+        border-radius: 12px;
+        /*padding: 18px 2.5rem;*/
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        margin-bottom: 3rem;
+        transition: all 0.3s ease;
+    }
+
+    .kakao-button:hover {
+        /*background-color: #ffde00;*/
+        transform: scale(1.05);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        margin-bottom: 3rem;
     }
 
     .write_section1{
@@ -1595,6 +1626,13 @@ button.active {
     font-size: 1rem;
     color: #d73a49;
 }
+.kakao-img {
+    max-width: 180px;
+}
+
+.kakaoLogin_pomo {
+    max-width: 200px;
+}
 
 /* 로그인 */
 .login-container {
@@ -1648,7 +1686,7 @@ button.active {
 .login-guide_pomo {
     text-align: center;
     margin-top: 15px;
-    font-size: 2rem;
+    font-size: 1rem;
     color: #555;
     font-weight: 800;
 }
@@ -1667,27 +1705,6 @@ button.active {
 /*    margin-bottom: 3rem;*/
 /*    transition: all 0.3s ease;*/
 /*}*/
-.kakao-button {
-    width: 100%;
-    background-color: #fee500;
-    color: #3c1e1e;
-    border: none;
-    border-radius: 12px;
-    /*padding: 18px 2.5rem;*/
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    margin-bottom: 3rem;
-    transition: all 0.3s ease;
-}
-
-.kakao-button:hover {
-    /*background-color: #ffde00;*/
-    transform: scale(1.05);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-    margin-bottom: 3rem;
-}
-
 .login_form_box {
     height: 90%;
     display: flex;
@@ -2118,12 +2135,10 @@ button.active {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+    width: 100vw;
+    min-height: 100vh;
+    object-fit: cover;
 }
-
 
 
 .container {

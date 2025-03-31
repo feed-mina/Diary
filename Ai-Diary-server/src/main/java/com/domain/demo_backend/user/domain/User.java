@@ -32,10 +32,11 @@ public class User {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private LocalDateTime withdrawAt;
 
 
     @Builder
-    public User(String userId, String password, String hashedPassword, String role, String username, String phone, String email, String verifyYn, String socialType, LocalDateTime createdAt, LocalDateTime updatedAt, String verificationCode) {
+    public User(String userId, String password, String hashedPassword, String role, String username, String phone, String email, String verifyYn, String socialType, LocalDateTime createdAt, LocalDateTime updatedAt, String verificationCode, LocalDateTime withdrawAt) {
         this.userId = userId;
         this.password = password;
         this.hashedPassword = hashedPassword;
@@ -48,6 +49,7 @@ public class User {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.verificationCode= verificationCode;
+        this.withdrawAt = withdrawAt;
     }
 
 }

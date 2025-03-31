@@ -1,10 +1,9 @@
 <script>
-import {computed, ref} from 'vue'; // 사용하지 않는 reactive, onMounted 삭제
+import { onMounted, watch, computed, ref} from 'vue'; // 사용하지 않는 reactive, onMounted 삭제
+import { useRoute } from 'vue-router';
 import Home from '@/page/Home.vue';
 import NotFound from '@/page/NotFound.vue';
 import DiaryList from "@/page/DiaryList.vue";
-import { useRoute } from 'vue-router';
-
 import DiaryHeader from "@/components/Header.vue";
 import DiaryNav from "@/components/DiaryNav.vue";
 import DiaryFooter from "@/components/Footer.vue"
@@ -21,6 +20,28 @@ export default {
   },
   setup() {
     const route = useRoute(); // 현재 라우트 정보 가져오기
+
+
+    function updateBodyClass(path) {
+      const root = document.documentElement // 또는 document.body
+      if (path === '/pomoLogin' || path === '/pomoMain') {
+        root.classList.add('pomo-mode')
+      } else {
+        root.classList.remove('pomo-mode')
+      }
+    }
+
+
+// 처음 들어올 때도 적용
+    onMounted(() => {
+      updateBodyClass(route.path)
+    })
+
+
+// 경로 바뀔 때마다 반응
+    watch(() => route.path, (newPath) => {
+      updateBodyClass(newPath)
+    })
     console.log("@@@@App inerceptors");
     console.log(import.meta.env.VITE_API_URL);
     console.log(import.meta.env.VUE_API_URL);

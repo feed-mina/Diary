@@ -141,6 +141,7 @@
         WHERE email = #{email}
     </select>
 
+
     <update id="nonMember" parameterType="com.domain.demo_backend.user.domain.User">
         UPDATE users
         SET delYn      = 'Y',
@@ -148,7 +149,6 @@
             withdraw_at = NOW()
         WHERE email = #{email}
     </update>
-
     <update id="editPassword" parameterType="com.domain.demo_backend.user.domain.User">
         UPDATE users
         SET password = #{password}, updated_at = NOW(), hashed_password = #{hashedPassword}
@@ -175,7 +175,7 @@
         FROM users
         WHERE email = #{email}
           AND delYn = 'Y'
-          AND withdraw_at > DATE_SUB(NOW(), INTERVAL 7 DAY);
+          AND withdraw_at > CONVERT_TZ(DATE_SUB(UTC_TIMESTAMP(), INTERVAL 7 DAY), '+00:00', '+09:00')
     </select>
 
 </mapper>

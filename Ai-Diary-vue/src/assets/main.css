@@ -174,7 +174,7 @@ button:hover {
 
 
 .main-content {
-   height: 70%;
+    height: 70%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -285,7 +285,7 @@ button:hover {
         margin: 0 auto;
     }
 
-     .nonuser-nav,  .diary-nav1, .diary-nav2, .diary-nav3, .diary-nav4, .login-nav {
+    .nonuser-nav,  .diary-nav1, .diary-nav2, .diary-nav3, .diary-nav4, .login-nav {
         width: auto;
         font-size: 0.75rem;
         padding: 0.5rem;
@@ -401,24 +401,24 @@ button:hover {
 
     .home-bubble {
         align-items: center;
-         width: 15rem;
-}
+        width: 15rem;
+    }
 
-.diarywrite-button,
-.diarycommon-button {
-width: 100%;         /* 너비 채우기 */
-    margin: 0.5rem 0;     /* 위아래 여백 */
-    display: block;
-}
+    .diarywrite-button,
+    .diarycommon-button {
+        width: 100%;         /* 너비 채우기 */
+        margin: 0.5rem 0;     /* 위아래 여백 */
+        display: block;
+    }
 
     .signup-button-wrap {
         margin-right: -1rem;
         margin-top: 4rem;
     }
-.signup-nav{
-    width: auto;
-    font-size: 0.75rem;
-}
+    .signup-nav{
+        width: auto;
+        font-size: 0.75rem;
+    }
 
     .main-content {
         padding-bottom: 5rem; /* 아래 네비 높이만큼 확보 */
@@ -443,7 +443,7 @@ width: 100%;         /* 너비 채우기 */
     }
 
 
-/*pomo view*/
+    /*pomo view*/
     .mainView {
         width: 100vw;
         height: 100vh;
@@ -454,11 +454,17 @@ width: 100%;         /* 너비 채우기 */
         flex-direction: column;
         align-items: center;
         justify-content: space-evenly;
-        background-image: url('../assets/back.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
     }
+    .background-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
     .container {
         text-align: center;
     }
@@ -541,13 +547,18 @@ width: 100%;         /* 너비 채우기 */
         flex-direction: column;
         align-items: center;
         justify-content: space-evenly;
-        background-image: url('../assets/back.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
         animation: fadeIn 2s ease-in-out;
         font-family: 'Noto Sans KR', sans-serif;
         color: #f5f5f5;
+    }
+    .background-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
     }
 
     /*backdrop-filter: blur(5px);  흐림 효과 */
@@ -671,13 +682,13 @@ width: 100%;         /* 너비 채우기 */
         max-width: 30rem;
     }  */
 
-.diaryListSection {
-          display: grid;
-         grid-template-columns: repeat(auto-fill, minmax(23rem, 1fr));
-          gap: 10px;
-          width: 100%;
-          max-width: 30rem;
-      }
+    .diaryListSection {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(23rem, 1fr));
+        gap: 10px;
+        width: 100%;
+        max-width: 30rem;
+    }
 
     /* 인증 페이지 */
     .code-box {
@@ -788,8 +799,9 @@ width: 100%;         /* 너비 채우기 */
         margin-bottom: 15px;
     }
 
-/*pomo View*/
+    /*pomo View*/
     .mainView {
+        position: relative;
         width: 100vw;
         height: 100vh;
         margin: 0;
@@ -799,10 +811,20 @@ width: 100%;         /* 너비 채우기 */
         flex-direction: column;
         align-items: center;
         justify-content: space-evenly;
-        /*background-image: url('../assets/back.png');*/
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
+        font-family: 'Noto Sans KR', sans-serif;
+    }
+    .background-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none; /* 클릭 막지 않게 함 */
+    }
+    .mainView > *:not(.background-image) {
+        position: relative;
+        z-index: 1;
     }
     .container {
         text-align: center;
@@ -888,10 +910,6 @@ width: 100%;         /* 너비 채우기 */
         flex-direction: column;
         align-items: center;
         justify-content: space-evenly;
-        background-image: url('../assets/back.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
         animation: fadeIn 2s ease-in-out;
         font-family: 'Noto Sans KR', sans-serif;
         color: #f5f5f5;
@@ -950,16 +968,16 @@ width: 100%;         /* 너비 채우기 */
         background-color: hsla(160, 100%, 37%, 0.2);
     }
 }
-    /* ========== SignupPage 컴포넌트 스타일 ========== */
+/* ========== SignupPage 컴포넌트 스타일 ========== */
 
 @media (min-width: 1024px) {
-  /*
-    body {
-        display: flex;
-        place-items: center;
-    }
+    /*
+      body {
+          display: flex;
+          place-items: center;
+      }
 
-   */
+     */
     html, body {
         margin: 0;
         padding: 0;
@@ -1069,122 +1087,122 @@ width: 100%;         /* 너비 채우기 */
     }
 }
 
-    .phone-input {
-        width: 80px; /* 각 입력 필드 너비 */
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 0.5rem;
-        text-align: center;
-    }
+.phone-input {
+    width: 80px; /* 각 입력 필드 너비 */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 0.5rem;
+    text-align: center;
+}
 
-    .phone-input:focus {
-        border: 1px solid #4a90e2;
-        outline: none;
-    }
+.phone-input:focus {
+    border: 1px solid #4a90e2;
+    outline: none;
+}
 
-    .temp {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh; /* 화면 전체 높이를 채움 */
-        background-color: #f8f9fa; /* 배경색 */
-    }
+.temp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 화면 전체 높이를 채움 */
+    background-color: #f8f9fa; /* 배경색 */
+}
 
-    .signUp-session {
-        display: flex;
-        flex-direction: column; /* 수직 정렬 */
-        margin-bottom: 1.5rem; /* 필드 간 여백 */
-    }
+.signUp-session {
+    display: flex;
+    flex-direction: column; /* 수직 정렬 */
+    margin-bottom: 1.5rem; /* 필드 간 여백 */
+}
 
-    .signUp-label {
-        font-size: 1rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-    }
+.signUp-label {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
 
-    .signUp_form {
-        width: 90%; /* 화면 크기 따라 자동 조정 */
-        max-width: 30rem; /* 최대 너비 설정 */
-        padding: 2rem;
-        background-color: #f9f9f9;
-        border-radius: 10px;
-        margin: auto;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
+.signUp_form {
+    width: 90%; /* 화면 크기 따라 자동 조정 */
+    max-width: 30rem; /* 최대 너비 설정 */
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    margin: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
-    .signUp_form-input {
-        width: 100%; /* 필드 너비가 컨테이너에 맞춰짐 */
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 0.5rem;
-        box-sizing: border-box;
-    }
+.signUp_form-input {
+    width: 100%; /* 필드 너비가 컨테이너에 맞춰짐 */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
 
-    .signUp_form-input:focus {
-        border: 1px solid #4a90e2;
-        outline: none;
-    }
+.signUp_form-input:focus {
+    border: 1px solid #4a90e2;
+    outline: none;
+}
 
-    .signup_form_button {
-        width: 100%; /* 버튼이 컨테이너에 맞춰짐 */
-        background-color: #4a90e2;
-        color: white;
-        border: none;
-        padding: 0.8rem 1.5rem;
-        border-radius: 5px;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
+.signup_form_button {
+    width: 100%; /* 버튼이 컨테이너에 맞춰짐 */
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-    .signup_form_button:hover {
-        background-color: #357abd;
-    }
+.signup_form_button:hover {
+    background-color: #357abd;
+}
 
-    .verification_form_button {
-        width: 100%; /* 버튼이 컨테이너에 맞춰짐 */
-        background-color: #4a90e2;
-        color: white;
-        border: none;
-        padding: 0.8rem 1.5rem;
-        border-radius: 5px;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
+.verification_form_button {
+    width: 100%; /* 버튼이 컨테이너에 맞춰짐 */
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-    .verification_form_button:hover {
-        background-color: #357abd;
-    }
+.verification_form_button:hover {
+    background-color: #357abd;
+}
 
-    .signUp_form-oo {
-        font-size: 1em;
-        color: red;
-        margin-top: 0.5rem;
-    }
+.signUp_form-oo {
+    font-size: 1em;
+    color: red;
+    margin-top: 0.5rem;
+}
 
-    /* ========== Tutorial 스타일 ========== */
+/* ========== Tutorial 스타일 ========== */
 
-    .titleSc {
-        padding-top: 2rem;
-    }
+.titleSc {
+    padding-top: 2rem;
+}
 
-    .tutorial {
-        display: flex;
-        justify-content: center;
-        /* height: 100vh;  화면 전체 높이를 채움 */
-        background-color: #f8f9fa; /* 배경색 */
-        padding: 10px;
-    }
+.tutorial {
+    display: flex;
+    justify-content: center;
+    /* height: 100vh;  화면 전체 높이를 채움 */
+    background-color: #f8f9fa; /* 배경색 */
+    padding: 10px;
+}
 
-    .tutorial_content {
-        height: 100%;
-        width: 100%; /* 모바일에서는 전체 너비 사용 */
-        padding: 1rem;
-        display: flex;
-        flex-direction: column; /* 수직 정렬 */
-        align-items: center; /* 수평 중앙 정렬 */
-    }
+.tutorial_content {
+    height: 100%;
+    width: 100%; /* 모바일에서는 전체 너비 사용 */
+    padding: 1rem;
+    display: flex;
+    flex-direction: column; /* 수직 정렬 */
+    align-items: center; /* 수평 중앙 정렬 */
+}
 
 .diaryView {
     display: flex;
@@ -1235,290 +1253,290 @@ width: 100%;         /* 너비 채우기 */
     animation: fadeIn 0.5s ease-in-out;
 }
 
-    .diaryTuto {
-        padding-top: 1.5em;
-        width: 90%; /* 화면 크기 따라 자동 조정 */
-        display: flex;
-        flex-direction: column; /* 수직 정렬 */
-        justify-content: center;
-        /* overflow-y: auto; 스크롤 가능 */
-        font-size: 1em;
-    }
+.diaryTuto {
+    padding-top: 1.5em;
+    width: 90%; /* 화면 크기 따라 자동 조정 */
+    display: flex;
+    flex-direction: column; /* 수직 정렬 */
+    justify-content: center;
+    /* overflow-y: auto; 스크롤 가능 */
+    font-size: 1em;
+}
 
-    .diaryTuto input,
-    textarea {
-        border-radius: 0.3125em;
-        background: #eee7db;
-        border: 0 solid black;
-        font-size: 1em;
-    }
+.diaryTuto input,
+textarea {
+    border-radius: 0.3125em;
+    background: #eee7db;
+    border: 0 solid black;
+    font-size: 1em;
+}
 
-    .tutorial_container {
-        margin: 0;
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-    }
+.tutorial_container {
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
 
-    .tutorialTitle {
-        font-size: 2rem;
-        text-align: center;
-        font-weight: bold;
-        box-shadow: inset 0 -23px 0 #e89b3d;
-        display: inline;
-    }
+.tutorialTitle {
+    font-size: 2rem;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: inset 0 -23px 0 #e89b3d;
+    display: inline;
+}
 
-    .tutorial_container form {
-        width: 100%;
-        height: 100%;
-    }
+.tutorial_container form {
+    width: 100%;
+    height: 100%;
+}
 
-    .tutorial_noDalle {
-        width: 90%;
-        height: 100%;
-        margin: 0em;
-        float: left;
-    }
-
-
-    .tutorial_container input:focus {
-        outline: 2px solid #c1ab86;
-        transition: 0.1s;
-    }
+.tutorial_noDalle {
+    width: 90%;
+    height: 100%;
+    margin: 0em;
+    float: left;
+}
 
 
-    .tutorial_noDalle .section0 {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        margin-bottom: 0.9375em;
-    }
-
-    .tutorial_noDalle .section01 {
-        margin-top: 0.125em;
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        margin-bottom: 0.9375em;
-    }
-
-    .tutorial_noDalle .section01 input {
-        width: 40%;
-        text-align: center;
-    }
-
-    .tutorial_noDalle .section1 input:hover {
-        transition: 0.3s;
-        opacity: 1;
-        outline: 2px solid #c1ab86;
-        width: 42%;
-    }
-
-    .tutorial_noDalle .section2 {
-        width: 100%;
-        margin-bottom: 0.625em;
-    }
-
-    .tutorial_noDalle .section2 .tags {
-        padding-top: 0.625em;
-        width: 95%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-    }
-
-    .tutorial_noDalle .section2 input {
-        text-align: center;
-        width: 25%;
-        margin: 0.3125em;
-        caret-color: #604e2e;
-    }
-
-    .tutorial_noDalle .section2 input:hover {
-        transition: 0.3s;
-        opacity: 1;
-        outline: 2px solid #c1ab86;
-        width: 27%;
-    }
-    .tutorial_noDalle .section2 button:hover {
-        transition: 0.3s;
-        opacity: 1;
-        background: #604e2e;
-        color: white;
-        width: 30%;
-    }
-
-    .tutorial_noDalle .section3 {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 1.25em;
-    }
-
-    .tutorial_noDalle .section3 .text {
-        margin-bottom: 0.625em;
-    }
-
-    .tutorial_noDalle .section3 select {
-        margin-left: 0.625em;
-        border-radius: 0.25em;
-        border: 1px solid #c1ab86;
-        outline: 0 none;
-        text-align: center;
-        width: 35%;
-        height: 2.5em;
-    }
-
-    .tutorial_noDalle .section3 .selectBox .v-select {
-        background: transparent;
-        outline: 0 none;
-        padding: 0 5px;
-        position: relative;
-    }
-
-    .tutorial_noDalle .section3 .selectBox .v-select option {
-        color: #c1ab86;
-        padding: 0.1875em 0;
-        font-size: 1em;
-        border-radius: 0.25em;
-        text-align: center;
-    }
-
-    .tutorial_noDalle .section3 .selectBox .icoArrow {
-        position: absolute;
-        top: 0;
-        right: 0;
-        z-index: 1;
-        width: 2.1875em;
-        height: inherit;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .tutorial_noDalle .section3 .selectBox .icoArrow img {
-        width: 50%;
-        transition: 0.3s;
-    }
-
-    .tutorial_noDalle .section3 .selectBox .v-select:focus + .icoArrow img {
-        transform: rotate(180deg);
-    }
-
-    .tutorial_noDalle .section4 {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 1.25em;
-        margin-left: 0.3125em;
-        width: 95%;
-    }
-
-    .tutorial_noDalle .section4 .text {
-        margin-bottom: 0.625em;
-    }
-
-    .tutorial_noDalle .section4 textarea {
-        width: 100%;
-        padding: 0.625em;
-        font-size: 1em;
-        overflow: auto;
-        resize: vertical;
-    }
-
-    .tutorial_noDalle .section4 textarea:focus {
-        outline: 2px solid #c1ab86;
-    }
-
-    .tutorial_noDalle .section5 {
-        width: 95%;
-        display: flex;
-        flex-direction: row;
-        margin-left: 0.3125em;
-    }
-
-    .tutorial_noDalle .section5 .text {
-        margin-bottom: 0.625em;
-    }
-
-    .tutorial_noDalle .section5 select {
-        width: 35%;
-        margin-left: 0.625em;
-        border-radius: 0.25em;
-        border: 1px solid #c1ab86;
-        outline: 0 none;
-        text-align: center;
-        margin-right: 0.3125em;
-    }
+.tutorial_container input:focus {
+    outline: 2px solid #c1ab86;
+    transition: 0.1s;
+}
 
 
-    .section05 {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
+.tutorial_noDalle .section0 {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0.9375em;
+}
+
+.tutorial_noDalle .section01 {
+    margin-top: 0.125em;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0.9375em;
+}
+
+.tutorial_noDalle .section01 input {
+    width: 40%;
+    text-align: center;
+}
+
+.tutorial_noDalle .section1 input:hover {
+    transition: 0.3s;
+    opacity: 1;
+    outline: 2px solid #c1ab86;
+    width: 42%;
+}
+
+.tutorial_noDalle .section2 {
+    width: 100%;
+    margin-bottom: 0.625em;
+}
+
+.tutorial_noDalle .section2 .tags {
+    padding-top: 0.625em;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.tutorial_noDalle .section2 input {
+    text-align: center;
+    width: 25%;
+    margin: 0.3125em;
+    caret-color: #604e2e;
+}
+
+.tutorial_noDalle .section2 input:hover {
+    transition: 0.3s;
+    opacity: 1;
+    outline: 2px solid #c1ab86;
+    width: 27%;
+}
+.tutorial_noDalle .section2 button:hover {
+    transition: 0.3s;
+    opacity: 1;
+    background: #604e2e;
+    color: white;
+    width: 30%;
+}
+
+.tutorial_noDalle .section3 {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.25em;
+}
+
+.tutorial_noDalle .section3 .text {
+    margin-bottom: 0.625em;
+}
+
+.tutorial_noDalle .section3 select {
+    margin-left: 0.625em;
+    border-radius: 0.25em;
+    border: 1px solid #c1ab86;
+    outline: 0 none;
+    text-align: center;
+    width: 35%;
+    height: 2.5em;
+}
+
+.tutorial_noDalle .section3 .selectBox .v-select {
+    background: transparent;
+    outline: 0 none;
+    padding: 0 5px;
+    position: relative;
+}
+
+.tutorial_noDalle .section3 .selectBox .v-select option {
+    color: #c1ab86;
+    padding: 0.1875em 0;
+    font-size: 1em;
+    border-radius: 0.25em;
+    text-align: center;
+}
+
+.tutorial_noDalle .section3 .selectBox .icoArrow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    width: 2.1875em;
+    height: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tutorial_noDalle .section3 .selectBox .icoArrow img {
+    width: 50%;
+    transition: 0.3s;
+}
+
+.tutorial_noDalle .section3 .selectBox .v-select:focus + .icoArrow img {
+    transform: rotate(180deg);
+}
+
+.tutorial_noDalle .section4 {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.25em;
+    margin-left: 0.3125em;
+    width: 95%;
+}
+
+.tutorial_noDalle .section4 .text {
+    margin-bottom: 0.625em;
+}
+
+.tutorial_noDalle .section4 textarea {
+    width: 100%;
+    padding: 0.625em;
+    font-size: 1em;
+    overflow: auto;
+    resize: vertical;
+}
+
+.tutorial_noDalle .section4 textarea:focus {
+    outline: 2px solid #c1ab86;
+}
+
+.tutorial_noDalle .section5 {
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    margin-left: 0.3125em;
+}
+
+.tutorial_noDalle .section5 .text {
+    margin-bottom: 0.625em;
+}
+
+.tutorial_noDalle .section5 select {
+    width: 35%;
+    margin-left: 0.625em;
+    border-radius: 0.25em;
+    border: 1px solid #c1ab86;
+    outline: 0 none;
+    text-align: center;
+    margin-right: 0.3125em;
+}
 
 
-    .button-group {
-        display: flex;
-        gap: 10px;
-    }
+.section05 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-    button {
-        padding: 10px 1rem;
-        border-radius: 1em;
-        background: #eee7db;
-        color: black;
-        cursor: pointer;
-        font-size: 1rem;
-    }
 
-    button.active {
-        color: #fff;
-        background: #A5778F;
-    }
+.button-group {
+    display: flex;
+    gap: 10px;
+}
 
-    .saveDiary {
-        display: flex;
-        flex-direction: column;
-        align-content: center;
-        justify-content: center;
-        margin-top: 2rem;
-        text-align: center;
-        width: 7rem;
-        height: 2.5rem;
-        font-size: 1rem;
-        font-weight: bold;
-        color: #fff;
-        border: #A5778F;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.3s;
-        margin-top: 1em; /* 기록하기 버튼과 간격 조정 */
-    }
+button {
+    padding: 10px 1rem;
+    border-radius: 1em;
+    background: #eee7db;
+    color: black;
+    cursor: pointer;
+    font-size: 1rem;
+}
 
-    .saveDiary button:hover {
-        background: #8a5e72;
-        color: #fff;
-    }
+button.active {
+    color: #fff;
+    background: #A5778F;
+}
 
-    /* ========== VerificationPage 스타일 ========== */
+.saveDiary {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    margin-top: 2rem;
+    text-align: center;
+    width: 7rem;
+    height: 2.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    border: #A5778F;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 1em; /* 기록하기 버튼과 간격 조정 */
+}
 
-    .email-verification {
-        max-width: 25rem;
-        margin: auto;
-        padding: 2rem;
-        text-align: center;
-        font-family: 'Arial', sans-serif;
-    }
-    .highlight {
-        font-weight: bold;
-        color: #555;
-    }
-    .timer {
-        margin: 10px 0;
-        font-size: 1.2rem;
-        color: #d73a49;
-    }
+.saveDiary button:hover {
+    background: #8a5e72;
+    color: #fff;
+}
+
+/* ========== VerificationPage 스타일 ========== */
+
+.email-verification {
+    max-width: 25rem;
+    margin: auto;
+    padding: 2rem;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+}
+.highlight {
+    font-weight: bold;
+    color: #555;
+}
+.timer {
+    margin: 10px 0;
+    font-size: 1.2rem;
+    color: #d73a49;
+}
 /* 공통 */
 .code-inputs {
     display: flex;
@@ -1572,23 +1590,23 @@ width: 100%;         /* 너비 채우기 */
         padding: 1rem;
     }
 }
-  .message {
-        margin-top: 1rem;
-        font-size: 1rem;
-        color: #d73a49;
-    }
+.message {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: #d73a49;
+}
 
-    /* 로그인 */
-    .login-container {
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(180deg, #ffe5f0, #fff);
-        padding: 0; /* 위에 필요 없는 여백 없애기 */
-        margin: 0; /* 기본 여백 없애기 */
-    }
+/* 로그인 */
+.login-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(180deg, #ffe5f0, #fff);
+    padding: 0; /* 위에 필요 없는 여백 없애기 */
+    margin: 0; /* 기본 여백 없애기 */
+}
 
 .loginPage {
     display: flex;
@@ -1648,26 +1666,26 @@ width: 100%;         /* 너비 채우기 */
 /*    margin-bottom: 3rem;*/
 /*    transition: all 0.3s ease;*/
 /*}*/
-    .kakao-button {
-        width: 100%;
-        background-color: #fee500;
-        color: #3c1e1e;
-        border: none;
-        border-radius: 12px;
-        /*padding: 18px 2.5rem;*/
-        font-size: 1rem;
-        font-weight: bold;
-        cursor: pointer;
-        margin-bottom: 3rem;
-        transition: all 0.3s ease;
-    }
+.kakao-button {
+    width: 100%;
+    background-color: #fee500;
+    color: #3c1e1e;
+    border: none;
+    border-radius: 12px;
+    /*padding: 18px 2.5rem;*/
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 3rem;
+    transition: all 0.3s ease;
+}
 
-    .kakao-button:hover {
-        /*background-color: #ffde00;*/
-        transform: scale(1.05);
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-        margin-bottom: 3rem;
-    }
+.kakao-button:hover {
+    /*background-color: #ffde00;*/
+    transform: scale(1.05);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    margin-bottom: 3rem;
+}
 
 .login_form_box {
     height: 90%;
@@ -1675,37 +1693,37 @@ width: 100%;         /* 너비 채우기 */
     flex-direction: column;
     justify-content: space-evenly;
 }
-    .login_form {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        width: 100%;
-        padding: 1.5rem;
-        background-color: #f9f9f9;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        justify-content: flex-start;
-        flex-direction: column;
-        margin-bottom: 1.5rem;
-    }
+.login_form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: 1.5rem;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    justify-content: flex-start;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+}
 
-    .login_form-input {
-        width: 100%;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 0.5rem;
-        box-sizing: border-box;
-    }
+.login_form-input {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
 
 
 .login_form-input:focus {
     border: 1px solid #4a90e2;
     outline: none;
 }
-    .login_form-input:focus {
-        border-color: #4a90e2;
-        outline: none;
-    }
+.login_form-input:focus {
+    border-color: #4a90e2;
+    outline: none;
+}
 
 
 .login_form_button {
@@ -1768,317 +1786,317 @@ width: 100%;         /* 너비 채우기 */
 
 /*=========일기리스트========== */
 
-    /* 필터 체크박스 스타일 */
-    .filter-section {
-        display: flex;
-        justify-content: flex-end;
-        padding: 10px;
-    }
+/* 필터 체크박스 스타일 */
+.filter-section {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
 
-    .filter-checkbox {
-        display: flex;
-        align-items: center;
-        background-color: cadetblue;
-        color: white;
-        padding: 10px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+.filter-checkbox {
+    display: flex;
+    align-items: center;
+    background-color: cadetblue;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-    .filter-checkbox input {
-        margin-right: 10px;
-    }
+.filter-checkbox input {
+    margin-right: 10px;
+}
 
-    /* 일기 목록 스타일 */
-    .diaryList {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-    }
-    .diary-post {
-        background: white;
-        border: 1px solid #ccc;
-        padding: 1rem;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: transform 0.3s ease-in-out;
-    }
+/* 일기 목록 스타일 */
+.diaryList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.diary-post {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
 
-    .diary-post:hover {
-        transform: scale(1.05);
-    }
+.diary-post:hover {
+    transform: scale(1.05);
+}
 
-    .diaryTitle, .diaryContent {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+.diaryTitle, .diaryContent {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-    /* 페이지네이션 */
-    .pagination {
-        margin-top: 1em;
-        display: flex;
-        justify-content: center;
-    }
+/* 페이지네이션 */
+.pagination {
+    margin-top: 1em;
+    display: flex;
+    justify-content: center;
+}
 
-    .pagination button {
-        margin: 0.5em;
-        padding: 0.5em 1em;
-        border: none;
-        background-color: #00796b;
-        color: white;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+.pagination button {
+    margin: 0.5em;
+    padding: 0.5em 1em;
+    border: none;
+    background-color: #00796b;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-    .pagination button.active {
-        background-color: #004d40;
-    }
-
-
-    /* ==========MemberOutpage 컴포넌트 스타일 ========== */
-
-    .memberOutPage {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #f8f9fa;
-        padding: 2rem;
-        flex-direction: column;
-    }
-
-    .memberOut_form {
-        display: flex;
-        flex-direction: column;
-        background-color: #fff;
-        padding: 2rem;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 30rem;
-    }
-
-    .title {
-        color: #333;
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin-bottom: 1rem;
-    }
-
-    .subtitle {
-        color: #555;
-        font-size: 1rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .button-group {
-        display: flex;
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-
-    .button {
-        flex: 1;
-        background-color: #4a90e2;
-        color: white;
-        border: none;
-        padding: 0.8rem 1.2rem;
-        border-radius: 5px;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    .button:hover {
-        background-color: #357abd;
-    }
-
-    .button.warning {
-        background-color: #ff5733;
-    }
-
-    .button.warning:hover {
-        background-color: #d43f00;
-    }
-
-    .info-list {
-        list-style-type: none;
-        padding: 0;
-        color: #555;
-    }
-
-    .info-list li {
-        margin-bottom: 1rem;
-    }
-
-    .checkbox-container {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 1rem;
-        margin-top: 1rem;
-    }
-
-    .button-container {
-        margin-top: 1.5rem;
-    }
+.pagination button.active {
+    background-color: #004d40;
+}
 
 
-    /* ========== editPassword 컴포넌트 스타일 ========== */
+/* ==========MemberOutpage 컴포넌트 스타일 ========== */
 
-    .editPage {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 100%;
-        background-color: #f8f9fa;
-        padding: 8rem;
-        flex-direction: column;
-    }
+.memberOutPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+    padding: 2rem;
+    flex-direction: column;
+}
 
-    .edit_form {
-        display: flex;
-        height: 100%;
-        width: 100%;
-        padding: 5rem;
-        background-color: #f9f9f9;
-        border-radius: 10px;
-        /* margin: auto; */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        justify-content: flex-start;
-        flex-direction: column;
-        margin-bottom: 1.5rem;
-        margin-bottom: 1.5rem; /* 필드 간 여백 */
-    }
+.memberOut_form {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 30rem;
+}
 
-    .edit_form_box {
-        height: 90%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-    }
+.title {
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
 
-    .edit-label {
-        font-size: 1rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-    }
+.subtitle {
+    color: #555;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
 
-    .edit_form-input {
-        width: 100%; /* 필드 너비가 컨테이너에 맞춰짐 */
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 0.5rem;
-        box-sizing: border-box;
-    }
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
 
-    .edit_form-input:focus {
-        border: 1px solid #4a90e2;
-        outline: none;
+.button {
+    flex: 1;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.2rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
-    }
+.button:hover {
+    background-color: #357abd;
+}
 
-    .edit_form_button {
-        width: 100%; /* 버튼이 컨테이너에 맞춰짐 */
-        color: #333;
-        background: #ddd;
-        padding: 0.8rem 1.5rem;
-        border-radius: 5px;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
+.button.warning {
+    background-color: #ff5733;
+}
 
-    .edit_form_button:hover {
-        background-color: #357abd;
-        color: white;
+.button.warning:hover {
+    background-color: #d43f00;
+}
 
-    }
+.info-list {
+    list-style-type: none;
+    padding: 0;
+    color: #555;
+}
 
-    .edit_form-oo {
-        font-size: 0.9rem;
-        color: red;
-        margin-top: 0.5rem;
-    }
+.info-list li {
+    margin-bottom: 1rem;
+}
 
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
 
-    /* ========== confirmPassword 스타일 ========== */
-
-    .confirmHeader {
-        /* position: fixed; */
-        top: 0px;
-        left: 0px;
-        right: 0px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 5rem;
-        font-size: 2rem;
-        font-weight: 700;
-    }
-
-    .prevBtn {
-        /* position: absolute; */
-        top: 50%;
-        left: 0.4rem;
-        transform: translateY(-50%);
-        padding: 0.8rem;
-        font-size: 0px;
-    }
-
-    .header_svg {
-        transform: rotate(180deg);
-    }
-
-    .layoutContainer {
-        padding: 4rem 2rem;
-    }
-
-    .confirmTitle {
-        margin-bottom: 3.2rem;
-        font-size: 2.2rem;
-        font-weight: 700;
-    }
-
-    .checkId input:read-only {
-        cursor: default;
-    }
-
-    .checkId input:disabled {
-    }
-
-    .checkId input {
-        width: 100%;
-        height: 4.8rem;
-        padding-left: 1.6rem;
-        padding-right: 1.6rem;
-        font-size: 1.6rem;
-        border-radius: 1.2rem;
-    }
-
-    .gapCheckInput {
-        margin-top: 1rem;
-    }
+.button-container {
+    margin-top: 1.5rem;
+}
 
 
-    .inputInnerWrap {
-        position: absolute;
-        right: 1.2rem;
-        top: 50%;
-        transform: translateY(-50%);
-        display: flex;
-    }
+/* ========== editPassword 컴포넌트 스타일 ========== */
 
-    .password_field_button.show {
-        background: url(https://common-module.interparkcdn.net/assets/member-mypage/icon_view_hide.png) center center / 100% no-repeat;
-    }
+.editPage {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    background-color: #f8f9fa;
+    padding: 8rem;
+    flex-direction: column;
+}
 
-    .password_field_button {
-        width: 2rem;
-        height: 2rem;
-    }
+.edit_form {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    padding: 5rem;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    /* margin: auto; */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    justify-content: flex-start;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem; /* 필드 간 여백 */
+}
+
+.edit_form_box {
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.edit-label {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.edit_form-input {
+    width: 100%; /* 필드 너비가 컨테이너에 맞춰짐 */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
+
+.edit_form-input:focus {
+    border: 1px solid #4a90e2;
+    outline: none;
+
+}
+
+.edit_form_button {
+    width: 100%; /* 버튼이 컨테이너에 맞춰짐 */
+    color: #333;
+    background: #ddd;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit_form_button:hover {
+    background-color: #357abd;
+    color: white;
+
+}
+
+.edit_form-oo {
+    font-size: 0.9rem;
+    color: red;
+    margin-top: 0.5rem;
+}
+
+
+/* ========== confirmPassword 스타일 ========== */
+
+.confirmHeader {
+    /* position: fixed; */
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5rem;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.prevBtn {
+    /* position: absolute; */
+    top: 50%;
+    left: 0.4rem;
+    transform: translateY(-50%);
+    padding: 0.8rem;
+    font-size: 0px;
+}
+
+.header_svg {
+    transform: rotate(180deg);
+}
+
+.layoutContainer {
+    padding: 4rem 2rem;
+}
+
+.confirmTitle {
+    margin-bottom: 3.2rem;
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.checkId input:read-only {
+    cursor: default;
+}
+
+.checkId input:disabled {
+}
+
+.checkId input {
+    width: 100%;
+    height: 4.8rem;
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+    font-size: 1.6rem;
+    border-radius: 1.2rem;
+}
+
+.gapCheckInput {
+    margin-top: 1rem;
+}
+
+
+.inputInnerWrap {
+    position: absolute;
+    right: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+}
+
+.password_field_button.show {
+    background: url(https://common-module.interparkcdn.net/assets/member-mypage/icon_view_hide.png) center center / 100% no-repeat;
+}
+
+.password_field_button {
+    width: 2rem;
+    height: 2rem;
+}
 
 
 /*=========POMOVIEW========== */
@@ -2093,11 +2111,20 @@ width: 100%;         /* 너비 채우기 */
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    background-image: url('../assets/back.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
 }
+
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+
+
 .container {
     text-align: center;
 }
@@ -2180,10 +2207,6 @@ width: 100%;         /* 너비 채우기 */
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    background-image: url('../assets/back.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     animation: fadeIn 2s ease-in-out;
     font-family: 'Noto Sans KR', sans-serif;
     color: #f5f5f5;

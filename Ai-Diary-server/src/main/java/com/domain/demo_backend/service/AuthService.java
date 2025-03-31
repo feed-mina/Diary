@@ -263,11 +263,17 @@ public class AuthService {
         // 비밀변호 변경 처리
         // 현재 있는 비밀번호를 delete 후 값을 새로 insert 해야 할까 아니면
         // update 쿼리를 써야할까
-        existingUser.setDelYn("Y");
         existingUser.setUpdatedAt(LocalDateTime.now());
-        log.info("existingUser : " + existingUser);
-        log.info("user Mapper nonMember 시작");
-        userMapper.editPassword(existingUser);
-        log.info("user 탈퇴 처리 완료: " + existingUser);
+        // 비밀번호 암호화
+        String newHashedPassword  = PasswordUtil.sha256(passwordDto.getNewPassword());
+
+        existingUser.setPassword(passwordDto.getNewPassword());
+        existingUser.setHashedPassword(newHashedPassword);
+        existingUser.setUpdatedAt(LocalDateTime.now());
+        userMapper.editPassword(existingUser); // 기존 레코드를 update
+
+        System.out.println("existingUser : " + existingUser);
+        System.out.println("user Mapper nonMember 시작");
+        System.out.println("user 탈퇴 처리 완료: " + existingUser);
     }
 }

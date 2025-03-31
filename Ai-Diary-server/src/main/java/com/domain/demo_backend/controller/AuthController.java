@@ -210,7 +210,6 @@ public class AuthController {
             log.info("비밀변호 변경 실패: userId가 비어 있음");
             return ResponseEntity.badRequest().body("회원 아이디가 필요합니다.");
         }
-
         try {
             authService.editPassword(passwordDto);
             return ResponseEntity.ok("비밀변호 변경 성공");
@@ -221,7 +220,6 @@ public class AuthController {
             log.info("비밀변호 변경 실패: 서버 내부 오류");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
         }
-        return ResponseEntity.ok("변경 성공");
     }
 
 

@@ -808,24 +808,6 @@ width: 100%;         /* 너비 채우기 */
         text-align: center;
     }
 
-    .bg-svg {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        z-index: 0;
-    }
-
-    .mainView .content {
-        position: relative;
-        z-index: 1;
-    }
-
-    /* 다크모드일 때 배경 색상 바꾸기 */
-    .dark .bg-rect {
-        fill: #111111;
-    }
 
     .currentTime{
         padding-top: 1rem;

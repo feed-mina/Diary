@@ -88,7 +88,11 @@ public class AuthService {
             log.info("회원가입 핸드폰 실패");
             throw new IllegalArgumentException("이미 존재하는 핸드폰 번호입니다.");
         }
-//.getEmail()
+
+        if(userMapper.findWidthdrawUser(registerRequest.getEmail()) != null){
+            log.info("탈퇴한 유저");
+            throw new IllegalArgumentException("탈퇴한 계정은 7일 동안 재가입할 수 없습니다..");
+        }
         log.info("유효성 통과");
         User user = User.builder()
                 .userId(registerRequest.getEmail().split("@")[0])

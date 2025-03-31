@@ -5,9 +5,9 @@
 
    import { Notyf } from 'notyf';
    import 'notyf/notyf.min.css';
-   import alarmSound from "../assets/alarm.wav";
-   import toySound from "../assets/toy.mp3";
-   import birdSound from "../assets/bird.mp3";
+   import alarmSound from "/sound/alarm.wav";
+   import toySound from "/sound/toy.mp3";
+   import birdSound from "/sound/bird.mp3";
    
    // 알림, 소리 설정
    const notyf = new Notyf();

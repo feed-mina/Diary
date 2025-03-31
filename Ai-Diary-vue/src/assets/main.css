@@ -1646,6 +1646,7 @@ button.active {
 }
 
 .login-guide_pomo {
+    text-align: center;
     margin-top: 15px;
     font-size: 2rem;
     color: #555;

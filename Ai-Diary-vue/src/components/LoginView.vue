@@ -92,7 +92,7 @@ async function kakaoLogin()  {
 <template>
   <div class="login-container_pomo">
     <button class="kakao-button_pomo" @click="kakaoLogin">
-      <img alt="kakaoLogin" class="kakaoLogin_pomo" src="../img/kakao_login_large_narrow.png"/>
+      <img alt="kakaoLogin" class="kakaoLogin_pomo" src="/img/kakao_login_large_narrow.png"/>
     </button>
     <p class="login-guide_pomo">로그인 후 시작해볼까요? 😊</p>
   </div>

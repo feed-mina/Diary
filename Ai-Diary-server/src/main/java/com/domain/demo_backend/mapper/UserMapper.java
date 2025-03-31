@@ -1,6 +1,7 @@
 package com.domain.demo_backend.mapper;
 
 import com.domain.demo_backend.user.domain.User;
+import jakarta.validation.constraints.Email;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,4 +23,6 @@ public interface UserMapper {
     BigInteger findIndexByEmail(String email);
 
     void editPassword(User existingUser);
+
+    User findWidthdrawUser(@Email(message = "유효한 이메일을 입력하세요.") String email);
 }

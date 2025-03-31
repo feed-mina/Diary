@@ -58,23 +58,26 @@
 
     <!--  일기 목록  조회 가능 -->
     <select id="selectDiaryList" resultType="com.domain.demo_backend.diary.dto.DiaryResponse">
-        SELECT diary_id     AS diaryId,
-               user_id      AS userId,
-               user_sqno    AS userSqno,
-               author,
-               title,
-               content,
-               tag1,
-               tag2,
-               tag3,
-               emotion,
-               diary_status AS diaryStatus,
-               del_yn       AS delYn,
-               reg_dt AS date
-        FROM diary
-        where del_yn = 'N'
-          AND (#{userId} IS NULL OR #{userId} = '' OR user_id = #{userId})
-        ORDER BY reg_dt DESC
+        SELECT
+            d.user_sqno    AS userSqno,
+            d.title,
+            d.content,
+            d.tag1,
+            d.tag2,
+            d.tag3,
+            d.emotion,
+            d.diary_status AS diaryStatus,
+            d.del_yn       AS delYn,
+            d.reg_dt       AS date,
+            IF(u.delYn = 'Y', '탈퇴한 회원', d.user_id) AS userId,
+            IF(u.delYn = 'Y', '탈퇴한 회원', u.username) AS username,
+            IF(u.delYn = 'Y', '탈퇴한 회원', u.nickname) AS nickname,
+            IF(u.delYn = 'Y', '탈퇴한 회원', d.author) AS author
+        FROM diary d
+            LEFT JOIN users u ON d.user_sqno = u.user_sqno
+        WHERE d.del_yn = 'N'
+          AND (#{userId} IS NULL OR #{userId} = '' OR d.user_id = #{userId})
+        ORDER BY d.reg_dt DESC
             LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
@@ -82,23 +85,29 @@
     <!-- selectDiaryItem : 일기 상세 보기-->
     <select id="selectDiaryItem" parameterType="map" resultType="com.domain.demo_backend.diary.dto.DiaryResponse">
         SELECT
-            diary_id     AS diaryId,
-            user_id      AS userId,
-            user_sqno    AS userSqno,
-            author,
-            title,
-            content,
-            tag1,
-            tag2,
-            tag3,
-            emotion,
-            diary_status AS diaryStatus,
-            del_yn       AS delYn,
-            reg_dt AS date
-        FROM diary
-        WHERE diary_id = #{diaryId, jdbcType=BIGINT}
-          AND user_id = #{userId}
-          AND (del_yn = 'N' OR del_yn IS NULL);
+            d.diary_id     AS diaryId,
+            d.user_sqno    AS userSqno,
+            d.title,
+            d.content,
+            d.tag1,
+            d.tag2,
+            d.tag3,
+            d.emotion,
+            d.diary_status AS diaryStatus,
+            d.del_yn       AS delYn,
+            d.reg_dt       AS date,
+            IF(u.delYn = 'Y', '탈퇴한 회원', d.user_id) AS userId,
+            IF(u.delYn = 'Y', '탈퇴한 회원', u.username) AS username,
+            IF(u.delYn = 'Y', '탈퇴한 회원', u.nickname) AS nickname,
+            IF(u.delYn = 'Y', '탈퇴한 회원', d.author) AS author
+        FROM diary d
+            LEFT JOIN users u ON d.user_sqno = u.user_sqno
+        WHERE d.diary_id = #{diaryId, jdbcType=BIGINT}
+          AND d.user_id = #{userId}
+          AND (d.del_yn = 'N' OR d.del_yn IS NULL)
     </select>
+
+
+
 
 </mapper>

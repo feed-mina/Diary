@@ -146,8 +146,14 @@ export default {
 
       <div class="gapCheckInput">
         <div class="password_field">
-          <input :type="showPassword? 'text' : 'password'" v-model.trim="editData.checkPassword" @input="handleIdChange"
-                 id="checkPassword" @keyup.enter="onClickConfirmButton" placeholder="비밀번호"/>
+          <input
+              :type="showPassword ? 'text' : 'password'"
+              v-model.trim="editData.password"
+              id="checkPassword"
+              @keyup.enter="onClickEditButton"
+              placeholder="비밀번호"
+          />
+
           <button type="button" class="password_toggle" @click="togglePasswordVisibility">
             {{ showPassword ? '숨기기' : '보기' }}
           </button>
@@ -156,8 +162,9 @@ export default {
 
       <!--  버튼 -->
       <div>
-        <button type="submit" class="confirmButton" @click="goToPage('/edit/newPassword')"
-                :disabled="!editData.password">확인
+
+        <button type="submit" class="confirmButton" @click="onClickEditButton" :disabled="!editData.password">
+          확인
         </button>
       </div>
     </div>

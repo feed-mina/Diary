@@ -4,7 +4,7 @@ import { ref, computed, onMounted, reactive } from 'vue';
 import { useRouter } from "vue-router";
 // Datepicker 컴포넌트 등록
 import Datepicker from '@vuepic/vue-datepicker';
-// import '@vuepic/vue-datepicker/dist/vue-datepicker.css';
+import '@vuepic/vue-datepicker/dist/vue-datepicker.css';
 
 import Swal from 'sweetalert2';
 // import {apiUrl} from "@/api/index.js";
@@ -149,7 +149,7 @@ export default {
           <form>
             <div class="diaryWritingTitle">✍ 감정 다이어리 작성</div>
             <!-- 날짜 입력 -->
-            <div class="section1">
+            <div class="write_section1">
               <Datepicker id="datepickerInput" v-model="diaryContentData.date" :format="'yyyy-MM-dd'" :auto-apply="true" :locale="'ko'"/>
               <label>일기 날짜</label>
             </div>
@@ -192,7 +192,7 @@ export default {
               </button>
             </div>
             <!-- 저장 버튼 -->
-            <div class="section">
+            <div class="write_button_section">
               <button type="button" class="save-button" @click="onClickSaveDiary">📝 기록하기</button>
             </div>
           </form>
@@ -201,60 +201,3 @@ export default {
     </div>
   </div>
 </template>
-
-<style scoped>
-
-.section1{
-  display:flex;
-  margin-bottom: 2rem;
-}
-#datepickerInput{
-  width: 2rem;
-  height: 2rem;
-}
-.section {
-  margin-bottom: 15px;
-}
-
-input, textarea, select {
-  width: 100%;
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-}
-
-.save-button {
-  width: 100%;
-  padding: 10px;
-  background: #00796b;
-  color: white;
-  border-radius: 5px;
-  font-weight: bold;
-}
-
-.active-button {
-  background-color: #a48f7a;
-  color: white;
-}
-
-.section_status {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding-bottom: 3rem;
-}
-
-.section_status button {
-  padding: 10px 15px;
-  border-radius: 1em;
-  background: #eee7db;
-  color: black;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.section_status button.active-button {
-  color: #fff;
-  background: #A5778F;
-}
-</style>

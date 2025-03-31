@@ -4,7 +4,6 @@ import { onMounted } from 'vue';
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 import axios from "axios";
-// import { apiUrl } from "@/api/index.js";
 import Swal from "sweetalert2";
 const notyf = new Notyf();
 const router = useRouter();
@@ -47,11 +46,28 @@ async function kakaoLogin()  {
 
           console.log("@@@@ 카카오 로그인 토큰 저장");
           // 🟢 받은 JWT를 저장
-          localStorage.setItem("jwtToken", jwtToken);
+
+          if (jwtToken) {
+            localStorage.setItem("jwtToken", jwtToken);
+          } else {
+            console.log("⚠️ 서버에서 JWT 토큰이 안 왔어!");
+          }
+          let kakao_email = response.data.kakaoUserInfo.email;
+          let kakao_nickname = response.data.kakaoUserInfo.nickname;
+          let kakao_userId = kakao_email.split("@");
+          let kakao_token = response.data.jwtToken;
+          let [userId] = response.data.kakaoUserInfo.email.split("@");
+          console.log("userId:", userId);
           localStorage.setItem("kakaoAccessToken", kakaoAccessToken);
+          localStorage.setItem("userId", userId);
+          localStorage.setItem("email", kakao_email);
+          localStorage.setItem("nickname", kakao_nickname);
+          localStorage.setItem("jwtToken", kakao_token);
           Swal.fire("카카오 로그인 성공", "로그인을 완료했습니다", "success");
 
-          window.location.href = "/#/pomoMain";
+          router.push("/pomoMain").then(() => {
+            location.reload();
+          });
         } catch (error) {
           Swal.fire("로그인 실패", error.response?.data?.message || "카카오 로그인 실패", "error");
           console.error("❌ 카카오 로그인 실패", error);
@@ -71,10 +87,10 @@ async function kakaoLogin()  {
 
 </script>
 <template>
-  <div class="login-container">
-    <button class="kakao-button" @click="kakaoLogin">
-      <img alt="kakaoLogin" class="kakaoLogin_pomo" src="../assets/kakao_login_bt.png"/>
+  <div class="login-container_pomo">
+    <button class="kakao-button_pomo" @click="kakaoLogin">
+      <img alt="kakaoLogin" class="kakaoLogin_pomo" src="../img/kakao_login_large_narrow.png"/>
     </button>
-    <p class="login-guide">로그인 후 시작해볼까요? 😊</p>
+    <p class="login-guide_pomo">로그인 후 시작해볼까요? 😊</p>
   </div>
 </template>

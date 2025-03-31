@@ -36,6 +36,7 @@ export default {
 
       if (!emotionValue) return "기록 없음"; // 값이 없을 때
       const found = emotionItems.find((item) => item.value === emotionValue.toString());
+      if (!emotionValue || emotionValue === "0") return "기록 없음";
       return found ? found.text : "기록 없음";
     };
 
@@ -103,7 +104,7 @@ export default {
             <p>제목: {{ diaryData.title }}</p>
             <p>내용: {{ diaryData.content }}</p>
             <p>작성 날짜: {{ diaryData.date ? new Date(diaryData.date).toLocaleDateString() : '날짜 미정' }}</p>
-            <p>감정 상태: {{ getEmotionText(diaryData.emotioon) }}</p>
+            <p>감정 상태: {{ getEmotionText(diaryData.emotion) }}</p>
             <p>태그: {{ [diaryData.tag1, diaryData.tag2, diaryData.tag3].filter(Boolean).join(", ") }}</p>
           </div>
         </div>

@@ -40,7 +40,6 @@ const routes = [
     {path: "/edit/newPassword", name: "EditNewPassword", component: EditNewPassword}, //EditNewPassword.vue
     { path: '/pomoLogin', component: LoginView },
     { path: '/pomoMain', component: MainView },
-   
   { path: '/email-verification', name: 'EmailVerificationPage', component: EmailVerificationPage }, {},
     {path: "/edit/password", name: "EditPassword", component: EditPassword},
     {

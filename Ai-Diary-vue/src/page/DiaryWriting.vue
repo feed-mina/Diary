@@ -4,7 +4,7 @@ import { ref, computed, onMounted, reactive } from 'vue';
 import { useRouter } from "vue-router";
 // Datepicker 컴포넌트 등록
 import Datepicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/vue-datepicker.css';
+import '@vuepic/vue-datepicker/dist/main.css';
 
 import Swal from 'sweetalert2';
 // import {apiUrl} from "@/api/index.js";

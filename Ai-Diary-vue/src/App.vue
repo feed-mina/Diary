@@ -90,7 +90,7 @@ export default {
         <DiaryNav v-if="!isPomoPage"/> <!--왼쪽 고정 네비게이션-->
         <div class="content-wrap">
           <header v-if="!isPomoPage">
-            <img alt="Vue logo" class="logo" src="./assets/favicon.png" width="125" height="125"/>
+            <img alt="Vue logo" class="logo" src="/img/favicon.png" width="125" height="125"/>
           </header>
           <RouterView/> <!-- 현재 경로에 맞는 컴포넌트 렌더링 -->
         </div>

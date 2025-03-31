@@ -30,4 +30,5 @@ public interface UserMapper {
     void insertKakaoUser(User user);
     BigInteger findIndexByEmail(String email);
 
+    void editPassword(User existingUser);
 }

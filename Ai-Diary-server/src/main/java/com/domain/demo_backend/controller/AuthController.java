@@ -193,7 +193,36 @@ public class AuthController {
             log.info("회원탈퇴 실패: 서버 내부 오류");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
         }
-
     }
+
+
+    @Operation(summary = "비밀번호 변경 로직", description = "users테이블에 변경된 비빌번호로 password update")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "users테이블에 비밀번호 변경 성공"),
+            @ApiResponse(responseCode = "400", description = "입력값 오류"),
+            @ApiResponse(responseCode = "500", description = "서버오류"),
+    })
+    @PostMapping("/editPassword")
+    public ResponseEntity<?> editPassword(@RequestBody PasswordDto passwordDto) {
+        log.info("비밀변호 변경 요청 진입: " + passwordDto);
+        log.info("비밀변호 변경 진입");
+        if (passwordDto.getEmail() == null || passwordDto.getEmail().isEmpty()) {
+            log.info("비밀변호 변경 실패: userId가 비어 있음");
+            return ResponseEntity.badRequest().body("회원 아이디가 필요합니다.");
+        }
+
+        try {
+            authService.editPassword(passwordDto);
+            return ResponseEntity.ok("비밀변호 변경 성공");
+        } catch (IllegalArgumentException e) {
+            log.info("비밀변호 변경 실패: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            log.info("비밀변호 변경 실패: 서버 내부 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류 발생");
+        }
+        return ResponseEntity.ok("변경 성공");
+    }
+
 
 }

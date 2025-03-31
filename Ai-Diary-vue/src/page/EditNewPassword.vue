@@ -14,8 +14,12 @@ export default {
 
     const isEditPg = ref(true);
 
+    const token = ref(localStorage.getItem("jwtToken")  || "");
+    const email = ref(localStorage.getItem("email")  || "");
     //  입력 데이터
     const editData = ref({
+      email: email,
+      token: token,
       newPassword: "",
       checkNewPassword: "",
     });
@@ -26,8 +30,6 @@ export default {
     const idErrorMessage = ref("");
     const checkNewPasswordErrorMessage = ref("");
 
-    // const idValid = ref(true);
-    // const passwordValid = ref(true);
     const showPassword = ref(false);
     const togglePasswordVisibility = () => {
       showPassword.value = !showPassword.value;
@@ -67,13 +69,7 @@ export default {
       try {
         // API 호출 및 응답 처리
         const jwtToken = await sendEditData();
-        const userId = localStorage.getItem("email");
-        const userPassword = localStorage.getItem("password");
         console.log("성공, JWT:", jwtToken);
-
-        // JWT 토큰을 쿠키 또는 localStorage에 저장
-        // cookies.set("jwt", jwtToken, { path: "/" });
-        // alert("완료했습니다.");
 
         Swal.fire({
           title: "성공",
@@ -89,7 +85,6 @@ export default {
       } catch (error) {
         // 에러 처리
         console.error(" 실패:", error);
-        // alert(error.response?.data?.message || "에 실패했습니다.");
 
         Swal.fire({
           title: " 실패",
@@ -105,14 +100,39 @@ export default {
     //  API 호출
     const sendEditData = async () => {
       try {
-        const response = await axios.post(`/api/auth/editPassword`, editData.value);
-        return response.data; // 응답 데이터를 반환합니다.
+
+        if (confirm("비밀번호를 변경하시겠습니까?")) {
+          console.log("회원탈퇴 요청 데이터:", editData.value);
+          // API 호출
+          const response = await axios.post(`/api/auth/editPassword`, editData.value);
+          console.log("비밀번호 변경 응답: ", response);
+          localStorage.removeItem("userId");
+          localStorage.removeItem("jwtToken");
+          localStorage.removeItem("email");
+          localStorage.removeItem("password");
+          localStorage.removeItem("kakaoAccessToken");
+          localStorage.removeItem("nickname");
+
+          Swal.fire({
+            title: "비밀번호 변경 성공",
+            text: "다시 로그인을 해주세요.",
+            icon: "success",
+            confirmButtonText: "확인",
+          });
+          router.push("/").then(() => {
+            location.reload();
+          });
+        }
       } catch (error) {
         console.error("API 호출 실패:", error.response?.data || error.message);
-        throw error; // 예외를 던져서 상위에서 처리하도록 합니다.
+        Swal.fire({
+          title: "비밀번호 변경 실패",
+          text: "비밀번호 변경을 진행할 수 없습니다.",
+          icon: "error",
+          confirmButtonText: "확인",
+        });
       }
     };
-
 
     return {
       isEditPg,

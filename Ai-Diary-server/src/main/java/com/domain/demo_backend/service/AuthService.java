@@ -6,6 +6,7 @@ import com.domain.demo_backend.mapper.UserMapper;
 import com.domain.demo_backend.user.domain.User;
 import com.domain.demo_backend.user.dto.KakaoUserInfo;
 import com.domain.demo_backend.user.dto.LoginRequest;
+import com.domain.demo_backend.user.dto.PasswordDto;
 import com.domain.demo_backend.user.dto.RegisterRequest;
 import com.domain.demo_backend.util.DuplicateEmailException;
 import com.domain.demo_backend.util.JwtUtil;
@@ -251,5 +252,22 @@ public class AuthService {
         log.info("user 탈퇴 처리 완료: " + existingUser);
     }
 
-
+    @Transactional
+    public void editPassword(PasswordDto passwordDto) {
+        log.info("@@@@@비밀변호 변경 서비스 진입 email: " + passwordDto.getEmail());
+        User existingUser = userMapper.findByUserEmail(passwordDto.getEmail());
+        if (existingUser == null) {
+            log.info("비밀변호 변경 실패: 해당 사용자가 존재하지 않습니다.");
+            throw new IllegalArgumentException("해당 사용자가 존재하지 않습니다.");
+        }
+        // 비밀변호 변경 처리
+        // 현재 있는 비밀번호를 delete 후 값을 새로 insert 해야 할까 아니면
+        // update 쿼리를 써야할까
+        existingUser.setDelYn("Y");
+        existingUser.setUpdatedAt(LocalDateTime.now());
+        log.info("existingUser : " + existingUser);
+        log.info("user Mapper nonMember 시작");
+        userMapper.editPassword(existingUser);
+        log.info("user 탈퇴 처리 완료: " + existingUser);
+    }
 }

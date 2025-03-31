@@ -36,6 +36,9 @@ async function kakaoLogin()  {
       success: async function (authObj) {
         try {
           const kakaoAccessToken = authObj.access_token;
+          /*
+          * 0331_kakao/pomoLogin api 새로 생성 고민중....
+          * */
           const response = await axios.post(`/api/kakao/login`, {
             accessToken: kakaoAccessToken,
           });

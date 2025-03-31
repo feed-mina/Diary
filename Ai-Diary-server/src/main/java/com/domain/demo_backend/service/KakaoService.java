@@ -60,6 +60,8 @@ public class KakaoService {
         Map<String, Object> kakaoAccount = (Map<String, Object>) response.getBody().get("kakao_account");
         Map<String, Object> properties = (Map<String, Object>) body.get("properties");
 
+        log.error("@@@@@kakaoAccount", kakaoAccount);
+        log.error("@@@@@properties", properties);
 
         Long id = ((Number) body.get("id")).longValue();
         String connectedAt = (String) body.get("connected_at");

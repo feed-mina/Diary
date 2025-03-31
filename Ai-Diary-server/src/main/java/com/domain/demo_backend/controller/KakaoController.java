@@ -125,6 +125,7 @@ public class KakaoController {
           String jwtToken = authorization.substring(7);
         log.info("✅ Extracted Access Token: {}", jwtToken);
 
+        log.error("@@@@@jwtToken", jwtToken);
         if (jwtToken.isEmpty()) {
             log.error("❌ 추출한 Access Token이 비어 있음");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰");
@@ -134,14 +135,15 @@ public class KakaoController {
         KakaoUserInfo kakaoUserInfo;
         try {
             kakaoUserInfo = kakaoService.getKakaoUserInfo(accessToken);
+            log.error("@@@@@kakaoUserInfo", kakaoUserInfo);
         } catch (Exception e) {
             log.error("❌ 카카오 사용자 정보 조회 실패", e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("카카오 사용자 정보 조회 실패");
         }
 
         // ✅ JWT 토큰 발급
-        String Token = kakaoService.registerKakaoUser(kakaoUserInfo, accessToken);
-        log.info("✅ 발급된 Token: {}", Token);
+//        String Token = kakaoService.registerKakaoUser(kakaoUserInfo, accessToken);
+//        log.info("✅ 발급된 Token: {}", Token);
 
         // ✅ 클라이언트 로그인 유도 (필요 시)
         if (clientId == null || redirectUri == null) {

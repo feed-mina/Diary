@@ -136,14 +136,7 @@ function playAlarm3() {
          {
            pomodoroCount: pomoSession.value,
            pomodoroTotalTime: totalMinutes ,
-         },
-         {
-           headers: {
-             'Authorization': 'Bearer ' + kakaoToken, //  여기 중요!
-             'Content-Type': 'application/json',
-           },
-         }
-       );
+         });
        console.log("전송 성공!", response.data);
        notyf.success("카카오톡으로 기록을 보냈어요!");
      } catch (error) {
@@ -181,8 +174,5 @@ function playAlarm3() {
       <button class="pomobutton" @click="stopPomodoro">정지</button>
       <button class="pomobutton" @click="resetPomodoro">초기화</button>
       <button class="pomobutton" @click="startBreak" :disabled="isPomodoroRunning">5분 휴식</button>
-      <!-- <div>
-         <button class="kakaosendbutton" @click="sendPomodoroTimerRecord" v-if="isTimeVisible">카카오톡으로 기록 보내기</button>
-      </div> -->
    </div>
 </template>

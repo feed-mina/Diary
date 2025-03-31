@@ -7,7 +7,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
-import KakaoImg from '@/assets/kakao_login_large_narrow.png';
+// import KakaoImg from '../assets/kakao_login_large_narrow.png';
 
 const notyf = new Notyf();
 
@@ -234,7 +234,9 @@ export default {
       </form>
       <div>
         <button class="kakao-button" @click="kakaoLogin">
-          <img :src="KakaoImg" alt="kakaoLogin" />
+          <img alt="kakaoLogin" class="kakaoLogin_pomo" src="/img/kakao_login_large_narrow.png"/>
+
+<!--          <img src="/img/kakao_login_bt.png" alt="kakaoLogin" />-->
         </button>
       </div>
     </div>

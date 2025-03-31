@@ -234,11 +234,15 @@ export default {
         console.log("signUpData.value : ", signUpData.value);
         console.log("response: ", response);
         notify.success("인증 코드가 이메일로 전송되었습니다!");
+        router.push(`/email-verification?email=${fullEmail.value}`);
+
       } catch (error) {
         console.error(error);
         notify.error("인증 코드 전송 중 오류 발생!");
+        router.push("/").then(() => {
+          location.reload(); // 새로고침
+        });
       }
-      router.push(`/email-verification?email=${fullEmail.value}`);
 
 
     }

@@ -3,7 +3,6 @@ import Home from "@/page/Home.vue";
 import About from "@/page/About.vue";
 import NotFound from "@/page/NotFound.vue";
 import Tutorial from "@/page/Tutorial.vue";
-import Signin from "@/page/Signin.vue";
 import LoginPage from "@/page/LoginPage.vue";
 import SignupPage from "@/page/SignupPage.vue";
 import MemberOutPage from "@/page/MemberOutPage.vue";
@@ -27,7 +26,6 @@ const routes = [
     {path: "/about", name: "About", component: About},
     {path: "/notFound", name: "NotFound", component: NotFound},
     {path: "/diary/tutorial", name: "Tutorial", component: Tutorial},
-    {path: "/signin", name: "Signin", component: Signin},
     {path: "/login", name: "LoginPage", component: LoginPage},
     {path: "/signup", name: "SignupPage", component: SignupPage},
     {path: "/memberOut", name: "MemberOutPage", component: MemberOutPage},

@@ -139,10 +139,6 @@ export default {
     });
 
     const onClickSignUpButton = async () => {
-      if (!isSignUpDataValid()) {
-        notify.error("빠진 정보 없이 입력해 주세요.");
-        return;
-      }
       await sendSignUpData();
 
       // 로컬스토로지 signUpDataToSave 삭제
@@ -167,8 +163,6 @@ export default {
         const response = await axios.post(`/api/auth/register`, signUpDataToSave);
         console.log('회원가입 response : ', response);
         notify.success("인증번호를 전송했습니다.");
-
-        // router.push("/login").then(() => location.reload());
         return response.data;
       } catch (error) {
         console.error("API 호출 실패", error);
@@ -183,41 +177,45 @@ export default {
           if (errorMsg.includes("이메일")) {
             errorState.value.email = true;
             errorMessage.value.email = errorMsg;
+            return false;
           }
-
           // 핸드폰 중복 오류
           if (errorMsg.includes("핸드폰")) {
             errorState.value.phone = true;
             errorMessage.value.phone = errorMsg;
+            return false;
           }
           focusEmailField.value.focus();
           errorState.value.email = true;
           errorMessage.value.email = error.response.data;
+          return false;
         } else {
           console.error("API 호출 실패", error);
-          notify.error("회원가입에 실패했습니다. 다시 시도해주세요.");
+          notify.error(error.response.data.message);
+          return false;
         }
+        return false;
       }
     };
     const sendVerificationCode = async () => {
-      if (!isSignUpDataValid()) {
-        notify.error("빠진 정보 없이 입력해 주세요.");
-        return;
-      }
 
       try {
         const emailPrefix = signUpData.value.email.emailPrefix;
         console.log('emailPrefix : ', emailPrefix);
         const emailDomain = signUpData.value.email.emailDomain === "custom"
             ? signUpData.value.email.customDomain : signUpData.value.email.emailDomain;
+        const full = `${emailPrefix}@${emailDomain}`;
 
-        console.log('emailDomain : ', emailDomain);
-        // const fullEmail = `${emailPrefix}@${emailDomain}`;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(full)) {
+          notify.error("이메일 형식이 잘못되었습니다. 다시 확인해주세요.");
+          return;
+        }
+        fullEmail.value = full;
 
-        await sendSignUpData();
+        const success = await sendSignUpData();
+        if (!success) return; // ❗오류나면 더 이상 진행 안 함
 
-        fullEmail.value = `${emailPrefix}@${emailDomain}`;
-        console.log('fullEmail : ', fullEmail);
         const response = await axios.post(`/api/auth/signup`, {
           email: fullEmail.value
         }, {
@@ -238,12 +236,20 @@ export default {
 
       } catch (error) {
         console.error(error);
-        notify.error("인증 코드 전송 중 오류 발생!");
-        router.push("/").then(() => {
-          location.reload(); // 새로고침
-        });
+        if (error.response && error.response.data.message) {
+          notify.error(error.response.data.message);
+        } else if (error.message.includes("Missing domain")) {
+          notify.error("이메일 도메인이 누락되었습니다. 다시 확인해 주세요.");
+        } else {
+          notify.error("7일 이후 재가입이 가능합니다."); // 또는 서버에서 에러 메시지 보내주면 그걸 표시해도 좋아
+        }
+        // router.push("/").then(() => location.reload());
       }
 
+      if (!isSignUpDataValid()) {
+        notify.error("빠진 정보 없이 입력해 주세요.");
+        return;
+      }
 
     }
 
@@ -376,7 +382,13 @@ export default {
           <div>
             <div style="display:flex; gap: 10px; align-items: center;">
               <!--이메일 앞부분-->
-              <input  size="20" class="signUp_form-input"   id="emailPrefix" v-model="signUpData.email.emailPrefix" @input="updateFullEmail" aria-describedby="emailHelp"/>
+              <input size="20"
+                     class="signUp_form-input"
+                     id="emailPrefix"
+                     v-model="signUpData.email.emailPrefix"
+                     ref="focusEmailField"
+                     @input="updateFullEmail"
+                     aria-describedby="emailHelp"/>
               <span>@</span>
               <!--이메일 도메인 선택-->
               <select v-model="signUpData.email.emailDomain" @change="updateFullEmail" class="signUp_form-input">
@@ -398,12 +410,10 @@ export default {
           </div>
         </div>
         <button type="button" @click="sendVerificationCode" class="verification_form_button">
-         이메일로 인증 코드 보내기
+          이메일로 인증 코드 보내기
         </button>
       </form>
       <p v-if="signUpData.message">{{ signUpData.message }}</p>
     </div>
   </div>
 </template>
-<style scoped>
-</style>

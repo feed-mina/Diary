@@ -134,7 +134,7 @@ export default {
         <p class="subtitle">아래 방법을 통해 해결하실 수 있습니다.</p>
         <div class="button-group">
 <!--          <button type="button" class="button" @click="goToPage('/mypage/confirmPassword')">개인정보 수정</button>-->
-          <button type="button" class="button" @click="goToPage('/edit/password')">비밀번호 변경</button>
+          <button type="button" class="editButton" @click="goToPage('/edit/password')">비밀번호 변경</button>
         </div>
       </section>
 
@@ -147,19 +147,16 @@ export default {
         </ul>
       </section>
 
-      <section>
-        <label class="checkbox-container">
+      <section class="checkbox-container">
+        <p>위 사항을 모두 확인했습니다.</p>
+        <label>
           <input type="checkbox" v-model="isChecked"/>
-          <p>위 사항을 모두 확인했습니다.</p>
         </label>
       </section>
 
-      <div class="button-container">
-        <button type="button" :disabled="!isChecked" class="button warning" @click="signout">탈퇴 하기</button>
+      <div class="signoutbutton-container">
+        <button type="button"  class="editButton warning" @click="signout">탈퇴 하기</button>
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-</style>

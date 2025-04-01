@@ -25,4 +25,6 @@ public interface UserMapper {
     void editPassword(User existingUser);
 
     User findWidthdrawUser(@Email(message = "유효한 이메일을 입력하세요.") String email);
+
+    void reactivateUser(User user);
 }

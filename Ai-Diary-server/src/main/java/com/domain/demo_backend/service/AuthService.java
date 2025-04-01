@@ -17,15 +17,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Random;
 
 @Service
@@ -80,7 +84,37 @@ public class AuthService {
     // 이미 존재하는 사용자 아이디인지 확인하고 중복되면 예외 발생
     @Transactional
     public void register(RegisterRequest registerRequest) {
+        User reactiveUser = userMapper.findByUserEmail(registerRequest.getEmail());
+        if (reactiveUser != null) {
+            if ("Y".equals(reactiveUser.getDelYn())) {
+                // 기존 탈퇴 유저 - 재가입 처리
+                LocalDate withdrawDate = reactiveUser.getWithdrawAt().toLocalDate();
+                LocalDate now = LocalDate.now();
 
+                if (ChronoUnit.DAYS.between(withdrawDate, now) < 7) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "탈퇴 후 7일이 지나야 재가입이 가능합니다.");
+                } else {
+                    User user =  User.builder()
+                            .userId(registerRequest.getEmail().split("@")[0])
+                            .password(registerRequest.getPassword())
+                            .hashedPassword(PasswordUtil.sha256(registerRequest.getPassword()))
+                            .username(registerRequest.getUsername())
+                            .phone(registerRequest.getPhone())
+                            .email(registerRequest.getEmail())
+                            .delYn("N")
+                            .verifyYn("N")
+                            .socialType("N") // 일반가입은 N!
+                            .updatedAt(LocalDateTime.now())
+                            .withdrawAt(LocalDateTime.now())
+                            .build();
+                    // 재가입 허용 update
+                    userMapper.reactivateUser(user); // delYn을 'N'으로 바꾸고 새로 정보 업데이트
+                    return;
+                }
+            } else {
+                throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
+            }
+        }
         if (userMapper.findByUserEmail(registerRequest.getEmail()) != null) {
             throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
         }
@@ -272,7 +306,7 @@ public class AuthService {
         // 비밀번호 암호화
         String newHashedPassword  = PasswordUtil.sha256(passwordDto.getNewPassword());
 
-        existingUser.setPassword(passwordDto.getNewPassword());
+        existingUser.setPassword(passwordDto.getCheckNewPassword());
         existingUser.setHashedPassword(newHashedPassword);
         existingUser.setUpdatedAt(LocalDateTime.now());
         userMapper.editPassword(existingUser); // 기존 레코드를 update

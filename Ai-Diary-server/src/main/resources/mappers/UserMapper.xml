@@ -41,7 +41,8 @@
             socialType,
             verification_code AS verificationCode,
             created_at AS createdAt,
-            updated_at AS updatedAt
+            updated_at AS updatedAt,
+            withdraw_at AS withdrawAt
         FROM users
         WHERE email = #{email}
     </select>
@@ -178,4 +179,19 @@
           AND withdraw_at > CONVERT_TZ(DATE_SUB(UTC_TIMESTAMP(), INTERVAL 7 DAY), '+00:00', '+09:00')
     </select>
 
+    <update id="reactivateUser" parameterType="com.domain.demo_backend.user.domain.User">
+        UPDATE users
+        SET delYn = 'N',
+            updated_at = NOW(),
+            withdraw_at = NULL,
+            password = #{password},
+            hashed_password = #{hashedPassword},
+            username = #{username},
+            nickname = #{nickname},
+            phone = #{phone},
+            socialType = {socialType}
+        WHERE email = #{email};
+
+    </update>
 </mapper>
+

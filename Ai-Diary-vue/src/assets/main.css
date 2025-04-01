@@ -211,6 +211,13 @@ button:hover {
         padding: 0.6rem;
     }
 
+    .signup_form_button:hover,
+    .verification_form_button:hover {
+        font-size: 1rem;
+        padding: 0.6rem;
+        color:#fff3e0;
+    }
+
     .signUp-label {
         font-size: 0.9rem;
     }
@@ -251,11 +258,15 @@ button:hover {
         gap: 0.5rem;
     }
 
-    .button {
+    .editButton {
         font-size: 0.9rem;
         padding: 0.6rem 1rem;
     }
 
+    .editButton:hover {
+        font-size: 0.9rem;
+        color : #fff;
+    }
     .editPage {
         padding: 2rem;
     }
@@ -648,11 +659,16 @@ button:hover {
         gap: 1rem;
     }
 
-    .button {
+    .editButton {
         font-size: 1rem;
         padding: 0.8rem 1.2rem;
     }
 
+    .editButton:hover {
+        font-size: 1rem;
+        padding: 0.8rem 1.2rem;
+        color : #fff;
+    }
     .editPage {
         padding: 4rem;
     }
@@ -672,7 +688,7 @@ button:hover {
 
     .confirmHeader {
         height: 4.5rem;
-        font-size: 1.8rem;
+        font-size: 1rem;
     }
 
     .confirmTitle {
@@ -1158,6 +1174,7 @@ button:hover {
 
 .verification_form_button:hover {
     background-color: #357abd;
+    color:#fff;
 }
 
 .signUp_form-oo {
@@ -1873,7 +1890,7 @@ textarea {
     margin-bottom: 2rem;
 }
 
-.button {
+.editButton {
     flex: 1;
     background-color: #4a90e2;
     color: white;
@@ -1886,12 +1903,18 @@ textarea {
 }
 
 
-.button.warning {
+.editButton:hover {
+    font-size: 1rem;
+    padding: 0.8rem 1.2rem;
+    color : #fff;
+}
+.editButton.warning {
     background-color: #ff5733;
 }
 
-.button.warning:hover {
+.editButton.warning:hover {
     background-color: #d43f00;
+    color:#fff;
 }
 
 .info-list {
@@ -1912,7 +1935,7 @@ textarea {
     margin-top: 1rem;
 }
 
-.button-container {
+.signoutbutton-container {
     margin-top: 1.5rem;
 }
 
@@ -1925,7 +1948,6 @@ textarea {
     align-items: center;
     height: 100%;
     background-color: #f8f9fa;
-    padding: 8rem;
     flex-direction: column;
 }
 
@@ -2006,7 +2028,7 @@ textarea {
     justify-content: center;
     align-items: center;
     height: 5rem;
-    font-size: 2rem;
+    font-size: 1rem;
     font-weight: 700;
 }
 
@@ -2029,7 +2051,7 @@ textarea {
 
 .confirmTitle {
     margin-bottom: 3.2rem;
-    font-size: 2.2rem;
+    font-size: 1rem;
     font-weight: 700;
 }
 

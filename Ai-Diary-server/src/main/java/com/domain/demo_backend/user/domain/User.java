@@ -36,12 +36,13 @@ public class User {
 
 
     @Builder
-    public User(String userId, String password, String hashedPassword, String role, String username, String phone, String email, String verifyYn, String socialType, LocalDateTime createdAt, LocalDateTime updatedAt, String verificationCode, LocalDateTime withdrawAt) {
+    public User(String userId, String password, String hashedPassword, String role, String username, String delYn, String phone, String email, String verifyYn, String socialType, LocalDateTime createdAt, LocalDateTime updatedAt, String verificationCode, LocalDateTime withdrawAt) {
         this.userId = userId;
         this.password = password;
         this.hashedPassword = hashedPassword;
         this.role = role;
         this.username = username;
+        this.delYn = delYn;
         this.phone = phone;
         this.email = email;
         this.verifyYn = verifyYn;

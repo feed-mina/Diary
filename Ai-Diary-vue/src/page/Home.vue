@@ -1,31 +1,32 @@
 <template>
   <div class="home">
     <div class="main-content">
-      <div id="HomeBubble" class="home-bubble">
-        <div id="HomeText" class="home-text">
-          <span class="home-header">
+      <div id="HomeText" class="home-text">
+            <span class="home-header">
             <strong>감정다이어리</strong>
-          </span>
-
-          <!-- 로그인 여부에 따라 버튼 표시 -->
-          <button type="button" v-if="!isLoggedIn" class="home-button" @click="navigateTo('/diary/tutorial')">
-            튜토리얼 보러가기
-          </button>
-          <button type="button" v-if="!isLoggedIn" class="login-button" @click="navigateTo('/login')">
-            로그인 하러가기
-          </button>
-          <button type="button" v-if="isLoggedIn" class="diarywrite-button" @click="navigateTo('/diary/write')">
-            일기 작성하기
-          </button>
-          <button type="button" v-if="isLoggedIn" class="diarycommon-button" @click="navigateTo('/diary/common')">
-            일기장 보러가기
-          </button>
-        </div>
+            </span>
+      </div>
+      <div class="diaryhome">
+        <img class="diaryImg" src="/img/dino_diary.png" alt="dino_diary" />
+      </div>
+      <div id="HomeBubble" class="home-bubble">
+        <!-- 로그인 여부에 따라 버튼 표시 -->
+        <button type="button" v-if="!isLoggedIn" class="home-button" @click="navigateTo('/diary/tutorial')">
+          튜토리얼 보러가기
+        </button>
+        <button type="button" v-if="!isLoggedIn" class="login-button" @click="navigateTo('/login')">
+          로그인 하러가기
+        </button>
+        <button type="button" v-if="isLoggedIn" class="diarywrite-button" @click="navigateTo('/diary/write')">
+          일기 작성하기
+        </button>
+        <button type="button" v-if="isLoggedIn" class="diarycommon-button" @click="navigateTo('/diary/common')">
+          일기장 보러가기
+        </button>
       </div>
     </div>
   </div>
 </template>
-
 <script>
 import { computed } from "vue";
 import { useRouter } from "vue-router";

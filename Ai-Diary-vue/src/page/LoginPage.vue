@@ -230,13 +230,11 @@ export default {
           </div>
         </div>
         <!-- 로그인 버튼 -->
-        <button type="submit" class="login_form_button">로 그 인</button>
+      <div class="login_form_button_div">  <button type="submit" class="login_form_button">로 그 인</button></div>
       </form>
-      <div class="kakaoLoginSection">
         <button class="kakao-button" @click="kakaoLogin">
-          <img src="/img/kakao_login_large_narrow.png" alt="kakaoLogin" />
+          <img class="kakaoLoginImg" src="/img/kakao_login_large_narrow.png" alt="kakaoLogin" />
         </button>
-      </div>
     </div>
   </div>
 </template>

@@ -2,21 +2,29 @@
    import { ref, onMounted, provide, inject,computed } from "vue";
    import { useRoute } from 'vue-router';
    import axios from "axios";
+   import {  recordUrl } from '@/api/index.js';
    import Stopwatch from "./Stopwatch.vue";
    import PomodoroTimer from "./PomodoroTimer.vue"; 
    import CurrentTime from "./CurrentTime.vue"; 
- 
-  // 알람 라이브러리 notyf 사용
+   import {useAppStore } from "../store/useAppStore.js";
+   import { useTheme } from 'vuetify'
+
+   // 알람 라이브러리 notyf 사용
 
    import {Notyf} from 'notyf';
    import 'notyf/notyf.min.css';
+   const theme = useTheme()
 
    const route = useRoute();
+   const store = useAppStore();
 
+   function toggleTheme() {
+     store.toggleDarkMode() // 상태만 토글
+     theme.global.name.value = store.isDarkMode ? 'dark' : 'light' // vuetify 테마 적용
+   }
    const isPomoRoute = computed(() =>
        ['/pomoLogin', '/pomoMain'].includes(route.path)
    )
-   // import { apiUrl } from "@/api/index.js";
    // 알람객체 생성
    const notyf = new Notyf();
    // 다크모드, 시간표시,카카오 로그인 이후로 뽀모도로&타이머 페이지 진입 가능 활성화 변수 생성 
@@ -40,18 +48,15 @@
    function checkServerTime() {
       axios.get(`/api/timer/now`)
         .then(() => {
-        // console.log("서버 시간:", response.data);
-           isTimeVisible.value = true;  
+           isTimeVisible.value = true;
 // 서버 연결 성공하면 보임
        })
        .catch(error => {
          console.error(error);
          isTimeVisible.value = false;  // 서버 안되면 숨김
-         // this.nowTime = new Date().toLocaleTimeString(); 
 // 서버가 실행 안되면 현재 시간을 브라우저에서 받는다
        });
     }
-   
    // 기록 전송
    async function sendAllRecords() {
    // 인증값=> 카카오로 나에게 보내기 기능에서 토큰 필요
@@ -81,6 +86,8 @@
        requestData.pomodoroTotalTime = pomoSession.value * 25;
      }
      requestData.kakaoAccessToken = kakaoAccessToken;
+     requestData.recordUrl = recordUrl;
+
      console.log("보내는 데이터 확인:", requestData);
 
      if (Object.keys(requestData).length === 0) {
@@ -99,7 +106,6 @@
        notyf.success("카카오톡으로 기록을 보냈어요!");
      } catch (error) {
        console.error("전송 실패!", error);
-       // handleSendError(error);
      }
    }
 
@@ -150,6 +156,12 @@
      checkServerTime();
   const  kakaoAccessToken = localStorage.getItem('kakaoAccessToken');
     console.log('카카오 토큰:', kakaoAccessToken);
+     const saved = localStorage.getItem('isDarkMode')
+     if (saved) {
+       store.isDarkMode = saved === 'true'  // ✅ 이렇게 해야 해요!
+       theme.global.name.value = store.isDarkMode ? 'dark' : 'light'
+       document.documentElement.classList.toggle('dark', store.isDarkMode)
+     }
      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
        isDarkMode.value = true;
        document.documentElement.classList.add("dark");
@@ -164,7 +176,7 @@
     <!-- /pomoLogin, /pomoMain 일 때만 배경 표시 -->
     <img
         v-if="isPomoRoute"
-        :src="isDarkModeComputed ? '/img/back_dark.svg' : '/img/back.svg'"
+        src="/img/back.svg"
         class="background-image"
         alt="배경"
     />
@@ -180,10 +192,12 @@
          카카오톡으로 기록 보내기
          </button>
       </div>
-      <!-- 다크모드 버튼 -->
-      <button @click="toggleDarkMode" class="toggleMode" >
-      {{ isDarkMode ? "🌞 라이트 모드" : "🌙 다크 모드" }}
+      <!-- 다크모드 버튼 useTheme(vuetify) 와 pinia의 store기능으로 상태관리-->
+    <div class="pomobutton_section">
+      <button  class="pomobutton" @click="toggleTheme">
+        {{ store.isDarkMode ? '🌙 다크모드' : '🌞 라이트모드' }}
       </button>
+    </div>
       <!--알림-->
    </div>
 </template>

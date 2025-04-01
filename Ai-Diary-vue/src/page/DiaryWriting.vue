@@ -149,9 +149,9 @@ export default {
           <form>
             <div class="diaryWritingTitle">✍ 감정 다이어리 작성</div>
             <!-- 날짜 입력 -->
+            <label>일기 날짜</label>
             <div class="write_section1">
               <Datepicker id="datepickerInput" v-model="diaryContentData.date" :format="'yyyy-MM-dd'" :auto-apply="true" :locale="'ko'"/>
-              <label>일기 날짜</label>
             </div>
             <!-- 작성자 & 제목 입력 -->
             <div class="section">
@@ -193,7 +193,11 @@ export default {
             </div>
             <!-- 저장 버튼 -->
             <div class="write_button_section">
-              <button type="button" class="save-button" @click="onClickSaveDiary">📝 기록하기</button>
+              <button type="button" class="save-button" @click="onClickSaveDiary">
+                <span class="save-button_t">
+                  📝 기록하기
+                </span>
+              </button>
             </div>
           </form>
         </div>

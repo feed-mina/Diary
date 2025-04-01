@@ -78,8 +78,9 @@ export default {
           <form>
             <div class="tutorialTitle">
               <div v-tooltip="'튜토리얼 페이지입니다. 메뉴에 마우스를 올려보세요.'">
-                <!-- <span class="tutorialHighlight">
-                </span> -->
+                <div class="tutorialHighlight">
+                  <img class="tutorialImg" src="/img/jingu2.svg" alt="dino_diary" />
+                </div>
               </div>
             </div>
             <div class="tutorial_noDalle">

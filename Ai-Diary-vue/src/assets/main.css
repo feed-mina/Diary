@@ -40,11 +40,6 @@ button {
     transition: 0.3s;
 }
 
-button:hover {
-    transform: scale(1.05);
-    background-color: #f9e9e9;
-    color: black;
-}
 
 button.active {
     color: #fff;
@@ -109,133 +104,32 @@ button:hover {
     gap: 1rem; /* 버튼 간격 */
 }
 
-/* ========== Footer 스타일 ========== */
-
-.footer {
-    margin-bottom: -4rem;
-    position: absolute;
-    bottom: 0;
-    width: 110%;
-    /* width: 100%; */
-    height: 3rem;
-    background-color: black;
-    color: white;
-    text-align: center;
-    line-height: 3rem;
-    /* padding: 10px 0; */
-    /* margin-top: 1rem; */
-}
-
-/* ========== Header 스타일 ========== */
-.header {
-    background-color: #4a90e2;
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-
-.toggleMode {
-    background-color: #FADADD;
-    border: none;
-    border-radius: 10px;
-    transform: scale(1.05);
-    font-weight: 600;
-    font-style: italic;
-    font-size: 1.5em;
-    margin-top: 2rem;
-    padding: 0.7rem;
-}
-
-.timer h2 {
-    font-size: 2.5em;
-}
-
-.kakaosendbutton {
-    background-color: #F8BBD0;
-    border: none;
-    border-radius: 10px;
-    margin: 5px;
-    transition: all 0.3s ease;
-    font-size: 1.5em;
-    font-weight: 600;
-    padding: 0.7rem;
-    transform: scale(1.05);
-}
-.kakaosendbutton:hover {
-    background-color: #FEE500;
-    border: none;
-    border-radius: 10px;
-    margin: 5px;
-    border-radius: 10px;
-    font-size: 1.5em;
-    font-weight: 600;
-    padding: 0.7rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    transform: scale(1.05);
-}
-.notification {
-    background-color: yellow;
-    padding: 10px;
-}
-
-.logo {
-    display: block;
-    margin: 0 auto 2rem;
-}
-
-
-.main-content {
-    height: 70%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* 상단 정렬 */
-    width: 100%;
-}
-
-
-.home-bubble {
-    margin-top: 2rem;
-    width: 30rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background: #e0f7fa;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.home-button,
-.login-button,
-.diarywrite-button,
-.diarycommon-button {
-    margin: 10px;
-    padding: 10px 1rem;
-    background: #00796b;
-    color: white;
-    border-radius: 1rem;
-}
-
-.home {
-    display: flex;
-    justify-content: center;
-    /*align-items: flex-start;  */
-    height: 100vh;
-    background-color: #f8f9fa;
-    padding: 1rem;
-}
-
-button:hover {
-    background-color: #f9e9e9;
-    color: black;
-    transition: 0.3s;
-}
 @media (max-width: 767px) {
+.login_form_button_div{
+    display: flex;
+    justify-content: center;
+}
+    .stopwatchButton,
+    .pomobutton,
+    .kakaosendbutton,
+    .toggleMode,
+    .login_form_button {
+
+        background-color: #FDBFBC;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 20px;
+        margin: 5px;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .kakaoLoginImg{
+        width:11rem;
+        height:3rem;
+    }
 
     .tutorial {
         padding: 1rem;
@@ -411,8 +305,22 @@ button:hover {
     }
 
     .home-bubble {
+        height: 10rem;
+        margin-top: 2rem;
         align-items: center;
         width: 15rem;
+        color: #fff;
+        font-size: 1rem;
+        font-weight: bold;
+        border-radius: 2rem;
+
+    }
+
+    .diaryhome{
+        padding-top: 2rem;
+    }
+    .diaryImg{
+        border-radius: 3rem;
     }
 
     .diarywrite-button,
@@ -504,6 +412,10 @@ button:hover {
     .stopwatch {
         text-align: center;
     }
+    .login_form_button_div{
+        display: flex;
+        justify-content: center;
+    }
     .stopwatchButton,
     .pomobutton,
     .kakaosendbutton,
@@ -521,8 +433,7 @@ button:hover {
     }
 
     .stopwatchButton:hover,
-    .pomobutton:hover,
-    .kakaosendbutton:hover {
+    .pomobutton:hover{
         background-color: #F8BBD0;
         transform: scale(1.05);
     }
@@ -616,9 +527,26 @@ button:hover {
         padding: 10px 16px;
     }
 
+    .stopwatch,
+    .formattedTime,
+    .stopwatchButton,
+    .currentTime,
+    .pomodoro,
+    .pomobutton,
+    .kakaosendbutton,
+    .pomobutton_section,
+    .pomobutton{
+        z-index:4;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
+
+    .kakaoLoginImg{
+        width:12rem;
+        height:3rem;
+    }
+
     .tutorial {
         padding: 2rem;
         flex-direction: column;
@@ -680,16 +608,6 @@ button:hover {
         font-size: 1rem;
         padding: 0.8rem 1rem;
     }
-
-
-
-    /*
-    .diaryListSection {
-        display: flex;
-        gap: 10px;
-        width: 100%;
-        max-width: 30rem;
-    }  */
 
     .diaryListSection {
         display: grid;
@@ -782,7 +700,8 @@ button:hover {
     .page-wrap {
         display: flex;
         flex-direction: row;
-        align-content: center;
+        align-items: flex-start;
+        /*align-content: center;*/
         align-items: center;
         box-sizing: border-box;
         width: 100%;
@@ -872,6 +791,7 @@ button:hover {
     .kakaosendbutton,
     .toggleMode,
     .login_form_button {
+        width: 12rem;
         background-color: #FDBFBC;
         border: none;
         border-radius: 10px;
@@ -884,8 +804,8 @@ button:hover {
     }
 
     .stopwatchButton:hover,
-    .pomobutton:hover,
-    .kakaosendbutton:hover {
+    .pomobutton:hover {
+        width: 12rem;
         background-color: #F8BBD0;
         transform: scale(1.05);
     }
@@ -950,11 +870,13 @@ button:hover {
     }
     .dark .stopwatchButton:hover,
     .dark .pomobutton:hover {
+        width: 12rem;
         background-color: #F8BBD0;
         transform: scale(1.05);
     }
     .dark .stopwatchButton,
     .dark .pomobutton{
+        width: 12rem;
         background-color: #333;
         color: #fff;
         border-radius: 50px;
@@ -971,6 +893,17 @@ button:hover {
         padding: 10px 16px;
     }
 
+    .stopwatch,
+    .formattedTime,
+    .stopwatchButton,
+    .currentTime,
+    .pomodoro,
+    .pomobutton,
+    .kakaosendbutton,
+    .pomobutton_section,
+    .pomobutton{
+        z-index:4;
+    }
 }
 
 @media (hover: hover) {
@@ -981,13 +914,6 @@ button:hover {
 /* ========== SignupPage 컴포넌트 스타일 ========== */
 
 @media (min-width: 1024px) {
-    /*
-      body {
-          display: flex;
-          place-items: center;
-      }
-
-     */
     html, body {
         margin: 0;
         padding: 0;
@@ -1091,11 +1017,26 @@ button:hover {
         transition: all 0.3s ease;
     }
 
-    .kakao-button:hover {
-        /*background-color: #ffde00;*/
-        transform: scale(1.05);
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-        margin-bottom: 3rem;
+
+    .login_form_button_div{
+        display: flex;
+        justify-content: center;
+    }
+    .stopwatchButton,
+    .pomobutton,
+    .kakaosendbutton,
+    .toggleMode,
+    .login_form_button {
+        width: 12rem;
+        background-color: #FDBFBC;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 20px;
+        margin: 5px;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
     }
 
     .write_section1{
@@ -1115,6 +1056,19 @@ button:hover {
 
     .write_button_section {
         margin-bottom: 15px;
+    }
+
+
+    .stopwatch,
+    .formattedTime,
+    .stopwatchButton,
+    .currentTime,
+    .pomodoro,
+    .pomobutton,
+    .kakaosendbutton,
+    .pomobutton_section,
+    .pomobutton{
+        z-index:4;
     }
 }
 
@@ -1285,7 +1239,7 @@ button:hover {
 }
 
 .diaryTuto {
-    padding-top: 1.5em;
+    padding-left: 1rem;
     width: 90%; /* 화면 크기 따라 자동 조정 */
     display: flex;
     flex-direction: column; /* 수직 정렬 */
@@ -1296,12 +1250,27 @@ button:hover {
 
 .diaryTuto input,
 textarea {
+    margin-bottom: 0.5rem;
     border-radius: 0.3125em;
     background: #eee7db;
     border: 0 solid black;
     font-size: 1em;
 }
 
+.tutorialHighlight{
+    width: 100%;
+    max-height: 150px; /* 적당한 높이로 제한 */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+.tutorialImg{
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    z-index: 1; /* 기본값 */
+}
 .tutorial_container {
     margin: 0;
     width: 100%;
@@ -1504,27 +1473,10 @@ textarea {
     align-items: center;
     gap: 10px;
 }
-
-
 .button-group {
     display: flex;
     gap: 10px;
 }
-
-button {
-    padding: 10px 1rem;
-    border-radius: 1em;
-    background: #eee7db;
-    color: black;
-    cursor: pointer;
-    font-size: 1rem;
-}
-
-button.active {
-    color: #fff;
-    background: #A5778F;
-}
-
 .saveDiary {
     display: flex;
     flex-direction: column;
@@ -1538,7 +1490,6 @@ button.active {
     font-weight: bold;
     color: #fff;
     border: #A5778F;
-    border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s;
@@ -1606,6 +1557,7 @@ button.active {
 
 /* 모바일 대응 */
 @media (max-width: 480px) {
+
     .code-box {
         width: 2.2rem;
         height: 2.2rem;
@@ -1616,10 +1568,26 @@ button.active {
         font-size: 1rem;
         padding: 10px 18px;
     }
+    .stopwatch,
+    .formattedTime,
+    .stopwatchButton,
+    .currentTime,
+    .pomodoro,
+    .pomobutton,
+    .kakaosendbutton,
+    .pomobutton_section,
+    .pomobutton{
+        z-index:4;
+    }
 
     .email-verification {
         padding: 1rem;
     }
+
+    .pomobutton_section{
+        padding-bottom: 3rem;
+    }
+
 }
 .message {
     margin-top: 1rem;
@@ -1692,19 +1660,6 @@ button.active {
 }
 
 
-/*.kakao-button_pomo {*/
-/*    width: 100%;*/
-/*    background-color: #fee500;*/
-/*    color: #3c1e1e;*/
-/*    border: none;*/
-/*    border-radius: 12px;*/
-/*    !*padding: 18px 2.5rem;*!*/
-/*    font-size: 1rem;*/
-/*    font-weight: bold;*/
-/*    cursor: pointer;*/
-/*    margin-bottom: 3rem;*/
-/*    transition: all 0.3s ease;*/
-/*}*/
 .login_form_box {
     height: 90%;
     display: flex;
@@ -1743,6 +1698,10 @@ button.active {
     outline: none;
 }
 
+.login_form_button_div{
+    display: flex;
+    justify-content: center;
+}
 
 .login_form_button {
     width: 100%;
@@ -1757,21 +1716,21 @@ button.active {
     transition: background-color 0.3s ease;
 }
 
-.login_form_button:hover {
-    background-color: #357abd;
-}
+
 
 .login_form-oo {
     font-size: 0.9rem;
     color: red;
     margin-top: 0.5rem;
 }
-
+.save-button_t{
+    color:#fff;
+}
 .save-button {
     width: 100%;
     padding: 10px;
     background: #00796b;
-    color: white;
+
     border-radius: 5px;
     font-weight: bold;
 }
@@ -1808,16 +1767,15 @@ button.active {
 .filter-section {
     display: flex;
     justify-content: flex-end;
-    padding: 10px;
+    padding: 2rem;
 }
 
 .filter-checkbox {
-    display: flex;
-    align-items: center;
+    text-align: center;
     background-color: cadetblue;
     color: white;
-    padding: 10px;
-    border-radius: 5px;
+    padding: 1rem;
+    border-radius: 15px;
     cursor: pointer;
 }
 
@@ -1927,9 +1885,6 @@ button.active {
     transition: background-color 0.3s;
 }
 
-.button:hover {
-    background-color: #357abd;
-}
 
 .button.warning {
     background-color: #ff5733;
@@ -2170,11 +2125,16 @@ button.active {
 .stopwatch {
     text-align: center;
 }
+.login_form_button_div{
+    display: flex;
+    justify-content: center;
+}
 .stopwatchButton,
 .pomobutton,
 .kakaosendbutton,
 .toggleMode,
 .login_form_button {
+    width: 12rem;
     background-color: #FDBFBC;
     border: none;
     border-radius: 10px;
@@ -2187,8 +2147,7 @@ button.active {
 }
 
 .stopwatchButton:hover,
-.pomobutton:hover,
-.kakaosendbutton:hover {
+.pomobutton:hover{
     background-color: #F8BBD0;
     transform: scale(1.05);
 }
@@ -2272,4 +2231,137 @@ button.active {
     color: #fff;
     border-radius: 50px;
     padding: 10px 16px;
+}
+
+
+
+/* ========== Footer 스타일 ========== */
+
+.footer {
+    margin-bottom: -4rem;
+    position: absolute;
+    bottom: 0;
+    width: 110%;
+    /* width: 100%; */
+    height: 3rem;
+    background-color: black;
+    color: white;
+    text-align: center;
+    line-height: 3rem;
+    /* padding: 10px 0; */
+    /* margin-top: 1rem; */
+}
+
+/* ========== Header 스타일 ========== */
+.header {
+    background-color: #4a90e2;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+.toggleMode {
+    background-color: #FADADD;
+    border: none;
+    border-radius: 10px;
+    transform: scale(1.05);
+    font-weight: 600;
+    font-style: italic;
+    font-size: 1.5em;
+    margin-top: 2rem;
+    padding: 0.7rem;
+}
+
+.timer h2 {
+    font-size: 2.5em;
+}
+
+.kakaosendbutton {
+    width: 18rem;
+    background-color: #F8BBD0;
+    border: none;
+    border-radius: 10px;
+    margin: 3rem;
+    transition: all 0.3s ease;
+    font-size: 1.5em;
+    font-weight: 600;
+    padding: 0.7rem;
+    transform: scale(1.05);
+}
+.notification {
+    background-color: yellow;
+    padding: 10px;
+}
+
+.logo {
+    display: block;
+    margin: 0 auto 2rem;
+}
+
+.main-content {
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* 상단 정렬 */
+    width: 100%;
+}
+
+.diaryhome{
+    padding-top: 2rem;
+}
+.diaryImg{
+    border-radius: 3rem;
+}
+
+.home-bubble {
+    height: 10rem;
+    margin-top: 2rem;
+    width: 15rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #e0f7fa;
+    border-radius: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.home-button,
+.login-button,
+.diarywrite-button,
+.diarycommon-button {
+    margin: 10px;
+    padding: 10px 1rem;
+    background: #00796b;
+    border-radius: 1rem;
+    color: #fff;
+}
+
+.home {
+    display: flex;
+    justify-content: center;
+    /*align-items: flex-start;  */
+    height: 100vh;
+    background-color: #f8f9fa;
+    padding: 1rem;
+}
+.formattedTime,
+.stopwatchButton,
+.currentTime,
+.pomodoro,
+.pomobutton,
+.kakaosendbutton
+{
+    z-index: 3;
+}
+
+.pomobutton_section{
+    padding-bottom: 3rem;
 }

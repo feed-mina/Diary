@@ -1,6 +1,8 @@
 <script>
 import { onMounted, watch, computed, ref} from 'vue'; // 사용하지 않는 reactive, onMounted 삭제
 import { useRoute } from 'vue-router';
+import { useTheme } from 'vuetify';
+
 import Home from '@/page/Home.vue';
 import NotFound from '@/page/NotFound.vue';
 import DiaryList from "@/page/DiaryList.vue";
@@ -9,7 +11,7 @@ import DiaryNav from "@/components/DiaryNav.vue";
 import DiaryFooter from "@/components/Footer.vue"
 import axios from "axios";
 import { apiUrl } from "@/api/index.js";
-// import './assets/style.css';
+import {useAppStore } from "./store/useAppStore.js";
 
 import './assets/main.css';
 export default {
@@ -20,8 +22,13 @@ export default {
   },
   setup() {
     const route = useRoute(); // 현재 라우트 정보 가져오기
+    const theme = useTheme();
+    const store = useAppStore();
 
 
+    function toggleDarkMode() {
+      theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+    }
     function updateBodyClass(path) {
       const root = document.documentElement // 또는 document.body
       if (path === '/pomoLogin' || path === '/pomoMain') {
@@ -95,6 +102,7 @@ export default {
       return route.path === '/pomoLogin' || route.path === '/pomoMain';
     });
     return {
+      store,
       isPomoPage,
     };
   },
@@ -105,8 +113,9 @@ export default {
 
 <template>
   <v-app>
-    <div class="main-wrap">
-      <div class="page-wrap">
+    <div :class="store.isDarkMode ? '' : 'main-wrap'">
+
+    <div class="page-wrap">
         <!-- DiaryNav: pomoLogin, pomoMain 페이지가 아닐 때만 표시 -->
         <DiaryNav v-if="!isPomoPage"/> <!--왼쪽 고정 네비게이션-->
         <div class="content-wrap">

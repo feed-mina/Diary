@@ -161,8 +161,10 @@ public class KakaoController {
         Integer pomodoroCount = (Integer) data.getOrDefault("pomodoroCount", 0);
         Integer pomodoroTotalTime = (Integer) data.getOrDefault("pomodoroTotalTime", 0);
 
+        String recordUrl = (String) data.getOrDefault("recordUrl", "https://justsaying.co.kr");
         log.info("📌 stopwatchTime: {}초, pomodoroCount: {}회, pomodoroTotalTime: {}분",
                 stopwatchTime, pomodoroCount, pomodoroTotalTime);
+        log.info(" recordUrl: {}", recordUrl);
 
         // ✅ 메시지 구성
         StringBuilder message = new StringBuilder();
@@ -191,11 +193,12 @@ public class KakaoController {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("template_object", "{"
-                + "\"object_type\":\"text\","
-                + "\"text\":\"" + messageText + "\","
-                + "\"link\":{\"web_url\":\"https://www.kakao.com\"}"
-                + "}");
+        params.add("template_object", "{" +
+                "\"object_type\":\"text\"," +
+                "\"text\":\"" + messageText + "\"," +
+                "\"link\":{\"web_url\":\"" + recordUrl + "\",\"mobile_web_url\":\"" + recordUrl + "\"}}"
+        );
+
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
 

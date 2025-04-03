@@ -56,6 +56,7 @@ public class DiaryRequest {
 
     private String author;
     private Integer emotion;
+    private String diaryType;
 
     public Diary toDiary() {
         return Diary.builder()
@@ -73,6 +74,7 @@ public class DiaryRequest {
                 .diaryStatus(this.diaryStatus)
                 .author(this.author)
                 .emotion(this.emotion)
+                .diaryType(this.diaryType)
                 .build();
     }
 

@@ -104,48 +104,6 @@ public class DiaryController {
         }
     }
 
-    @GetMapping("/getDiaryItem/{diaryId}")
-    public ResponseEntity<?> getDiaryById(@PathVariable Long  diaryId, @RequestHeader(value = "X-Current-User-Id", required = false) String currentUserId,  @RequestParam(value = "userId", required = false) String userId, HttpServletRequest request) {
-        System.out.println("@@@ getDiaryItem 다이어리 컨트롤러 로직 진입");
-        System.out.println("@@@ getDiaryItem diaryId"+diaryId);
-        System.out.println("@@@ getDiaryItem userId"+userId);
-        System.out.println("@@@ getDiaryItem currentUserId"+currentUserId);
-        System.out.println("@@@ getDiaryItem request"+request);
-        if (userId == null) {
-            return ResponseEntity.badRequest().body(null); // userId 없으면 오류 응답
-        }
-        // 현재 사용자의 고유번호를 가져옴
-        // 🚨 본인만 볼 수 있도록 차단하는 코드 추가
-        if (!userId.equals(currentUserId)) {
-            System.out.println("@@@다른 사용자의 일기를 조회할 권한이 없습니다 : " + currentUserId);
-            //            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("다른 사용자의 일기를 조회할 권한이 없습니다.");
-        }
-
-
-        DiaryRequest diaryReq = new DiaryRequest();
-        // diaryId로 데이터를 검색하는 로직
-        // 요청 객체에 사용자 고유 번호를 세팅
-        diaryReq.setDiaryId(diaryId);
-        diaryReq.setUserId(userId);
-
-        System.out.println("@@@5--diaryReq:: " + diaryReq);
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            DiaryResponse diaryItem = diaryService.viewDiaryItem(diaryReq);
-//            Set<DiaryResponse> diaryItem = diaryService.findDiaryById(diaryReq);
-            System.out.println("@@@6--selectDiaryList 서비스:: " + diaryItem);
-            response.put("diaryItem", diaryItem);
-            System.out.println("@@@7--selectDiaryListresponse:: " + response);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-
-            System.out.println("@@@INTERNAL_SERVER_ERROR : " + e.getMessage());
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-            return ResponseEntity.ok(response);
-        }
-    }
-
     @GetMapping("/viewDiaryItem/{diaryId}")
     @ResponseBody
     public ResponseEntity<?> viewDiaryItem(@PathVariable("diaryId") Long diaryId, @RequestParam(value = "userId", required = false) String userId,  @RequestHeader(value = "X-Current-User-Id", required = false) String currentUserId,  @RequestHeader(value = "Authorization", required = false) String authorizationHeader, HttpServletRequest request) {

@@ -43,6 +43,10 @@ public class DiaryService {
     public PageInfo<DiaryResponse> selectDiaryList(String userId, int pageNo, int pageSize) {
         System.out.println("@@@다이어리 서비스 selectDiaryList진입");
 //        PageHelper.startPage(pageNo, pageSize);
+
+        int totalCount = diaryMapper.countDiaryList(userId); // ⭐️ 이 메서드 필요
+
+
         List<DiaryResponse> diaryResponseList;
         int offset = (pageNo - 1) * pageSize; // ✅ OFFSET 미리 계산
         System.out.println("@@@offset: " + offset);
@@ -51,7 +55,12 @@ public class DiaryService {
             diaryResponseList = diaryMapper.selectDiaryList(userId, pageSize, offset) ;
             System.out.println("@@@1--diaryResponseList:: " + diaryResponseList);
             // PageInfo 객체로 페이징 결과를 반환
-            return new PageInfo<>(diaryResponseList);
+            PageInfo<DiaryResponse> pageInfo = new PageInfo<>(diaryResponseList);
+            pageInfo.setPageNum(pageNo);
+            pageInfo.setPageSize(pageSize);
+            pageInfo.setTotal(totalCount);  // ⭐️ 전체 일기 개수 꼭 넣기!
+
+            return pageInfo;
         } catch (Exception e) {
             System.err.println("Error fetching diary list: " + e.getMessage());
             throw new RuntimeException("일기를 조회하는 도중 오류가 발생했습니다.", e);
@@ -137,7 +146,8 @@ public class DiaryService {
                 .tag2(diaryRequest.getTag2() != null ? diaryRequest.getTag2() : "")
                 .tag3(diaryRequest.getTag3() != null ? diaryRequest.getTag3() : "")
                 .emotion(diaryRequest.getEmotion() != null ? diaryRequest.getEmotion() : 0)
-                .diaryStatus(diaryRequest.getDiaryStatus() != null ? diaryRequest.getDiaryStatus() : "false")
+                .diaryStatus(diaryRequest.getDiaryStatus() != null ? diaryRequest.getDiaryStatus() : "true")
+                .diaryType(diaryRequest.getDiaryType() != null ? diaryRequest.getDiaryType() : "N")
                 .frstRegIp(ip != null ? ip : "127.0.0.1")
                 .build();
 

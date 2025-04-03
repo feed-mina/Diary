@@ -39,12 +39,14 @@ export default {
       tags: { tag1: "", tag2: "", tag3: "" },
       emotion: "",
       content: "",
-      hidden: true, // 기본적으로 비공개
+      diaryType: "Y", // 탈퇴한회원잡기
+      diaryStatus: true, // 기본적으로 비공개
     });
 
     const tagsAsMap = new Map(Object.entries(diaryContentData.tags));
     console.log("tagsAsMap :", tagsAsMap);
     const emotionItems = [
+      { text: '오늘 감정은 어떤가요?',value: ''}, // 안내 문구용 옵션
       { text: "😁 기분이 좋아요", value: "1" },
       { text: "😂 너무 웃겨요", value: "2" },
       { text: "😫 어떡해야 할까요?!", value: "3" },
@@ -76,6 +78,19 @@ export default {
 
     // ✅ 일기 저장 함수
     const onClickSaveDiary = async () => {
+      //
+      if (!diaryContentData.author || !diaryContentData.title || !diaryContentData.date || diaryContentData.emotion === "") {
+        Swal.fire("입력 오류", "작성자, 제목, 날짜, 감정지수는 반드시 입력해야 해요!", "warning");
+        return; // 저장 막기
+      } else if(!diaryContentData.author){
+        Swal.fire("입력 필요", "작성자는 반드시 입력해야 해요!", "warning");
+      } else if(!diaryContentData.date ){
+        Swal.fire("입력 필요", "날짜는 반드시 입력해야 해요!", "warning");
+      } else if(!diaryContentData.title){
+        Swal.fire("입력 필요", "제목은 반드시 입력해야 해요!", "warning");
+      } else if(!diaryContentData.emotion){
+        Swal.fire("입력 필요", "감정지수는 반드시 입력해야 해요!", "warning");
+      }
 
       let headers = {
         "Content-Type": "application/json",
@@ -100,7 +115,8 @@ export default {
         title: diaryContentData.title,
         content: diaryContentData.content,
         emotion: diaryContentData.emotion,
-        hidden: diaryContentData.hidden,
+        diaryStatus: diaryContentData.diaryStatus,
+        diaryType: "Y",
         tag1: diaryContentData.tags.tag1,
         tag2: diaryContentData.tags.tag2,
         tag3: diaryContentData.tags.tag3,
@@ -120,7 +136,6 @@ export default {
         console.log("JSON 데이터:", JSON.stringify(diaryContentData.value));
 
         if (response.data.success) {
-
           Swal.fire("기록 완료!", "일기가 저장되었습니다.", "success").then(() => {
             router.push("/diary/common");
           });
@@ -151,7 +166,7 @@ export default {
             <!-- 날짜 입력 -->
             <label>일기 날짜</label>
             <div class="write_section1">
-              <Datepicker id="datepickerInput" v-model="diaryContentData.date" :format="'yyyy-MM-dd'" :auto-apply="true" :locale="'ko'"/>
+              <Datepicker id="datepickerInput" v-model="diaryContentData.date" :format="'yyyy-MM-dd'" :auto-apply="true" :locale="'ko'"  :max-date="new Date()"/>
             </div>
             <!-- 작성자 & 제목 입력 -->
             <div class="section">
@@ -170,8 +185,9 @@ export default {
             <!-- 감정 선택 -->
             <div class="section">
               <label>감정지수</label>
-              <select v-model="diaryContentData.emotion">
-                <option v-for="emotion in emotionItems" :key="emotion.value" :value="emotion.value">
+              <select class="emotionSelect" v-model="diaryContentData.emotion">
+                <option v-for="emotion in emotionItems" :key="emotion.value" :value="emotion.value"
+                        :disabled="emotion.value === ''">
                   {{ emotion.text }}
                 </option>
               </select>
@@ -179,16 +195,16 @@ export default {
             <!-- 본문 입력 -->
             <div class="section">
               <label>일기 내용</label>
-              <textarea v-model="diaryContentData.content" rows="5" placeholder="오늘의 감정을 기록하세요"></textarea>
+              <textarea class="diaryTextarea" v-model="diaryContentData.content" rows="5" placeholder="오늘의 감정을 기록하세요"></textarea>
             </div>
             <!-- 공개 여부 선택 -->
             <div class="section_status">
               <label>공개 설정</label>
-              <button type="button" :class="{'active-button': diaryContentData.hidden}"
-                      @click.prevent="diaryContentData.hidden = true">비공개
+              <button type="button" :class="{'active-button': diaryContentData.diaryStatus}"
+                      @click.prevent="diaryContentData.diaryStatus = true">비공개
               </button>
-              <button type="button" :class="{'active-button': !diaryContentData.hidden}"
-                      @click.prevent="diaryContentData.hidden = false">공개
+              <button type="button" :class="{'active-button': !diaryContentData.diaryStatus}"
+                      @click.prevent="diaryContentData.diaryStatus = false">공개
               </button>
             </div>
             <!-- 저장 버튼 -->

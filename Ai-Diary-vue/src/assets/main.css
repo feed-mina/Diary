@@ -1159,7 +1159,6 @@ button:hover {
 .signup_form_button:hover {
     background-color: #357abd;
 }
-
 .verification_form_button {
     width: 100%; /* 버튼이 컨테이너에 맞춰짐 */
     background-color: #4a90e2;
@@ -1252,6 +1251,21 @@ button:hover {
 }
 
 .diaryView_container {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animated-fadeIn {
     animation: fadeIn 0.5s ease-in-out;
 }
 
@@ -1739,6 +1753,25 @@ textarea {
     font-size: 0.9rem;
     color: red;
     margin-top: 0.5rem;
+}
+
+
+.emotionSelect{
+    width: 100%;
+    min-height: 40px;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.diaryTextarea{
+    width: 100%;
+    min-height: 40px;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
 }
 .save-button_t{
     color:#fff;

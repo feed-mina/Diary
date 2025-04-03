@@ -63,7 +63,7 @@ public class AuthService {
 
         if (user == null) {
             log.info("아이디 실패");
-            throw new RuntimeException("존재하지 않는 아이디입니다.");
+            throw new RuntimeException("존재하지 않는 계정입니다.");
         }
 
         if ("N".equals(user.getVerifyYn())) {
@@ -94,7 +94,7 @@ public class AuthService {
                 if (ChronoUnit.DAYS.between(withdrawDate, now) < 7) {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "탈퇴 후 7일이 지나야 재가입이 가능합니다.");
                 } else {
-                    User user =  User.builder()
+                    User user = User.builder()
                             .userId(registerRequest.getEmail().split("@")[0])
                             .password(registerRequest.getPassword())
                             .hashedPassword(PasswordUtil.sha256(registerRequest.getPassword()))
@@ -102,13 +102,13 @@ public class AuthService {
                             .phone(registerRequest.getPhone())
                             .email(registerRequest.getEmail())
                             .delYn("N")
-                            .verifyYn("N")
+                            .verifyYn("Y") // 다시 인증했음으로 변경
                             .socialType("N") // 일반가입은 N!
                             .updatedAt(LocalDateTime.now())
-                            .withdrawAt(LocalDateTime.now())
+                            .withdrawAt(LocalDateTime.parse("2100-12-31 24:59:59"))
                             .build();
                     // 재가입 허용 update
-                    userMapper.reactivateUser(user); // delYn을 'N'으로 바꾸고 새로 정보 업데이트
+                    userMapper.reactivateUser(user); // delYn을 'N'으로 , verifyYn 을 'Y'로 바꾸고 새로 정보 업데이트
                     return;
                 }
             } else {
@@ -283,6 +283,8 @@ public class AuthService {
         }
         // 회원탈퇴 처리
         existingUser.setDelYn("Y");
+        existingUser.setVerifyYn("N");
+        existingUser.setVerificationCode("0000000");
         existingUser.setUpdatedAt(LocalDateTime.now());
         existingUser.setWithdrawAt(LocalDateTime.now());
         log.info("existingUser : " + existingUser);

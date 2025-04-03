@@ -1,5 +1,5 @@
 <script>
-import { onMounted, watch, computed, ref} from 'vue'; // 사용하지 않는 reactive, onMounted 삭제
+import { onMounted, watch, computed, ref} from 'vue';
 import { useRoute } from 'vue-router';
 import { useTheme } from 'vuetify';
 
@@ -52,11 +52,9 @@ export default {
     console.log("@@@@App inerceptors");
     console.log(import.meta.env.VITE_API_URL);
     console.log(import.meta.env.VUE_API_URL);
-
     // axios.defaults.baseURL = import.meta.env.VITE_APP_API_BASE_URL;
     // 서버 주소 적용
     axios.defaults.baseURL = apiUrl;  // 서버 주소 적용
-
 
 // 요청 인터셉터 추가: 모든 요청 전에 토큰을 헤더에 넣어줌
     axios.interceptors.request.use(
@@ -77,7 +75,6 @@ export default {
           } else {
             console.log(`🛑 ${config.url} 요청에는 Authorization 헤더를 추가하지 않음.`);
           }
-
           return config;
         },
         error => {
@@ -94,7 +91,6 @@ export default {
       '/notFound': NotFound,
       '/diary/common': DiaryList,
     };
-
     const currentPath = ref(window.location.hash);
 
     // pomoLogin 또는 pomoMain 페이지인지 확인

@@ -26,4 +26,6 @@ public interface DiaryMapper {
     List<DiaryResponse> selectDiaryList(@Param("userId") String userId, int pageSize, int offset);
 
     DiaryResponse selectDiaryItem(Long diaryId, String userId, char delYn);
+
+    int countDiaryList(String userId);
 }

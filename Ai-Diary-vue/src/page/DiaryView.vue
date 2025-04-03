@@ -1,8 +1,7 @@
 <script>
-import {onMounted, ref, watchEffect} from 'vue';
+import {onMounted,computed , ref, watchEffect} from 'vue';
 import {useRouter, useRoute} from 'vue-router';
 import axios from 'axios';
-// import { apiUrl } from "@/api/index.js";
 import Swal from "sweetalert2";
 import "notyf/notyf.min.css";
 export default {
@@ -83,11 +82,29 @@ export default {
       console.log("@@@@@@ onMounted");
       getDiaryItem();
     });
+
+    const formattedTags = computed(() => {
+      return [diaryData.value.tag1, diaryData.value.tag2, diaryData.value.tag3]
+          .filter(Boolean)
+          .map(tag => `#${tag}`)
+          .join(', ');
+    });
+
+    const formattedDays = computed(()=>{
+      return diaryData.date ? new Date(diaryData.date).toLocaleDateString()('ko-KR', {
+        year : 'numeric',
+        month : 'long',
+        day : 'numeric'
+      }) : '날짜 미정'
+    })
+
     return {
       diaryContent: diaryData,
       showOnlyMine,
       diaryData,
-      getEmotionText
+      formattedTags,
+      getEmotionText,
+      formattedDays
     };
   }
 }
@@ -96,16 +113,19 @@ export default {
   <div class="diaryView">
     <div class="diaryView_content">
       <div class="diaryTuto">
-        <div class="diaryView_container" v-if="diaryData">
+        <div class="diaryView_container animated-fadeIn" v-if="diaryData">
           <div class="diaryViewTitle">📖 일기 상세 보기</div>
           <div class="diaryView_noDalle">
             <p>날짜: {{ diaryData.date || '날짜 미정'}}</p>
             <p>작성자: {{ diaryData.author || '익명' }}</p>
             <p>제목: {{ diaryData.title }}</p>
             <p>내용: {{ diaryData.content }}</p>
-            <p>작성 날짜: {{ diaryData.date ? new Date(diaryData.date).toLocaleDateString() : '날짜 미정' }}</p>
+            <p>작성 날짜: {{ formattedDays }}</p>
             <p>감정 상태: {{ getEmotionText(diaryData.emotion) }}</p>
-            <p>태그: {{ [diaryData.tag1, diaryData.tag2, diaryData.tag3].filter(Boolean).join(", ") }}</p>
+            <p>
+              태그:
+              {{ formattedTags }}
+            </p>
           </div>
         </div>
         <div v-else>
@@ -115,64 +135,3 @@ export default {
     </div>
   </div>
 </template>
-<style scoped>
-.diaryView {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f5f5f5;
-  padding: 20px;
-}
-
-.diaryView_content {
-  max-width: 600px;
-  width: 100%;
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.diaryViewTitle {
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.diaryView_noDalle p {
-  font-size: 16px;
-  color: #555;
-  margin: 10px 0;
-}
-
-.diaryView_noDalle p strong {
-  font-weight: bold;
-  color: #333;
-}
-
-.diaryView_noDalle .content {
-  padding: 15px;
-  background: #f8f8f8;
-  border-radius: 8px;
-  margin-top: 10px;
-  line-height: 1.6;
-}
-
-.diaryView_container {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-</style>

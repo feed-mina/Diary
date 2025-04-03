@@ -68,9 +68,10 @@
             d.tag3,
             d.emotion,
             d.diary_status AS diaryStatus,
+            d.diary_type AS diaryType,
             d.del_yn       AS delYn,
             d.reg_dt       AS date,
-            IF(u.delYn = 'Y', '탈퇴한 회원', d.user_id) AS userId,
+            IF(u.delYn = 'Y', 'del_'+ d.user_id, d.user_id) AS userId,
             IF(u.delYn = 'Y', '탈퇴한 회원', u.username) AS username,
             IF(u.delYn = 'Y', '탈퇴한 회원', u.nickname) AS nickname,
             IF(u.delYn = 'Y', '탈퇴한 회원', d.author) AS author
@@ -95,9 +96,10 @@
             d.tag3,
             d.emotion,
             d.diary_status AS diaryStatus,
+            d.diary_type AS diaryType,
             d.del_yn       AS delYn,
             d.reg_dt       AS date,
-            IF(u.delYn = 'Y', '탈퇴한 회원', d.user_id) AS userId,
+            IF(u.delYn = 'Y', 'del_'+ d.user_id, d.user_id) AS userId,
             IF(u.delYn = 'Y', '탈퇴한 회원', u.username) AS username,
             IF(u.delYn = 'Y', '탈퇴한 회원', u.nickname) AS nickname,
             IF(u.delYn = 'Y', '탈퇴한 회원', d.author) AS author
@@ -108,7 +110,10 @@
           AND (d.del_yn = 'N' OR d.del_yn IS NULL)
     </select>
 
-
+<select id="countDiaryList" resultType="int">
+    SELECT COUNT(*)
+    FROM diary
+</select>
 
 
 </mapper>

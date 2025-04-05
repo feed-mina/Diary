@@ -20,6 +20,11 @@
     </properties>
 
     <dependencies>
+        <!-- Spring Boot Starter JPA (데이터베이스 연동 + JPA 엔티티 사용) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
 
         <!-- Spring Boot 기본 의존성 -->
         <dependency>
@@ -124,6 +129,16 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.36</version>
         </dependency>
 
     </dependencies>

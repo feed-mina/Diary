@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -46,6 +47,7 @@ public class Diary {
     private String roleNm;
     private String lastUpdtIp;
     private BigInteger lastUpdtUspsSqno;
+    private List selectedTimes;
 
     public Diary toDiary() {
         return Diary.builder()
@@ -69,7 +71,7 @@ public class Diary {
     }
 
     @Builder
-    public Diary(Long diaryId, String title, String content, Map tags, String tag1, String tag2, String tag3, String date, String userId, String email,String username, Long userSqno, String sbsceDt, String lastUpdtDt, String roleCd, String roleNm, LocalDateTime regDt, LocalDateTime updtDt, String diaryStatus, String diaryType, String delYn, LocalDateTime delDt, LocalDateTime frstRegDt, String frstRegIp, String lastUpdtIp, BigInteger frstRgstUspsSqno, BigInteger lastUpdtUspsSqno, String author, Integer emotion) {
+    public Diary(Long diaryId, String title, String content, Map tags, String tag1, String tag2, String tag3, String date, String userId, String email,String username, Long userSqno, String sbsceDt, String lastUpdtDt, String roleCd, String roleNm, LocalDateTime regDt, LocalDateTime updtDt, String diaryStatus, String diaryType, String delYn, LocalDateTime delDt, LocalDateTime frstRegDt, String frstRegIp, String lastUpdtIp, BigInteger frstRgstUspsSqno, BigInteger lastUpdtUspsSqno, String author, Integer emotion, List selectedTimes) {
         this.diaryId = diaryId;
         this.title = title;
         this.content = content;
@@ -91,6 +93,7 @@ public class Diary {
         this.regDt = regDt;
         this.author = author;
         this.emotion = emotion;
+        this.selectedTimes = selectedTimes;
     }
 
 }

@@ -1,6 +1,6 @@
 <script  setup>
    import { ref, onMounted, provide, inject,computed } from "vue";
-   import { useRoute } from 'vue-router';
+   import { useRouter,useRoute } from 'vue-router';
    import axios from "axios";
    import {  recordUrl } from '@/api/index.js';
    import Stopwatch from "./Stopwatch.vue";
@@ -15,9 +15,13 @@
    import 'notyf/notyf.min.css';
    const theme = useTheme()
 
-   const route = useRoute();
+   const router  = useRouter();
+
+   const route  = useRoute();
    const store = useAppStore();
 
+   const email = localStorage.getItem('email');
+   const kakaoAccessToken = localStorage.getItem('kakaoAccessToken');
    function toggleTheme() {
      store.toggleDarkMode() // 상태만 토글
      theme.global.name.value = store.isDarkMode ? 'dark' : 'light' // vuetify 테마 적용
@@ -149,7 +153,38 @@
    const isDarkModeComputed = computed(() => {
      return document.documentElement.classList.contains("dark");
    });
-   
+
+   // userId 또는 kakaoAccessToken이 있으면 로그인 상태
+   const isLoggedIn = computed(() => {
+     return !!email || !!kakaoAccessToken;
+   });
+
+
+   const isKakaoLogin = computed(()=>{
+     return  !!kakaoAccessToken;
+   })
+   const logout = () => {
+     // ✅ `localStorage`에서 로그인 정보 삭제
+     localStorage.removeItem("userId");
+     localStorage.removeItem("jwtToken");
+     localStorage.removeItem("email");
+     localStorage.removeItem("password");
+     localStorage.removeItem("kakaoAccessToken");
+     localStorage.removeItem("nickname");
+     localStorage.removeItem("accessToken");
+     localStorage.removeItem("refreshToken");
+
+     // ✅ 홈으로 이동 후 새로고침
+     router.push("/pomoLogin").then(() => {
+       location.reload();
+     });
+   };
+
+   console.log('isKakaoLogin : ', isKakaoLogin.value);
+   console.log('isNormalUser : ', isKakaoLogin.value);
+   console.log("Saved kakaoToken:", localStorage.getItem("kakaoToken"));
+   console.log("Saved jwtToken:", localStorage.getItem("jwtToken"));
+
    onMounted(() => {
      document.title = "뽀모도로";
      checkServer();
@@ -166,13 +201,16 @@
        isDarkMode.value = true;
        document.documentElement.classList.add("dark");
      }
+     return {
+       isLoggedIn,
+       logout
+     };
    });
 
    provide('isTimeVisible', isTimeVisible);
 </script>
 <template>
   <div class="mainView" :class="{ dark: isDarkModeComputed }">
-
     <!-- /pomoLogin, /pomoMain 일 때만 배경 표시 -->
     <img
         v-if="isPomoRoute"
@@ -182,6 +220,14 @@
     />
     <CurrentTime/>
       <h1>🕒 스탑워치 & 뽀모도로</h1>
+
+    <button class="pomoLogoutButton" v-if="isLoggedIn" @click="logout">
+      <img
+          src="/img/tomatoEmogi.png"
+          class="tomatoEmogi"
+          alt="토마토로그아웃"
+      />
+    </button>
       <!-- 스탑워치 -->
       <Stopwatch />
       <!-- 뽀모도로 -->

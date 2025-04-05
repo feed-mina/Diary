@@ -1,39 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="ai_diary_db@localhost" uuid="b0c0a5a2-0249-40f9-86f3-d847fcc4248a">
-      <driver-ref>mysql_aurora</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mariadb://localhost:3306/ai_diary_db</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-        <property name="com.intellij.clouds.kubernetes.db.container.port" />
-      </jdbc-additional-properties>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="ai_diary_db@15.165.179.197" uuid="a7b22b88-55a3-4c4d-9d91-ffba0936d2a6">
+    <data-source source="LOCAL" name="ai_diary_db@localhost" uuid="ebcaec14-7915-4237-9115-c773ad04cecf">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
-      <remarks>$PROJECT_DIR$/Ai-Diary-server/src/main/resources/application-ec2.properties</remarks>
+      <remarks>$PROJECT_DIR$/Ai-Diary-server/src/main/resources/application.properties</remarks>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://15.165.179.197:3306/ai_diary_db?useSSL=false&amp;allowPublicKeyRetrieval=true</jdbc-url>
-      <jdbc-additional-properties>
-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
-        <property name="com.intellij.clouds.kubernetes.db.container.port" />
-      </jdbc-additional-properties>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="ai_diary_db@127.0.0.1" uuid="56f68e9b-5ad2-4549-af2b-2816f9f7f2ad">
-      <driver-ref>mysql.8</driver-ref>
-      <synchronize>true</synchronize>
-      <imported>true</imported>
-      <remarks>$PROJECT_DIR$/Ai-Diary-server/src/main/resources/application-ec2.properties</remarks>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://127.0.0.1:3306/ai_diary_db?useSSL=false&amp;allowPublicKeyRetrieval=true</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/ai_diary_db?useSSL=false&amp;allowPublicKeyRetrieval=true</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />

@@ -53,6 +53,15 @@ async function kakaoLogin()  {
 
           if (jwtToken) {
             localStorage.setItem("jwtToken", jwtToken);
+            // localStorage.setItem("accessToken", jwtToken.accessToken);
+            // localStorage.setItem("refreshToken", jwtToken.refreshToken);
+            const jwtToken2 = localStorage.getItem('jwtToken');
+            const accessToken = localStorage.getItem('accessToken');
+            const refreshToken = localStorage.getItem('refreshToken');
+            console.log("@@@@@kakaoAccessToken"+kakaoAccessToken)
+            console.log("@@@@@accessToken"+accessToken)
+            console.log("@@@@@refreshToken"+refreshToken)
+            console.log("@@@@@jwtToken2"+jwtToken2)
           } else {
             console.log("⚠️ 서버에서 JWT 토큰이 안 왔어!");
           }

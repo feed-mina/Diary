@@ -41,6 +41,7 @@ export default {
       content: "",
       diaryType: "Y", // 탈퇴한회원잡기
       diaryStatus: true, // 기본적으로 비공개
+      selectedTimes: [],  // 선택한 시간 저장!
     });
 
     const tagsAsMap = new Map(Object.entries(diaryContentData.tags));
@@ -120,6 +121,7 @@ export default {
         tag1: diaryContentData.tags.tag1,
         tag2: diaryContentData.tags.tag2,
         tag3: diaryContentData.tags.tag3,
+        selectedTimes: [] // 추가!
       };
 
       try {
@@ -167,6 +169,11 @@ export default {
             <label>일기 날짜</label>
             <div class="write_section1">
               <Datepicker id="datepickerInput" v-model="diaryContentData.date" :format="'yyyy-MM-dd'" :auto-apply="true" :locale="'ko'"  :max-date="new Date()"/>
+            </div>
+
+
+            <div class="timeSelect">
+              TimeSelect
             </div>
             <!-- 작성자 & 제목 입력 -->
             <div class="section">

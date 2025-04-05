@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -57,6 +58,7 @@ public class DiaryRequest {
     private String author;
     private Integer emotion;
     private String diaryType;
+    private List<Integer> selectedTimes;
 
     public Diary toDiary() {
         return Diary.builder()
@@ -75,6 +77,7 @@ public class DiaryRequest {
                 .author(this.author)
                 .emotion(this.emotion)
                 .diaryType(this.diaryType)
+                .selectedTimes(this.selectedTimes)
                 .build();
     }
 

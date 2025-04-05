@@ -69,13 +69,15 @@ export default {
           password: loginData.value.password,
         });
 
-        const token = response.data;
+        const { accessToken, refreshToken } = response.data;
         let [userId] = loginData.value.email.split("@");
         console.log("@@@ 일반 로그인 응답 response:", response);
 
         console.log("@@@@ 일반 로그인 토큰 저장");
         localStorage.setItem("userId", userId);
-        localStorage.setItem("jwtToken", token);
+        localStorage.setItem("jwtToken", accessToken);
+        localStorage.setItem("accessToken", accessToken); // ✅ 오직 accessToken만!
+        localStorage.setItem("refreshToken", refreshToken); // ✅ refresh도 따로!
         localStorage.setItem("email", loginData.value.email);
         localStorage.setItem("password", loginData.value.password);
 

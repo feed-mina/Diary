@@ -3,12 +3,15 @@ package com.domain.demo_backend.controller;
 
 import com.domain.demo_backend.service.AuthService;
 import com.domain.demo_backend.service.KakaoService;
+import com.domain.demo_backend.token.domain.RefreshToken;
+import com.domain.demo_backend.token.domain.RefreshTokenRepository;
 import com.domain.demo_backend.user.domain.User;
 import com.domain.demo_backend.user.dto.KakaoAuthRequest;
 import com.domain.demo_backend.user.dto.KakaoAuthResponse;
 import com.domain.demo_backend.user.dto.KakaoUserInfo;
 import com.domain.demo_backend.user.dto.RegisterRequest;
 import com.domain.demo_backend.util.JwtUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,16 +27,19 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 @RestController
 @RequestMapping("/api/kakao")
+@Tag(name = " 카카오 로그인 컨트롤러", description = "카카오 로그인, 나에게 보내기 ")
 public class KakaoController {
     private final Logger log = LoggerFactory.getLogger(KakaoController.class);
     // application.properties 에 있는 값 불러오기
 
+    private final RefreshTokenRepository refreshTokenRepository;
     private final KakaoService kakaoService;
     private final JwtUtil jwtUtil;
 
     // 생성자 주입
     @Autowired
-    public KakaoController(KakaoService kakaoService, JwtUtil jwtUtil) {
+    public KakaoController(RefreshTokenRepository refreshTokenRepository, KakaoService kakaoService, JwtUtil jwtUtil) {
+        this.refreshTokenRepository = refreshTokenRepository;
         this.kakaoService = kakaoService;
         this.jwtUtil = jwtUtil;
     }

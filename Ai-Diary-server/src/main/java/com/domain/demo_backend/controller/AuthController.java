@@ -1,12 +1,18 @@
 package com.domain.demo_backend.controller;
 
 import com.domain.demo_backend.service.AuthService;
+import com.domain.demo_backend.token.domain.RefreshToken;
+import com.domain.demo_backend.token.domain.RefreshTokenRepository;
+import com.domain.demo_backend.token.domain.TokenResponse;
 import com.domain.demo_backend.user.dto.*;
 import com.domain.demo_backend.util.JwtUtil;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.PostConstruct;
 import jakarta.mail.MessagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,19 +26,28 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-@Tag(name = "회원 권한 로직 컨트롤러", description = "로그인, 회원가입 (-- 로그아웃, 회원탈퇴, kakao OAuth2추가 예정 --)")
+@Tag(name = "회원 권한 로직 컨트롤러", description = "로그인, 회원가입 (-- 로그아웃, 회원탈퇴, 회원가입, 비밀번호 변경, 이메일 인증/재인증 , 회원탈퇴")
 public class AuthController {
+    @PostConstruct
+    public void init() {
+        System.out.println("✅✅ refreshTokenRepository: " + refreshTokenRepository);
+    }
 
 
     private final Logger log = LoggerFactory.getLogger(AuthController.class);
     private Map<String, String> emailVerificationMap = new HashMap<>();
-
+    private JwtUtil jwtUtil;
     private final AuthService authService;
+
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
 
     // 생성자 주입
     @Autowired
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, JwtUtil jwtUtil) {
+        this.refreshTokenRepository = refreshTokenRepository;
         this.authService = authService;
+        this.jwtUtil = jwtUtil;
     }
 
     @Operation(summary = "회원 로그인", description = "id와 password와 haspassword가 일치하다면 로그인, 아니면 팝업 경고창이 뜬다.")
@@ -45,14 +60,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
-            String jwtToken =  authService.login(loginRequest);
+            TokenResponse tokenResponse = authService.login(loginRequest);
             log.info("로그인 성공");
 //            return ResponseEntity.ok(new LoginResponse(jwt));
             // 회원가입 대신 카카오 로그인을 사용한다면 > clientId, kakaoAcessToken 을 password, HashedPassword로 저장하기
-
-
             // 3. JWT 발급 또는 성공 메시지 반환
-            return ResponseEntity.ok(jwtToken);
+            return ResponseEntity.ok(tokenResponse);
         } catch (RuntimeException e) {
             // 명확한 에러 메시지 반환
             Map<String, String> errorResponse = new HashMap<>();
@@ -223,4 +236,36 @@ public class AuthController {
     }
 
 
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(@RequestBody Map<String, String> request) {
+        try {
+            String refreshToken = request.get("refreshToken");
+
+            // 1. 토큰 유효성 먼저 검증 (jwtUtil에서 만료 체크)
+            log.info("@@@@@  토큰 유효성 먼저 검증 ");
+            Claims claims = jwtUtil.validateToken(refreshToken);
+            String email = claims.getSubject();
+            //  2. DB에 저장된 리프레시 토큰과 비교
+            log.info("@@@@@ DB에 저장된 리프레시 토큰과 비교");
+        RefreshToken saved = refreshTokenRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("DB에 토큰이 없어요"));
+
+            if (!saved.getRefreshToken().equals(refreshToken)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("리프레시 토큰이 유효하지 않아요");
+            }
+            //3. 새 Access Token 발급
+            log.info("@@@@@  새 Access Token 발급");
+            String newAccessToken = jwtUtil.createAccessToken(email);
+            // 따로 함수 분리해도 되고, generateTokens 중 Access 부분만 발급해도 OK
+
+            return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
+
+        } catch (ExpiredJwtException e) {
+            log.info("@@@@@ 리프레시 토큰이 만료");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("리프레시 토큰이 만료됐어요. 다시 로그인 해주세요!");
+        } catch (Exception e) {
+            log.info("@@@@@ 토큰 오류");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("토큰 오류: " + e.getMessage());
+        }
+    }
 }

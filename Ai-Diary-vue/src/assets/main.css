@@ -393,7 +393,13 @@ button:hover {
         min-height: 100vh;
         object-fit: cover;
     }
-
+    .pomoLogoutButton{
+         /*z-index:9;*/
+    }
+.tomatoEmogi{
+    width: 100px;
+    height: 100px;
+}
     .container {
         text-align: center;
     }
@@ -491,7 +497,14 @@ button:hover {
         min-height: 100vh;
         object-fit: cover;
     }
+    .pomoLogoutButton{
+         /*z-index:9;*/
+    }
 
+    .tomatoEmogi{
+    width: 100px;
+    height: 100px;
+    }
     /*backdrop-filter: blur(5px);  흐림 효과 */
     /*filter: brightness(0.7) contrast(1.2);  */
     /*mix-blend-mode: darken;*/
@@ -548,6 +561,12 @@ button:hover {
     .pomobutton_section,
     .pomobutton{
         z-index:4;
+    }
+
+    .time-slide {
+        min-width: 70px;
+        font-size: 14px;
+        padding: 10px;
     }
 }
 
@@ -766,6 +785,13 @@ button:hover {
         object-fit: cover;
     }
 
+    .pomoLogoutButton{
+         /*z-index:9;*/
+    }
+    .tomatoEmogi{
+    width: 100px;
+    height: 100px;
+    }
 
     .mainView > *:not(.background-image) {
         position: relative;
@@ -2151,6 +2177,14 @@ textarea {
 }
 
 
+.pomoLogoutButton{
+     /*z-index:9;*/
+}
+.tomatoEmogi{
+    width: 100px;
+    height: 100px;
+}
+
 .container {
     text-align: center;
 }
@@ -2419,4 +2453,118 @@ textarea {
 
 .pomobutton_section{
     padding-bottom: 3rem;
+}
+/* App.vue 또는 TimeSelect.vue style 안에 추가 */
+.swiper * {
+    font-family: 'Noto Sans KR', sans-serif !important;
+}
+
+.mySwiper {
+    width: 100%;
+}
+
+.time-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px !important;
+    height: 50px;
+    margin: 5px;
+    background-color: #ffe08c;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.time-slide {
+    width: auto !important;
+    min-width: 60px;
+    max-width: 80px;
+    padding: 12px;
+    background-color: #ffe08c;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+    min-width: 80px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.time-slide.selected {
+    background-color: #9b59b6;
+    color: white;
+}
+.time-slide.disabled {
+    background-color: #ccc;
+    color: #999;
+    pointer-events: none;
+    text-decoration: line-through;
+}
+
+.time-select-swiper {
+    position: relative;
+    padding: 20px;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.swiper-nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+    display: none !important; /* Swiper 기본 화살표 없애기 */
+}
+.swiper-button-prev {
+    left: -20px; /* 위치 조정 */
+    content: '←';
+}
+
+.swiper-button-next {
+    right: -20px;
+    content: '→';
+}
+.swiper-button-prev,
+.swiper-button-next {
+    position: absolute;
+    top: 40%;
+    z-index: 10;
+    font-size: 24px;
+    color: #9b59b6;
+    font-weight: bold;
+    background: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+.time_legend {
+    margin-top: 10px;
+    font-size: 14px;
+}
+.time_legend .box {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    border-radius: 3px;
+}
+.time_yellow {
+    background-color: #ffe08c;
+}
+.time_purple {
+    background-color: #9b59b6;
+}
+.time_gray {
+    background-color: #ccc;
+}
+
+.pomoLogoutButton {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
 }

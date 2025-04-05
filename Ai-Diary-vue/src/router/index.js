@@ -17,6 +17,8 @@ import EditNewPassword from "@/page/EditNewPassword.vue";
 import LoginView from '../components/LoginView.vue';
 import MainView from '../components/MainView.vue';
 import EmailVerificationPage from '@/page/VerificationPage.vue';
+import TimeSelect from '../components/TimeSelect.vue';
+
 const requireAuth = process.env.VUE_APP_REQUIRE_AUTH === "true"; // Boolean 변환
 
 
@@ -31,6 +33,8 @@ const routes = [
     {path: "/memberOut", name: "MemberOutPage", component: MemberOutPage},
     {path: "/agreementPolicy", name: "AgrrementPolicy", component: AgrrementPolicy},
     {path: "/diary/write", name: "DiaryWriting", component: DiaryWriting},
+    {path: "/timeSelect", name: "TimeSelect", component: TimeSelect},
+
     {path: "/diary/view/:diaryId", name: "DiaryView", component: DiaryView},
     {path: "/diary/common", name: "DiaryList", component: DiaryList},
     {path: "/mypage/confirmPassword", name: "ConfirmPassword", component: ConfirmPassword},

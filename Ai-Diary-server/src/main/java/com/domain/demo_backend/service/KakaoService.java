@@ -2,6 +2,9 @@ package com.domain.demo_backend.service;
 
 import com.domain.demo_backend.controller.KakaoController;
 import com.domain.demo_backend.mapper.UserMapper;
+import com.domain.demo_backend.token.domain.RefreshToken;
+import com.domain.demo_backend.token.domain.RefreshTokenRepository;
+import com.domain.demo_backend.token.domain.TokenResponse;
 import com.domain.demo_backend.user.domain.User;
 import com.domain.demo_backend.user.dto.KakaoUserInfo;
 import com.domain.demo_backend.util.JwtUtil;
@@ -19,17 +22,22 @@ import org.springframework.web.client.RestTemplate;
 
 import java.awt.desktop.SystemEventListener;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Map;
 @Service
 public class KakaoService {
+    private final RefreshTokenRepository refreshTokenRepository;
     private final JwtUtil jwtUtil;
     private final UserMapper userMapper;
     private final Logger log = LoggerFactory.getLogger(KakaoService.class);
 
-    public KakaoService(JwtUtil jwtUtil, UserMapper userMapper) {
+    public KakaoService(RefreshTokenRepository refreshTokenRepository, JwtUtil jwtUtil, UserMapper userMapper) {
+        this.refreshTokenRepository = refreshTokenRepository;
         this.userMapper = userMapper;
         this.jwtUtil = jwtUtil;
     }
+
     public KakaoUserInfo getKakaoUserInfo(String accessToken){
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -84,6 +92,8 @@ public class KakaoService {
 
     @Transactional
     public String  registerKakaoUser(KakaoUserInfo kakaoUserInfo, String accessToken){
+        Date date = new Date();
+        LocalDateTime ldt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         log.info("registerKakaoUser 진입 , 이메일이 있는지 확인 : " );
         // DB에서 같은 이메일이 있는지 확인해
         if(userMapper.findByUserEmail(kakaoUserInfo.getEmail()) != null){
@@ -93,13 +103,18 @@ public class KakaoService {
 
             User extiUser = userMapper.findByUserEmail(kakaoUserInfo.getEmail());
             System.out.println("@@@@@@@@@userMapper.findByUSerEmail"+extiUser);
-
-
-            String jwtToken = jwtUtil.createToken(kakaoUserInfo.getEmail(),kakaoUserInfo.getHashedPassword(), String.valueOf(kakaoUserInfo.getUserId()));
+            TokenResponse tokenResponse  =  jwtUtil.generateTokens(
+                    kakaoUserInfo.getEmail(),
+                    kakaoUserInfo.getHashedPassword(),
+                    String.valueOf(kakaoUserInfo.getUserId())
+            );
+            // JWT 토큰을 생성해 반환해
+            String jwtToken = "Bearer " + tokenResponse.getAccessToken();
+            log.info("jwtToken: " + jwtToken);
+            System.out.println("@@@@@@@@@jwtToken"+jwtToken);
             return jwtToken;
 
         }
-
         // 새로운 사용자 객체 생성 (빌더 패턴 사용)
         User user = User.builder()
                 .userId(kakaoUserInfo.getEmail().split("@")[0])
@@ -112,7 +127,7 @@ public class KakaoService {
                 .role("ROLE_USER")
                 .verifyYn("Y") // 카카오는 이미 인증이 완료됐으니까 'Y'를 설정해
                 .socialType("K") // 카카오의 소셜 타입은 'K'
-                .createdAt(LocalDateTime.now())
+                .createdAt(ldt)
                 .build();
 
         System.out.println("@@@ kakao_login_user.getUserSqno() != null"  + user.getUserSqno() != null);
@@ -123,16 +138,20 @@ public class KakaoService {
             userMapper.insertUser(user);
 
             // JWT 토큰을 생성해 반환해
-            String jwtToken =  jwtUtil.createToken(user.getEmail(),user.getHashedPassword(), user.getUserId() );
+            TokenResponse tokenResponse  =  jwtUtil.generateTokens(user.getEmail(),user.getHashedPassword(), user.getUserId() );
+            String jwtToken = "Bearer " + tokenResponse.getAccessToken();
+            log.info("jwtToken: " + jwtToken);
             return jwtToken;
         } else {
+            log.info("user: " + user);
+            log.info("user Mapper insertUser 시작");
             // 사용자 정보를 DB에 저장해
             userMapper.insertUser(user);
-
             // JWT 토큰을 생성해 반환해
-            String jwtToken =  jwtUtil.createToken(user.getEmail(),user.getHashedPassword(), user.getUserId() );
+            TokenResponse tokenResponse  =  jwtUtil.generateTokens(user.getEmail(),user.getHashedPassword(), user.getUserId() );
+            String jwtToken = "Bearer " + tokenResponse.getAccessToken();
+            log.info("jwtToken: " + jwtToken);
             return jwtToken ;
-//            throw new RuntimeException("userSqno가 null입니다.");
         }
     }
 

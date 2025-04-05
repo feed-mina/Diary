@@ -1,8 +1,8 @@
 package com.domain.demo_backend.service;
 
 
-import com.domain.demo_backend.controller.KakaoController;
 import com.domain.demo_backend.mapper.UserMapper;
+import com.domain.demo_backend.token.domain.TokenResponse;
 import com.domain.demo_backend.user.domain.User;
 import com.domain.demo_backend.user.dto.KakaoUserInfo;
 import com.domain.demo_backend.user.dto.LoginRequest;
@@ -18,18 +18,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.Random;
 
 @Service
@@ -50,7 +49,7 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public String login(LoginRequest loginRequest) {
+    public TokenResponse login(LoginRequest loginRequest) {
         // 탈퇴한 유저가 delYn ='N' 이면 계정정보가 없다 . 또는 에러가 나면 계정정보가 없다라고 떠야한다.
 
 
@@ -76,7 +75,14 @@ public class AuthService {
         }
         log.info("JWT 성공");
         // 비밀번호를 포함하지 않은 사용자 정보를 JWT에 포함 users의 값은 전부 받아온다.
-        return jwtUtil.createToken(user.getEmail(),user.getHashedPassword(), user.getUserId() );
+//        return jwtUtil.createToken(user.getEmail(),user.getHashedPassword(), user.getUserId() );
+        TokenResponse jwtToken = jwtUtil.generateTokens(
+                user.getEmail(),
+                user.getHashedPassword(),
+                String.valueOf(user.getUserId())
+        );
+        return jwtToken;
+
     }
 
 
@@ -85,6 +91,10 @@ public class AuthService {
     @Transactional
     public void register(RegisterRequest registerRequest) {
         User reactiveUser = userMapper.findByUserEmail(registerRequest.getEmail());
+
+        Date date = new Date();
+        LocalDateTime ldt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
         if (reactiveUser != null) {
             if ("Y".equals(reactiveUser.getDelYn())) {
                 // 기존 탈퇴 유저 - 재가입 처리
@@ -104,7 +114,7 @@ public class AuthService {
                             .delYn("N")
                             .verifyYn("Y") // 다시 인증했음으로 변경
                             .socialType("N") // 일반가입은 N!
-                            .updatedAt(LocalDateTime.now())
+                            .updatedAt(ldt)
                             .withdrawAt(LocalDateTime.parse("2100-12-31 24:59:59"))
                             .build();
                     // 재가입 허용 update
@@ -138,7 +148,7 @@ public class AuthService {
                 .role("ROLE_USER")
                 .verifyYn("N") // 카카오는 인증 완료니까 Y!
                 .socialType("N") // 일반가입은 N!
-                .createdAt(LocalDateTime.now())
+                .createdAt(ldt)
                 .build();
         log.info("user: " + user);
         log.info("user Mapper insertUser 시작");
@@ -241,40 +251,12 @@ public class AuthService {
         userMapper.updateVerificationCode(email, verificationCode);
         resendEmail(email, verificationCode);
     }
-    @Transactional
-    public User registerKakaoUser(KakaoUserInfo kakaoUserInfo, String accessToken){
-        // 기존 유저 조회
-        User existingUser = userMapper.findByUserEmail(kakaoUserInfo.getEmail());
-        if(existingUser != null){
-            // 기존회원 socailType 이 N이면 sosialType 업데이트
-            if(!"K".equals(existingUser.getSocialType())){
-                existingUser.setSocialType("K/N");
-                existingUser.setPassword(accessToken);
-                existingUser.setHashedPassword(PasswordUtil.sha256(accessToken));
-                userMapper.updateUserSocialType(existingUser);
-            }
-            return existingUser;
-        }
-
-        // 세로운 회원 등록
-        User user = User.builder()
-                .password(accessToken)
-                .hashedPassword(PasswordUtil.sha256(accessToken))
-                .email(kakaoUserInfo.getEmail())
-                .username(kakaoUserInfo.getNickname())
-                .role("ROLE_USER")
-                .verifyYn("Y")
-                .socialType("K")
-                .createdAt(LocalDateTime.now())
-                .build();
-
-        userMapper.insertUser(user);
-        return user;
-    }
 
     // 이미 존재하는 사용자인지 email(외래키),jwtToken 확인하고  update문으로 delyn,updateAt 값 변경
     @Transactional
     public void nonMember(RegisterRequest registerRequest) {
+        Date date = new Date();
+        LocalDateTime ldt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         log.info("@@@@@회원탈퇴 서비스 진입 email: " + registerRequest.getEmail());
         User existingUser = userMapper.findByUserEmail(registerRequest.getEmail());
         if (existingUser == null) {
@@ -285,8 +267,8 @@ public class AuthService {
         existingUser.setDelYn("Y");
         existingUser.setVerifyYn("N");
         existingUser.setVerificationCode("0000000");
-        existingUser.setUpdatedAt(LocalDateTime.now());
-        existingUser.setWithdrawAt(LocalDateTime.now());
+        existingUser.setUpdatedAt(ldt);
+        existingUser.setWithdrawAt(ldt);
         log.info("existingUser : " + existingUser);
         log.info("user Mapper nonMember 시작");
         userMapper.nonMember(existingUser);
@@ -295,6 +277,8 @@ public class AuthService {
 
     @Transactional
     public void editPassword(PasswordDto passwordDto) {
+        Date date = new Date();
+        LocalDateTime ldt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         log.info("@@@@@비밀변호 변경 서비스 진입 email: " + passwordDto.getEmail());
         User existingUser = userMapper.findByUserEmail(passwordDto.getEmail());
         if (existingUser == null) {
@@ -304,13 +288,13 @@ public class AuthService {
         // 비밀변호 변경 처리
         // 현재 있는 비밀번호를 delete 후 값을 새로 insert 해야 할까 아니면
         // update 쿼리를 써야할까
-        existingUser.setUpdatedAt(LocalDateTime.now());
+        existingUser.setUpdatedAt(ldt);
         // 비밀번호 암호화
         String newHashedPassword  = PasswordUtil.sha256(passwordDto.getNewPassword());
 
         existingUser.setPassword(passwordDto.getCheckNewPassword());
         existingUser.setHashedPassword(newHashedPassword);
-        existingUser.setUpdatedAt(LocalDateTime.now());
+        existingUser.setUpdatedAt(ldt);
         userMapper.editPassword(existingUser); // 기존 레코드를 update
 
         System.out.println("existingUser : " + existingUser);

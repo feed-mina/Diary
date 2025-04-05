@@ -1,5 +1,10 @@
 package com.domain.demo_backend.util;
 
+import com.domain.demo_backend.mapper.UserMapper;
+import com.domain.demo_backend.token.domain.RefreshToken;
+import com.domain.demo_backend.token.domain.RefreshTokenRepository;
+import com.domain.demo_backend.token.domain.TokenResponse;
+import com.domain.demo_backend.user.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -17,6 +22,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.spec.KeySpec;
+import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Date;
 
@@ -36,52 +42,100 @@ public class JwtUtil {
 
     private static final String SECRET_KEY = "mySuperSecretKey"; // 🔹 비밀키 (32바이트)
     private static final String SALT = "mySaltValue"; // 🔹 SALT 값
+    private final RefreshTokenRepository refreshTokenRepository;
+    // Access Token: 1시간
+    private static final long ACCESS_TOKEN_VALIDITY = 1000L * 60 * 60; // 1시간
+
+    // Refresh Token: 7일
+    private static final long REFRESH_TOKEN_VALIDITY = 1000L * 60 * 60 * 24 * 7; // 7일
+
+    private final UserMapper userMapper;
+    public JwtUtil(UserMapper userMapper,RefreshTokenRepository refreshTokenRepository) {
+        this.userMapper = userMapper;
+        this.refreshTokenRepository = refreshTokenRepository;
+    }
 
     @PostConstruct
     public void init() {
-
         this.secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret));
         System.out.println("issuer 값: " + issuer);
 
     }
-//    public String generateToken(String userId, boolean useKakaoIssuer) {
-//        String tokenIssuer = useKakaoIssuer ? "https://kauth.kakao.com" : this.issuer; // Kakao 발급자 사용 여부에 따라 설정
-//        return Jwts.builder()
-//                .setSubject(userId)
-//                .setIssuer(issuer)
-//                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
-//                .signWith(SignatureAlgorithm.HS256, secretKey)
-//                .compact();
-//    }
-
-//    public String generateToken(String username, BigInteger userSqno) {
-//        return Jwts.builder()
-//                .setSubject(username)
-//                .claim("userSqno", userSqno.toString()) // 사용자 고유 식별자 추가
-//                .setIssuedAt(new Date())
-//                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10시간 유효
-//                .signWith(secretKey, SignatureAlgorithm.HS256) // secretKey 사용
-//                .compact();
-//    }
 
     // 토큰생성
-    public String createToken(String email, String hashedPassword, String userId) {
+    /*
+    *
+    public TokenResponse createToken(String email, String hashedPassword, String userId) {
         if (userId == null) {
             throw new IllegalArgumentException("unique_userId값이 존재하지 않습니다.");
         }
         Claims claims = Jwts.claims().setSubject(email);
         Date now = new Date();
-        Date validity = new Date(now.getTime() + 1000 * 60 * 60 * 24);
 
-        return Jwts.builder()
+        Date accessExp = new Date(now.getTime() + ACCESS_TOKEN_VALIDITY);
+        Date refreshExp = new Date(now.getTime() + REFRESH_TOKEN_VALIDITY);
+
+
+        String accessToken = Jwts.builder()
                 .setClaims(claims)
                 .claim("email", email) // 사용자 고유 식별자 추가
                 .claim("hashedPassword", hashedPassword)
                 .claim("userId", userId) //
                 .setIssuedAt(now)
-                .setExpiration(validity)
+                .setExpiration(accessExp)
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
+
+        String refreshToken = Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(now)
+                .setExpiration(refreshExp)
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
+
+        return new TokenResponse(accessToken, refreshToken);
+    }
+*/
+    // 토큰생성
+    public TokenResponse generateTokens(String email, String hashedPassword, String userId) {
+        Date now = new Date();
+
+        Date accessExp = new Date(now.getTime() + ACCESS_TOKEN_VALIDITY);
+        Date refreshExp = new Date(now.getTime() + REFRESH_TOKEN_VALIDITY);
+
+        Claims claims = Jwts.claims().setSubject(email);
+
+
+        if (email == null) {
+            throw new IllegalArgumentException("unique_userId값이 존재하지 않습니다.");
+        }
+
+        String accessToken = Jwts.builder()
+                .setClaims(claims)
+                .claim("email", email) // 사용자 고유 식별자 추가
+                .claim("hashedPassword", hashedPassword)
+                .claim("userId", userId) //
+                .setIssuedAt(now)
+                .setExpiration(accessExp)
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
+
+        String refreshToken = Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(now)
+                .setExpiration(refreshExp)
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
+
+        User user = userMapper.findByUserEmail(email); // 꼭 이 시점에 조회해야 userSqno 나옴!
+        refreshTokenRepository.save(new RefreshToken(
+                user.getUserSqno(), // ✅ 꼭 넣어줘야 해!
+                email,
+                refreshToken,
+                refreshExp.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime() // 한국날짜로 변환
+        ));
+
+        return new TokenResponse(accessToken, refreshToken);
     }
 
     public Claims validateToken(String token) {
@@ -142,6 +196,46 @@ public class JwtUtil {
         KeySpec spec = new PBEKeySpec(SECRET_KEY.toCharArray(), SALT.getBytes(), 65536, 256);
         SecretKey secretKey = factory.generateSecret(spec);
         return new SecretKeySpec(secretKey.getEncoded(), "AES");
+    }
+/*
+*
+    public String refreshAccessToken(String refreshToken) {
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(refreshToken)
+                    .getBody();
+
+            // Refresh Token이 만료되지 않았다면 새로운 Access Token 발급
+            Date now = new Date();
+            Date accessTokenValidity = new Date(now.getTime() + 1000L * 60 * 60 * 24); // 24시간
+
+            return Jwts.builder()
+                    .setClaims(claims)
+                    .setIssuedAt(now)
+                    .setExpiration(accessTokenValidity)
+                    .signWith(secretKey, SignatureAlgorithm.HS256)
+                    .compact();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("Refresh Token이 만료되었거나 잘못된 토큰입니다.");
+        }
+    }
+    * */
+
+    public String createAccessToken(String email) {
+        Claims claims = Jwts.claims().setSubject(email);
+        Date now = new Date();
+        Date accessExp = new Date(now.getTime() + 1000L * 60 * 60); // 1시간
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(accessExp)
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
     }
 
 }

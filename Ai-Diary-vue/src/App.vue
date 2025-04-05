@@ -24,11 +24,10 @@ export default {
     const route = useRoute(); // 현재 라우트 정보 가져오기
     const theme = useTheme();
     const store = useAppStore();
+    // function toggleDarkMode() {
+    //   theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+    // }
 
-
-    function toggleDarkMode() {
-      theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
-    }
     function updateBodyClass(path) {
       const root = document.documentElement // 또는 document.body
       if (path === '/pomoLogin' || path === '/pomoMain') {
@@ -37,7 +36,6 @@ export default {
         root.classList.remove('pomo-mode')
       }
     }
-
 
 // 처음 들어올 때도 적용
     onMounted(() => {
@@ -58,10 +56,11 @@ export default {
 
 // 요청 인터셉터 추가: 모든 요청 전에 토큰을 헤더에 넣어줌
     axios.interceptors.request.use(
-        config => {
+        async (config) => {
           const excludeUrls = ["/api/timer/now", "/api/timer/health"]; // 제외할 API 목록
           const isExcluded = excludeUrls.some((url) => config.url.includes(url));
           let token = localStorage.getItem("jwtToken") || localStorage.getItem("kakaoAccessToken");
+
           console.log("🌐 현재 페이지:", window.location.href);
           console.log("🧪 로컬스토리지 토큰:", token);
           if (!isExcluded) {
@@ -77,11 +76,26 @@ export default {
           }
           return config;
         },
-        error => {
+        async (error) => {
           if (error.response && error.response.status === 401) {
+            try {
+              const refreshToken = localStorage.getItem('refreshToken');
+              const res = await axios.post('/api/auth/refresh', { refreshToken });
+              const newAccessToken = res.data.accessToken;
+             console.log("@@@@@newAccessToken"+newAccessToken)
+              localStorage.setItem('accessToken', newAccessToken);
+            //  localStorage.setItem("jwtToken", tokenResponse.accessToken); // ✅ 오직 accessToken만 저장
+            //  localStorage.setItem("refreshToken", tokenResponse.refreshToken); // ✅ refresh도 따로 저장
+
+              // 원래 요청 다시 보내기
+              error.config.headers.Authorization = `Bearer ${newAccessToken}`;
+              return instance.request(error.config);
+            } catch (err) {
             console.log("🚨 401 Unauthorized 발생 - 로그인 페이지로 리디렉트");
             alert("로그인이 필요합니다.");
+              return Promise.reject(err);
           }
+        }
           return Promise.reject(error);
         }
     );

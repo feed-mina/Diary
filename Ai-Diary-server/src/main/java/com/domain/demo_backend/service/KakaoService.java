@@ -128,6 +128,8 @@ public class KakaoService {
                 .verifyYn("Y") // 카카오는 이미 인증이 완료됐으니까 'Y'를 설정해
                 .socialType("K") // 카카오의 소셜 타입은 'K'
                 .createdAt(ldt)
+                .sleepUsingType("N")
+                .drugUsingType("N")
                 .build();
 
         System.out.println("@@@ kakao_login_user.getUserSqno() != null"  + user.getUserSqno() != null);

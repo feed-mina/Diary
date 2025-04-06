@@ -69,7 +69,7 @@ export default {
           password: loginData.value.password,
         });
 
-        const { accessToken, refreshToken } = response.data;
+        const { accessToken, refreshToken , sleepUsingType, drugUsingType} = response.data;
         let [userId] = loginData.value.email.split("@");
         console.log("@@@ 일반 로그인 응답 response:", response);
 
@@ -81,6 +81,11 @@ export default {
         localStorage.setItem("email", loginData.value.email);
         localStorage.setItem("password", loginData.value.password);
 
+        localStorage.setItem("sleepUsingType", sleepUsingType);
+        localStorage.setItem("drugUsingType", drugUsingType);
+
+        // localStorage.setItem("sleepUsingType", "Y");
+        // localStorage.setItem("drugUsingType", "Y");
         Swal.fire("로그인 성공", "로그인을 완료했습니다", "success");
         router.push("/diary/common").then(() => {
           location.reload(); // 페이지 새로고침

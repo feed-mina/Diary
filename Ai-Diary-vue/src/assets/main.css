@@ -1772,8 +1772,11 @@ textarea {
     }
 
     .diaryWriting_content {
-        padding: 0 1rem;
+        overflow: visible;
+        position: relative;
+        z-index: 1;
     }
+
 
     .diaryWritingTitle {
         font-size: 18px;
@@ -2708,4 +2711,14 @@ textarea {
 .swiper-button-prev::after,
 .swiper-button-next::after {
     display: none !important; /* Swiper 기본 화살표 없애기 */
+}
+.diaryWriting_content {
+    overflow: visible;
+    position: relative;
+    z-index: 1;
+}
+.write_section1 {
+    overflow: visible !important;
+    position: relative;
+    z-index: 2;
 }

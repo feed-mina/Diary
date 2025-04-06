@@ -47,9 +47,9 @@ export default {
     watch(() => route.path, (newPath) => {
       updateBodyClass(newPath)
     })
-    console.log("@@@@App inerceptors");
-    console.log(import.meta.env.VITE_API_URL);
-    console.log(import.meta.env.VUE_API_URL);
+    // console.log("@@@@App inerceptors");
+    // console.log(import.meta.env.VITE_API_URL);
+    // console.log(import.meta.env.VUE_API_URL);
     // axios.defaults.baseURL = import.meta.env.VITE_APP_API_BASE_URL;
     // 서버 주소 적용
     axios.defaults.baseURL = apiUrl;  // 서버 주소 적용
@@ -61,18 +61,18 @@ export default {
           const isExcluded = excludeUrls.some((url) => config.url.includes(url));
           let token = localStorage.getItem("jwtToken") || localStorage.getItem("kakaoAccessToken");
 
-          console.log("🌐 현재 페이지:", window.location.href);
-          console.log("🧪 로컬스토리지 토큰:", token);
+          // console.log("🌐 현재 페이지:", window.location.href);
+          // console.log("🧪 로컬스토리지 토큰:", token);
           if (!isExcluded) {
             if (token) {
-              console.log("📡 Axios 인터셉터 실행 로그인 전 - JWT Token:", token);
+              // console.log("📡 Axios 인터셉터 실행 로그인 전 - JWT Token:", token);
               if (!token.startsWith("Bearer ")) {
                 token = `Bearer ${token}`;
               }
               config.headers["Authorization"] = token;
             }
           } else {
-            console.log(`🛑 ${config.url} 요청에는 Authorization 헤더를 추가하지 않음.`);
+            // console.log(`🛑 ${config.url} 요청에는 Authorization 헤더를 추가하지 않음.`);
           }
           return config;
         },
@@ -82,7 +82,7 @@ export default {
               const refreshToken = localStorage.getItem('refreshToken');
               const res = await axios.post('/api/auth/refresh', { refreshToken });
               const newAccessToken = res.data.accessToken;
-             console.log("@@@@@newAccessToken"+newAccessToken)
+             // console.log("@@@@@newAccessToken"+newAccessToken)
               localStorage.setItem('accessToken', newAccessToken);
             //  localStorage.setItem("jwtToken", tokenResponse.accessToken); // ✅ 오직 accessToken만 저장
             //  localStorage.setItem("refreshToken", tokenResponse.refreshToken); // ✅ refresh도 따로 저장
@@ -91,7 +91,7 @@ export default {
               error.config.headers.Authorization = `Bearer ${newAccessToken}`;
               return instance.request(error.config);
             } catch (err) {
-            console.log("🚨 401 Unauthorized 발생 - 로그인 페이지로 리디렉트");
+            // console.log("🚨 401 Unauthorized 발생 - 로그인 페이지로 리디렉트");
             alert("로그인이 필요합니다.");
               return Promise.reject(err);
           }
@@ -99,6 +99,21 @@ export default {
           return Promise.reject(error);
         }
     );
+
+    axios.interceptors.response.use(
+        response => response,
+        error => {
+          if (error.response && error.response.status === 401) {
+            // ✅ 로그아웃 처리 + 로그인 페이지 이동
+            alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+            localStorage.removeItem('jwtToken'); // 저장된 토큰 삭제
+            router.push('/login'); // 로그인 페이지로 이동
+          }
+          return Promise.reject(error);
+        }
+    );
+
+
     // 라우터 튜토리얼
     const routes = {
       '/': Home,

@@ -76,6 +76,7 @@ async function kakaoLogin()  {
           localStorage.setItem("email", kakao_email);
           localStorage.setItem("nickname", kakao_nickname);
           localStorage.setItem("jwtToken", kakao_token);
+          localStorage.setItem("jwtToken", kakao_token);
           Swal.fire("카카오 로그인 성공", "로그인을 완료했습니다", "success");
 
           router.push("/pomoMain").then(() => {

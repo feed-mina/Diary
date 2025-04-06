@@ -18,6 +18,7 @@ import LoginView from '../components/LoginView.vue';
 import MainView from '../components/MainView.vue';
 import EmailVerificationPage from '@/page/VerificationPage.vue';
 import TimeSelect from '../components/TimeSelect.vue';
+import DrugSection from '../components/DrugSection.vue';
 
 const requireAuth = process.env.VUE_APP_REQUIRE_AUTH === "true"; // Boolean 변환
 
@@ -34,7 +35,7 @@ const routes = [
     {path: "/agreementPolicy", name: "AgrrementPolicy", component: AgrrementPolicy},
     {path: "/diary/write", name: "DiaryWriting", component: DiaryWriting},
     {path: "/timeSelect", name: "TimeSelect", component: TimeSelect},
-
+    {path: "/DrugSection", name: "DrugSection", component: DrugSection},
     {path: "/diary/view/:diaryId", name: "DiaryView", component: DiaryView},
     {path: "/diary/common", name: "DiaryList", component: DiaryList},
     {path: "/mypage/confirmPassword", name: "ConfirmPassword", component: ConfirmPassword},

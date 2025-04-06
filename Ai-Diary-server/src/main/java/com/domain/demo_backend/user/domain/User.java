@@ -34,9 +34,11 @@ public class User {
     private LocalDateTime updatedAt;
     private LocalDateTime withdrawAt;
 
+    private String sleepUsingType;
+    private String drugUsingType;
 
     @Builder
-    public User(String userId, String password, String hashedPassword, String role, String username, String delYn, String phone, String email, String verifyYn, String socialType, LocalDateTime createdAt, LocalDateTime updatedAt, String verificationCode, LocalDateTime withdrawAt) {
+    public User(String userId, String password, String hashedPassword, String role, String username, String delYn, String phone, String email, String verifyYn, String socialType, LocalDateTime createdAt, LocalDateTime updatedAt, String verificationCode, LocalDateTime withdrawAt, String sleepUsingType, String drugUsingType) {
         this.userId = userId;
         this.password = password;
         this.hashedPassword = hashedPassword;
@@ -51,6 +53,8 @@ public class User {
         this.updatedAt = updatedAt;
         this.verificationCode= verificationCode;
         this.withdrawAt = withdrawAt;
+        this.sleepUsingType = sleepUsingType;
+        this.drugUsingType = drugUsingType;
     }
 
 }

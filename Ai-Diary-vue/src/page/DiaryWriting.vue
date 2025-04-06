@@ -1,6 +1,6 @@
 <script>
 import axios from "axios";
-import { ref, computed, onMounted, reactive } from 'vue';
+import { ref, computed, onMounted, reactive,watch } from 'vue';
 import { useRouter } from "vue-router";
 // Datepicker 컴포넌트 등록
 import Datepicker from '@vuepic/vue-datepicker';
@@ -8,11 +8,12 @@ import '@vuepic/vue-datepicker/dist/main.css';
 
 import Swal from 'sweetalert2';
 import TimeSelect from "@/components/TimeSelect.vue";
+import DrugSection from "@/components/DrugSection.vue";
 // import {apiUrl} from "@/api/index.js";
 
 export default {
   name: "DiaryWriting",
-  components: {TimeSelect, Datepicker },
+  components: {TimeSelect, Datepicker ,DrugSection},
   setup() {
     const router = useRouter();
 
@@ -27,6 +28,8 @@ export default {
     const nickname = ref(localStorage.getItem("nickname")  || "");
     const email = ref(localStorage.getItem("email")  || "");
     const kakaoToken = ref(localStorage.getItem("kakaoToken")  || "");
+    const sleepUsingType = ref(localStorage.getItem("sleepUsingType") || "N");
+    const drugUsingType = ref(localStorage.getItem("drugUsingType") || "N");
 
     // ✅ 초기 다이어리 데이터
     const diaryContentData = reactive({
@@ -34,7 +37,7 @@ export default {
       userId: userId.value,
       token : token.value,
       nickname : nickname.value,
-      date: "",
+      date: null,
       author: "",
       title: "",
       tags: { tag1: "", tag2: "", tag3: "" },
@@ -43,10 +46,14 @@ export default {
       diaryType: "Y", // 탈퇴한회원잡기
       diaryStatus: true, // 기본적으로 비공개
       selectedTimes: [],  // 선택한 시간 저장!
+      sleepTimes:"", // 시간 배열
+      drugMorning: "",
+      drugLunch: "",
+      drugDinner: "",
     });
 
     const tagsAsMap = new Map(Object.entries(diaryContentData.tags));
-    console.log("tagsAsMap :", tagsAsMap);
+    // console.log("tagsAsMap :", tagsAsMap);
     const emotionItems = [
       { text: '오늘 감정은 어떤가요?',value: ''}, // 안내 문구용 옵션
       { text: "😁 기분이 좋아요", value: "1" },
@@ -122,7 +129,10 @@ export default {
         tag1: diaryContentData.tags.tag1,
         tag2: diaryContentData.tags.tag2,
         tag3: diaryContentData.tags.tag3,
-        selectedTimes: [] // 추가!
+        sleepTimes: diaryContentData.selectedTimes,
+        drugMorning: diaryContentData.drugMorning,
+        drugLunch: diaryContentData.drugLunch,
+        drugDinner: diaryContentData.drugDinner,
       };
 
       try {
@@ -134,9 +144,9 @@ export default {
               }
             }
         )
-        console.log("diaryContentData.value:", diaryContentData.value);
-        console.log("@@@일기 저장 응답:", response.data);
-        console.log("JSON 데이터:", JSON.stringify(diaryContentData.value));
+        // console.log("diaryContentData.value:", diaryContentData.value);
+        // console.log("@@@일기 저장 응답:", response.data);
+        // console.log("JSON 데이터:", JSON.stringify(diaryContentData.value));
 
         if (response.data.success) {
           Swal.fire("기록 완료!", "일기가 저장되었습니다.", "success").then(() => {
@@ -150,27 +160,21 @@ export default {
         Swal.fire("저장 실패!", "일기 저장 중 오류가 발생했습니다.", "error");
       }
     };
-    watch(() => props.selectedTimes, (newTimes) => {
-      const sorted = [...newTimes].sort((a, b) => a - b);
+    const handleDrugInfo = (drugInfo) => {
+      diaryContentData.drugMorning = drugInfo.drugMorning;
+      diaryContentData.drugLunch = drugInfo.drugLunch;
+      diaryContentData.drugDinner = drugInfo.drugDinner;
+      // console.log("약 복용 정보 업데이트:", drugInfo);
+    };
 
-      for (let i = 0; i < sorted.length - 1; i++) {
-        const current = sorted[i];
-        const next = sorted[i + 1];
-
-        if (next - current === 1) {
-          for (let j = current; j <= next; j++) {
-            statusMap[j] = 'sleep'; // 연속된 시간 → 잠
-          }
-        } else {
-          statusMap[sorted[i]] = 'wake'; // 중간에 끊김 → 깸
-        }
-      }
-    }, { deep: true });
 
     return {
       diaryContentData,
       emotionItems,
       onClickSaveDiary,
+      sleepUsingType,
+      drugUsingType,
+      handleDrugInfo
     };
   }
 };
@@ -185,14 +189,27 @@ export default {
             <!-- 날짜 입력 -->
             <label>일기 날짜</label>
             <div class="write_section1">
-              <Datepicker id="datepickerInput" v-model="diaryContentData.date" :format="'yyyy-MM-dd'" :auto-apply="true" :locale="'ko'"  :max-date="new Date()"/>
+              <Datepicker
+                  id="datepickerInput"
+                  v-model="diaryContentData.date"
+                  :format="'yyyy-MM-dd'"
+                  :auto-apply="true"
+                  :locale="'ko'"
+                  :max-date="new Date()"
+                  :teleport="true"
+              />
+
             </div>
 
 
-            <div class="timeSelectWrap">
+            <div class="timeSelectWrap" v-if="sleepUsingType === 'Y'">
               TimeSelect
-              <TimeSelect/>
+              <TimeSelect v-model="diaryContentData.selectedTimes"/>
             </div>
+            <div v-if="drugUsingType === 'Y'" class="drug-section">
+              <DrugSection :drugUsingType="drugUsingType" @updateDrugInfo="handleDrugInfo" />
+            </div>
+
             <!-- 작성자 & 제목 입력 -->
             <div class="section">
               <label>작성자</label>

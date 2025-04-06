@@ -42,7 +42,9 @@
             verification_code AS verificationCode,
             created_at AS createdAt,
             updated_at AS updatedAt,
-            withdraw_at AS withdrawAt
+            withdraw_at AS withdrawAt,
+            sleep_using_type AS sleepUsingType,
+            drug_using_type  AS drugUsingType
         FROM users
         WHERE email = #{email}
     </select>

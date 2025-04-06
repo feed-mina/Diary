@@ -58,7 +58,7 @@ function toggleTime(hour) {
 
   emit('updateTimes', [...selectedTimes.value].sort((a, b) => a - b))
 
-  console.log("@@@ updateTimes " + [...selectedTimes.value].sort((a, b) => a - b));
+  // console.log("@@@ updateTimes " + [...selectedTimes.value].sort((a, b) => a - b));
 }
 
 </script>

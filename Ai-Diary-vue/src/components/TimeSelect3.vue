@@ -40,25 +40,18 @@ const timeList = [
 
 const selectedTimes = ref([])
 
-const statusMap = ref({})
-
 function toggleTime(hour) {
   const time = timeList.find(t => t.hour === hour)
+  console.log("@@@@@@TimeSelect time"+time);
 
   if (!time?.available) return
   if (selectedTimes.value.includes(hour)) {
-    // 선택 해제
     selectedTimes.value = selectedTimes.value.filter(t => t !== hour)
-    statusMap.value[hour] = null  // 상태 초기화
   } else {
-    // 선택 추가
     selectedTimes.value.push(hour)
-    statusMap.value[hour] = 'sleep'  // 자동으로 sleep으로 설정
   }
 
-  emit('updateTimes', [...selectedTimes.value].sort((a, b) => a - b))
-
-  console.log("@@@ updateTimes " + [...selectedTimes.value].sort((a, b) => a - b));
+  emit('updateTimes', selectedTimes.value)
 }
 
 </script>
@@ -81,79 +74,24 @@ function toggleTime(hour) {
     prevEl: '.swiper-button-prev'
   }"
         class="mySwiper" >
-
       <SwiperSlide
           v-for="item in timeList"
           :key="item.hour"
+          class="time-slide"
+          :class="{
+      disabled: !item.available,
+      selected: selectedTimes.includes(item.hour)
+    }"
+          @click="toggleTime(item.hour)"
       >
-        <div
-            class="time-slide"
-            :class="{
-            disabled: !item.available,
-            selected: selectedTimes.includes(item.hour),
-            'is-sleep': statusMap[item.hour] === 'sleep',
-            wake: statusMap[item.hour] === 'wake'
-          }"
-            @click="toggleTime(item.hour)"
-        >
-          {{ item.hour }}시
-        </div>
-      </SwiperSlide>
+        <span class="hour">{{ item.hour }}시</span>
+<!--        <span class="price">{{ item.price.toLocaleString() }}원</span>-->
+            </SwiperSlide>
           </Swiper>
-
-    <p style="margin-top: 10px; font-size: 14px;">
-      선택한 시간: {{ selectedTimes.join(', ') }}시
-    </p>
-
     <div class="time_legend">
       <span class="box time_yellow"></span> wake
       <span class="box time_purple"></span> sleep
+<!--      <span class="box time_gray" ></span> -->
     </div>
   </div>
 </template>
-
-
-
-<style scoped>
-.time-slide {
-  cursor: pointer;
-  padding: 10px;
-  margin: 5px;
-  border-radius: 10px;
-  text-align: center;
-  background-color: #f5d36c; /* 기본 노랑 */
-  transition: background-color 0.3s;
-}
-
-.time-slide.selected {
-  font-weight: bold;
-}
-
-.time-slide.is-sleep {
-  background-color: #cbb2ff !important; /* 보라색 sleep */
-}
-
-.time-slide.wake {
-  background-color: #f5d36c !important; /* 노랑 wake */
-}
-
-.time_legend {
-  margin-top: 10px;
-}
-
-.box {
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  border-radius: 3px;
-  margin-right: 5px;
-}
-
-.time_yellow {
-  background-color: #f5d36c;
-}
-
-.time_purple {
-  background-color: #cbb2ff;
-}
-</style>

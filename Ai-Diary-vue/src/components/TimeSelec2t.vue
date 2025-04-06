@@ -1,7 +1,7 @@
 
 
 <script setup>
-import { ref, defineEmits } from 'vue'
+import { ref, defineEmits, watch  } from 'vue'
 
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation } from 'swiper/modules'
@@ -9,64 +9,58 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/swiper-bundle.css'
 const emit = defineEmits(['updateTimes'])
+const timeList = Array.from({ length: 25 }, (_, i) => ({ hour: i, available: true }))
 
-const timeList = [
-  {hour: 0,  available: true},
-  {hour: 1,  available: true},
-  {hour: 2,  available: true},
-  {hour: 3,  available: true},
-  {hour: 4,  available: true},
-  {hour: 5,  available: true},
-  {hour: 6,  available: true},
-  {hour: 7,  available: true},
-  {hour: 8,  available: true},
-  {hour: 9,  available: true},
-  {hour: 10,  available: true},
-  {hour: 11,  available: true},
-  {hour: 12,  available: true},
-  {hour: 13,  available: true},
-  {hour: 14,  available: true},
-  {hour: 15,  available: true},
-  {hour: 16,  available: true},
-  {hour: 17,  available: true},
-  {hour: 18,  available: true},
-  {hour: 19,  available: true},
-  {hour: 20,  available: true},
-  {hour: 21,  available: true},
-  {hour: 22,  available: true},
-  {hour: 23,  available: true},
-  {hour: 24,  available: true},
-]
+const selectedTimes = ref([]);
+const statusMap = ref({});
 
-const selectedTimes = ref([])
 
-const statusMap = ref({})
+const toggleTime = (hour) => {
+  if (selectedTimes.value.length === 0 && hour === 0) {
+    // 처음 클릭이면서 0시일 때 → 0~4시 자동 선택
 
-function toggleTime(hour) {
-  const time = timeList.find(t => t.hour === hour)
-
-  if (!time?.available) return
-  if (selectedTimes.value.includes(hour)) {
-    // 선택 해제
-    selectedTimes.value = selectedTimes.value.filter(t => t !== hour)
-    statusMap.value[hour] = null  // 상태 초기화
+    console.log("@@@ selectedTimes " + selectedTimes);
   } else {
-    // 선택 추가
-    selectedTimes.value.push(hour)
-    statusMap.value[hour] = 'sleep'  // 자동으로 sleep으로 설정
+    const index = selectedTimes.value.indexOf(hour);
+    console.log("@@@ index " + index);
+    if (index === -1) {
+      selectedTimes.value.push(hour);
+    } else {
+      selectedTimes.value.splice(index, 1);
+    }
+    selectedTimes.value.sort((a, b) => a - b);
   }
+  updateSleepStatus();
+  emit('updateTimes', selectedTimes.value)
+};
 
-  emit('updateTimes', [...selectedTimes.value].sort((a, b) => a - b))
+const updateSleepStatus = () => {
+  const sorted = [...selectedTimes.value].sort((a, b) => a - b);
+  statusMap.value = {};
 
-  console.log("@@@ updateTimes " + [...selectedTimes.value].sort((a, b) => a - b));
-}
+  console.log("@@@ sorted " + sorted);
+    for (let i = 0; i < sorted.length; i++) {
+      const current = sorted[i];
+      const prev = sorted[i - 1];
+      const next = sorted[i + 1];
+
+      const hasPrev = prev === current - 1;
+      const hasNext = next === current + 1;
+
+      if (hasPrev || hasNext) {
+        statusMap.value[current] = 'sleep';  // 앞이나 뒤 중 하나라도 붙어있으면 sleep
+      } else {
+        statusMap.value[current] = 'wake';   // 혼자 떨어진 경우는 wake
+      }
+      console.log("@@@ statusMap " + statusMap.value);
+      console.log("@@@ statusMap.value[current] " + statusMap.value[current]);
+    }
+  };
 
 </script>
 <template>
   <div class="time-select-swiper">
     <h3>시간 선택</h3>
-
-
     <!-- 화살표 버튼 -->
 
     <div class="swiper-nav-buttons">
@@ -77,11 +71,12 @@ function toggleTime(hour) {
     <Swiper
         :modules="[Navigation]"
         :navigation="{
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev'
-  }"
-        class="mySwiper" >
-
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      }"
+        :slides-per-view="6"
+        class="mySwiper"
+    >
       <SwiperSlide
           v-for="item in timeList"
           :key="item.hour"
@@ -99,7 +94,7 @@ function toggleTime(hour) {
           {{ item.hour }}시
         </div>
       </SwiperSlide>
-          </Swiper>
+    </Swiper>
 
     <p style="margin-top: 10px; font-size: 14px;">
       선택한 시간: {{ selectedTimes.join(', ') }}시

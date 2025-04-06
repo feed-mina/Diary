@@ -7,11 +7,12 @@ import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
 import Swal from 'sweetalert2';
+import TimeSelect from "@/components/TimeSelect.vue";
 // import {apiUrl} from "@/api/index.js";
 
 export default {
   name: "DiaryWriting",
-  components: { Datepicker },
+  components: {TimeSelect, Datepicker },
   setup() {
     const router = useRouter();
 
@@ -149,6 +150,22 @@ export default {
         Swal.fire("저장 실패!", "일기 저장 중 오류가 발생했습니다.", "error");
       }
     };
+    watch(() => props.selectedTimes, (newTimes) => {
+      const sorted = [...newTimes].sort((a, b) => a - b);
+
+      for (let i = 0; i < sorted.length - 1; i++) {
+        const current = sorted[i];
+        const next = sorted[i + 1];
+
+        if (next - current === 1) {
+          for (let j = current; j <= next; j++) {
+            statusMap[j] = 'sleep'; // 연속된 시간 → 잠
+          }
+        } else {
+          statusMap[sorted[i]] = 'wake'; // 중간에 끊김 → 깸
+        }
+      }
+    }, { deep: true });
 
     return {
       diaryContentData,
@@ -172,8 +189,9 @@ export default {
             </div>
 
 
-            <div class="timeSelect">
+            <div class="timeSelectWrap">
               TimeSelect
+              <TimeSelect/>
             </div>
             <!-- 작성자 & 제목 입력 -->
             <div class="section">

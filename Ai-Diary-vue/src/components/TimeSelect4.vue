@@ -49,14 +49,45 @@ function toggleTime(hour) {
   if (selectedTimes.value.includes(hour)) {
     // 선택 해제
     selectedTimes.value = selectedTimes.value.filter(t => t !== hour)
-    statusMap.value[hour] = null  // 상태 초기화
   } else {
-    // 선택 추가
     selectedTimes.value.push(hour)
-    statusMap.value[hour] = 'sleep'  // 자동으로 sleep으로 설정
   }
 
-  emit('updateTimes', [...selectedTimes.value].sort((a, b) => a - b))
+  // 시간 정렬
+  selectedTimes.value.sort((a, b) => a - b)
+
+  // statusMap 초기화
+  statusMap.value = {}
+
+  // 연속된 구간 찾아서 sleep / wake 설정
+  let group = []
+  const all = selectedTimes.value
+
+  for (let i = 0; i < selectedTimes.value.length; i++) {
+    const current = all[i]
+    const prev = all[i - 1]
+    // 첫 번째 요소거나 연속된 경우
+    if (i === 0 || current === prev + 1) {
+      group.push(current)
+    } else {
+      // 이전 그룹 처리
+      if (group.length >= 2) {
+        group.forEach(h => statusMap.value[h] = 'sleep')
+      } else if (group.length === 1) {
+        statusMap.value[group[0]] = 'wake'
+      }
+      group = [current]
+    }
+  }
+
+  // 마지막 그룹 처리
+  if (group.length >= 2) {
+    group.forEach(h => statusMap.value[h] = 'sleep')
+  }else if (group.length === 1) {
+    statusMap.value[group[0]] = 'wake'
+  }
+  // 부모에게 정렬된 배열 전달
+  emit('updateTimes', [...selectedTimes.value])
 
   console.log("@@@ updateTimes " + [...selectedTimes.value].sort((a, b) => a - b));
 }
@@ -100,6 +131,11 @@ function toggleTime(hour) {
         </div>
       </SwiperSlide>
           </Swiper>
+
+    <p style="margin-top: 10px; font-size: 14px;">
+      선택한 시간: {{ selectedTimes.join(', ') }}시
+    </p>
+
     <div class="time_legend">
       <span class="box time_yellow"></span> wake
       <span class="box time_purple"></span> sleep

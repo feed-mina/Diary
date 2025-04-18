@@ -120,7 +120,6 @@ export default {
             <p>작성자: {{ diaryData.author || '익명' }}</p>
             <p>제목: {{ diaryData.title }}</p>
             <p>내용: {{ diaryData.content }}</p>
-            <p>작성 날짜: {{ formattedDays }}</p>
             <p>감정 상태: {{ getEmotionText(diaryData.emotion) }}</p>
             <p>
               태그:

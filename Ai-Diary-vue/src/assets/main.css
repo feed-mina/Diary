@@ -1709,6 +1709,27 @@ textarea {
 
 /* 모바일 대응 */
 @media (max-width: 480px) {
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 10rem;
+        background-color: black;
+        color: white;
+        display: flex;
+        justify-content: space-between; /* 양쪽 정렬 */
+        align-items: center;            /* 세로 가운데 */
+        padding: 0 1rem;                /* 좌우 여백 */
+        box-sizing: border-box;
+    }
+
+    .footer-icon-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color:#fff;
+    }
 
     .content-wrap {
         margin-left: 0 !important; /* 원래 네비게이션 너비만큼 공간 없애기 */
@@ -2484,20 +2505,41 @@ textarea {
 
 
 /* ========== Footer 스타일 ========== */
-
 .footer {
-    margin-bottom: -4rem;
     position: absolute;
     bottom: 0;
-    width: 110%;
-    /* width: 100%; */
-    height: 3rem;
+    width: 100%;
+    height: 4rem;
     background-color: black;
     color: white;
-    text-align: center;
-    line-height: 3rem;
-    /* padding: 10px 0; */
-    /* margin-top: 1rem; */
+    display: flex;
+    justify-content: space-between; /* 양쪽 정렬 */
+    align-items: center;            /* 세로 가운데 */
+    padding: 0 1rem;                /* 좌우 여백 */
+    box-sizing: border-box;
+}
+
+.footer-text {
+    margin: 0;
+    padding-left:2rem;
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+.footer-icon-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color:#fff;
+}
+
+.tomatoEmogi {
+    width: 32px;
+    height: auto;
+    cursor: pointer;
+}
+.footer-label{
+    font-size:1rem;
 }
 
 /* ========== Header 스타일 ========== */

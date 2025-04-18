@@ -191,7 +191,7 @@ export default {
 
                 <time class="diaryTime">{{ new Date(diary.date).toLocaleDateString() }}</time>
               </header>
-              <p class="diaryContent">{{ diary.content ? diary.content.substring(0, 50) + '...' : '내용 없음' }}</p>
+<!--              <p class="diaryContent">{{ diary.content ? diary.content.substring(0, 50) + '...' : '내용 없음' }}</p>-->
             </div>
           </div>
         </div>

@@ -6,7 +6,7 @@ import logging
 import httpx
 from dotenv import load_dotenv
 from pydantic import BaseModel
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from konlpy.tag import Okt
 from transformers import pipeline
 from googletrans import Translator
@@ -14,10 +14,9 @@ from google.cloud import texttospeech
 from gtts import gTTS
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse , HTMLResponse, Response
 import io
 import threading
-from fastapi.responses import Response
 
 # 로그 설정
 logging.basicConfig(level=logging.INFO)
@@ -33,7 +32,7 @@ HF_API_URL_KO_EN = "https://api-inference.huggingface.co/models/Helsinki-NLP/opu
 HF_API_URL_EN_JA = "https://api-inference.huggingface.co/models/Helsinki-NLP/opus-mt-en-jap"
 
 HF_API_KEY = os.getenv("HF_API_KEY")
-
+# app 객체를 만들어준다 ! *****
 app = FastAPI()
 
 origins = [
@@ -146,13 +145,49 @@ def text_to_speech(text, lang="ja-JP"):
 
     return filename  # 파일 이름만 리턴
 
+
+# blob 재생용 HTML 페이지 + CSP 헤더 포함
+@app.get("/test", response_class=HTMLResponse)
+async def test():
+    html = """
+    <html>
+      <head>
+        <title>Blob Test</title>
+        <meta charset='UTF-8'>
+      </head>
+      <body>
+        <h1>🎧 Blob 오디오 테스트</h1>
+        <button onclick="playAudio()">▶ 오디오 재생</button>
+        <script>
+          async function playAudio() {
+            const res = await fetch('/tts_blob', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ text: 'これはテストです。' })
+            });
+            const blob = await res.blob();
+            const audioUrl = URL.createObjectURL(blob);
+            const audio = new Audio(audioUrl);
+            audio.play();
+          }
+        </script>
+      </body>
+    </html>
+    """
+    headers = {
+        "Content-Security-Policy": "default-src 'self'; media-src 'self' blob:;"
+    }
+    return HTMLResponse(content=html, headers=headers)
+
+
 class TextRequest(BaseModel):
     text: str
 
-@app.post("/tts_only_test")
-async def tts_only(text_request: TextRequest):
+# Google Cloud TTS로 직접 blob 전송 (파일 저장 X)
+@app.post("/tts_blob")
+async def tts_blob(text_request: TextRequest):
     text = text_request.text
-    logger.info(f" TTS 요청 받은 텍스트: {text}")
+    logger.info(f"📥 TTS 요청 받은 텍스트: {text}")
 
     client = texttospeech.TextToSpeechClient()
 
@@ -166,27 +201,16 @@ async def tts_only(text_request: TextRequest):
     )
 
     response = client.synthesize_speech(
-        input=synthesis_input,
-        voice=voice,
-        audio_config=audio_config
+        input=synthesis_input, voice=voice, audio_config=audio_config
     )
-    audio_bytes = response.audio_content
-    logger.info("✅ 생성된 음성 데이터 길이: %d 바이트", len(audio_bytes))
-
-    # 메모리에 저장
-    # audio_stream = io.BytesIO(response.audio_content)
 
     audio_bytes = response.audio_content
-
     audio_stream = io.BytesIO(audio_bytes)
 
     return StreamingResponse(
         audio_stream,
         media_type="audio/mpeg",
-        headers={
-            "Content-Disposition": "inline; filename=output.mp3",
-            "Content-Length": str(len(audio_bytes)),
-        }
+        headers={"Content-Disposition": "inline; filename=tts.mp3"}
     )
 
 
@@ -223,6 +247,44 @@ async def translate_and_tts(diary: Diary):
         "translated_text": japanese,
         "tts_audio_url": f"{DOMAIN_NAME}/static/{tts_filename}"
     }
+
+@app.post("/tts_only_test")
+async def tts_only_test(text_request: TextRequest):
+    text = text_request.text
+    logger.info(f" TTS 요청 받은 텍스트: {text}")
+
+    client = texttospeech.TextToSpeechClient()
+
+    synthesis_input = texttospeech.SynthesisInput(text=text)
+    voice = texttospeech.VoiceSelectionParams(
+        language_code="ja-JP",
+        ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL
+    )
+    audio_config = texttospeech.AudioConfig(
+        audio_encoding=texttospeech.AudioEncoding.MP3
+    )
+
+    response = client.synthesize_speech(
+        input=synthesis_input,
+        voice=voice,
+        audio_config=audio_config
+    )
+
+    # audio_bytes = response.audio_content
+    logger.info("✅ 생성된 음성 데이터 길이: %d 바이트", len(audio_bytes))
+
+    # 메모리에 저장
+    audio_bytes = response.audio_content
+    audio_stream = io.BytesIO(audio_bytes)
+
+    return StreamingResponse(
+        audio_stream,
+        media_type="audio/mpeg",
+        headers={
+            "Content-Disposition": "inline; filename=output.mp3",
+            "Content-Length": str(len(audio_bytes)),
+        }
+    )
 
 @app.post("/translate1")
 async def translate_text(diary: Diary):

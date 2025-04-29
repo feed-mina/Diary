@@ -5,10 +5,11 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import "notyf/notyf.min.css";
 import DiaryTranslator from '@/components/DiaryTranslator.vue'
+import BlobTts from '@/components/BlobTts.vue'
 import api from "@/api/translatorApi.js";
 export default {
   name: 'DiaryView',
-  components: { DiaryTranslator },
+  components: { DiaryTranslator, BlobTts },
   setup() {
     const router = useRouter();
     const route = useRoute(); // 현재 라우트 정보 가져오기
@@ -77,6 +78,20 @@ export default {
       }
     };
 
+
+    const playBlobAudio = async () => {
+      if (!diaryData.value?.content) return;
+      try {
+        const response = await api.post('/tts_blob', { text: diaryData.value.content }, { responseType: 'blob' });
+        const audioBlob = new Blob([response.data], { type: 'audio/mpeg' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        audio.play();
+      } catch (err) {
+        console.error('🎧 blob TTS 실패:', err);
+      }
+    };
+
     watchEffect(() => {
       if (diaryId) {
         console.log("diaryId 감지됨:", diaryId);
@@ -112,6 +127,7 @@ export default {
       getEmotionText,
       formattedDays,
       showTranslation,
+      playBlobAudio
     };
   }
 }
@@ -135,9 +151,15 @@ export default {
             <button id="translatebutton" @click="showTranslation = !showTranslation">
               일본어 번역 {{ showTranslation ? "" : "보기" }}
             </button>
-            <!-- 번역 컴포넌트 -->
-            <DiaryTranslator v-if="showTranslation" :content="diaryData" />
+            <!-- 번역 컴포넌트  -->
 
+            <BlobTts v-if="showTranslation" :content="diaryData" />
+
+            <!-- Blob TTS 테스트 버튼 추가 -->
+            <div style="margin-top: 1rem">
+              <button @click="playBlobAudio">💬 Blob TTS 테스트</button>
+            </div>
+<!--            <DiaryTranslator v-if="showTranslation" :content="diaryData" />-->
           </div>
         </template>
 
@@ -150,6 +172,20 @@ export default {
 </template>
 <style scoped>
 
+#translatebutton {
+  margin-top: 10px;
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 8px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  transition: background-color 0.3s;
+}
+#translatebutton:disabled {
+  background-color: #9E9E9E;
+  cursor: not-allowed;
+}
 #translatebutton {
   margin-top: 10px;
   padding: 8px 16px;

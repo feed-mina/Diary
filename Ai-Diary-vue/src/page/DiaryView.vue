@@ -4,12 +4,16 @@ import {useRouter, useRoute} from 'vue-router';
 import axios from 'axios';
 import Swal from "sweetalert2";
 import "notyf/notyf.min.css";
+import DiaryTranslator from '@/components/DiaryTranslator.vue'
 export default {
   name: 'DiaryView',
+  components: { DiaryTranslator },
   setup() {
     const router = useRouter();
     const route = useRoute(); // 현재 라우트 정보 가져오기
     const diaryData = ref(null);
+
+    const showTranslation = ref(false);
     const showOnlyMine = ref(false); // 내가 쓴 일기만 보기 체크박스
     // URL에서 diaryId 추출
     const diaryId = route.params.diaryId;
@@ -104,7 +108,8 @@ export default {
       diaryData,
       formattedTags,
       getEmotionText,
-      formattedDays
+      formattedDays,
+      showTranslation,
     };
   }
 }
@@ -113,24 +118,48 @@ export default {
   <div class="diaryView">
     <div class="diaryView_content">
       <div class="diaryTuto">
-        <div class="diaryView_container animated-fadeIn" v-if="diaryData">
-          <div class="diaryViewTitle">📖 일기 상세 보기</div>
-          <div class="diaryView_noDalle">
-            <p>날짜: {{ diaryData.date || '날짜 미정'}}</p>
-            <p>작성자: {{ diaryData.author || '익명' }}</p>
-            <p>제목: {{ diaryData.title }}</p>
-            <p>내용: {{ diaryData.content }}</p>
-            <p>감정 상태: {{ getEmotionText(diaryData.emotion) }}</p>
-            <p>
-              태그:
-              {{ formattedTags }}
-            </p>
+        <template v-if="diaryData">
+          <div class="diaryView_container animated-fadeIn">
+            <div class="diaryViewTitle">📖 일기 상세 보기</div>
+            <div class="diaryView_noDalle">
+              <p>날짜: {{ diaryData.date || '날짜 미정' }}</p>
+              <p>작성자: {{ diaryData.author || '익명' }}</p>
+              <p>제목: {{ diaryData.title }}</p>
+              <p>내용: {{ diaryData.content }}</p>
+              <p>감정 상태: {{ getEmotionText(diaryData.emotion) }}</p>
+              <p>태그: {{ formattedTags }}</p>
+            </div>
+            <!-- 일본어 번역 버튼 -->
+            <button id="translatebutton" @click="showTranslation = !showTranslation">
+              일본어 번역 {{ showTranslation ? "" : "보기" }}
+            </button>
+            <!-- 번역 컴포넌트 -->
+            <DiaryTranslator v-if="showTranslation" :content="diaryData" />
+
           </div>
-        </div>
-        <div v-else>
+        </template>
+
+        <template v-else>
           <p>일기를 불러오는 중입니다...</p>
-        </div>
+        </template>
       </div>
     </div>
   </div>
 </template>
+<style scoped>
+
+#translatebutton {
+  margin-top: 10px;
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 8px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  transition: background-color 0.3s;
+}
+#translatebutton:disabled {
+  background-color: #9E9E9E;
+  cursor: not-allowed;
+}
+</style>

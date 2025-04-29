@@ -19,6 +19,7 @@ import MainView from '../components/MainView.vue';
 import EmailVerificationPage from '@/page/VerificationPage.vue';
 import TimeSelect from '../components/TimeSelect.vue';
 import DrugSection from '../components/DrugSection.vue';
+import DiaryTranslator from "@/components/DiaryTranslator.vue";
 
 const requireAuth = process.env.VUE_APP_REQUIRE_AUTH === "true"; // Boolean 변환
 
@@ -43,8 +44,9 @@ const routes = [
     {path: "/edit/newPassword", name: "EditNewPassword", component: EditNewPassword}, //EditNewPassword.vue
     { path: '/pomoLogin', component: LoginView },
     { path: '/pomoMain', component: MainView },
-  { path: '/email-verification', name: 'EmailVerificationPage', component: EmailVerificationPage }, {},
+    { path: '/email-verification', name: 'EmailVerificationPage', component: EmailVerificationPage }, {},
     {path: "/edit/password", name: "EditPassword", component: EditPassword},
+    { path: '/diaryTranslator', name:'DiaryTranslator', component: DiaryTranslator },
     {
         path: "/:pathMatch(.*)*",
         name: "CatchAll",

@@ -13,6 +13,8 @@ log.txt
 .idea/
 *.iml
 
+dist/*
+
 demo_spring_Vue/Ai-Diary-vue/target
 demo_spring_Vue/Ai-Diary-vue/out
 demo_spring_Vue/Ai-Diary-vue/node_modules/

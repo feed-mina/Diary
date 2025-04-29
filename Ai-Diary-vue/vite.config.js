@@ -12,6 +12,24 @@ export default defineConfig({
         vuetify({autoImport: true}), // Vuetify 플러그인 추가
     ],
     server: {
+        proxy: {
+            '/translate_only': {
+                target: 'http://127.0.0.1:8001',
+                changeOrigin: true,
+            },
+            '/tts_only': {
+                target: 'http://127.0.0.1:8001',
+                changeOrigin: true,
+            },
+            '/translate_and_tts': {
+                target: 'http://127.0.0.1:8001',
+                changeOrigin: true,
+            },
+            '/static': {
+                target: 'http://127.0.0.1:8001',
+                changeOrigin: true,
+            },
+        },
         port: 4000, // 포트 확인
     },
   base: '/', // <-- S3에서 사용될 프로젝트 폴더 지정

@@ -106,8 +106,9 @@ export default {
           if (error.response && error.response.status === 401) {
             // ✅ 로그아웃 처리 + 로그인 페이지 이동
             alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
-            localStorage.removeItem('jwtToken'); // 저장된 토큰 삭제
-            router.push('/login'); // 로그인 페이지로 이동
+            localStorage.clear(); // 전체 삭제도 가능
+
+            window.location.href = '/'; // 로그인 페이지로 이동
           }
           return Promise.reject(error);
         }

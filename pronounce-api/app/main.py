@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 env_path = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(dotenv_path=env_path)
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "C:/Users/leeyu/Project/speak_diary/pronounce-api/adroit-flare-458213-j4-e36e1e1e5502.json"
+DOMAIN_NAME = os.getenv("DOMAIN_NAME", "http://localhost:8001")
 
 HF_API_URL_KO_EN = "https://api-inference.huggingface.co/models/Helsinki-NLP/opus-mt-ko-en"
 HF_API_URL_EN_JA = "https://api-inference.huggingface.co/models/Helsinki-NLP/opus-mt-en-jap"
@@ -36,7 +37,11 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # CORS 설정 (Vue랑 통신할 때 꼭 필요!)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 개발 단계에서는 전체 허용
+    # allow_origins=["*"],  # 개발 단계에서는 전체 허용
+    allow_origins=[
+        "http://localhost:4000",        # 로컬 개발용 Vue 주소
+        "https://justsaying.co.kr",     # 배포용 Vue 주소
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -102,7 +107,7 @@ class TextRequest(BaseModel):
 async def tts_only(text_request: TextRequest):
     japanese_text = text_request.text
     tts_filename = text_to_speech(japanese_text)
-    return {"tts_audio_url": f"http://127.0.0.1:8001/static/{tts_filename}"}
+    return {"tts_audio_url": f"{DOMAIN_NAME}/static/{tts_filename}"}
 
 # TTS 함수
 def text_to_speech(text, lang="ja-JP"):
@@ -158,7 +163,7 @@ async def translate_and_tts(diary: Diary):
 
     return {
         "translated_text": japanese,
-        "tts_audio_url": f"http://127.0.0.1:8001/static/{tts_filename}"
+        "tts_audio_url": f"{DOMAIN_NAME}/static/{tts_filename}"
     }
 
 @app.post("/translate1")

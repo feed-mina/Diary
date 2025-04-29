@@ -11,12 +11,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://developers.kakao.com https://kauth.kakao.com https://accounts.kakao.com https://t1.kakaocdn.net;
-      connect-src 'self' http://localhost:8080 http://justsaying.co.kr https://justsaying.co.kr https://kauth.kakao.com https://accounts.kakao.com https://developers.kakao.com https://t1.kakaocdn.net;
-    style-src 'self' 'unsafe-inline';
-    frame-src https://kauth.kakao.com https://accounts.kakao.com;
-  ">
+  default-src 'self';
+  connect-src 'self' https://justsaying.co.kr https://api.justsaying.co.kr;
+  script-src 'self' 'unsafe-inline' https://developers.kakao.com https://kauth.kakao.com https://accounts.kakao.com;
+  style-src 'self' 'unsafe-inline';
+  font-src 'self' data:;
+  frame-src https://kauth.kakao.com https://accounts.kakao.com;
+">
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <!-- index.html의 <head>나 <body> 안에 이거 추가 -->
     <script src="./config.js"></script>
@@ -26,7 +27,8 @@
   <link rel="stylesheet" crossorigin href="/assets/index-DwiQtICP.css">
 </head>
 <body>
-<div id="app"></div>
+<div id="app"></div>
+
 
 </body>
 </html>

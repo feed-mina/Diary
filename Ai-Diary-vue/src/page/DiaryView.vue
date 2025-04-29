@@ -5,6 +5,7 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import "notyf/notyf.min.css";
 import DiaryTranslator from '@/components/DiaryTranslator.vue'
+import api from "@/api/translatorApi.js";
 export default {
   name: 'DiaryView',
   components: { DiaryTranslator },
@@ -13,6 +14,7 @@ export default {
     const route = useRoute(); // 현재 라우트 정보 가져오기
     const diaryData = ref(null);
 
+    console.log("API baseURL:", api.defaults.baseURL)
     const showTranslation = ref(false);
     const showOnlyMine = ref(false); // 내가 쓴 일기만 보기 체크박스
     // URL에서 diaryId 추출

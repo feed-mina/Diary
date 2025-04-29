@@ -10,6 +10,7 @@ const props = defineProps({
   }
 })
 
+console.log("API baseURL:", api.defaults.baseURL)
 //  상태 정의
 const fullText = ref('')
 const japaneseDiary = ref('')
@@ -72,9 +73,7 @@ const translateDiary = async () => {
   try {
     console.log('translateDiary 시작')
     isTranslating.value = true
-    const response = await api.post('/translate_only', {
-      content: fullText.value
-    }, { timeout: 10000 })
+    const response = await api.post('/translate_only', { content: fullText.value });
 
     japaneseDiary.value = response.data.translated_text
     japaneseLines.value = japaneseDiary.value.split('\n')    // 일본어 전체 일기 줄 나누기
@@ -118,15 +117,33 @@ const readJapanese = async () => {
 
       const lineText = titleAndContentLines.value[lineIndex]
 
-      const response = await api.post('/tts_only', {
-        text: lineText
-      }, { timeout: 10000 })
+      // const response = await api.post('/tts_only', {
+      //   text: lineText
+      // }, { timeout: 10000 })
+      //
+      // ttsAudioUrl.value = response.data.tts_audio_url.replace('http://127.0.0.1:8001', '')
+      //
+      // const audio = new Audio(ttsAudioUrl.value)
+      //
+      // audio.play()
+      const response = await api.post('/tts_only', { text: lineText });
+      ttsAudioUrl.value = response.data.tts_audio_url;
 
-      ttsAudioUrl.value = response.data.tts_audio_url.replace('http://127.0.0.1:8001', '')
+      const audio = new Audio(ttsAudioUrl.value);
+      audio.addEventListener("canplaythrough", () => {
+        audio.play();
+      });
+      audio.addEventListener("error", (e) => {
+        console.error("오디오 재생 실패:", e);
+      });
 
-      const audio = new Audio(ttsAudioUrl.value)
-
-      audio.play()
+      // const response = await api.post('/tts_only', { text: lineText }, { responseType: 'blob' });
+      //
+      // const audioBlob = new Blob([response.data], { type: 'audio/mpeg' });
+      // const audioUrl = URL.createObjectURL(audioBlob);
+      //
+      // const audio = new Audio(audioUrl);
+      // audio.play();
 
       // 줄 길이에 따라 대기 시간 계산
       const baseTimePerCharacter = 150  // 글자당 150ms

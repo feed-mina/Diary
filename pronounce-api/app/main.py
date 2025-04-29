@@ -14,6 +14,10 @@ from google.cloud import texttospeech
 from gtts import gTTS
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import StreamingResponse
+import io
+import threading
+from fastapi.responses import Response
 
 # 로그 설정
 logging.basicConfig(level=logging.INFO)
@@ -32,21 +36,25 @@ HF_API_KEY = os.getenv("HF_API_KEY")
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:4000",
+    "http://127.0.0.1:4000",
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "https://justsaying.co.kr"
+]
+
 # 이 줄 추가! (static 폴더 연결)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 # CORS 설정 (Vue랑 통신할 때 꼭 필요!)
+
 app.add_middleware(
     CORSMiddleware,
-    # allow_origins=["*"],  # 개발 단계에서는 전체 허용
-    allow_origins=[
-        "http://localhost:4000",        # 로컬 개발용 Vue 주소
-        "https://justsaying.co.kr",     # 배포용 Vue 주소
-    ],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 okt = Okt()
 
@@ -71,6 +79,13 @@ async def analyze_text(diary: Diary):
 
 # 구글 번역기 객체 만들기
 translator = Translator()
+
+def delete_file_later(filepath, delay=10):
+    def delete():
+        time.sleep(delay)
+        if os.path.exists(filepath):
+            os.remove(filepath)
+    threading.Thread(target=delete).start()
 
 @app.post("/translate")
 async def translate_text(diary: Diary):
@@ -101,13 +116,6 @@ async def translate(text: str, url: str):
             raise Exception(f"HuggingFace API 오류: {result['error']}")
 
         return result[0]["translation_text"]
-class TextRequest(BaseModel):
-    text: str
-@app.post("/tts_only")
-async def tts_only(text_request: TextRequest):
-    japanese_text = text_request.text
-    tts_filename = text_to_speech(japanese_text)
-    return {"tts_audio_url": f"{DOMAIN_NAME}/static/{tts_filename}"}
 
 # TTS 함수
 def text_to_speech(text, lang="ja-JP"):
@@ -138,11 +146,61 @@ def text_to_speech(text, lang="ja-JP"):
 
     return filename  # 파일 이름만 리턴
 
-def text_to_speech2(text, lang="ja"):
-    tts = gTTS(text=text, lang=lang)
-    filename = "output.mp3"
-    tts.save(filename)
-    return filename
+class TextRequest(BaseModel):
+    text: str
+
+@app.post("/tts_only_test")
+async def tts_only(text_request: TextRequest):
+    text = text_request.text
+    logger.info(f" TTS 요청 받은 텍스트: {text}")
+
+    client = texttospeech.TextToSpeechClient()
+
+    synthesis_input = texttospeech.SynthesisInput(text=text)
+    voice = texttospeech.VoiceSelectionParams(
+        language_code="ja-JP",
+        ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL
+    )
+    audio_config = texttospeech.AudioConfig(
+        audio_encoding=texttospeech.AudioEncoding.MP3
+    )
+
+    response = client.synthesize_speech(
+        input=synthesis_input,
+        voice=voice,
+        audio_config=audio_config
+    )
+    audio_bytes = response.audio_content
+    logger.info("✅ 생성된 음성 데이터 길이: %d 바이트", len(audio_bytes))
+
+    # 메모리에 저장
+    # audio_stream = io.BytesIO(response.audio_content)
+
+    audio_bytes = response.audio_content
+
+    audio_stream = io.BytesIO(audio_bytes)
+
+    return StreamingResponse(
+        audio_stream,
+        media_type="audio/mpeg",
+        headers={
+            "Content-Disposition": "inline; filename=output.mp3",
+            "Content-Length": str(len(audio_bytes)),
+        }
+    )
+
+
+@app.post("/tts_only")
+async def tts_only(text_request: TextRequest):
+    text  = text_request.text
+    logger.info(f"📥 TTS 요청 받은 텍스트: {text }")
+
+    filename = text_to_speech(text)
+    # 10초 후 자동 삭제
+    delete_file_later(f"static/{filename}", delay=10)
+    return {"tts_audio_url": f"{DOMAIN_NAME}/static/{filename}"}
+
+
 @app.post("/translate_only")
 async def translate_only(diary: Diary):
     text = diary.content

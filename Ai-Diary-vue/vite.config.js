@@ -13,22 +13,11 @@ export default defineConfig({
     ],
     server: {
         proxy: {
-            '/translate_only': {
+            '/api-translator': {
                 target: 'http://127.0.0.1:8001',
                 changeOrigin: true,
-            },
-            '/tts_only': {
-                target: 'http://127.0.0.1:8001',
-                changeOrigin: true,
-            },
-            '/translate_and_tts': {
-                target: 'http://127.0.0.1:8001',
-                changeOrigin: true,
-            },
-            '/static': {
-                target: 'http://127.0.0.1:8001',
-                changeOrigin: true,
-            },
+                rewrite: path => path.replace(/^\/api-translator/, '')
+            }
         },
         port: 4000, // 포트 확인
     },

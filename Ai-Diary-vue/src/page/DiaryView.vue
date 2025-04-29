@@ -154,11 +154,6 @@ export default {
             <!-- 번역 컴포넌트  -->
 
             <BlobTts v-if="showTranslation" :content="diaryData" />
-
-            <!-- Blob TTS 테스트 버튼 추가 -->
-            <div style="margin-top: 1rem">
-              <button @click="playBlobAudio">💬 Blob TTS 테스트</button>
-            </div>
 <!--            <DiaryTranslator v-if="showTranslation" :content="diaryData" />-->
           </div>
         </template>

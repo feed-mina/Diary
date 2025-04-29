@@ -46,7 +46,6 @@ const routes = [
     { path: '/pomoMain', component: MainView },
     { path: '/email-verification', name: 'EmailVerificationPage', component: EmailVerificationPage }, {},
     {path: "/edit/password", name: "EditPassword", component: EditPassword},
-    { path: '/diaryTranslator', name:'DiaryTranslator', component: DiaryTranslator },
     {
         path: "/:pathMatch(.*)*",
         name: "CatchAll",

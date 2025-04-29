@@ -84,19 +84,28 @@ const translateDiary = async () => {
 
     titleAndContentLines.value = []
     let isTitleOrContent = false
+    const lines = japaneseDiary.value.split('\n')
 
-    for (const line of japaneseLines.value) {
-      if (line.startsWith('タイトル') || line.startsWith('コンテンツ')) {
-        isTitleOrContent = true
-      }
-      if (line.startsWith('感情のステータス') || line.startsWith('タグ')) {
-        isTitleOrContent = false
-      }
-      if (isTitleOrContent) {
-        titleAndContentLines.value.push(line)
-      }
+    // 시작은 "タイトル" 줄부터
+    const startIndex = lines.findIndex(line =>
+        line.trim().startsWith('タイトル')
+    )
+
+    // 끝은 "感情のステータス" 줄이 아니라 그 바로 앞 줄까지 포함해야 하므로,
+    // 감정 줄의 인덱스를 찾아서 바로 그 앞까지 자른다
+    const endIndex = lines.findIndex(line =>
+        line.trim().startsWith('感情のステータス') || line.trim().startsWith('タグ')
+    )
+
+    if (startIndex !== -1 && endIndex > startIndex) {
+      titleAndContentLines.value = lines.slice(startIndex, endIndex)
+    } else if (startIndex !== -1) {
+      // 감정 줄을 못 찾았으면 그냥 끝까지라도 가져오기
+      titleAndContentLines.value = lines.slice(startIndex)
+    } else {
+      titleAndContentLines.value = []
     }
-    titleLineIndex.value = titleAndContentLines.value.findIndex(line => line.startsWith('タイトル'))
+    // titleLineIndex.value = titleAndContentLines.value.findIndex(line => line.startsWith('タイトル'))
   } catch (error) {
     console.error('번역 실패:', error)
   }finally {
@@ -123,18 +132,27 @@ const readJapanese = async () => {
 
       const response = await api.post('/tts_blob', { text: lineText }, { responseType: 'blob' })
       const audioBlob = new Blob([response.data], { type: 'audio/mpeg' })
-      const audioUrl = URL.createObjectURL(audioBlob)
-      const audio = new Audio(audioUrl)
 
-      audio.play()
-      audio.onended = () => {
+      console.log("blob 사이즈:", audioBlob.size)
+
+      if (audioBlob.size === 0) {
+        console.error('오디오 blob이 비어 있음')
         isReading.value = false
+        return
       }
+      const audioUrl = URL.createObjectURL(audioBlob)
+      const audio = new Audio()
+      audio.src = audioUrl
+      audio.load()
+
+      audio.addEventListener('canplaythrough', () => {
+        audio.play().catch(e => {
+          console.error("오디오 재생 실패 (play() 호출 실패):", e)
+          isReading.value = false
+        })
+      })
       audio.onerror = (e) => {
         console.error('오디오 재생 실패:', e)
-        isReading.value = false
-      }
-        console.error('TTS 요청 실패:', error)
         isReading.value = false
       }
 
@@ -149,6 +167,7 @@ const readJapanese = async () => {
           readNextLine()  // 다음 줄 재생
         }, extraDelay)
       }
+    }
     await readNextLine() //  첫 줄 시작!
   } catch (error) {
     console.error('TTS 실패:', error)

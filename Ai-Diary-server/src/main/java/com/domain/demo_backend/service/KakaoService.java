@@ -74,7 +74,9 @@ public class KakaoService {
         Long id = ((Number) body.get("id")).longValue();
         String connectedAt = (String) body.get("connected_at");
         String nickname = (String) properties.get("nickname");
-        String email = (String) kakaoAccount.get("email");
+//        String email = (String) kakaoAccount.get("email");
+        String email = (kakaoAccount.get("email") != null) ? kakaoAccount.get("email").toString() : null;
+
         boolean hasEmail = (Boolean) kakaoAccount.getOrDefault("has_email", false);
         boolean isEmailValid = (Boolean) kakaoAccount.getOrDefault("is_email_valid", false);
         boolean isEmailVerified = (Boolean) kakaoAccount.getOrDefault("is_email_verified", false);
@@ -97,6 +99,7 @@ public class KakaoService {
         log.info("registerKakaoUser 진입 , 이메일이 있는지 확인 : " );
         // DB에서 같은 이메일이 있는지 확인해
         if(userMapper.findByUserEmail(kakaoUserInfo.getEmail()) != null){
+            log.info("카카오 사용자 이메일: " + kakaoUserInfo.getEmail());
 
             // 이미 존재하는 경우 updated_at 갱신
             userMapper.updateUpdatedAt(kakaoUserInfo.getEmail());
@@ -108,6 +111,8 @@ public class KakaoService {
                     kakaoUserInfo.getHashedPassword(),
                     String.valueOf(kakaoUserInfo.getUserId())
             );
+            log.info("카카오 사용자 이메일: " + kakaoUserInfo.getEmail());
+
             // JWT 토큰을 생성해 반환해
             String jwtToken = "Bearer " + tokenResponse.getAccessToken();
             log.info("jwtToken: " + jwtToken);

@@ -47,11 +47,12 @@ export default {
     watch(() => route.path, (newPath) => {
       updateBodyClass(newPath)
     })
-    // console.log("@@@@App inerceptors");
-    // console.log(import.meta.env.VITE_API_URL);
-    // console.log(import.meta.env.VUE_API_URL);
+     console.log("@@@@App inerceptors");
+     console.log(import.meta.env.VITE_API_URL);
+     console.log(import.meta.env.VUE_API_URL);
     // axios.defaults.baseURL = import.meta.env.VITE_APP_API_BASE_URL;
     // 서버 주소 적용
+    console.log("적용되는 API URL:", apiUrl);
     axios.defaults.baseURL = apiUrl;  // 서버 주소 적용
 
 // 요청 인터셉터 추가: 모든 요청 전에 토큰을 헤더에 넣어줌

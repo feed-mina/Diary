@@ -26,6 +26,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
 
+//    cloundfront 적용 후 프록시 설정으로 추가
+    private static final List<String> EXCLUDE_URLS = List.of(
+            "/api/auth/login",
+            "/api/kakao/login"
+    );
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return EXCLUDE_URLS.stream().anyMatch(path::startsWith);
+    }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {

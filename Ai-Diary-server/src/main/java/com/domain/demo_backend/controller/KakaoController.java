@@ -143,6 +143,9 @@ public class KakaoController {
         KakaoUserInfo kakaoUserInfo;
         try {
             kakaoUserInfo = kakaoService.getKakaoUserInfo(kakaoAccessToken);
+            // userInfo 응답 body 예시 출력
+            System.out.println("Kakao UserInfo: " + kakaoUserInfo);
+
             log.error("@@@@@kakaoUserInfo", kakaoUserInfo);
         } catch (Exception e) {
             log.error("❌ 카카오 사용자 정보 조회 실패", e);

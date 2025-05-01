@@ -58,16 +58,15 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 적용
                 .csrf(csrf -> csrf.disable())  // CSRF 비활성화
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .anyRequest().permitAll()
-//                        .requestMatchers("/api/auth/login", "/api/auth/register", "/public/**").permitAll() // 로그인/회원가입/공개 API 허용
-//                        .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(new Http403ForbiddenEntryPoint()) // 🚨 403 Forbidden 반환 (Redirect 방지)
+                        .authenticationEntryPoint(new Http403ForbiddenEntryPoint()) //  403 Forbidden 반환 (Redirect 방지)
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
-                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable()) // 🚨 기본 로그인 폼 완전 비활성화
-                .logout(logout -> logout.disable()); // 🚨 로그아웃 비활성화 (API 방식 사용)
+                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.disable()) // 기본 로그인 폼 완전 비활성화
+                .logout(logout -> logout.disable()); // 로그아웃 비활성화 (API 방식 사용)
 
         return http.build();
     }
@@ -82,6 +81,7 @@ public class SecurityConfig {
                 "https://justsaying.co.kr","http://justsaying.co.kr"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setMaxAge(3600L); // preflight 캐시 1시간
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

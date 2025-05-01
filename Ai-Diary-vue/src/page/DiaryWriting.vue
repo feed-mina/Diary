@@ -89,7 +89,8 @@ export default {
     const onClickSaveDiary = async () => {
       //
       if (!diaryContentData.author || !diaryContentData.title || !diaryContentData.date || diaryContentData.emotion === "") {
-        Swal.fire("입력 오류", "작성자, 제목, 날짜, 감정지수는 반드시 입력해야 해요!", "warning");
+        Swal.fire("입력 오류", "" +
+            "작성자, 제목, 날짜, 감정지수는 반드시 입력해야 해요!", "warning");
         return; // 저장 막기
       } else if(!diaryContentData.author){
         Swal.fire("입력 필요", "작성자는 반드시 입력해야 해요!", "warning");

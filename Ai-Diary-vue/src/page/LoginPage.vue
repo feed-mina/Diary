@@ -110,8 +110,15 @@ export default {
               let response = await axios.post(`/api/kakao/login`, {
                 accessToken: kakaoAccessToken,
               });
+              const userInfo = response.data.kakaoUserInfo;
+              if (!userInfo || !userInfo.email || !userInfo.email.includes("@")) {
+                console.warn("📛 이메일 없음 또는 형식 이상", userInfo);
+                Swal.fire("로그인 실패", "이메일 정보가 없어 로그인할 수 없습니다.", "error");
+                return;
+              }
 
-              console.log("email: ", response.data.kakaoUserInfo.email);
+
+              // console.log("email: ", response.data.kakaoUserInfo.email);
               console.log("nickname: ", response.data.kakaoUserInfo.nickname);
               console.log("jwtToken: ", response.data.jwtToken);
               console.log("response: ", response);
@@ -123,6 +130,13 @@ export default {
                 console.log("⚠️ 서버에서 JWT 토큰이 안 왔어!");
               }
               let kakao_email = response.data.kakaoUserInfo.email;
+
+              if (kakao_email) {
+                console.log("kakao_email:", kakao_email);
+              } else {
+                console.warn("email이 없습니다.", response.data.kakaoUserInfo);
+              }
+
               let kakao_nickname = response.data.kakaoUserInfo.nickname;
               let kakao_userId = kakao_email.split("@");
               let kakao_token = response.data.jwtToken;

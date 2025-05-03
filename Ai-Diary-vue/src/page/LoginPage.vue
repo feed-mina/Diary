@@ -76,16 +76,16 @@ export default {
         console.log("@@@@ 일반 로그인 토큰 저장");
         localStorage.setItem("userId", userId);
         localStorage.setItem("jwtToken", accessToken);
-        localStorage.setItem("accessToken", accessToken); // ✅ 오직 accessToken만!
-        localStorage.setItem("refreshToken", refreshToken); // ✅ refresh도 따로!
+        localStorage.setItem("accessToken", accessToken); //  오직 accessToken만!
+        localStorage.setItem("refreshToken", refreshToken); //  refresh도 따로!
         localStorage.setItem("email", loginData.value.email);
         localStorage.setItem("password", loginData.value.password);
 
-        localStorage.setItem("sleepUsingType", sleepUsingType);
-        localStorage.setItem("drugUsingType", drugUsingType);
+        // localStorage.setItem("sleepUsingType", sleepUsingType);
+        // localStorage.setItem("drugUsingType", drugUsingType);
 
-        // localStorage.setItem("sleepUsingType", "Y");
-        // localStorage.setItem("drugUsingType", "Y");
+        localStorage.setItem("sleepUsingType", "Y");
+        localStorage.setItem("drugUsingType", "Y");
         Swal.fire("로그인 성공", "로그인을 완료했습니다", "success");
         router.push("/diary/common").then(() => {
           location.reload(); // 페이지 새로고침
@@ -99,7 +99,7 @@ export default {
     // 카카오 로그인 함수
     const kakaoLogin = () => {
       if (window.Kakao && window.Kakao.Auth) {
-        console.log("🌐 웹에서는 그냥 페이지 이동!");
+        console.log(" 웹에서는 그냥 페이지 이동!");
         window.Kakao.Auth.login({
           scope: "profile_nickname, account_email, talk_message",
           success: async function (authObj) {
@@ -109,10 +109,12 @@ export default {
               console.log("카카오 로그인 API 호출 시작");
               let response = await axios.post(`/api/kakao/login`, {
                 accessToken: kakaoAccessToken,
+              }, {
+                timeout: 10000,
               });
               const userInfo = response.data.kakaoUserInfo;
               if (!userInfo || !userInfo.email || !userInfo.email.includes("@")) {
-                console.warn("📛 이메일 없음 또는 형식 이상", userInfo);
+                console.warn("이메일 없음 또는 형식 이상", userInfo);
                 Swal.fire("로그인 실패", "이메일 정보가 없어 로그인할 수 없습니다.", "error");
                 return;
               }
@@ -154,12 +156,12 @@ export default {
                });
             } catch (error) {
               Swal.fire("로그인 실패", error.response?.data?.message || "카카오 로그인 실패", "error");
-              console.error("❌ 카카오 로그인 실패", error);
+              console.error(" 카카오 로그인 실패", error);
             }
           },
           fail: function (err) {
             Swal.fire("로그인 실패", "카카오 로그인 실패", "error");
-            console.error("❌ 로그인 실패", err);
+            console.error(" 로그인 실패", err);
           },
         });
       } else {
@@ -178,7 +180,7 @@ export default {
           console.log("카카오 SDK 로드 완료");
         };
         kakaoScript.onerror = () => {
-          console.error("❌ 카카오 SDK 로드 실패");
+          console.error(" 카카오 SDK 로드 실패");
         };
         document.head.appendChild(kakaoScript);
       }

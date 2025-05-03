@@ -28,7 +28,7 @@ const toggleDrug = (time) => {
   // 선택 토글 기능 만들면 여기!
 };
 
-// ✅ 입력값이 바뀔 때마다 부모에 emit!
+//  입력값이 바뀔 때마다 부모에 emit!
 watch(
     () => [drugtData.drugMorning, drugtData.drugLunch, drugtData.drugDinner],
     () => {

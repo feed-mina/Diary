@@ -55,7 +55,7 @@ public class DiaryController {
         System.out.println("@@@loggedInUserID: " + loggedInUserID);
         // 내가 쓴 일기만 보기 > null 이나 empty 값 체크하기
         try {
-            // 🔹 "내가 쓴 일기만 보기" 체크 시 > showOnlyMine.value가 false 로 되면 userId는 "" 가 된다. 이때가 default값 - 모든 일기를 볼 수있다.
+            //  "내가 쓴 일기만 보기" 체크 시 > showOnlyMine.value가 false 로 되면 userId는 "" 가 된다. 이때가 default값 - 모든 일기를 볼 수있다.
             // 내가 쓴 일기 보기 showOnlyMine.value가 true이면 , 즉, userId가 null 이 아니면 또는 "" 값이 아니면 정말 userId랑 로그인한 id가 같은지 파악, 여기서 로그인은 이메일 앞 값이여야한다.
 
             // vue에서 userId가 loggedInUserId(이메일 split한 id값)값이 비동기로 받아진다
@@ -200,9 +200,9 @@ public class DiaryController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid JWT Token.");
         }
         String userSqnoStr = claims.get("hashedPassword", String.class); // String으로 읽기
-        System.out.println("@@@ diaryRequest.getTag1(): " + diaryRequest.getTag1());
-        System.out.println("@@@ diaryRequest.getTag2(): " + diaryRequest.getTag2());
-        System.out.println("@@@ diaryRequest.getTag3(): " + diaryRequest.getTag3());
+//        System.out.println("@@@ diaryRequest.getTag1(): " + diaryRequest.getTag1());
+//        System.out.println("@@@ diaryRequest.getTag2(): " + diaryRequest.getTag2());
+//        System.out.println("@@@ diaryRequest.getTag3(): " + diaryRequest.getTag3());
 
         CustomUserDetails currentUser = UserInfoHelper.getMemberInfo();
         System.out.println("@@@currentUser 값: " + currentUser);

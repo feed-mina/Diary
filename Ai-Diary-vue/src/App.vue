@@ -62,18 +62,18 @@ export default {
           const isExcluded = excludeUrls.some((url) => config.url.includes(url));
           let token = localStorage.getItem("jwtToken") || localStorage.getItem("kakaoAccessToken");
 
-          // console.log("🌐 현재 페이지:", window.location.href);
-          // console.log("🧪 로컬스토리지 토큰:", token);
+          // console.log(" 현재 페이지:", window.location.href);
+          // console.log("로컬스토리지 토큰:", token);
           if (!isExcluded) {
             if (token) {
-              // console.log("📡 Axios 인터셉터 실행 로그인 전 - JWT Token:", token);
+              // console.log(" Axios 인터셉터 실행 로그인 전 - JWT Token:", token);
               if (!token.startsWith("Bearer ")) {
                 token = `Bearer ${token}`;
               }
               config.headers["Authorization"] = token;
             }
           } else {
-            // console.log(`🛑 ${config.url} 요청에는 Authorization 헤더를 추가하지 않음.`);
+            // console.log(` ${config.url} 요청에는 Authorization 헤더를 추가하지 않음.`);
           }
           return config;
         },
@@ -81,18 +81,18 @@ export default {
           if (error.response && error.response.status === 401) {
             try {
               const refreshToken = localStorage.getItem('refreshToken');
-              const res = await axios.post('/api/auth/refresh', { refreshToken });
+              const refreshRes = await axios.post('/api/auth/refresh', { refreshToken });
               const newAccessToken = res.data.accessToken;
-             // console.log("@@@@@newAccessToken"+newAccessToken)
-              localStorage.setItem('accessToken', newAccessToken);
-            //  localStorage.setItem("jwtToken", tokenResponse.accessToken); // ✅ 오직 accessToken만 저장
-            //  localStorage.setItem("refreshToken", tokenResponse.refreshToken); // ✅ refresh도 따로 저장
+               console.log("@@@@@newAccessToken"+refreshRes)
+              // localStorage.setItem('accessToken', newAccessToken);
+            //  localStorage.setItem("jwtToken", tokenResponse.accessToken); //  오직 accessToken만 저장
+             localStorage.setItem("refreshToken", tokenResponse.refreshToken); //  refresh도 따로 저장
 
               // 원래 요청 다시 보내기
               error.config.headers.Authorization = `Bearer ${newAccessToken}`;
               return instance.request(error.config);
             } catch (err) {
-            // console.log("🚨 401 Unauthorized 발생 - 로그인 페이지로 리디렉트");
+            // console.log("401 Unauthorized 발생 - 로그인 페이지로 리디렉트");
             alert("로그인이 필요합니다.");
               return Promise.reject(err);
           }
@@ -103,14 +103,44 @@ export default {
 
     axios.interceptors.response.use(
         response => response,
-        error => {
-          if (error.response && error.response.status === 401) {
-            // ✅ 로그아웃 처리 + 로그인 페이지 이동
-            alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
-            localStorage.clear(); // 전체 삭제도 가능
+        async error => {
+          const originalRequest = error.config;
+          if (response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            try {
+              const refreshToken = localStorage.getItem('refreshToken');
+              const response = await axios.post(`${apiUrl}/auth/refresh`, { refreshToken });
 
-            window.location.href = '/'; // 로그인 페이지로 이동
+              const newAccessToken = response.data.accessToken;
+              localStorage.setItem('jwtToken', newAccessToken);
+
+              originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+              return axios(originalRequest);
+            } catch (err) {
+              // 🔽 여기가 중요
+              localStorage.clear();
+              alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+              window.location.href = '/pomoLogin';
+              return Promise.reject(err);
+            }
           }
+
+          try {
+              const refreshToken = localStorage.getItem('refreshToken');
+              const response = await axios.post(`${apiUrl}/auth/refresh`, { refreshToken });
+
+              if (response.status === 200) {
+                const newAccessToken = response.data.accessToken;
+                localStorage.setItem('jwtToken', newAccessToken);  // 이름 통일
+                axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+                originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+                return axios(originalRequest);  // instance X
+              }
+            } catch (e) {
+              alert("세션이 만료되어 로그인 페이지로 이동합니다.");
+              // 로그아웃 처리 or 라우팅
+            }
+
           return Promise.reject(error);
         }
     );

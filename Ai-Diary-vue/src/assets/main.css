@@ -571,7 +571,6 @@ button:hover {
     }*/
 
     .time-select-swiper {
-        max-width: 100%;
         margin: 0 auto;
         padding: 1rem;
     }
@@ -997,7 +996,6 @@ button:hover {
         z-index:4;
     }
     .time-select-swiper {
-        max-width: 100%;
         margin: 0 auto;
         padding: 1rem;
     }
@@ -1141,9 +1139,10 @@ button:hover {
     }
 
     .kakao-button {
+        padding-bottom: 10rem;
         width: 100%;
-        background-color: #fee500;
-        color: #3c1e1e;
+        /*background-color: #fee500;*/
+        /*color: #3c1e1e;*/
         border: none;
         border-radius: 12px;
         /*padding: 18px 2.5rem;*/
@@ -1159,12 +1158,24 @@ button:hover {
         display: flex;
         justify-content: center;
     }
+
+    .login_form_button {
+        width: 22rem;
+        background-color: #FDBFBC;
+        border: none;
+        border-radius: 10px;
+        padding: 1.5rem;
+        font-size: 2em;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
     .stopwatchButton,
     .pomobutton,
     .kakaosendbutton,
-    .toggleMode,
-    .login_form_button {
-        width: 12rem;
+    .toggleMode  {
+        width: 30rem;
         background-color: #FDBFBC;
         border: none;
         border-radius: 10px;
@@ -1773,12 +1784,6 @@ textarea {
         margin: 2px;
     }
 
-    .time-select-swiper h3 {
-        font-size: 16px;
-        margin-bottom: 8px;
-        text-align: center;
-    }
-
 
     .swiper-nav-buttons {
         justify-content: center;
@@ -1939,21 +1944,6 @@ textarea {
     display: flex;
     justify-content: center;
 }
-
-.login_form_button {
-    width: 100%;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    font-weight: 600;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-
 
 .login_form-oo {
     font-size: 0.9rem;
@@ -2402,8 +2392,7 @@ textarea {
 .stopwatchButton,
 .pomobutton,
 .kakaosendbutton,
-.toggleMode,
-.login_form_button {
+.toggleMode {
     width: 12rem;
     background-color: #FDBFBC;
     border: none;
@@ -2668,9 +2657,8 @@ textarea {
 .time-select-swiper {
     position: relative;
     padding: 20px;
-    max-width: 100%;
     margin: 0 auto;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .swiper-slide {

@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 export default {
   name: "DiaryNav",
   setup() {
+    console.log('250503')
     const router = useRouter();
     const loginPassword = localStorage.getItem('password')
     const loginToken = localStorage.getItem('jwtToken'); // 저장된 토큰 가져오기
@@ -33,7 +34,7 @@ export default {
     };
 
     const logout = () => {
-      // ✅ `localStorage`에서 로그인 정보 삭제
+      //  `localStorage`에서 로그인 정보 삭제
       localStorage.removeItem("userId");
       localStorage.removeItem("jwtToken");
       localStorage.removeItem("email");
@@ -43,7 +44,7 @@ export default {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
 
-      // ✅ 홈으로 이동 후 새로고침
+      //  홈으로 이동 후 새로고침
       router.push("/").then(() => {
         location.reload();
       });

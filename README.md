@@ -38,14 +38,14 @@
 ---
 
 ## 🛠 기술 스택
-### ✅ Frontend (Vue.js)
+###  Frontend (Vue.js)
 - Vue 3
 - Vue Router (페이지 라우팅)
 - 로컬 스토리지 기반 상태 관리 (`onMounted` + `watch` 활용)
 - 로그인 유무 체크
 - Axios (백엔드 API 호출, `axios.interceptor` 적용)
 
-### ✅ Backend (Spring Boot)
+###  Backend (Spring Boot)
 - Spring Boot 3
 - Spring Security (인증 및 보안)
 - MyBatis (데이터베이스 연동)
@@ -141,13 +141,13 @@ axios.interceptors.request.use(
 ---
 
 ## 🚀 실행 방법
-### ✅ 백엔드 (Spring Boot) 실행
+###  백엔드 (Spring Boot) 실행
 ```bash
 cd backend
 ./mvnw spring-boot:run
 ```
 
-### ✅ 프론트엔드 (Vue.js) 실행
+###  프론트엔드 (Vue.js) 실행
 ```bash
 cd frontend
 npm install

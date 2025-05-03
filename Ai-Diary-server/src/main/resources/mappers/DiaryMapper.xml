@@ -20,7 +20,13 @@
             <if test="frstRgstUspsSqno != null">frst_rgst_usps_sqno,</if>
             reg_dt,
             <if test="author != null">author,</if>
-            <if test="emotion != null">emotion</if>
+            <if test="emotion != null">emotion,</if>
+
+            <!-- ✅ 새로 추가된 필드들 -->
+            <if test="selectedTimes != null">selected_times,</if>
+            <if test="drugMorning != null">drug_morning,</if>
+            <if test="drugLunch != null">drug_lunch,</if>
+            <if test="drugDinner != null">drug_dinner,</if>
         </trim>
         <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
             <if test="userSqno != null">#{userSqno},</if>
@@ -35,7 +41,13 @@
             <if test="frstRgstUspsSqno != null">#{frstRgstUspsSqno},</if>
             NOW(),
             <if test="author != null">#{author},</if>
-            <if test="emotion != null">#{emotion}</if>
+            <if test="emotion != null">#{emotion},</if>
+
+            <!-- ✅ 새로 추가된 값들 -->
+            <if test="selectedTimes != null">#{selectedTimes,jdbcType=VARCHAR},</if>
+            <if test="drugMorning != null">#{drugMorning},</if>
+            <if test="drugLunch != null">#{drugLunch},</if>
+            <if test="drugDinner != null">#{drugDinner},</if>
         </trim>
     </insert>
 

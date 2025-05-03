@@ -164,7 +164,7 @@ function playAlarm3() {
 </script>
 <template>
    <div class="pomodoro">
-      <h2> 🍅 뽀모도로 모드</h2>
+      <h2>  뽀모도로 모드</h2>
       <h1>뽀모도로 횟수: {{ pomoSession }}</h1>
       <h2 class="formattedTime">{{ formattedTime }}</h2>
       <button class="pomobutton" @click="startPomodoro" :disabled="isPomodoroRunning">25분 집중</button>

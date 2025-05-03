@@ -47,7 +47,10 @@ public class Diary {
     private String roleNm;
     private String lastUpdtIp;
     private BigInteger lastUpdtUspsSqno;
-    private List selectedTimes;
+    private String selectedTimes;
+    private String drugMorning;
+    private String drugLunch;
+    private String drugDinner;
 
     public Diary toDiary() {
         return Diary.builder()
@@ -67,11 +70,16 @@ public class Diary {
                 .regDt(this.regDt)
                 .author(this.author)
                 .emotion(this.emotion)
+                .diaryType(this.diaryType)
+                .selectedTimes(this.selectedTimes)
+                .drugMorning(this.drugMorning)
+                .drugLunch(this.drugLunch)
+                .drugDinner(this.drugDinner)
                 .build();
     }
 
     @Builder
-    public Diary(Long diaryId, String title, String content, Map tags, String tag1, String tag2, String tag3, String date, String userId, String email,String username, Long userSqno, String sbsceDt, String lastUpdtDt, String roleCd, String roleNm, LocalDateTime regDt, LocalDateTime updtDt, String diaryStatus, String diaryType, String delYn, LocalDateTime delDt, LocalDateTime frstRegDt, String frstRegIp, String lastUpdtIp, BigInteger frstRgstUspsSqno, BigInteger lastUpdtUspsSqno, String author, Integer emotion, List selectedTimes) {
+    public Diary(Long diaryId, String title, String content, Map tags, String tag1, String tag2, String tag3, String date, String userId, String email,String username, Long userSqno, String sbsceDt, String lastUpdtDt, String roleCd, String roleNm, LocalDateTime regDt, LocalDateTime updtDt, String diaryStatus, String diaryType, String delYn, LocalDateTime delDt, LocalDateTime frstRegDt, String frstRegIp, String lastUpdtIp, BigInteger frstRgstUspsSqno, BigInteger lastUpdtUspsSqno, String author, Integer emotion, String selectedTimes, String drugMorning, String drugLunch, String drugDinner) {
         this.diaryId = diaryId;
         this.title = title;
         this.content = content;
@@ -94,6 +102,9 @@ public class Diary {
         this.author = author;
         this.emotion = emotion;
         this.selectedTimes = selectedTimes;
+        this.drugMorning = drugMorning;
+        this.drugLunch = drugLunch;
+        this.drugDinner = drugDinner;
     }
 
 }

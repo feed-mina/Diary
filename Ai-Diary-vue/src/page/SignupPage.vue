@@ -214,7 +214,7 @@ export default {
         fullEmail.value = full;
 
         const success = await sendSignUpData();
-        if (!success) return; // ❗오류나면 더 이상 진행 안 함
+        if (!success) return; // 오류나면 더 이상 진행 안 함
 
         const response = await axios.post(`/api/auth/signup`, {
           email: fullEmail.value

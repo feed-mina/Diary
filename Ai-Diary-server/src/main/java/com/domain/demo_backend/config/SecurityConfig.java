@@ -87,16 +87,5 @@ public class SecurityConfig {
         return source;
     }
 
-    // 사용자 정보 관리
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-//        manager.createUser(User.withUsername("testUser")
-//                .password(passwordEncoder().encode("testPassword"))
-//                .roles("USER")
-//                .build());
-//        return manager;
-//    }
-
 
 }

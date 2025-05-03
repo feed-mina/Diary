@@ -35,8 +35,8 @@ export default {
 
     // 다음 칸으로 커서 이동
     const handleInput = (event, index) =>{
-      const value = event.target.value.replace(/[^0-9]/g, ''); // ✅ 숫자만 허용
-      codeDigits.value[index] = value;  // ✅ 입력값 반영
+      const value = event.target.value.replace(/[^0-9]/g, ''); //  숫자만 허용
+      codeDigits.value[index] = value;  //  입력값 반영
       if(event.target.value.length === 1 && index < 6){
         document.getElementById(`code-${index + 1}`).focus();
       }

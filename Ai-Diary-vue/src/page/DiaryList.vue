@@ -18,12 +18,12 @@ export default {
     const showOnlyMine = ref(false); // 내가 쓴 일기만 보기 체크박스
     const noDiaryMessage = ref(""); // "작성한 일기가 없습니다." 메시지
 
-    // ✅ 로그인 상태 체크 (localStorage 활용)
+    //  로그인 상태 체크 (localStorage 활용)
     const isLoggedIn = computed(() => {
       return !!localStorage.getItem("jwtToken") || !!localStorage.getItem("kakaoAccessToken");
     });
 
-    // ✅ 로그인한 유저 ID 확인
+    //  로그인한 유저 ID 확인
     const userId = ref(localStorage.getItem("userId")  || "");
     const token = ref(localStorage.getItem("jwtToken")  || "");
     const nickname = ref(localStorage.getItem("nickname")  || "");
@@ -128,7 +128,7 @@ export default {
     };
     // 컴포넌트 마운트 시 일기 목록 로드
 
-    // ✅ 로그인되지 않은 경우 로그인 페이지로 이동
+    //  로그인되지 않은 경우 로그인 페이지로 이동
     onMounted(() => {
       if (!isLoggedIn.value) {
         Swal.fire({

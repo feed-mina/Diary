@@ -25,14 +25,14 @@ public class MyBatisConfig {
         );
 
         // 로그 확인
-        System.out.println("✅ MyBatis SqlSessionFactory 설정 완료됨!");
+        System.out.println("250503_MyBatis SqlSessionFactory 설정 완료됨!");
         return sessionFactory.getObject();
     }
 
     @Bean
     public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
         // sqlsession 로그 확인
-        System.out.println("✅ SqlSessionTemplate 생성 완료!");
+        System.out.println("250503_SqlSessionTemplate 생성 완료!");
 
         return new SqlSessionTemplate(sqlSessionFactory);
     }

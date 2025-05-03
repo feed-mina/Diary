@@ -17,12 +17,12 @@ export default {
   setup() {
     const router = useRouter();
 
-    // ✅ 로그인 상태 체크 (localStorage 활용)
+    //  로그인 상태 체크 (localStorage 활용)
     const isLoggedIn = computed(() => {
       return !!localStorage.getItem("jwtToken") || !!localStorage.getItem("kakaoAccessToken");
     });
 
-    // ✅ 로그인한 유저 ID 확인
+    //  로그인한 유저 ID 확인
     const userId = ref(localStorage.getItem("userId")  || "");
     const token = ref(localStorage.getItem("jwtToken")  || "");
     const nickname = ref(localStorage.getItem("nickname")  || "");
@@ -31,7 +31,7 @@ export default {
     const sleepUsingType = ref(localStorage.getItem("sleepUsingType") || "N");
     const drugUsingType = ref(localStorage.getItem("drugUsingType") || "N");
 
-    // ✅ 초기 다이어리 데이터
+    //  초기 다이어리 데이터
     const diaryContentData = reactive({
       email : email.value,
       userId: userId.value,
@@ -68,7 +68,7 @@ export default {
       { text: "💙 우울해요", value: "10" }
     ];
 
-    // ✅ 로그인되지 않은 경우 로그인 페이지로 이동
+    //  로그인되지 않은 경우 로그인 페이지로 이동
     onMounted(() => {
       if (!isLoggedIn.value) {
         Swal.fire({
@@ -85,7 +85,7 @@ export default {
       }
     });
 
-    // ✅ 일기 저장 함수
+    //  일기 저장 함수
     const onClickSaveDiary = async () => {
       //
       if (!diaryContentData.author || !diaryContentData.title || !diaryContentData.date || diaryContentData.emotion === "") {
@@ -113,8 +113,9 @@ export default {
       } else if (email) {
         headers["Authorization"] = `Bearer ${email}`;
       }
+      diaryContentData.sleepTimes = [...diaryContentData.selectedTimes];
 
-      // ✅ tags를 개별 필드로 변환하여 전송
+      //  tags를 개별 필드로 변환하여 전송
       const diaryData = {
         email: diaryContentData.email,
         userId: diaryContentData.userId,
@@ -130,7 +131,7 @@ export default {
         tag1: diaryContentData.tags.tag1,
         tag2: diaryContentData.tags.tag2,
         tag3: diaryContentData.tags.tag3,
-        sleepTimes: diaryContentData.selectedTimes,
+        selectedTimes: diaryContentData.selectedTimes,
         drugMorning: diaryContentData.drugMorning,
         drugLunch: diaryContentData.drugLunch,
         drugDinner: diaryContentData.drugDinner,
@@ -145,9 +146,13 @@ export default {
               }
             }
         )
-        // console.log("diaryContentData.value:", diaryContentData.value);
+        console.log("diaryData: ", diaryData);
+        console.log("diaryContentData.selectedTimes", diaryContentData );
+
+        // ref()일 때만 .value로 접근하고, reactive()는 그냥 객체처럼
+        // ref()는 무조건 .value로 꺼내고, .value로 수정
+        // 모든 속성을 반응형으로 만든다. 그래서 .value는 사용이 안된다.
         // console.log("@@@일기 저장 응답:", response.data);
-        // console.log("JSON 데이터:", JSON.stringify(diaryContentData.value));
 
         if (response.data.success) {
           Swal.fire("기록 완료!", "일기가 저장되었습니다.", "success").then(() => {
@@ -165,8 +170,11 @@ export default {
       diaryContentData.drugMorning = drugInfo.drugMorning;
       diaryContentData.drugLunch = drugInfo.drugLunch;
       diaryContentData.drugDinner = drugInfo.drugDinner;
-      // console.log("약 복용 정보 업데이트:", drugInfo);
+      console.log("약 복용 정보 업데이트:", drugInfo);
     };
+    watch(() => diaryContentData.selectedTimes, (newVal) => {
+      diaryContentData.sleepTimes = [...newVal];
+    });
 
 
     return {
@@ -201,11 +209,11 @@ export default {
               />
 
             </div>
+            <div id="timeSelectWrapSection" style="width:45vw;">
+              <section class="timeSelectWrap" v-if="sleepUsingType === 'Y'" style="width: 90% ">
 
-
-            <div class="timeSelectWrap" v-if="sleepUsingType === 'Y'">
-              TimeSelect
-              <TimeSelect v-model="diaryContentData.selectedTimes"/>
+                <TimeSelect v-model="diaryContentData.selectedTimes"/>
+              </section>
             </div>
             <div v-if="drugUsingType === 'Y'" class="drug-section">
               <DrugSection :drugUsingType="drugUsingType" @updateDrugInfo="handleDrugInfo" />

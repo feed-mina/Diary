@@ -211,7 +211,7 @@ public class AuthService {
         }
 
         if (!code.equals(user.getVerificationCode())) {
-            log.error("❌ 인증 실패: 코드 불일치 -> 입력한 코드: {}, 저장된 코드: {}", code, user.getVerificationCode());
+            log.error(" 인증 실패: 코드 불일치 -> 입력한 코드: {}, 저장된 코드: {}", code, user.getVerificationCode());
             return false;
         }
 

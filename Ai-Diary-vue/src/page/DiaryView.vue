@@ -47,21 +47,21 @@ export default {
     };
 
     if (!diaryId) {
-      console.warn("🚨 diaryId가 없음 (API 요청 중단)");
+      console.warn("diaryId가 없음 (API 요청 중단)");
       return;
     }
     const getDiaryItem = async () => {
       if (!diaryId) {
-        console.warn("🚨 diaryId가 없음 (API 요청 중단)");
+        console.warn("diaryId가 없음 (API 요청 중단)");
         return;
       }
       if (!userId) {
-        console.warn("🚨 userId가 없음 (API 요청 중단)");
+        console.warn("userId가 없음 (API 요청 중단)");
         return;
       }
 
       try {
-        console.log(`📌 요청 URL: /api/diary/viewDiaryItem/${diaryId}?userId=${userId}`);
+        console.log(` 요청 URL: /api/diary/viewDiaryItem/${diaryId}?userId=${userId}`);
 
         const response = await axios.get(`/api/diary/viewDiaryItem/${diaryId}`
             , {
@@ -72,7 +72,7 @@ export default {
   // diaryData 받기
         diaryData.value = response.data.diaryItem;
 
-        console.log("📌 서버 diaryData 데이터:", diaryData.value);
+        console.log(" 서버 diaryData 데이터:", diaryData.value);
       } catch (error) {
         console.error('Error fetching diary list: ', error);
       }
@@ -88,7 +88,7 @@ export default {
         const audio = new Audio(audioUrl);
         audio.play();
       } catch (err) {
-        console.error('🎧 blob TTS 실패:', err);
+        console.error(' blob TTS 실패:', err);
       }
     };
 

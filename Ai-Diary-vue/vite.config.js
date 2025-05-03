@@ -21,7 +21,7 @@ export default defineConfig({
         },
         port: 4000, // 포트 확인
     },
-    base: './', //상대 경로로 설정
+    base: '/', //루트(/) 경로 기준으로 정적 파일 전송 (s3)
     build: {
         outDir: 'dist',
     },// <-- S3에서 사용될 프로젝트 폴더 지정

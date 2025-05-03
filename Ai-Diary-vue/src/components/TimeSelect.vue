@@ -1,14 +1,18 @@
 
 
 <script setup>
-import { ref, defineEmits } from 'vue'
+import { ref, defineEmits,watch } from 'vue'
 
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/swiper-bundle.css'
-const emit = defineEmits(['updateTimes'])
+// const emit = defineEmits(['updateTimes'])
+
+const props = defineProps(['modelValue']);
+const emit = defineEmits(['update:modelValue'])
+
 
 const timeList = [
   {hour: 0,  available: true},
@@ -45,22 +49,34 @@ const statusMap = ref({})
 function toggleTime(hour) {
   const time = timeList.find(t => t.hour === hour)
 
-  if (!time?.available) return
+  if (!time?.available) return;
   if (selectedTimes.value.includes(hour)) {
     // 선택 해제
-    selectedTimes.value = selectedTimes.value.filter(t => t !== hour)
-    statusMap.value[hour] = null  // 상태 초기화
+    selectedTimes.value = selectedTimes.value.filter(t => t !== hour);
+    statusMap.value[hour] = null;  // 상태 초기화
   } else {
     // 선택 추가
     selectedTimes.value.push(hour)
     statusMap.value[hour] = 'sleep'  // 자동으로 sleep으로 설정
   }
 
-  emit('updateTimes', [...selectedTimes.value].sort((a, b) => a - b))
-
+  emit('update:modelValue', [...selectedTimes.value].sort((a, b) => a - b));
+  console.log('selectedTimes:', selectedTimes.value)
   // console.log("@@@ updateTimes " + [...selectedTimes.value].sort((a, b) => a - b));
 }
 
+
+// 예시: 선택 시
+const update = (val) => {
+  emit('update:modelValue', val)
+}
+
+watch(() => props.modelValue, (newVal) => {
+  selectedTimes.value = newVal || []
+  // console.log('selectedTimes.value',selectedTimes.value);
+  // console.log('props.modelValue: ', props.modelValue)
+  // console.log('newVal: ',newVal)
+})
 </script>
 <template>
   <div class="time-select-swiper">
@@ -70,8 +86,8 @@ function toggleTime(hour) {
     <!-- 화살표 버튼 -->
 
     <div class="swiper-nav-buttons">
-      <div class="swiper-button-prev">←</div>
-      <div class="swiper-button-next">→</div>
+      <div class="swiper-button-prev" style="pading-right:1.8rem; font-weight: 600; font-size: 2rem;"> ← </div>
+      <div class="swiper-button-next" style="padding-left: 1.8rem; font-weight: 600; font-size: 2rem;"> → </div>
     </div>
 
     <Swiper

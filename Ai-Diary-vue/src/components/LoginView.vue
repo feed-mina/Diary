@@ -21,7 +21,7 @@ onMounted(() => {
       console.log(" 카카오 SDK 로드 완료");
     };
     kakaoScript.onerror = () => {
-      console.error("❌ 카카오 SDK 로드 안됨");
+      console.error(" 카카오 SDK 로드 안됨");
     };
     document.head.appendChild(kakaoScript);
   }
@@ -31,7 +31,7 @@ onMounted(() => {
 // 카카오 로그인 함수
 async function kakaoLogin()  {
   if (window.Kakao && window.Kakao.Auth) {
-    console.log("🌐 웹에서는 그냥 페이지 이동!");
+    console.log(" 웹에서는 그냥 페이지 이동!");
     window.Kakao.Auth.login({
       scope: "profile_nickname, account_email, talk_message",
       success: async function (authObj) {
@@ -49,7 +49,7 @@ async function kakaoLogin()  {
 
 
           console.log("@@@@ 카카오 로그인 토큰 저장");
-          // 🟢 받은 JWT를 저장
+          //  받은 JWT를 저장
 
           if (jwtToken) {
             localStorage.setItem("jwtToken", jwtToken);
@@ -84,12 +84,12 @@ async function kakaoLogin()  {
           });
         } catch (error) {
           Swal.fire("로그인 실패", error.response?.data?.message || "카카오 로그인 실패", "error");
-          console.error("❌ 카카오 로그인 실패", error);
+          console.error(" 카카오 로그인 실패", error);
         }
       },
       fail: function (err) {
         Swal.fire("로그인 실패", "카카오 로그인 실패", "error");
-        console.error("❌ 로그인 실패", err);
+        console.error(" 로그인 실패", err);
       },
     });
   } else {

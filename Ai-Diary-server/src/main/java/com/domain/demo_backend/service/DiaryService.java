@@ -7,6 +7,8 @@ import com.domain.demo_backend.mapper.DiaryMapper;
 import com.domain.demo_backend.mapper.UserMapper;
 import com.domain.demo_backend.util.CustomUserDetails;
 import com.domain.demo_backend.util.JwtUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,11 +46,11 @@ public class DiaryService {
         System.out.println("@@@다이어리 서비스 selectDiaryList진입");
 //        PageHelper.startPage(pageNo, pageSize);
 
-        int totalCount = diaryMapper.countDiaryList(userId); // ⭐️ 이 메서드 필요
+        int totalCount = diaryMapper.countDiaryList(userId); //  이 메서드 필요
 
 
         List<DiaryResponse> diaryResponseList;
-        int offset = (pageNo - 1) * pageSize; // ✅ OFFSET 미리 계산
+        int offset = (pageNo - 1) * pageSize; //  OFFSET 미리 계산
         System.out.println("@@@offset: " + offset);
         try {
            // 일기 목록 가져오기
@@ -58,7 +60,7 @@ public class DiaryService {
             PageInfo<DiaryResponse> pageInfo = new PageInfo<>(diaryResponseList);
             pageInfo.setPageNum(pageNo);
             pageInfo.setPageSize(pageSize);
-            pageInfo.setTotal(totalCount);  // ⭐️ 전체 일기 개수 꼭 넣기!
+            pageInfo.setTotal(totalCount);  //  전체 일기 개수 꼭 넣기!
 
             return pageInfo;
         } catch (Exception e) {
@@ -107,7 +109,7 @@ public class DiaryService {
                     userId, 'N'
             );
 
-            // ❗ 조회된 데이터가 없을 경우 예외 처리 추가
+            //  조회된 데이터가 없을 경우 예외 처리 추가
             if (diary == null) {
                 throw new NotFoundException("해당 일기를 찾을 수 없습니다.");
             }
@@ -132,6 +134,13 @@ public class DiaryService {
         BigInteger correctUserSqno =  userMapper.findIndexByEmail(email);
         System.out.println("@@@ userSqno: " + correctUserSqno);
         HttpServletRequest request;
+        ObjectMapper objectMapper = new ObjectMapper();
+        String selectedTimesJson = "";
+        try {
+            selectedTimesJson = objectMapper.writeValueAsString(diaryRequest.getSelectedTimes());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace(); // 또는 로깅 처리
+        }
 
         Diary diary = Diary.builder()
                 .userSqno(diaryRequest.getUserSqno() != null
@@ -149,6 +158,10 @@ public class DiaryService {
                 .diaryStatus(diaryRequest.getDiaryStatus() != null ? diaryRequest.getDiaryStatus() : "true")
                 .diaryType(diaryRequest.getDiaryType() != null ? diaryRequest.getDiaryType() : "N")
                 .frstRegIp(ip != null ? ip : "127.0.0.1")
+                .selectedTimes(selectedTimesJson) // → DB에 저장할 수 있도록 문자열로 바꾸는 처리도 고려
+                .drugMorning(diaryRequest.getDrugMorning())
+                .drugLunch(diaryRequest.getDrugLunch())
+                .drugDinner(diaryRequest.getDrugDinner())
                 .build();
 
 

@@ -36,7 +36,7 @@ export default {
   setup() {
     const router = useRouter();
 
-    // ✅ JWT 대신 localStorage에서 로그인 여부 확인
+    //  JWT 대신 localStorage에서 로그인 여부 확인
     const isLoggedIn = computed(() => {
       return !!localStorage.getItem("email") || !!localStorage.getItem("kakaoAccessToken");
     });

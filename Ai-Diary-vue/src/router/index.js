@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory } from "vue-router";
+import {createRouter, createWebHistory } from "vue-router";
 import Home from "@/page/Home.vue";
 import About from "@/page/About.vue";
 import NotFound from "@/page/NotFound.vue";
@@ -54,14 +54,14 @@ const routes = [
 ];
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes,
 });
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem("jwtToken");
 
     if (!token && to.meta.requiresAuth) {
-        console.log("🚨 로그인 필요! 하지만 강제 리디렉션하지 않음.");
+        console.log(" 로그인 필요! 하지만 강제 리디렉션하지 않음.");
         next();
     } else {
         next();

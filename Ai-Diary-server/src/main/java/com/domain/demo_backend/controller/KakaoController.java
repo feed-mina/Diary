@@ -73,7 +73,7 @@ public class KakaoController {
         KakaoAuthResponse response = new KakaoAuthResponse(kakaoUserInfo, jwtToken);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            log.error("❌ 카카오 로그인 실패", e);
+            log.error(" 카카오 로그인 실패", e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("카카오 로그인 실패");
         }
     }
@@ -119,27 +119,27 @@ public class KakaoController {
             @RequestHeader(value = "Authorization", required = false) String authorization,
             @RequestBody Map<String, Object> data) {
 
-        log.info("📢 Received Authorization header: {}", authorization);
+        log.info(" Received Authorization header: {}", authorization);
 
-        // ✅ Authorization 헤더 검증
+        //  Authorization 헤더 검증
         if (authorization == null || !authorization.startsWith("Bearer ")) {
-            log.error("❌ Authorization 헤더가 없거나 잘못됨: {}", authorization);
+            log.error(" Authorization 헤더가 없거나 잘못됨: {}", authorization);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("카카오 토큰이 필요합니다.");
         }
 
         String kakaoAccessToken = (String) data.get("kakaoAccessToken");
         log.info("📩 Kakao AccessToken from body: {}", kakaoAccessToken);
-        // ✅ JWT 검증
+        //  JWT 검증
           String jwtToken = authorization.substring(7);
-        log.info("✅ Extracted Access Token: {}", jwtToken);
+        log.info(" Extracted Access Token: {}", jwtToken);
 
         log.error("@@@@@jwtToken", jwtToken);
         if (jwtToken.isEmpty()) {
-            log.error("❌ 추출한 Access Token이 비어 있음");
+            log.error(" 추출한 Access Token이 비어 있음");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰");
         }
 
-        // ✅ 카카오 사용자 정보 조회
+        //  카카오 사용자 정보 조회
         KakaoUserInfo kakaoUserInfo;
         try {
             kakaoUserInfo = kakaoService.getKakaoUserInfo(kakaoAccessToken);
@@ -148,16 +148,16 @@ public class KakaoController {
 
             log.error("@@@@@kakaoUserInfo", kakaoUserInfo);
         } catch (Exception e) {
-            log.error("❌ 카카오 사용자 정보 조회 실패", e);
+            log.error(" 카카오 사용자 정보 조회 실패", e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("카카오 사용자 정보 조회 실패");
         }
 
 
-        // ✅ JWT 토큰 발급
+        //  JWT 토큰 발급
 //        String Token = kakaoService.registerKakaoUser(kakaoUserInfo, accessToken);
-//        log.info("✅ 발급된 Token: {}", Token);
+//        log.info(" 발급된 Token: {}", Token);
 
-        // ✅ 클라이언트 로그인 유도 (필요 시)
+        //  클라이언트 로그인 유도 (필요 시)
         if (clientId == null || redirectUri == null) {
             String loginUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="
                     + clientId + "&redirect_uri=" + redirectUri;
@@ -165,17 +165,17 @@ public class KakaoController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(loginUrl);
         }
 
-        // ✅ 전송할 데이터 정리
+        //  전송할 데이터 정리
         Integer stopwatchTime = (Integer) data.getOrDefault("stopwatchTime", 0);
         Integer pomodoroCount = (Integer) data.getOrDefault("pomodoroCount", 0);
         Integer pomodoroTotalTime = (Integer) data.getOrDefault("pomodoroTotalTime", 0);
 
         String recordUrl = (String) data.getOrDefault("recordUrl", "https://justsaying.co.kr");
-        log.info("📌 stopwatchTime: {}초, pomodoroCount: {}회, pomodoroTotalTime: {}분",
+        log.info(" stopwatchTime: {}초, pomodoroCount: {}회, pomodoroTotalTime: {}분",
                 stopwatchTime, pomodoroCount, pomodoroTotalTime);
         log.info(" recordUrl: {}", recordUrl);
 
-        // ✅ 메시지 구성
+        //  메시지 구성
         StringBuilder message = new StringBuilder();
 
         if (stopwatchTime > 0) {
@@ -185,18 +185,18 @@ public class KakaoController {
         }
 
         if (pomodoroCount > 0 && pomodoroTotalTime > 0) {
-            message.append("🍅 뽀모도로: ").append(pomodoroCount)
+            message.append(" 뽀모도로: ").append(pomodoroCount)
                     .append("회, 총 ").append(pomodoroTotalTime).append("분 완료!");
         }
 
         if (message.length() == 0) {
-            message.append("❗ 기록이 없어요.");
+            message.append(" 기록이 없어요.");
         }
 
         String messageText = message.toString().replace("\n", "\\n").replace("\"", "\\\"");
         log.info("📩 최종 메시지: {}", messageText);
 
-        // ✅ 카카오톡 메시지 전송 준비
+        //  카카오톡 메시지 전송 준비
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + kakaoAccessToken);
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -213,13 +213,13 @@ public class KakaoController {
 
         log.info("📤 카카오 API 요청: {}", request);
 
-        // ✅ 카카오 API 요청 전송
+        //  카카오 API 요청 전송
         try {
             ResponseEntity<String> response = new RestTemplate().postForEntity(KAKAO_URL, request, String.class);
-            log.info("✅ 카카오톡 메시지 전송 성공! 응답: {}", response);
+            log.info(" 카카오톡 메시지 전송 성공! 응답: {}", response);
             return ResponseEntity.ok("카톡 전송 성공!");
         } catch (HttpClientErrorException e) {
-            log.error("❌ 카톡 전송 실패! 오류: {}", e.getResponseBodyAsString());
+            log.error(" 카톡 전송 실패! 오류: {}", e.getResponseBodyAsString());
             return ResponseEntity.status(e.getStatusCode()).body("카톡 전송 실패! 오류: " + e.getResponseBodyAsString());
         }
     }

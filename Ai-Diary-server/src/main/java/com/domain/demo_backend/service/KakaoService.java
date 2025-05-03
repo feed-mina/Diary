@@ -65,6 +65,7 @@ public class KakaoService {
         log.info("body : " + body);
         log.info("response : " + response);
 
+        try {
         Map<String, Object> kakaoAccount = (Map<String, Object>) response.getBody().get("kakao_account");
         Map<String, Object> properties = (Map<String, Object>) body.get("properties");
 
@@ -74,8 +75,8 @@ public class KakaoService {
         Long id = ((Number) body.get("id")).longValue();
         String connectedAt = (String) body.get("connected_at");
         String nickname = (String) properties.get("nickname");
-//        String email = (String) kakaoAccount.get("email");
         String email = (kakaoAccount.get("email") != null) ? kakaoAccount.get("email").toString() : null;
+        String userId = email != null && email.contains("@") ? email.split("@")[0] : "kakao_user";
 
         boolean hasEmail = (Boolean) kakaoAccount.getOrDefault("has_email", false);
         boolean isEmailValid = (Boolean) kakaoAccount.getOrDefault("is_email_valid", false);
@@ -83,12 +84,21 @@ public class KakaoService {
         boolean hasAgeRange = (Boolean) kakaoAccount.getOrDefault("has_age_range", false);
         boolean hasBirthday = (Boolean) kakaoAccount.getOrDefault("has_birthday", false);
         boolean hasGender = (Boolean) kakaoAccount.getOrDefault("has_gender", false);
-        log.info("kakaoAccount : " + kakaoAccount);
+            if (email == null || email.isBlank()) {
+                log.error("카카오에서 이메일 정보를 받아오지 못했습니다.");
+                throw new RuntimeException("카카오에서 이메일 정보를 받아오지 못했습니다.");
+            }
+
+            log.info("kakaoAccount : " + kakaoAccount);
         log.info("properties : " + properties);
 
         log.info("nickname : " + nickname);
         log.info("email : " + email);
 
+        } catch (Exception e) {
+            log.error(" 카카오 사용자 정보 가져오기 실패", e);
+            throw new RuntimeException("카카오 사용자 정보 가져오기 실패: " + e.getMessage());
+        }
         return KakaoUserInfo.fromMap(body, accessToken);
     }
 

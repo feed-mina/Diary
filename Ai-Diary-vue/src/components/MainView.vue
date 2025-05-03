@@ -164,7 +164,7 @@
      return  !!kakaoAccessToken;
    })
    const logout = () => {
-     // ✅ `localStorage`에서 로그인 정보 삭제
+     //  `localStorage`에서 로그인 정보 삭제
      localStorage.removeItem("userId");
      localStorage.removeItem("jwtToken");
      localStorage.removeItem("email");
@@ -174,7 +174,7 @@
      localStorage.removeItem("accessToken");
      localStorage.removeItem("refreshToken");
 
-     // ✅ 홈으로 이동 후 새로고침
+     //  홈으로 이동 후 새로고침
      router.push("/pomoLogin").then(() => {
        location.reload();
      });
@@ -193,7 +193,7 @@
     console.log('카카오 토큰:', kakaoAccessToken);
      const saved = localStorage.getItem('isDarkMode')
      if (saved) {
-       store.isDarkMode = saved === 'true'  // ✅ 이렇게 해야 해요!
+       store.isDarkMode = saved === 'true'  //  이렇게 해야 해요!
        theme.global.name.value = store.isDarkMode ? 'dark' : 'light'
        document.documentElement.classList.toggle('dark', store.isDarkMode)
      }

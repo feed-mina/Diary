@@ -2,6 +2,8 @@ package com.domain.demo_backend.diary.dto;
 
 import com.domain.demo_backend.diary.domain.Diary;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.*;
 
 import java.math.BigInteger;
@@ -59,8 +61,18 @@ public class DiaryRequest {
     private Integer emotion;
     private String diaryType;
     private List<Integer> selectedTimes;
+    private String drugMorning;
+    private String drugLunch;
+    private String drugDinner;
 
     public Diary toDiary() {
+        String selectedTimesJson = "";
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            selectedTimesJson = objectMapper.writeValueAsString(this.selectedTimes);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return Diary.builder()
                 .diaryId(this.diaryId)
                 .userSqno(this.userSqno)
@@ -77,7 +89,10 @@ public class DiaryRequest {
                 .author(this.author)
                 .emotion(this.emotion)
                 .diaryType(this.diaryType)
-                .selectedTimes(this.selectedTimes)
+                .selectedTimes(selectedTimesJson)
+                .drugMorning(this.drugMorning)
+                .drugLunch(this.drugLunch)
+                .drugDinner(this.drugDinner)
                 .build();
     }
 

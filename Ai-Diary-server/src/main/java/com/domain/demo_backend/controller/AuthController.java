@@ -30,7 +30,7 @@ import java.util.Map;
 public class AuthController {
     @PostConstruct
     public void init() {
-        System.out.println("✅✅ refreshTokenRepository: " + refreshTokenRepository);
+        System.out.println(" refreshTokenRepository: " + refreshTokenRepository);
     }
 
 
@@ -173,10 +173,10 @@ public class AuthController {
     public ResponseEntity<String> resendVerificationCode(@RequestBody RegisterRequest request) {
         try {
             authService.resendVerification(request.getEmail());
-            return ResponseEntity.ok("✅ 새 인증코드가 이메일로 전송되었습니다!");
+            return ResponseEntity.ok(" 새 인증코드가 이메일로 전송되었습니다!");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("❌ 인증코드 재전송에 실패했습니다.");
+                    .body(" 인증코드 재전송에 실패했습니다.");
         }
     }
 

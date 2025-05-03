@@ -156,7 +156,7 @@ async def test():
         <meta charset='UTF-8'>
       </head>
       <body>
-        <h1>🎧 Blob 오디오 테스트</h1>
+        <h1> Blob 오디오 테스트</h1>
         <button onclick="playAudio()">▶ 오디오 재생</button>
         <script>
           async function playAudio() {
@@ -187,7 +187,7 @@ class TextRequest(BaseModel):
 @app.post("/tts_blob")
 async def tts_blob(text_request: TextRequest):
     text = text_request.text
-    logger.info(f"📥 TTS 요청 받은 텍스트: {text}")
+    logger.info(f"TTS 요청 받은 텍스트: {text}")
 
     client = texttospeech.TextToSpeechClient()
 
@@ -271,7 +271,7 @@ async def tts_only_test(text_request: TextRequest):
     )
 
     # audio_bytes = response.audio_content
-    logger.info("✅ 생성된 음성 데이터 길이: %d 바이트", len(audio_bytes))
+    logger.info(" 생성된 음성 데이터 길이: %d 바이트", len(audio_bytes))
 
     # 메모리에 저장
     audio_bytes = response.audio_content

@@ -114,7 +114,7 @@ export default {
                 timeout: 10000,
               });
               const userInfo = response.data.kakaoUserInfo;
-              if (!userInfo || !userInfo.email || !userInfo.email.includes("@"
+              if (!userInfo || !userInfo.email || !userInfo.email.includes("@")) {
                 console.warn("이메일 없음 또는 형식 이상", userInfo);
                 Swal.fire("로그인 실패", "이메일 정보가 없어 로그인할 수 없습니다.", "error");
                 return;
@@ -153,8 +153,8 @@ export default {
               Swal.fire("카카오 로그인 성공", "로그인을 완료했습니다", "success");
               // 페이지 이동 (필요하면 추가)
               router.push("/diary/common").then(() => {
-                 location.reload();
-               });
+                location.reload();
+              });
             } catch (error) {
               Swal.fire("로그인 실패", error.response?.data?.message || "카카오 로그인 실패", "error");
               console.error(" 카카오 로그인 실패", error);
@@ -254,11 +254,11 @@ export default {
           </div>
         </div>
         <!-- 로그인 버튼 -->
-      <div class="login_form_button_div">  <button type="submit" class="login_form_button">로 그 인</button></div>
+        <div class="login_form_button_div">  <button type="submit" class="login_form_button">로 그 인</button></div>
       </form>
-        <button class="kakao-button" @click="kakaoLogin">
-          <img class="kakaoLoginImg" src="/img/kakao_login_large_narrow.png" alt="kakaoLogin" />
-        </button>
+      <button class="kakao-button" @click="kakaoLogin">
+        <img class="kakaoLoginImg" src="/img/kakao_login_large_narrow.png" alt="kakaoLogin" />
+      </button>
     </div>
   </div>
 </template>

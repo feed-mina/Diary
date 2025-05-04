@@ -34,6 +34,7 @@ async function kakaoLogin()  {
     console.log(" 웹에서는 그냥 페이지 이동!");
     window.Kakao.Auth.login({
       scope: "profile_nickname, account_email, talk_message",
+      prompt: "consent",
       success: async function (authObj) {
         try {
           const kakaoAccessToken = authObj.access_token;

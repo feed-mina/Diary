@@ -40,6 +40,9 @@ export default {
 // 처음 들어올 때도 적용
     onMounted(() => {
       updateBodyClass(route.path)
+      console.log("250504_저장된 jwtToken:", localStorage.getItem("jwtToken"));
+      console.log("250504_저장된 kakaoAccessToken:", localStorage.getItem("kakaoAccessToken"));
+
     })
 
 
@@ -105,7 +108,7 @@ export default {
         response => response,
         async error => {
           const originalRequest = error.config;
-          if (response.status === 401 && !originalRequest._retry) {
+          if (error.response && error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             try {
               const refreshToken = localStorage.getItem('refreshToken');
@@ -124,23 +127,6 @@ export default {
               return Promise.reject(err);
             }
           }
-
-          try {
-              const refreshToken = localStorage.getItem('refreshToken');
-              const response = await axios.post(`${apiUrl}/auth/refresh`, { refreshToken });
-
-              if (response.status === 200) {
-                const newAccessToken = response.data.accessToken;
-                localStorage.setItem('jwtToken', newAccessToken);  // 이름 통일
-                axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-                originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-                return axios(originalRequest);  // instance X
-              }
-            } catch (e) {
-              alert("세션이 만료되어 로그인 페이지로 이동합니다.");
-              // 로그아웃 처리 or 라우팅
-            }
-
           return Promise.reject(error);
         }
     );

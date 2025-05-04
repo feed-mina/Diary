@@ -133,6 +133,7 @@ public class DiaryService {
         String email = userDetails.getUsername();
         BigInteger correctUserSqno =  userMapper.findIndexByEmail(email);
 
+
         System.out.println("@@@ userSqno: " + correctUserSqno);
         HttpServletRequest request;
         ObjectMapper objectMapper = new ObjectMapper();

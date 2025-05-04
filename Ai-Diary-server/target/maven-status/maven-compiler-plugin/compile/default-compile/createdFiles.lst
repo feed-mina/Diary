@@ -8,7 +8,6 @@ com\domain\demo_backend\config\CustomUserDetailsService.class
 com\domain\demo_backend\user\dto\KakaoUserInfo.class
 com\domain\demo_backend\helper\RemoteIp.class
 com\domain\demo_backend\controller\TimeController.class
-com\domain\demo_backend\controller\TestController.class
 com\domain\demo_backend\mapper\DiaryMapper.class
 com\domain\demo_backend\user\dto\KakaoAuthRequest.class
 com\domain\demo_backend\util\CustomUserDetails.class

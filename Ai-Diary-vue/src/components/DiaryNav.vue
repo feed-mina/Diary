@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 export default {
   name: "DiaryNav",
   setup() {
-    console.log('250503')
+    console.log('250504')
     const router = useRouter();
     const loginPassword = localStorage.getItem('password')
     const loginToken = localStorage.getItem('jwtToken'); // 저장된 토큰 가져오기

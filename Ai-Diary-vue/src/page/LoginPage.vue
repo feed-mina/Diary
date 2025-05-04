@@ -102,6 +102,7 @@ export default {
         console.log(" 웹에서는 그냥 페이지 이동!");
         window.Kakao.Auth.login({
           scope: "profile_nickname, account_email, talk_message",
+          prompt: "consent",
           success: async function (authObj) {
             try {
               const kakaoAccessToken = authObj.access_token;
@@ -113,7 +114,7 @@ export default {
                 timeout: 10000,
               });
               const userInfo = response.data.kakaoUserInfo;
-              if (!userInfo || !userInfo.email || !userInfo.email.includes("@")) {
+              if (!userInfo || !userInfo.email || !userInfo.email.includes("@"
                 console.warn("이메일 없음 또는 형식 이상", userInfo);
                 Swal.fire("로그인 실패", "이메일 정보가 없어 로그인할 수 없습니다.", "error");
                 return;

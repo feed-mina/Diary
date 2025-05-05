@@ -1,43 +1,43 @@
-2025-05-04 16:08:17 [main] INFO  c.d.d.DemoBackendApplicationTests - Starting DemoBackendApplicationTests using Java 17.0.12 with PID 23884 (started by Lee in C:\Users\leeyu\Project\speak_diary\Ai-Diary-server)
-2025-05-04 16:08:17 [main] INFO  c.d.d.DemoBackendApplicationTests - The following 1 profile is active: "ec2"
-2025-05-04 16:08:17 [main] DEBUG o.s.w.c.s.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@5300f14a
-2025-05-04 16:08:27 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2025-05-04 16:08:27 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 407 ms. Found 1 JPA repository interfaces.
-2025-05-04 16:08:28 [main] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
-2025-05-04 16:08:28 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
-2025-05-04 16:08:28 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
-2025-05-04 16:08:28 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
-2025-05-04 16:08:28 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
-2025-05-04 16:08:28 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
-2025-05-04 16:08:28 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
-2025-05-04 16:08:28 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
-2025-05-04 16:08:28 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
-2025-05-04 16:08:28 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface. Bean already defined with the same name!
-2025-05-04 16:08:28 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface. Bean already defined with the same name!
-2025-05-04 16:08:28 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.domain.demo_backend.mapper]' package. Please check your configuration.
-2025-05-04 16:08:29 [main] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
-2025-05-04 16:08:29 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-2025-05-04 16:08:30 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6d6cd1e0
-2025-05-04 16:08:30 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-2025-05-04 16:08:30 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-2025-05-04 16:08:30 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
-2025-05-04 16:08:30 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
-2025-05-04 16:08:34 [main] INFO  o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
-2025-05-04 16:08:35 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
-2025-05-04 16:08:37 [main] INFO  o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
-2025-05-04 16:08:39 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2025-05-04 16:08:39 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-2025-05-04 16:08:39 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Property 'configuration' or 'configLocation' not specified, using default MyBatis Configuration
-2025-05-04 16:08:40 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
-2025-05-04 16:08:40 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
-2025-05-04 16:08:42 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2025-05-04 16:08:45 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7aad7df5, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7fd7085d, org.springframework.security.web.context.SecurityContextHolderFilter@23a78d2e, org.springframework.security.web.header.HeaderWriterFilter@6dcdc378, org.springframework.web.filter.CorsFilter@69cc3370, com.domain.demo_backend.util.JwtAuthenticationFilter@9120cb5, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@c0cb9c2, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@4a6d6308, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@18419ab7, org.springframework.security.web.access.ExceptionTranslationFilter@280f061e, org.springframework.security.web.access.intercept.AuthorizationFilter@27d44578]
-2025-05-04 16:08:46 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
-2025-05-04 16:08:46 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 23 mappings in 'requestMappingHandlerMapping'
-2025-05-04 16:08:46 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
-2025-05-04 16:08:46 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
-2025-05-04 16:08:47 [main] INFO  c.d.d.DemoBackendApplicationTests - Started DemoBackendApplicationTests in 32.031 seconds (process running for 42.304)
-2025-05-04 16:08:50 [SpringApplicationShutdownHook] DEBUG o.s.w.c.s.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@5300f14a, started on Sun May 04 16:08:17 KST 2025
-2025-05-04 16:08:50 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
-2025-05-04 16:08:50 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
-2025-05-04 16:08:50 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-05-05 12:49:45 [main] INFO  c.d.d.DemoBackendApplicationTests - Starting DemoBackendApplicationTests using Java 17.0.12 with PID 15892 (started by Lee in C:\Users\leeyu\Project\speak_diary\Ai-Diary-server)
+2025-05-05 12:49:45 [main] INFO  c.d.d.DemoBackendApplicationTests - The following 1 profile is active: "ec2"
+2025-05-05 12:49:45 [main] DEBUG o.s.w.c.s.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@1f86099a
+2025-05-05 12:49:51 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-05 12:49:52 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 1086 ms. Found 1 JPA repository interfaces.
+2025-05-05 12:49:52 [main] DEBUG o.apache.ibatis.logging.LogFactory - Logging initialized using 'class org.apache.ibatis.logging.slf4j.Slf4jImpl' adapter.
+2025-05-05 12:49:52 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-05-05 12:49:52 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-05-05 12:49:52 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface
+2025-05-05 12:49:52 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'diaryMapper'.
+2025-05-05 12:49:52 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Creating MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface
+2025-05-05 12:49:52 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Enabling autowire by type for MapperFactoryBean with name 'userMapper'.
+2025-05-05 12:49:52 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\DiaryMapper.class]
+2025-05-05 12:49:52 [main] DEBUG o.m.s.mapper.ClassPathMapperScanner - Identified candidate component class: file [C:\Users\leeyu\Project\speak_diary\Ai-Diary-server\target\classes\com\domain\demo_backend\mapper\UserMapper.class]
+2025-05-05 12:49:52 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'diaryMapper' and 'com.domain.demo_backend.mapper.DiaryMapper' mapperInterface. Bean already defined with the same name!
+2025-05-05 12:49:52 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - Skipping MapperFactoryBean with name 'userMapper' and 'com.domain.demo_backend.mapper.UserMapper' mapperInterface. Bean already defined with the same name!
+2025-05-05 12:49:52 [main] WARN  o.m.s.mapper.ClassPathMapperScanner - No MyBatis mapper was found in '[com.domain.demo_backend.mapper]' package. Please check your configuration.
+2025-05-05 12:49:54 [main] DEBUG o.s.jdbc.datasource.DataSourceUtils - Fetching JDBC Connection from DataSource
+2025-05-05 12:49:54 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-05-05 12:49:55 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@9b2dc56
+2025-05-05 12:49:55 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-05-05 12:49:55 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-05 12:49:56 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.2.9.Final
+2025-05-05 12:49:56 [main] INFO  org.hibernate.cfg.Environment - HHH000406: Using bytecode reflection optimizer
+2025-05-05 12:49:56 [main] INFO  o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2025-05-05 12:49:57 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-05 12:49:59 [main] INFO  o.h.b.i.BytecodeProviderInitiator - HHH000021: Bytecode provider name : bytebuddy
+2025-05-05 12:50:06 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2025-05-05 12:50:06 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-05 12:50:06 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Property 'configuration' or 'configLocation' not specified, using default MyBatis Configuration
+2025-05-05 12:50:07 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\Ai-Diary-server\target\classes\mappers\DiaryMapper.xml]'
+2025-05-05 12:50:07 [main] DEBUG o.m.spring.SqlSessionFactoryBean - Parsed mapper file: 'file [C:\Users\leeyu\Project\speak_diary\Ai-Diary-server\target\classes\mappers\UserMapper.xml]'
+2025-05-05 12:50:10 [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-05 12:50:11 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3791160a, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1d9cac6e, org.springframework.security.web.context.SecurityContextHolderFilter@7e4bbda4, org.springframework.security.web.header.HeaderWriterFilter@1b897ffb, org.springframework.web.filter.CorsFilter@5f510929, com.domain.demo_backend.util.JwtAuthenticationFilter@55a2ca5e, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1254a3cd, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@51c15508, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6abca7a6, org.springframework.security.web.access.ExceptionTranslationFilter@6b7ebac1, org.springframework.security.web.access.intercept.AuthorizationFilter@75bbe39d]
+2025-05-05 12:50:12 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2025-05-05 12:50:12 [main] DEBUG o.s.w.s.m.m.a.RequestMappingHandlerMapping - 23 mappings in 'requestMappingHandlerMapping'
+2025-05-05 12:50:12 [main] DEBUG o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2025-05-05 12:50:12 [main] DEBUG o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2025-05-05 12:50:13 [main] INFO  c.d.d.DemoBackendApplicationTests - Started DemoBackendApplicationTests in 29.224 seconds (process running for 38.606)
+2025-05-05 12:50:15 [SpringApplicationShutdownHook] DEBUG o.s.w.c.s.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@1f86099a, started on Mon May 05 12:49:45 KST 2025
+2025-05-05 12:50:15 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-05 12:50:15 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-05-05 12:50:15 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

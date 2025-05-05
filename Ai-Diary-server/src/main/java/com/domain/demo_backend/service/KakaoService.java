@@ -44,10 +44,10 @@ public class KakaoService {
         headers.set("Authorization", "Bearer " + accessToken);
         HttpEntity<HttpHeaders> request = new HttpEntity<>(headers);
 
-        log.info("@@@@@@@@@@@@@@@@@@@@@@@@");
-        log.info("getKakaoUserInfo");
-        log.info("accessToken : " + accessToken);
-        log.info("request : " + request);
+        log.info("KAKAOSERVICE-@@@@@@@@@@@@@@@@@@@@@@@@");
+        log.info("KAKAOSERVICE-getKakaoUserInfo");
+        log.info("KAKAOSERVICE-accessToken : " + accessToken);
+        log.info("KAKAOSERVICE-request : " + request);
 
         ResponseEntity<Map> response = restTemplate.exchange(
                 "https://kapi.kakao.com/v2/user/me",
@@ -62,8 +62,8 @@ public class KakaoService {
             throw new RuntimeException("카카오에서 사용자 정보를 받지 못했어요!");
         }
 
-        log.info("body : " + body);
-        log.info("response : " + response);
+        log.info("KAKAOSERVICE-body : " + body);
+        log.info("KAKAOSERVICE-response : " + response);
 
         try {
         Map<String, Object> kakaoAccount = (Map<String, Object>) response.getBody().get("kakao_account");
@@ -75,8 +75,13 @@ public class KakaoService {
         Long id = ((Number) body.get("id")).longValue();
         String connectedAt = (String) body.get("connected_at");
         String nickname = (String) properties.get("nickname");
-        String email = (kakaoAccount.get("email") != null) ? kakaoAccount.get("email").toString() : null;
-        String userId = email != null && email.contains("@") ? email.split("@")[0] : "kakao_user";
+//        String email = (kakaoAccount.get("email") != null) ? kakaoAccount.get("email").toString() : null;
+            String email = (kakaoAccount.get("email") != null) ? kakaoAccount.get("email").toString() : null;
+            if (email == null || email.isBlank()) {
+                email = "kakao_" + id + "@noemail.kakao"; // 가짜 이메일 생성
+            }
+
+            String userId = email != null && email.contains("@") ? email.split("@")[0] : "kakao_user";
 
         boolean hasEmail = (Boolean) kakaoAccount.getOrDefault("has_email", false);
         boolean isEmailValid = (Boolean) kakaoAccount.getOrDefault("is_email_valid", false);
@@ -89,11 +94,16 @@ public class KakaoService {
                 throw new RuntimeException("카카오에서 이메일 정보를 받아오지 못했습니다.");
             }
 
-            log.info("kakaoAccount : " + kakaoAccount);
-        log.info("properties : " + properties);
+            log.info("KAKAOSERVICE-kakaoAccount : " + kakaoAccount);
+        log.info("KAKAOSERVICE-properties : " + properties);
 
-        log.info("nickname : " + nickname);
-        log.info("email : " + email);
+        log.info("KAKAOSERVICE-nickname : " + nickname);
+            System.out.println("KAKAOSERVICE-@@@email: " + email);
+            System.out.println("KAKAOSERVICE-@@@userId: " + userId);
+        log.info("KAKAOSERVICE-email : " + email);
+            System.out.println("KAKAOSERVICE-@@@KakaoUserInfo.fromMap(body, accessToken): " + KakaoUserInfo.fromMap(body, accessToken));
+            log.info("KAKAOSERVICE-최종 email: " + email);
+            log.info("KAKAOSERVICE-최종 userInfo: " + KakaoUserInfo.fromMap(body, accessToken));
 
         } catch (Exception e) {
             log.error(" 카카오 사용자 정보 가져오기 실패", e);
@@ -106,27 +116,27 @@ public class KakaoService {
     public String  registerKakaoUser(KakaoUserInfo kakaoUserInfo, String accessToken){
         Date date = new Date();
         LocalDateTime ldt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        log.info("registerKakaoUser 진입 , 이메일이 있는지 확인 : " );
+        log.info("KAKAOSERVICE-registerKakaoUser 진입 , 이메일이 있는지 확인 : " );
         // DB에서 같은 이메일이 있는지 확인해
         if(userMapper.findByUserEmail(kakaoUserInfo.getEmail()) != null){
-            log.info("카카오 사용자 이메일: " + kakaoUserInfo.getEmail());
+            log.info("KAKAOSERVICE-카카오 사용자 이메일: " + kakaoUserInfo.getEmail());
 
             // 이미 존재하는 경우 updated_at 갱신
             userMapper.updateUpdatedAt(kakaoUserInfo.getEmail());
 
             User extiUser = userMapper.findByUserEmail(kakaoUserInfo.getEmail());
-            System.out.println("@@@@@@@@@userMapper.findByUSerEmail"+extiUser);
+            System.out.println("KAKAOSERVICE-@@@@@@@@@userMapper.findByUSerEmail"+extiUser);
             TokenResponse tokenResponse  =  jwtUtil.generateTokens(
                     kakaoUserInfo.getEmail(),
                     kakaoUserInfo.getHashedPassword(),
                     String.valueOf(kakaoUserInfo.getUserId())
             );
-            log.info("카카오 사용자 이메일: " + kakaoUserInfo.getEmail());
+            log.info("KAKAOSERVICE-카카오 사용자 이메일: " + kakaoUserInfo.getEmail());
 
             // JWT 토큰을 생성해 반환해
             String jwtToken = "Bearer " + tokenResponse.getAccessToken();
-            log.info("jwtToken: " + jwtToken);
-            System.out.println("@@@@@@@@@jwtToken"+jwtToken);
+            log.info("KAKAOSERVICE-jwtToken: " + jwtToken);
+            System.out.println("KAKAOSERVICE-@@@@@@@@@jwtToken"+jwtToken);
             return jwtToken;
 
         }
@@ -147,8 +157,8 @@ public class KakaoService {
                 .drugUsingType("N")
                 .build();
 
-        System.out.println("@@@ kakao_login_user.getUserSqno() != null"  + user.getUserSqno() != null);
-        System.out.println("@@@ kakao_user!" + user);
+        System.out.println("KAKAOSERVICE-@@@ kakao_login_user.getUserSqno() != null"  + user.getUserSqno() != null);
+        System.out.println("KAKAOSERVICE-@@@ kakao_user!" + user);
         // DB에 저장 후 자동 생성된 사용자 고유 번호(userSqno)가 있으면
         if(user.getUserSqno() != null) {
             // 사용자 정보를 DB에 저장해
@@ -157,17 +167,17 @@ public class KakaoService {
             // JWT 토큰을 생성해 반환해
             TokenResponse tokenResponse  =  jwtUtil.generateTokens(user.getEmail(),user.getHashedPassword(), user.getUserId() );
             String jwtToken = "Bearer " + tokenResponse.getAccessToken();
-            log.info("jwtToken: " + jwtToken);
+            log.info("KAKAOSERVICE-jwtToken: " + jwtToken);
             return jwtToken;
         } else {
-            log.info("user: " + user);
-            log.info("user Mapper insertUser 시작");
+            log.info("KAKAOSERVICE-user: " + user);
+            log.info("KAKAOSERVICE-user Mapper insertUser 시작");
             // 사용자 정보를 DB에 저장해
             userMapper.insertUser(user);
             // JWT 토큰을 생성해 반환해
             TokenResponse tokenResponse  =  jwtUtil.generateTokens(user.getEmail(),user.getHashedPassword(), user.getUserId() );
             String jwtToken = "Bearer " + tokenResponse.getAccessToken();
-            log.info("jwtToken: " + jwtToken);
+            log.info("KAKAOSERVICE-jwtToken: " + jwtToken);
             return jwtToken ;
         }
     }

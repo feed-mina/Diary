@@ -3,11 +3,10 @@ import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Cookies from "universal-cookie";
 import axios from "axios";
-// import { apiUrl } from "@/api/index.js";
 import Swal from "sweetalert2";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
-import KakaoImg from '/img/kakao_login_large_narrow.png';
+import KakaoImg from "/img/kakao_login_large_narrow.png";
 
 const notyf = new Notyf();
 
@@ -18,12 +17,11 @@ export default {
     const cookies = new Cookies();
     const isLoginPg = ref(true);
 
-    // 로그인 입력 데이터
     const loginData = ref({
-      emailPrefix: "", // 이메일 앞부분
-      emailDomain: "", // 이메일 도메인
-      customDomain: "", // 직접 입력 도메인
-      email: "", // 최종 이메일 주소
+      emailPrefix: "",
+      emailDomain: "",
+      customDomain: "",
+      email: "",
       password: "",
     });
 
@@ -35,17 +33,12 @@ export default {
     const passwordErrorMessage = ref("");
     const showPassword = ref(false);
 
-    // 패스워드 입력 변화 처리 함수 (필요하면 유효성 검사 로직 추가)
-    const handlePasswordChange = () => {
-      // 예시: 현재는 아무 작업도 하지 않음
-    };
+    const handlePasswordChange = () => {};
 
-    // 비밀번호 숨기기/보이기 토글 함수
     const togglePasswordVisibility = () => {
       showPassword.value = !showPassword.value;
     };
 
-    // 이메일 주소 업데이트 로직
     const updateFullEmail = () => {
       if (!loginData.value.emailPrefix) return;
       if (loginData.value.emailDomain === "custom" && loginData.value.customDomain) {
@@ -53,136 +46,96 @@ export default {
       } else if (loginData.value.emailDomain) {
         loginData.value.email = `${loginData.value.emailPrefix}@${loginData.value.emailDomain}`;
       } else {
-        loginData.value.email = ""; // 도메인 없을 땐 이메일 만들지 않음
+        loginData.value.email = "";
       }
     };
 
-    // 일반 로그인 버튼 클릭 시 함수
     const onClickLoginButton = async () => {
-      console.log("로그인 데이터 :", loginData.value);
       if (!loginData.value.email || !loginData.value.password) {
         Swal.fire("입력 오류", "이메일과 비밀번호를 입력해주세요.", "warning");
         return;
       }
 
       updateFullEmail();
+
       try {
-        let response = await axios.post(`/api/auth/login`, {
+        const response = await axios.post(`/api/auth/login`, {
           email: loginData.value.email,
           password: loginData.value.password,
         });
 
-        const { accessToken, refreshToken , sleepUsingType, drugUsingType} = response.data;
-        let [userId] = loginData.value.email.split("@");
-        console.log("@@@ 일반 로그인 응답 response:", response);
+        const { accessToken, refreshToken } = response.data;
+        const [userId] = loginData.value.email.split("@");
 
-        console.log("@@@@ 일반 로그인 토큰 저장");
         localStorage.setItem("userId", userId);
         localStorage.setItem("jwtToken", accessToken);
-        localStorage.setItem("accessToken", accessToken); //  오직 accessToken만!
-        localStorage.setItem("refreshToken", refreshToken); //  refresh도 따로!
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
         localStorage.setItem("email", loginData.value.email);
         localStorage.setItem("password", loginData.value.password);
-
-        // localStorage.setItem("sleepUsingType", sleepUsingType);
-        // localStorage.setItem("drugUsingType", drugUsingType);
-
         localStorage.setItem("sleepUsingType", "Y");
         localStorage.setItem("drugUsingType", "Y");
+
         Swal.fire("로그인 성공", "로그인을 완료했습니다", "success");
         router.push("/diary/common").then(() => {
-          location.reload(); // 페이지 새로고침
+          location.reload();
         });
-      }catch (error) {
-        let message = "로그인 실패";
-        if (error.response && error.response.data && error.response.data.message) {
-          message = error.response.data.message;
-        } else if (error.message) {
-          message = error.message;
-        }
+      } catch (error) {
+        const message =
+            error.response?.data?.message || error.message || "로그인 실패";
         Swal.fire("로그인 실패", message, "error");
         console.error("로그인 실패:", error);
       }
     };
 
-    // 카카오 로그인 함수
     const kakaoLogin = () => {
+      console.log('kakaoLoginVUE')
       if (!window.Kakao || !window.Kakao.Auth || !window.Kakao.isInitialized()) {
         Swal.fire("카카오 SDK 로드 중입니다", "잠시 후 다시 시도해주세요", "info");
-        console.warn("카카오 SDK 아직 초기화 안 됨");
         return;
       }
-      if (window.Kakao && window.Kakao.Auth) {
-        console.log(" 웹에서는 그냥 페이지 이동!");
-        window.Kakao.Auth.login({
-          scope: "profile_nickname, account_email, talk_message",
-          prompt: "consent",
-          success: async function (authObj) {
-            try {
-              const kakaoAccessToken = authObj.access_token;
-              console.log("카카오 AccessToken:", kakaoAccessToken);
-              console.log("카카오 로그인 API 호출 시작");
-              let response = await axios.post(`/api/kakao/login`, {
-                accessToken: kakaoAccessToken,
-              }, {
-                timeout: 10000,
-              });
-              const userInfo = response.data.kakaoUserInfo;
-              if (!userInfo || !userInfo.email || !userInfo.email.includes("@")) {
-                console.warn("이메일 없음 또는 형식 이상", userInfo);
-                Swal.fire("로그인 실패", "이메일 정보가 없어 로그인할 수 없습니다.", "error");
-                return;
-              }
 
+      window.Kakao.Auth.login({
+        scope: "profile_nickname, account_email, talk_message",
+        success: async (authObj) => {
+          try {
+            const kakaoAccessToken = authObj.access_token;
+            const response = await axios.post(`/api/kakao/login`, {
+              accessToken: kakaoAccessToken,
+            });
 
-              // console.log("email: ", response.data.kakaoUserInfo.email);
-              console.log("nickname: ", response.data.kakaoUserInfo.nickname);
-              console.log("jwtToken: ", response.data.jwtToken);
-              console.log("response: ", response);
-              const jwtToken = response.data.jwtToken;
-
-              if (jwtToken) {
-                localStorage.setItem("jwtToken", jwtToken);
-              } else {
-                console.log("⚠️ 서버에서 JWT 토큰이 안 왔어!");
-              }
-              let kakao_email = response.data.kakaoUserInfo.email;
-
-              if (kakao_email) {
-                console.log("kakao_email:", kakao_email);
-              } else {
-                console.warn("email이 없습니다.", response.data.kakaoUserInfo);
-              }
-
-              let kakao_nickname = response.data.kakaoUserInfo.nickname;
-              let kakao_userId = kakao_email.split("@");
-              let kakao_token = response.data.jwtToken;
-              let [userId] = response.data.kakaoUserInfo.email.split("@");
-              console.log("userId:", userId);
-              localStorage.setItem("kakaoAccessToken", kakaoAccessToken);
-              localStorage.setItem("userId", userId);
-              localStorage.setItem("email", kakao_email);
-              localStorage.setItem("nickname", kakao_nickname);
-              localStorage.setItem("jwtToken", kakao_token);
-              Swal.fire("카카오 로그인 성공", "로그인을 완료했습니다", "success");
-              // 페이지 이동 (필요하면 추가)
-              router.push("/diary/common").then(() => {
-                location.reload();
-              });
-            } catch (error) {
-              Swal.fire("로그인 실패", error.response?.data?.message || "카카오 로그인 실패", "error");
-              console.error(" 카카오 로그인 실패", error);
+            const userInfo = response.data.kakaoUserInfo;
+            if (!userInfo || !userInfo.email || !userInfo.email.includes("@")) {
+              Swal.fire("로그인 실패", "이메일 정보가 없어 로그인할 수 없습니다.", "error");
+              return;
             }
-          },
-          fail: function (err) {
-            Swal.fire("로그인 실패", "카카오 로그인 실패", "error");
-            console.error(" 로그인 실패", err);
-          },
-        });
-      } else {
-        Swal.fire("로그인 실패", "카카오 로그인 실패", "error");
-        console.error("카카오 SDK가 아직 로드되지 않았어요!");
-      }
+
+            const jwtToken = response.data.jwtToken;
+            const kakao_email = userInfo.email;
+            const kakao_nickname = userInfo.nickname;
+            const [userId] = kakao_email.split("@");
+
+            console.log('jwtToken', jwtToken)
+            console.log('kakao_email', kakao_email)
+            localStorage.setItem("kakaoAccessToken", kakaoAccessToken);
+            localStorage.setItem("userId", userId);
+            localStorage.setItem("email", kakao_email);
+            localStorage.setItem("nickname", kakao_nickname);
+            localStorage.setItem("jwtToken", jwtToken);
+
+            Swal.fire("카카오 로그인 성공", "로그인을 완료했습니다", "success");
+            router.push("/diary/common").then(() => {
+              location.reload();
+            });
+          } catch (error) {
+            Swal.fire("로그인 실패", error.response?.data?.message || "카카오 로그인 실패", "error");
+          }
+        },
+        fail: (err) => {
+          Swal.fire("로그인 실패", "카카오 로그인 실패", "error");
+          console.error("카카오 로그인 실패", err);
+        },
+      });
     };
 
     onMounted(() => {
@@ -192,12 +145,13 @@ export default {
         kakaoScript.src = "https://developers.kakao.com/sdk/js/kakao.js";
         kakaoScript.onload = () => {
           window.Kakao.init(import.meta.env.VITE_KAKAO_JS_KEY);
-          console.log("카카오 SDK 로드 완료");
+          console.log('VITE_KAKAO_JS_KEY', import.meta.env.VITE_KAKAO_JS_KEY);
         };
         kakaoScript.onerror = () => {
-          console.error(" 카카오 SDK 로드 실패");
+          console.error("카카오 SDK 로드 실패");
         };
         document.head.appendChild(kakaoScript);
+        console.log('kakaoScript', kakaoScript);
       }
     });
 
@@ -217,6 +171,7 @@ export default {
   },
 };
 </script>
+
 <template>
   <div class="loginPage">
     <p class="login-guide">로그인 후 시작해볼까요? 😊</p>
@@ -258,7 +213,7 @@ export default {
           <div>
             <input size="30" :type="showPassword ? 'text' : 'password'" v-model="loginData.password"
                    @input="handlePasswordChange" class="login_form-input" name="password" id="password"/>
-            <button  type="button"  @click="togglePasswordVisibility">
+            <button type="button" @click="togglePasswordVisibility">
               {{ showPassword ? "숨기기" : "보이기" }}
             </button>
             <div class="login_form-oo" v-if="errorWarning.password"
@@ -268,12 +223,13 @@ export default {
           </div>
         </div>
         <!-- 로그인 버튼 -->
-        <div class="login_form_button_div">  <button type="submit" class="login_form_button">로 그 인</button></div>
+        <div class="login_form_button_div">
+          <button type="submit" class="login_form_button">로 그 인</button>
+        </div>
       </form>
       <div>
-
         <button class="kakao-button" type="button" @click="() => { console.log('버튼 눌림'); kakaoLogin(); }">
-          <img class="kakaoLoginImg" src="/img/kakao_login_large_narrow.png" alt="kakaoLogin" />
+          <img class="kakaoLoginImg" src="/img/kakao_login_large_narrow.png" alt="kakaoLogin"/>
         </button>
       </div>
     </div>

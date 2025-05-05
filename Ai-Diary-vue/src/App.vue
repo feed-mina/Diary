@@ -40,8 +40,8 @@ export default {
 // 처음 들어올 때도 적용
     onMounted(() => {
       updateBodyClass(route.path)
-      console.log("250504_저장된 jwtToken:", localStorage.getItem("jwtToken"));
-      console.log("250504_저장된 kakaoAccessToken:", localStorage.getItem("kakaoAccessToken"));
+      console.log("250505_저장된 jwtToken:", localStorage.getItem("jwtToken"));
+      console.log("250505_저장된 kakaoAccessToken:", localStorage.getItem("kakaoAccessToken"));
 
     })
 
@@ -167,7 +167,7 @@ export default {
           </header>
           <RouterView/> <!-- 현재 경로에 맞는 컴포넌트 렌더링 -->
         </div>
-        <DiaryFooter v-if="!isPomoPage"/>
+<!--        <DiaryFooter v-if="!isPomoPage"/>-->
 
       </div>
     </div>

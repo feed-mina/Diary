@@ -16,7 +16,7 @@ public class MapperChecker implements CommandLineRunner {
         if (userMapper == null) {
             System.out.println(" UserMapper가 주입되지 않았어요! XML 파일 확인 필요!");
         } else {
-            System.out.println(" 250504_UserMapper가 정상적으로 주입되었어요!");
+            System.out.println(" 250505_UserMapper가 정상적으로 주입되었어요!");
         }
     }
 }

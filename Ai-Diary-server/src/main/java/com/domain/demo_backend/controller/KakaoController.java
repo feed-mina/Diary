@@ -58,9 +58,9 @@ public class KakaoController {
 
         try {
         // 로그로 디버그 정보 출력
-        log.info("kakao login");
-        log.info("client_id : " + clientId);
-        log.info("redirectUri : " + redirectUri);
+        log.info("KAKAOCONTROLLER-kakao login");
+        log.info("KAKAOCONTROLLER-client_id : " + clientId);
+        log.info("KAKAOCONTROLLER-redirectUri : " + redirectUri);
 
         // 1. 받은 AccessToken으로 카카오에서 사용자 정보를 가져와
         KakaoUserInfo kakaoUserInfo = kakaoService.getKakaoUserInfo(kakaoAuthRequest.getAccessToken());
@@ -81,8 +81,8 @@ public class KakaoController {
     @GetMapping("/callback")
     public String getAccessToken(@RequestParam String code) {
 
-        log.info("@@@@@@@@@@@@@@@@@@@@@@@@");
-        log.info("kakao callback");
+        log.info("KAKAOCONTROLLER-@@@@@@@@@@@@@@@@@@@@@@@@");
+        log.info("KAKAOCONTROLLER-kakao callback");
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -93,11 +93,11 @@ public class KakaoController {
                 "&redirect_uri=" + redirectUri +
                 "&code=" + code;
 
-        log.info("headers : " + headers);
-        log.info("body : " + body);
-        log.info("client_id : " + clientId);
-        log.info("redirectUri : " + redirectUri);
-        log.info("code : " + code);
+        log.info("KAKAOCONTROLLER-headers : " + headers);
+        log.info("KAKAOCONTROLLER-body : " + body);
+        log.info("KAKAOCONTROLLER-client_id : " + clientId);
+        log.info("KAKAOCONTROLLER-redirectUri : " + redirectUri);
+        log.info("KAKAOCONTROLLER-code : " + code);
 
         HttpEntity<String> request = new HttpEntity<>(body, headers);
 
@@ -109,7 +109,7 @@ public class KakaoController {
         );
 
         accessToken = (String) response.getBody().get("access_token");
-        log.info("accessToken : " + accessToken);
+        log.info("KAKAOCONTROLLER-accessToken : " + accessToken);
 
         return "Access Token 발급 성공! : " + accessToken;
     }
@@ -119,7 +119,7 @@ public class KakaoController {
             @RequestHeader(value = "Authorization", required = false) String authorization,
             @RequestBody Map<String, Object> data) {
 
-        log.info(" Received Authorization header: {}", authorization);
+        log.info("KAKAOCONTROLLER- Received Authorization header: {}", authorization);
 
         //  Authorization 헤더 검증
         if (authorization == null || !authorization.startsWith("Bearer ")) {
@@ -128,10 +128,10 @@ public class KakaoController {
         }
 
         String kakaoAccessToken = (String) data.get("kakaoAccessToken");
-        log.info("📩 Kakao AccessToken from body: {}", kakaoAccessToken);
+        log.info("KAKAOCONTROLLER-📩 Kakao AccessToken from body: {}", kakaoAccessToken);
         //  JWT 검증
           String jwtToken = authorization.substring(7);
-        log.info(" Extracted Access Token: {}", jwtToken);
+        log.info("KAKAOCONTROLLER- Extracted Access Token: {}", jwtToken);
 
         log.error("@@@@@jwtToken", jwtToken);
         if (jwtToken.isEmpty()) {
@@ -152,16 +152,11 @@ public class KakaoController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("카카오 사용자 정보 조회 실패");
         }
 
-
-        //  JWT 토큰 발급
-//        String Token = kakaoService.registerKakaoUser(kakaoUserInfo, accessToken);
-//        log.info(" 발급된 Token: {}", Token);
-
         //  클라이언트 로그인 유도 (필요 시)
         if (clientId == null || redirectUri == null) {
             String loginUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="
                     + clientId + "&redirect_uri=" + redirectUri;
-            log.info("🔄 로그인이 필요해요. 로그인 페이지로 이동!");
+            log.info("KAKAOCONTROLLER- 로그인이 필요해요. 로그인 페이지로 이동!");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(loginUrl);
         }
 
@@ -171,9 +166,9 @@ public class KakaoController {
         Integer pomodoroTotalTime = (Integer) data.getOrDefault("pomodoroTotalTime", 0);
 
         String recordUrl = (String) data.getOrDefault("recordUrl", "https://justsaying.co.kr");
-        log.info(" stopwatchTime: {}초, pomodoroCount: {}회, pomodoroTotalTime: {}분",
+        log.info("KAKAOCONTROLLER- stopwatchTime: {}초, pomodoroCount: {}회, pomodoroTotalTime: {}분",
                 stopwatchTime, pomodoroCount, pomodoroTotalTime);
-        log.info(" recordUrl: {}", recordUrl);
+        log.info("KAKAOCONTROLLER- recordUrl: {}", recordUrl);
 
         //  메시지 구성
         StringBuilder message = new StringBuilder();
@@ -194,7 +189,7 @@ public class KakaoController {
         }
 
         String messageText = message.toString().replace("\n", "\\n").replace("\"", "\\\"");
-        log.info("📩 최종 메시지: {}", messageText);
+        log.info("KAKAOCONTROLLER- 최종 메시지: {}", messageText);
 
         //  카카오톡 메시지 전송 준비
         HttpHeaders headers = new HttpHeaders();
@@ -211,12 +206,12 @@ public class KakaoController {
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
 
-        log.info("📤 카카오 API 요청: {}", request);
+        log.info("KAKAOCONTROLLER- 카카오 API 요청: {}", request);
 
         //  카카오 API 요청 전송
         try {
             ResponseEntity<String> response = new RestTemplate().postForEntity(KAKAO_URL, request, String.class);
-            log.info(" 카카오톡 메시지 전송 성공! 응답: {}", response);
+            log.info("KAKAOCONTROLLER- 카카오톡 메시지 전송 성공! 응답: {}", response);
             return ResponseEntity.ok("카톡 전송 성공!");
         } catch (HttpClientErrorException e) {
             log.error(" 카톡 전송 실패! 오류: {}", e.getResponseBodyAsString());

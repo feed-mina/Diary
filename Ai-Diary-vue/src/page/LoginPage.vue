@@ -47,10 +47,13 @@ export default {
 
     // 이메일 주소 업데이트 로직
     const updateFullEmail = () => {
-      if (loginData.value.emailDomain === "custom") {
+      if (!loginData.value.emailPrefix) return;
+      if (loginData.value.emailDomain === "custom" && loginData.value.customDomain) {
         loginData.value.email = `${loginData.value.emailPrefix}@${loginData.value.customDomain}`;
-      } else {
+      } else if (loginData.value.emailDomain) {
         loginData.value.email = `${loginData.value.emailPrefix}@${loginData.value.emailDomain}`;
+      } else {
+        loginData.value.email = ""; // 도메인 없을 땐 이메일 만들지 않음
       }
     };
 
@@ -90,14 +93,25 @@ export default {
         router.push("/diary/common").then(() => {
           location.reload(); // 페이지 새로고침
         });
-      } catch (error) {
+      }catch (error) {
+        let message = "로그인 실패";
+        if (error.response && error.response.data && error.response.data.message) {
+          message = error.response.data.message;
+        } else if (error.message) {
+          message = error.message;
+        }
+        Swal.fire("로그인 실패", message, "error");
         console.error("로그인 실패:", error);
-        Swal.fire("로그인 실패", error.response?.data?.message || "로그인 실패", "error");
       }
     };
 
     // 카카오 로그인 함수
     const kakaoLogin = () => {
+      if (!window.Kakao || !window.Kakao.Auth || !window.Kakao.isInitialized()) {
+        Swal.fire("카카오 SDK 로드 중입니다", "잠시 후 다시 시도해주세요", "info");
+        console.warn("카카오 SDK 아직 초기화 안 됨");
+        return;
+      }
       if (window.Kakao && window.Kakao.Auth) {
         console.log(" 웹에서는 그냥 페이지 이동!");
         window.Kakao.Auth.login({
@@ -244,7 +258,7 @@ export default {
           <div>
             <input size="30" :type="showPassword ? 'text' : 'password'" v-model="loginData.password"
                    @input="handlePasswordChange" class="login_form-input" name="password" id="password"/>
-            <button type="button" @click="togglePasswordVisibility">
+            <button  type="button"  @click="togglePasswordVisibility">
               {{ showPassword ? "숨기기" : "보이기" }}
             </button>
             <div class="login_form-oo" v-if="errorWarning.password"
@@ -256,9 +270,12 @@ export default {
         <!-- 로그인 버튼 -->
         <div class="login_form_button_div">  <button type="submit" class="login_form_button">로 그 인</button></div>
       </form>
-      <button class="kakao-button" @click="kakaoLogin">
-        <img class="kakaoLoginImg" src="/img/kakao_login_large_narrow.png" alt="kakaoLogin" />
-      </button>
+      <div>
+
+        <button class="kakao-button" type="button" @click="() => { console.log('버튼 눌림'); kakaoLogin(); }">
+          <img class="kakaoLoginImg" src="/img/kakao_login_large_narrow.png" alt="kakaoLogin" />
+        </button>
+      </div>
     </div>
   </div>
 </template>

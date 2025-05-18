@@ -54,8 +54,6 @@ async function kakaoLogin()  {
 
           if (jwtToken) {
             localStorage.setItem("jwtToken", jwtToken);
-            // localStorage.setItem("accessToken", jwtToken.accessToken);
-            // localStorage.setItem("refreshToken", jwtToken.refreshToken);
             const jwtToken2 = localStorage.getItem('jwtToken');
             const accessToken = localStorage.getItem('accessToken');
             const refreshToken = localStorage.getItem('refreshToken');

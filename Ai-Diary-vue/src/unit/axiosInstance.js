@@ -44,7 +44,10 @@ instance.interceptors.response.use(
                 const refreshToken = localStorage.getItem("refreshToken");
                 const res = await instance.post("/api/auth/refresh", { refreshToken });
 
+
                 const newAccessToken = res.data.accessToken;
+
+                console.log(`250518_refreshToken`, newAccessToken);
                 localStorage.setItem("jwtToken", newAccessToken);
 
                 originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;

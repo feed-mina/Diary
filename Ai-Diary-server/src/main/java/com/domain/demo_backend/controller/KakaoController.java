@@ -111,7 +111,9 @@ public class KakaoController {
         accessToken = (String) response.getBody().get("access_token");
         log.info("KAKAOCONTROLLER-accessToken : " + accessToken);
 
-        return "Access Token 발급 성공! : " + accessToken;
+//        return "Access Token 발급 성공! : " + accessToken;  -- vue spa 방식(250518주석)
+
+        return "redirect:/login/callback";
     }
 
     @PostMapping("/sendRecord")

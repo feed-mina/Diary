@@ -20,6 +20,7 @@ import EmailVerificationPage from '@/page/VerificationPage.vue';
 import TimeSelect from '../components/TimeSelect.vue';
 import DrugSection from '../components/DrugSection.vue';
 import DiaryTranslator from "@/components/DiaryTranslator.vue";
+import KakaoCallback from "@/components/KakaoCallback.vue";
 
 const requireAuth = process.env.VUE_APP_REQUIRE_AUTH === "true"; // Boolean 변환
 
@@ -31,6 +32,7 @@ const routes = [
     {path: "/notFound", name: "NotFound", component: NotFound},
     {path: "/diary/tutorial", name: "Tutorial", component: Tutorial},
     {path: "/login", name: "LoginPage", component: LoginPage},
+    { path: '/login/callback', name: 'KakaoCallback', component: KakaoCallback },
     {path: "/signup", name: "SignupPage", component: SignupPage},
     {path: "/memberOut", name: "MemberOutPage", component: MemberOutPage},
     {path: "/agreementPolicy", name: "AgrrementPolicy", component: AgrrementPolicy},

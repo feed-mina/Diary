@@ -54,8 +54,8 @@ public class AuthService {
 
         // 1. 이메일로 사용자 조회
         User user = userMapper.findByUserEmail(loginRequest.getEmail());
-        log.info("250511_로그인 시도 email: " + loginRequest.getEmail());
-        log.info("250511_user: " + user);
+        log.info("250518_로그인 시도 email: " + loginRequest.getEmail());
+        log.info("250518_user: " + user);
         if (user == null || "Y".equals(user.getDelYn())) {
             throw new RuntimeException("존재하지 않는 계정입니다.");
         }
@@ -66,12 +66,12 @@ public class AuthService {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
         // 디버깅
-        log.info("250511_DB에서 가져온 User: " + user);
-        log.info("250511_DB 해시값: " + user.getHashedPassword());
-        log.info("250511_입력된 해시값: " + PasswordUtil.sha256(loginRequest.getPassword()));
+        log.info("250518_DB에서 가져온 User: " + user);
+        log.info("250518_DB 해시값: " + user.getHashedPassword());
+        log.info("250518_입력된 해시값: " + PasswordUtil.sha256(loginRequest.getPassword()));
 
 
-        log.info("250511_JWT 성공");
+        log.info("250518_JWT 성공");
         // 비밀번호를 포함하지 않은 사용자 정보를 JWT에 포함 users의 값은 전부 받아온다.
 
         log.info("updated_at 갱신 시작");
@@ -131,15 +131,15 @@ public class AuthService {
             throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
         }
         if (userMapper.findByUserPhone(registerRequest.getPhone()) != null) {
-            log.info("250511_회원가입 핸드폰 실패");
+            log.info("250518_회원가입 핸드폰 실패");
             throw new IllegalArgumentException("이미 존재하는 핸드폰 번호입니다.");
         }
 
         if(userMapper.findWidthdrawUser(registerRequest.getEmail()) != null){
-            log.info("250511_탈퇴한 유저");
+            log.info("250518_탈퇴한 유저");
             throw new IllegalArgumentException("탈퇴한 계정은 7일 동안 재가입할 수 없습니다..");
         }
-        log.info("250511_유효성 통과");
+        log.info("250518_유효성 통과");
         User user = User.builder()
                 .userId(registerRequest.getEmail().split("@")[0])
                 .password(registerRequest.getPassword())
@@ -152,8 +152,8 @@ public class AuthService {
                 .socialType("N") // 일반가입은 N!
                 .createdAt(ldt)
                 .build();
-        log.info("250511_user: " + user);
-        log.info("250511_user Mapper insertUser 시작");
+        log.info("250518_user: " + user);
+        log.info("250518_user Mapper insertUser 시작");
         userMapper.insertUser(user);
     }
 
@@ -161,14 +161,14 @@ public class AuthService {
 
     public String sendVerificationCode(String email) throws MessagingException {
 
-        log.info("250511_@@@@@@@@@@@@@@@@@@@@@@@@");
-        log.info("250511_sendVerificationCode");
-        log.info("250511_email", email);
+        log.info("250518_@@@@@@@@@@@@@@@@@@@@@@@@");
+        log.info("250518_sendVerificationCode");
+        log.info("250518_email", email);
 
         //랜덤 인등코드 생성
         String verificationCode = generateRendomCode();
 
-        log.info("250511_verificationCode", verificationCode);
+        log.info("250518_verificationCode", verificationCode);
         // DB에 인증코드, 만료시간 저장
         userMapper.updateVerificationCode(email, verificationCode);
 
@@ -204,7 +204,7 @@ public class AuthService {
 
     // 회원가입 페이지 이후 인증번호 코드 페이지
     public boolean verifyCode(String email, String code){
-        log.info("250511_email: ", email);
+        log.info("250518_email: ", email);
         User user = userMapper.findByUserEmail(email);
 
         if (user == null) {
@@ -259,10 +259,10 @@ public class AuthService {
     public void nonMember(RegisterRequest registerRequest) {
         Date date = new Date();
         LocalDateTime ldt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        log.info("250511_@@@@@회원탈퇴 서비스 진입 email: " + registerRequest.getEmail());
+        log.info("250518_@@@@@회원탈퇴 서비스 진입 email: " + registerRequest.getEmail());
         User existingUser = userMapper.findByUserEmail(registerRequest.getEmail());
         if (existingUser == null) {
-            log.info("250511_회원탈퇴 실패: 해당 사용자가 존재하지 않습니다.");
+            log.info("250518_회원탈퇴 실패: 해당 사용자가 존재하지 않습니다.");
             throw new IllegalArgumentException("해당 사용자가 존재하지 않습니다.");
         }
         // 회원탈퇴 처리
@@ -271,20 +271,20 @@ public class AuthService {
         existingUser.setVerificationCode("0000000");
         existingUser.setUpdatedAt(ldt);
         existingUser.setWithdrawAt(ldt);
-        log.info("250511_existingUser : " + existingUser);
-        log.info("250511_user Mapper nonMember 시작");
+        log.info("250518_existingUser : " + existingUser);
+        log.info("250518_user Mapper nonMember 시작");
         userMapper.nonMember(existingUser);
-        log.info("250511_user 탈퇴 처리 완료: " + existingUser);
+        log.info("250518_user 탈퇴 처리 완료: " + existingUser);
     }
 
     @Transactional
     public void editPassword(PasswordDto passwordDto) {
         Date date = new Date();
         LocalDateTime ldt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        log.info("250511_@@@@@비밀변호 변경 서비스 진입 email: " + passwordDto.getEmail());
+        log.info("250518_@@@@@비밀변호 변경 서비스 진입 email: " + passwordDto.getEmail());
         User existingUser = userMapper.findByUserEmail(passwordDto.getEmail());
         if (existingUser == null) {
-            log.info("250511_비밀변호 변경 실패: 해당 사용자가 존재하지 않습니다.");
+            log.info("250518_비밀변호 변경 실패: 해당 사용자가 존재하지 않습니다.");
             throw new IllegalArgumentException("해당 사용자가 존재하지 않습니다.");
         }
         // 비밀변호 변경 처리

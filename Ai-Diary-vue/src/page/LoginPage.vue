@@ -64,7 +64,7 @@ export default {
           email: loginData.value.email,
           password: loginData.value.password,
         });
-        console.log("250511_로그인 응답 확인:", response);
+        console.log("250518_로그인 응답 확인:", response);
 
         const { accessToken, refreshToken } = response.data;
         const [userId] = loginData.value.email.split("@");
@@ -111,7 +111,7 @@ export default {
         success: async (authObj) => {
           try {
             const kakaoAccessToken = authObj.access_token;
-            const response = await  localhost.post(`${apiUrl}/api/kakao/login`, {
+            const response = await  axiosInstance.post(`${apiUrl}/api/kakao/login`, {
               accessToken: kakaoAccessToken,
             });
 
@@ -155,7 +155,7 @@ export default {
     };
 
     onMounted(() => {
-      console.log("250511_로그인 페이지 진입");
+      console.log("250518_로그인 페이지 진입");
       if (!window.Kakao || !window.Kakao.isInitialized()) {
         const kakaoScript = document.createElement("script");
         kakaoScript.src = "https://developers.kakao.com/sdk/js/kakao.js";

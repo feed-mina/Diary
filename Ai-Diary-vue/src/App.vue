@@ -10,8 +10,6 @@ import DiaryList from '@/page/DiaryList.vue';
 import DiaryHeader from '@/components/Header.vue';
 import DiaryNav from '@/components/DiaryNav.vue';
 import DiaryFooter from '@/components/Footer.vue';
-
-import axios from '@/unit/axiosInstance.js'; // ✅ 설정된 인스턴스만 불러오기
 import { apiUrl } from '@/unit/axiosInstance.js';
 
 import './assets/main.css';

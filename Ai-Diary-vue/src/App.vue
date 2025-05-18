@@ -1,19 +1,21 @@
 <script>
-import { onMounted, watch, computed, ref} from 'vue';
+import { onMounted, watch, computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useTheme } from 'vuetify';
+import { useAppStore } from './store/useAppStore.js';
 
 import Home from '@/page/Home.vue';
 import NotFound from '@/page/NotFound.vue';
-import DiaryList from "@/page/DiaryList.vue";
-import DiaryHeader from "@/components/Header.vue";
-import DiaryNav from "@/components/DiaryNav.vue";
-import DiaryFooter from "@/components/Footer.vue"
-import axios from "axios";
-import { apiUrl } from "@/api/index.js";
-import {useAppStore } from "./store/useAppStore.js";
+import DiaryList from '@/page/DiaryList.vue';
+import DiaryHeader from '@/components/Header.vue';
+import DiaryNav from '@/components/DiaryNav.vue';
+import DiaryFooter from '@/components/Footer.vue';
+
+import axios from '@/unit/axiosInstance.js'; // ✅ 설정된 인스턴스만 불러오기
+import { apiUrl } from '@/unit/axiosInstance.js';
 
 import './assets/main.css';
+
 export default {
   components: {
     DiaryHeader,
@@ -21,138 +23,46 @@ export default {
     DiaryFooter,
   },
   setup() {
-    const route = useRoute(); // 현재 라우트 정보 가져오기
+    const route = useRoute();
     const theme = useTheme();
     const store = useAppStore();
-    // function toggleDarkMode() {
-    //   theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
-    // }
 
+    // 바디 클래스 변경 함수
     function updateBodyClass(path) {
-      const root = document.documentElement // 또는 document.body
+      const root = document.documentElement;
       if (path === '/pomoLogin' || path === '/pomoMain') {
-        root.classList.add('pomo-mode')
+        root.classList.add('pomo-mode');
       } else {
-        root.classList.remove('pomo-mode')
+        root.classList.remove('pomo-mode');
       }
     }
 
-// 처음 들어올 때도 적용
+    //  페이지 진입 시 실행
     onMounted(() => {
-      updateBodyClass(route.path)
-      console.log("250505_저장된 jwtToken:", localStorage.getItem("jwtToken"));
-      console.log("250505_저장된 kakaoAccessToken:", localStorage.getItem("kakaoAccessToken"));
+      updateBodyClass(route.path);
+      console.log("jwtToken:", localStorage.getItem("jwtToken"));
+      console.log("kakaoAccessToken:", localStorage.getItem("kakaoAccessToken"));
+      console.log("현재 API 주소:", apiUrl);
+    });
 
-    })
-
-
-// 경로 바뀔 때마다 반응
+    //  라우트 변경 시 바디 클래스 조정
     watch(() => route.path, (newPath) => {
-      updateBodyClass(newPath)
-    })
-     console.log("@@@@App inerceptors");
-     console.log(import.meta.env.VITE_API_URL);
-     console.log(import.meta.env.VUE_API_URL);
-    // axios.defaults.baseURL = import.meta.env.VITE_APP_API_BASE_URL;
-    // 서버 주소 적용
-    console.log("적용되는 API URL:", apiUrl);
-    axios.defaults.baseURL = apiUrl;  // 서버 주소 적용
+      updateBodyClass(newPath);
+    });
 
-// 요청 인터셉터 추가: 모든 요청 전에 토큰을 헤더에 넣어줌
-    axios.interceptors.request.use(
-        async (config) => {
-          const excludeUrls = ["/api/timer/now", "/api/timer/health"]; // 제외할 API 목록
-          const isExcluded = excludeUrls.some((url) => config.url.includes(url));
-          let token = localStorage.getItem("jwtToken") || localStorage.getItem("kakaoAccessToken");
-
-          // console.log(" 현재 페이지:", window.location.href);
-          // console.log("로컬스토리지 토큰:", token);
-          if (!isExcluded) {
-            if (token) {
-              // console.log(" Axios 인터셉터 실행 로그인 전 - JWT Token:", token);
-              if (!token.startsWith("Bearer ")) {
-                token = `Bearer ${token}`;
-              }
-              config.headers["Authorization"] = token;
-            }
-          } else {
-            // console.log(` ${config.url} 요청에는 Authorization 헤더를 추가하지 않음.`);
-          }
-          return config;
-        },
-        async (error) => {
-          if (error.response && error.response.status === 401) {
-            try {
-              const refreshToken = localStorage.getItem('refreshToken');
-              const refreshRes = await axios.post('/api/auth/refresh', { refreshToken });
-              const newAccessToken = res.data.accessToken;
-               console.log("@@@@@newAccessToken"+refreshRes)
-              // localStorage.setItem('accessToken', newAccessToken);
-            //  localStorage.setItem("jwtToken", tokenResponse.accessToken); //  오직 accessToken만 저장
-             localStorage.setItem("refreshToken", tokenResponse.refreshToken); //  refresh도 따로 저장
-
-              // 원래 요청 다시 보내기
-              error.config.headers.Authorization = `Bearer ${newAccessToken}`;
-              return instance.request(error.config);
-            } catch (err) {
-            // console.log("401 Unauthorized 발생 - 로그인 페이지로 리디렉트");
-            alert("로그인이 필요합니다.");
-              return Promise.reject(err);
-          }
-        }
-          return Promise.reject(error);
-        }
-    );
-
-    axios.interceptors.response.use(
-        response => response,
-        async error => {
-          const originalRequest = error.config;
-          if (error.response && error.response.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
-            try {
-              const refreshToken = localStorage.getItem('refreshToken');
-              const response = await axios.post(`${apiUrl}/auth/refresh`, { refreshToken });
-
-              const newAccessToken = response.data.accessToken;
-              localStorage.setItem('jwtToken', newAccessToken);
-
-              originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-              return axios(originalRequest);
-            } catch (err) {
-              // 🔽 여기가 중요
-              localStorage.clear();
-              alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-              window.location.href = '/pomoLogin';
-              return Promise.reject(err);
-            }
-          }
-          return Promise.reject(error);
-        }
-    );
-
-
-    // 라우터 튜토리얼
-    const routes = {
-      '/': Home,
-      '/notFound': NotFound,
-      '/diary/common': DiaryList,
-    };
-    const currentPath = ref(window.location.hash);
-
-    // pomoLogin 또는 pomoMain 페이지인지 확인
+    // Pomo 전용 페이지 여부
     const isPomoPage = computed(() => {
       return route.path === '/pomoLogin' || route.path === '/pomoMain';
     });
+
     return {
       store,
       isPomoPage,
     };
-  },
+  }
 };
-
-
 </script>
+
 
 <template>
   <v-app>

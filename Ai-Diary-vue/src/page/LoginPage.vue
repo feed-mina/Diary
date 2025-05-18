@@ -9,6 +9,7 @@ import "notyf/notyf.min.css";
 import KakaoImg from "/img/kakao_login_large_narrow.png";
 
 const notyf = new Notyf();
+const apiUrl = import.meta.env.VITE_APP_API_BASE_URL || "https://justsaying.co.kr";
 
 export default {
   name: "LoginPage",
@@ -51,26 +52,33 @@ export default {
     };
 
     const onClickLoginButton = async () => {
+      updateFullEmail(); // 먼저 email 조합
+
       if (!loginData.value.email || !loginData.value.password) {
         Swal.fire("입력 오류", "이메일과 비밀번호를 입력해주세요.", "warning");
         return;
       }
 
-      updateFullEmail();
-
       try {
-        const response = await axios.post(`/api/auth/login`, {
+        const response = await  axiosInstance.post(`/api/auth/login`, {
           email: loginData.value.email,
           password: loginData.value.password,
         });
+        console.log("250511_로그인 응답 확인:", response);
 
         const { accessToken, refreshToken } = response.data;
         const [userId] = loginData.value.email.split("@");
-
+        console.log("accessToken:", accessToken);
+        console.log("refreshToken:", refreshToken);
         localStorage.setItem("userId", userId);
-        localStorage.setItem("jwtToken", accessToken);
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
+        if (accessToken && refreshToken) {
+          localStorage.setItem("jwtToken", accessToken);
+          localStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("refreshToken", refreshToken);
+        } else {
+          console.warn("토큰이 응답에 포함되지 않았습니다.");
+        }
+
         localStorage.setItem("email", loginData.value.email);
         localStorage.setItem("password", loginData.value.password);
         localStorage.setItem("sleepUsingType", "Y");
@@ -94,17 +102,24 @@ export default {
         Swal.fire("카카오 SDK 로드 중입니다", "잠시 후 다시 시도해주세요", "info");
         return;
       }
+      console.log("axios baseURL:", axios.defaults.baseURL); // 꼭 찍어보자
+      console.log("API 요청 URL:", `${apiUrl}/api/kakao/login`);
+
 
       window.Kakao.Auth.login({
         scope: "profile_nickname, account_email, talk_message",
         success: async (authObj) => {
           try {
             const kakaoAccessToken = authObj.access_token;
-            const response = await axios.post(`/api/kakao/login`, {
+            const response = await  localhost.post(`${apiUrl}/api/kakao/login`, {
               accessToken: kakaoAccessToken,
             });
 
             const userInfo = response.data.kakaoUserInfo;
+
+              console.log('userInfo:',userInfo);
+
+            console.log('response:',response);
             if (!userInfo || !userInfo.email || !userInfo.email.includes("@")) {
               Swal.fire("로그인 실패", "이메일 정보가 없어 로그인할 수 없습니다.", "error");
               return;
@@ -122,6 +137,7 @@ export default {
             localStorage.setItem("email", kakao_email);
             localStorage.setItem("nickname", kakao_nickname);
             localStorage.setItem("jwtToken", jwtToken);
+            localStorage.setItem("accessToken", jwtToken);  // 추가해줘야 함
 
             Swal.fire("카카오 로그인 성공", "로그인을 완료했습니다", "success");
             router.push("/diary/common").then(() => {
@@ -139,13 +155,16 @@ export default {
     };
 
     onMounted(() => {
-      console.log("로그인 페이지 진입");
+      console.log("250511_로그인 페이지 진입");
       if (!window.Kakao || !window.Kakao.isInitialized()) {
         const kakaoScript = document.createElement("script");
         kakaoScript.src = "https://developers.kakao.com/sdk/js/kakao.js";
         kakaoScript.onload = () => {
           window.Kakao.init(import.meta.env.VITE_KAKAO_JS_KEY);
           console.log('VITE_KAKAO_JS_KEY', import.meta.env.VITE_KAKAO_JS_KEY);
+          console.log('VITE_MODE_NAME', import.meta.env.VITE_MODE_NAME);
+          console.log('VUE_APP_API_BASE_URL', import.meta.env.VUE_APP_API_BASE_URL);
+          console.log('VITE_APP_API_BASE_URL', import.meta.env.VITE_APP_API_BASE_URL);
         };
         kakaoScript.onerror = () => {
           console.error("카카오 SDK 로드 실패");

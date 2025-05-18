@@ -9,6 +9,6 @@ public class MyBatisReadyEventLogger {
 
     @EventListener(ApplicationReadyEvent.class)
     public void logReady() {
-        System.out.println(" 250505_MyBatis Mapper 파일들이 로딩되었는지 확인할 준비가 완료되었어요!");
+        System.out.println(" 250511_MyBatis Mapper 파일들이 로딩되었는지 확인할 준비가 완료되었어요!");
     }
 }

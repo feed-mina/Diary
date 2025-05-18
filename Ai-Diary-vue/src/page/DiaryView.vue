@@ -7,6 +7,7 @@ import "notyf/notyf.min.css";
 import DiaryTranslator from '@/components/DiaryTranslator.vue'
 import BlobTts from '@/components/BlobTts.vue'
 import api from "@/api/translatorApi.js";
+import axiosInstance from "@/unit/axiosInstance.js";
 export default {
   name: 'DiaryView',
   components: { DiaryTranslator, BlobTts },
@@ -63,7 +64,7 @@ export default {
       try {
         console.log(` 요청 URL: /api/diary/viewDiaryItem/${diaryId}?userId=${userId}`);
 
-        const response = await axios.get(`/api/diary/viewDiaryItem/${diaryId}`
+        const response = await  axiosInstance.get(`/api/diary/viewDiaryItem/${diaryId}`
             , {
               params: {
                 userId: userId, // 체크박스 상태에 따라 userId필터링

@@ -2,7 +2,7 @@
    import { ref, onMounted, provide, inject,computed } from "vue";
    import { useRouter,useRoute } from 'vue-router';
    import axios from "axios";
-   import {  recordUrl } from '@/api/index.js';
+   import {  recordUrl } from '@/unit/axiosInstance.js';
    import Stopwatch from "./Stopwatch.vue";
    import PomodoroTimer from "./PomodoroTimer.vue"; 
    import CurrentTime from "./CurrentTime.vue"; 
@@ -50,7 +50,7 @@
 
    // 서버 시간 체크, 서버랑 연결되는지 확인용 및 현재 시간 받음
    function checkServerTime() {
-      axios.get(`/api/timer/now`)
+       axiosInstance.get(`/api/timer/now`)
         .then(() => {
            isTimeVisible.value = true;
 // 서버 연결 성공하면 보임
@@ -100,7 +100,7 @@
      }
 
      try {
-       const response = await axios.post(
+       const response = await  axiosInstance.post(
            `/api/kakao/sendRecord`,
            requestData,
 

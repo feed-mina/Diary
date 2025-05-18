@@ -17,7 +17,9 @@ import jakarta.mail.MessagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,23 +63,30 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
             TokenResponse tokenResponse = authService.login(loginRequest);
-            log.info("로그인 성공");
-//            return ResponseEntity.ok(new LoginResponse(jwt));
-            // 회원가입 대신 카카오 로그인을 사용한다면 > clientId, kakaoAcessToken 을 password, HashedPassword로 저장하기
-            // 3. JWT 발급 또는 성공 메시지 반환
-            return ResponseEntity.ok(tokenResponse);
-        } catch (RuntimeException e) {
-            // 명확한 에러 메시지 반환
-            Map<String, String> errorResponse = new HashMap<>();
 
-            log.info("로그인 실패");
-            errorResponse.put("error", "로그인 실패");
-            errorResponse.put("message", e.getMessage());
-            return ResponseEntity.badRequest().body(errorResponse);
+            //  Secure + SameSite=None 설정된 쿠키로 refreshToken 내려주기
+            ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", tokenResponse.getRefreshToken())
+                    .httpOnly(true)
+                    .secure(true) // HTTPS일 때만 전송
+                    .path("/")
+                    .sameSite("None") // 크로스사이트 허용
+                    .maxAge(7 * 24 * 60 * 60) // 7일
+                    .build();
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
+                    .body(Map.of(
+                            "accessToken", tokenResponse.getAccessToken()
+                            // refreshToken은 body에 넣지 않아도 됨 (쿠키로 전달됨)
+                    ));
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "error", "로그인 실패",
+                    "message", e.getMessage()
+            ));
         }
     }
-
-
 
     @Operation(summary = "회원 가입페이지에서 회원가입 로직", description = "users 테이블에 insert한다..")
     @ApiResponses(value = {
@@ -103,7 +112,7 @@ public class AuthController {
             @ApiResponse(responseCode = "500", description = "서버오류"),
     })
     @PostMapping("/signup")
-    public String sendVerificationCode(@RequestBody RegisterRequest registerRequest, @RequestParam String message) throws MessagingException {
+    public  ResponseEntity<?>  sendVerificationCode(@RequestBody RegisterRequest registerRequest, @RequestParam String message) throws MessagingException {
 
         log.info("유효성 평가 ");
 //        authService.beforesendVerificationCode(registerRequest);
@@ -119,7 +128,9 @@ public class AuthController {
         log.info("메시지: " + message);
 
         String savedCode = emailVerificationMap.get(email);
-        return "인증 코드가 다음 이메일로 전송되었습니다." + email;
+//        return "인증 코드가 다음 이메일로 전송되었습니다." + email;
+        return ResponseEntity.ok(Map.of("message", "인증 코드가 이메일로 전송되었습니다.", "email", registerRequest.getEmail()));
+
     }
 
     @Operation(summary = "get방식의 /signUp", description = "url에서 signUp이 잘 되는지 테스트.")
@@ -130,14 +141,18 @@ public class AuthController {
             @ApiResponse(responseCode = "500", description = "서버오류"),
     })
     @GetMapping("/signUp")
-    public String sendVerificationCodeByGet(@RequestBody RegisterRequest registerRequest, @RequestParam String message) throws MessagingException {
+    public  ResponseEntity<?>  sendVerificationCodeByGet(@RequestBody RegisterRequest registerRequest, @RequestParam String message) throws MessagingException {
 
         log.info("get 테스트 회원가입 하기 위해 인증코드 전송 ");
         String email = registerRequest.getEmail();
 
         String verificationCode = authService.sendVerificationCode(email);
+        emailVerificationMap.put(email, verificationCode);
 
-        return "인증 코드가 다음 이메일로 전송되었습니다.";
+        return ResponseEntity.ok(Map.of(
+                "message", "인증 코드가 이메일로 전송되었습니다.",
+                "email", email
+        ));
     }
 
 

@@ -3,7 +3,7 @@ import {ref} from "vue";
 import {useRouter} from "vue-router";
 import Cookies from "universal-cookie";
 import axios from "axios";
-// import { apiUrl } from "@/api/index.js";
+// import { apiUrl } from "@/unit/axiosInstance.js";
 import Swal from "sweetalert2";
 
 export default {
@@ -104,7 +104,7 @@ export default {
         if (confirm("비밀번호를 변경하시겠습니까?")) {
           console.log("회원탈퇴 요청 데이터:", editData.value);
           // API 호출
-          const response = await axios.post(`/api/auth/editPassword`, editData.value);
+          const response = await  axiosInstance.post(`/api/auth/editPassword`, editData.value);
           console.log("비밀번호 변경 응답: ", response);
           localStorage.removeItem("userId");
           localStorage.removeItem("jwtToken");

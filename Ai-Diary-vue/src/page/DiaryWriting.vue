@@ -9,7 +9,7 @@ import '@vuepic/vue-datepicker/dist/main.css';
 import Swal from 'sweetalert2';
 import TimeSelect from "@/components/TimeSelect.vue";
 import DrugSection from "@/components/DrugSection.vue";
-// import {apiUrl} from "@/api/index.js";
+// import {apiUrl} from "@/unit/axiosInstance.js";
 
 export default {
   name: "DiaryWriting",
@@ -138,7 +138,7 @@ export default {
       };
 
       try {
-        const response = await axios.post(`/api/diary/addDiaryList`,
+        const response = await  axiosInstance.post(`/api/diary/addDiaryList`,
             diaryData,
             {
               headers: {

@@ -129,7 +129,7 @@ function playAlarm3() {
      }
      const totalMinutes = Math.floor((25 * 60 * pomoSession.value) / 60);
      try {
-       const response = await axios.post(`/api/kakao/sendRecord`,
+       const response = await  axiosInstance.post(`/api/kakao/sendRecord`,
          {
            pomodoroCount: pomoSession.value,
            pomodoroTotalTime: totalMinutes ,

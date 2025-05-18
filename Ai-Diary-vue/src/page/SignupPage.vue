@@ -2,7 +2,7 @@
 import {onMounted, ref} from 'vue';
 import {useRouter} from "vue-router";
 import axios from "axios";
-// import { apiUrl } from "@/api/index.js";
+// import { apiUrl } from "@/unit/axiosInstance.js";
 import Cookies from "universal-cookie";
 import { Notyf } from 'notyf';
 import 'notyf/notyf.min.css';
@@ -160,7 +160,7 @@ export default {
         };
 
         console.log("회원가입 데이터:", signUpDataToSave);
-        const response = await axios.post(`/api/auth/register`, signUpDataToSave);
+        const response = await  axiosInstance.post(`/api/auth/register`, signUpDataToSave);
         console.log('회원가입 response : ', response);
         notify.success("인증번호를 전송했습니다.");
         return response.data;
@@ -216,7 +216,7 @@ export default {
         const success = await sendSignUpData();
         if (!success) return; // 오류나면 더 이상 진행 안 함
 
-        const response = await axios.post(`/api/auth/signup`, {
+        const response = await  axiosInstance.post(`/api/auth/signup`, {
           email: fullEmail.value
         }, {
           params: {

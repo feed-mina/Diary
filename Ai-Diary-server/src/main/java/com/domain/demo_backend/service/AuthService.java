@@ -1,16 +1,16 @@
 package com.domain.demo_backend.service;
 
 
-import com.domain.demo_backend.mapper.UserMapper;
 import com.domain.demo_backend.token.domain.TokenResponse;
 import com.domain.demo_backend.user.domain.User;
-import com.domain.demo_backend.user.dto.KakaoUserInfo;
+import com.domain.demo_backend.user.domain.UserRepository;
 import com.domain.demo_backend.user.dto.LoginRequest;
 import com.domain.demo_backend.user.dto.PasswordDto;
 import com.domain.demo_backend.user.dto.RegisterRequest;
 import com.domain.demo_backend.util.DuplicateEmailException;
 import com.domain.demo_backend.util.JwtUtil;
 import com.domain.demo_backend.util.PasswordUtil;
+import io.swagger.v3.oas.models.info.Contact;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
@@ -29,12 +29,13 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
 public class AuthService {
     private final Logger log = LoggerFactory.getLogger(AuthService.class);
-    private final UserMapper userMapper;
+    private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
     @Value("${spring.mail.username}")
@@ -44,8 +45,8 @@ public class AuthService {
     private JavaMailSender mailSender;
 
 
-    public AuthService(UserMapper userMapper, JwtUtil jwtUtil) {
-        this.userMapper = userMapper;
+    public AuthService(UserRepository userRepository, JwtUtil jwtUtil) {
+        this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
     }
 
@@ -53,13 +54,14 @@ public class AuthService {
         // 탈퇴한 유저가 delYn ='N' 이면 계정정보가 없다 . 또는 에러가 나면 계정정보가 없다라고 떠야한다.
 
         // 1. 이메일로 사용자 조회
-        User user = userMapper.findByUserEmail(loginRequest.getEmail());
+        User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new RuntimeException("존재하지 않은 계정입니다"));
+
         log.info("  250527_로그인 시도 email: " + loginRequest.getEmail());
         log.info("  250527_user: " + user);
-        if (user == null || "Y".equals(user.getDelYn())) {
-            throw new RuntimeException("존재하지 않는 계정입니다.");
-        }
-        if (!"Y".equals(user.getVerifyYn())) {
+//        if (user.isEmpty() || "Y".equals(user.get().getDelYn())) {
+//            throw new RuntimeException("존재하지 않는 계정입니다.");
+//        }
+        if (!"Y".equals(user.getVerificationCode())) {
             throw new RuntimeException("이메일 인증이 필요합니다.");
         }
         if (!user.getHashedPassword().equals(PasswordUtil.sha256(loginRequest.getPassword()))) {
@@ -75,13 +77,13 @@ public class AuthService {
         // 비밀번호를 포함하지 않은 사용자 정보를 JWT에 포함 users의 값은 전부 받아온다.
 
         log.info("updated_at 갱신 시작");
-        userMapper.updateUpdatedAt(user.getEmail());
+        user.setUpdatedAt(LocalDateTime.now());
         log.info("updated_at 갱신 완료");
 
 
         // 5. JWT 발급
         return jwtUtil.generateTokens(
-                user.getEmail(),
+                user.getEmail(), // setEmail(void)가 아니라 이미 저장된 email을 가져옴
                 user.getHashedPassword(),
                 String.valueOf(user.getUserId())
         );
@@ -92,10 +94,13 @@ public class AuthService {
     // 이미 존재하는 사용자 아이디인지 확인하고 중복되면 예외 발생
     @Transactional
     public void register(RegisterRequest registerRequest) {
-        User reactiveUser = userMapper.findByUserEmail(registerRequest.getEmail());
+
+        // 1. 중복 체크인 먼저 수행
+       userRepository.findByEmail(registerRequest.getEmail()).ifPresent(u -> { throw new DuplicateEmailException("이미 존재하는 이메일입니다.");});
 
         Date date = new Date();
         LocalDateTime ldt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        User reactiveUser = userRepository.findByEmail(registerRequest.getEmail()).orElse(null);
 
         if (reactiveUser != null) {
             if ("Y".equals(reactiveUser.getDelYn())) {
@@ -120,22 +125,22 @@ public class AuthService {
                             .withdrawAt(LocalDateTime.parse("2100-12-31 24:59:59"))
                             .build();
                     // 재가입 허용 update
-                    userMapper.reactivateUser(user); // delYn을 'N'으로 , verifyYn 을 'Y'로 바꾸고 새로 정보 업데이트
+                    userRepository.save(user); // delYn을 'N'으로 , verifyYn 을 'Y'로 바꾸고 새로 정보 업데이트
                     return;
                 }
             } else {
                 throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
             }
         }
-        if (userMapper.findByUserEmail(registerRequest.getEmail()) != null) {
+        if (userRepository.findByEmail(registerRequest.getEmail()) != null) {
             throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
         }
-        if (userMapper.findByUserPhone(registerRequest.getPhone()) != null) {
+        if (userRepository.findByPhone(registerRequest.getPhone()) != null) {
             log.info("  250527_회원가입 핸드폰 실패");
             throw new IllegalArgumentException("이미 존재하는 핸드폰 번호입니다.");
         }
 
-        if(userMapper.findWidthdrawUser(registerRequest.getEmail()) != null){
+        if(userRepository.findByEmailAndDelYn(registerRequest.getEmail(), "Y").isPresent()){
             log.info("  250527_탈퇴한 유저");
             throw new IllegalArgumentException("탈퇴한 계정은 7일 동안 재가입할 수 없습니다..");
         }
@@ -154,7 +159,7 @@ public class AuthService {
                 .build();
         log.info("  250527_user: " + user);
         log.info("  250527_user Mapper insertUser 시작");
-        userMapper.insertUser(user);
+//        userRepository.insertUser(user);
     }
 
 
@@ -170,7 +175,7 @@ public class AuthService {
 
         log.info("  250527_verificationCode", verificationCode);
         // DB에 인증코드, 만료시간 저장
-        userMapper.updateVerificationCode(email, verificationCode);
+//        userRepository.updateVerificationCode(email, verificationCode);
 
 
         // 이메일 작성 및 전송
@@ -203,9 +208,10 @@ public class AuthService {
     }
 
     // 회원가입 페이지 이후 인증번호 코드 페이지
+    @Transactional
     public boolean verifyCode(String email, String code){
         log.info("  250527_email: ", email);
-        User user = userMapper.findByUserEmail(email);
+        User user = userRepository.findByEmail(email).orElseThrow(()->new IllegalArgumentException("사용자가 없습니다"));
 
         if (user == null) {
             log.error("사용자를 찾을 수 없음: {}", email);
@@ -218,7 +224,8 @@ public class AuthService {
         }
 
         // 인증 성공 → verifyYn = 'Y'
-        userMapper.updateVerifyYn(email);
+//      userRepository.updateVerifyYn(email);
+        user.setVerifyYn("Y");
         return true; // 코드가 틀리면 false
     }
 
@@ -243,14 +250,15 @@ public class AuthService {
 
     // 인증코드 재발송 로직
     public void resendVerification(String email) throws MessagingException {
-        User user = userMapper.findByUserEmail(email);
+        LoginRequest loginRequest = new LoginRequest();
+        User user = userRepository.findByEmail(loginRequest.getEmail()).orElse(null);
 
         if (user == null) {
             throw new IllegalArgumentException("존재하지 않는 사용자입니다: " + email);
         }
 
         String verificationCode = generateRendomCode();
-        userMapper.updateVerificationCode(email, verificationCode);
+        user.setVerificationCode(verificationCode);
         resendEmail(email, verificationCode);
     }
 
@@ -260,7 +268,7 @@ public class AuthService {
         Date date = new Date();
         LocalDateTime ldt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         log.info("  250527_@@@@@회원탈퇴 서비스 진입 email: " + registerRequest.getEmail());
-        User existingUser = userMapper.findByUserEmail(registerRequest.getEmail());
+        User existingUser = userRepository.findByEmail(registerRequest.getEmail()).orElseThrow(()-> new IllegalArgumentException("사용자가 없습니다"));
         if (existingUser == null) {
             log.info("  250527_회원탈퇴 실패: 해당 사용자가 존재하지 않습니다.");
             throw new IllegalArgumentException("해당 사용자가 존재하지 않습니다.");
@@ -273,7 +281,6 @@ public class AuthService {
         existingUser.setWithdrawAt(ldt);
         log.info("  250527_existingUser : " + existingUser);
         log.info("  250527_user Mapper nonMember 시작");
-        userMapper.nonMember(existingUser);
         log.info("  250527_user 탈퇴 처리 완료: " + existingUser);
     }
 
@@ -282,7 +289,7 @@ public class AuthService {
         Date date = new Date();
         LocalDateTime ldt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         log.info("  250527_@@@@@비밀변호 변경 서비스 진입 email: " + passwordDto.getEmail());
-        User existingUser = userMapper.findByUserEmail(passwordDto.getEmail());
+        User existingUser = userRepository.findByEmail(passwordDto.getEmail()).orElseThrow(()->new IllegalArgumentException("사용자가 없습니다"));
         if (existingUser == null) {
             log.info("  250527_비밀변호 변경 실패: 해당 사용자가 존재하지 않습니다.");
             throw new IllegalArgumentException("해당 사용자가 존재하지 않습니다.");
@@ -297,8 +304,8 @@ public class AuthService {
         existingUser.setPassword(passwordDto.getCheckNewPassword());
         existingUser.setHashedPassword(newHashedPassword);
         existingUser.setUpdatedAt(ldt);
-        userMapper.editPassword(existingUser); // 기존 레코드를 update
-
+      //  userRepository.editPassword(existingUser); // 기존 레코드를 update
+        existingUser.setHashedPassword(newHashedPassword);
         System.out.println("existingUser : " + existingUser);
         System.out.println("user Mapper nonMember 시작");
         System.out.println("user 탈퇴 처리 완료: " + existingUser);

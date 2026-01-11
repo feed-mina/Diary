@@ -10,7 +10,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Set;
 
-@Mapper
+//  @Mapper
 public interface DiaryMapper {
     void insertDiary(Diary diary);
 

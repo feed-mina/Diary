@@ -2,6 +2,7 @@ package com.domain.demo_backend.config;
 
 import com.domain.demo_backend.mapper.UserMapper;
 import com.domain.demo_backend.user.domain.User;
+import com.domain.demo_backend.user.domain.UserRepository;
 import com.domain.demo_backend.util.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,11 +18,11 @@ import java.util.List;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserMapper userMapper;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CustomUserDetailsService(UserMapper userMapper) {
-        this.userMapper = userMapper;
+    public CustomUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -29,7 +30,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         // db에서 조회
         //  CustomUserDetails user =  userMapper.findByUsername(username);
 
-        User user = userMapper.findByUsername(username);
+        User user = userRepository.findByUsername
+                (username).orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username));
         System.out.println("DB에서 조회된 사용자: " + user);
         System.out.println("CustomUserDetails userSqno: " + user.getUserSqno());
         System.out.println("CustomUserDetails username: " + user.getUserSqno());

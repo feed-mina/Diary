@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 
-@Mapper
+// @Mapper
 public interface UserMapper {
     User findByUserPhone(String phone);
     User findByUserEmail(@Param("email") String email);

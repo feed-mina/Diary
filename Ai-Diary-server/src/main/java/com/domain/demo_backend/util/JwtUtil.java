@@ -1,10 +1,10 @@
 package com.domain.demo_backend.util;
 
-import com.domain.demo_backend.mapper.UserMapper;
 import com.domain.demo_backend.token.domain.RefreshToken;
 import com.domain.demo_backend.token.domain.RefreshTokenRepository;
 import com.domain.demo_backend.token.domain.TokenResponse;
 import com.domain.demo_backend.user.domain.User;
+import com.domain.demo_backend.user.domain.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -49,9 +49,9 @@ public class JwtUtil {
     // Refresh Token: 7일
     private static final long REFRESH_TOKEN_VALIDITY = 1000L * 60 * 60 * 24 * 7; // 7일
 
-    private final UserMapper userMapper;
-    public JwtUtil(UserMapper userMapper,RefreshTokenRepository refreshTokenRepository) {
-        this.userMapper = userMapper;
+    private final UserRepository userRepository;
+    public JwtUtil(UserRepository userRepository, RefreshTokenRepository refreshTokenRepository) {
+        this.userRepository = userRepository;
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
@@ -93,7 +93,8 @@ public class JwtUtil {
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
 
-        User user = userMapper.findByUserEmail(email); // 꼭 이 시점에 조회해야 userSqno 나옴!
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("해당 이메일을 가진 사용자를 찾을 수 없습니다."));
         refreshTokenRepository.save(new RefreshToken(
                 user.getUserSqno(), //  꼭 넣어줘야 해!
                 email,

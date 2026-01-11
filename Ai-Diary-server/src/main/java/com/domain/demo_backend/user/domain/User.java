@@ -1,5 +1,6 @@
 package com.domain.demo_backend.user.domain;
 
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,33 +9,66 @@ import lombok.Setter;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 
-// 사용자 정보와 관련된 =도메인 클래스, Builder 패턴사용해 객체 생성, username, password, role 필드 포함
-
-@Setter
+@Entity
+@Table(name = "users") // DB의 user 테이블과 매핑
 @Getter
+@Setter
 @NoArgsConstructor
 public class User {
-    private BigInteger userSqno;         // user_sqno
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // PostgreSQL의 SERIAL 자동생성
+    @Column(name = "user_sqno")
+    private Long userSqno;         // user_sqno
+
+    @Column(name = "user_id", length = 50)
     private String userId;              // user_id
+
     private String password;            // password
-    private String hashedPassword;      // hashed_password
+
+    @Column(name = "hashed_password")
+    private String hashedPassword;
+
     private String role;                // role
     private String username;            // username
     private String phone;               // phone
     private String email;               // email
+
+    @Transient // DB에는 저장하지 않은 필드
     private String repassword;          // repassword
+
     private String nickname;
-    private String delYn; // 추가된 탈퇴 여부 컬럼
 
-    private String verifyYn; // 'N', 'Y'
-    private String socialType; // 'K'
-    private String verificationCode; //  인증번호 6숫자
+    @Column(name = "del_yn")
+    private String delYn = "N"; // 기본값 설정
 
+    @Column(name = "verify_yn")
+    private String verifyYn = "N";
+
+    @Column(name = "social_type")
+    private String socialType;
+
+    @Column(name = "verification_code")
+    private String verificationCode;
+
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Column(name = "withdraw_at")
     private LocalDateTime withdrawAt;
 
+    // DB업데이트 시 SQL을 직접 지정하고 싶을때 Repository에서 사용
+    @Column(name="verification_expired_at")
+    private LocalDateTime verificationExpiredAt;
+
+
+    @Column(name = "sleep_using_type")
     private String sleepUsingType;
+
+    @Column(name = "drug_using_type")
     private String drugUsingType;
 
     @Builder
@@ -57,4 +91,10 @@ public class User {
         this.drugUsingType = drugUsingType;
     }
 
+    // JPA가 insert 하기 전 자동으로 시간을 넣어주는 기능
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
 }

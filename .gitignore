@@ -1,0 +1,28 @@
+# 환경 설정
+.env
+.env.*
+.env*
+*.env.*
+
+application-local.properties
+application-ec2.properties
+application-secrets.properties
+
+# 로그
+*.log
+log.txt
+
+# IDE
+.idea/
+*.iml
+
+dist/*
+
+demo_spring_Vue/Ai-Diary-vue/target
+demo_spring_Vue/Ai-Diary-vue/out
+demo_spring_Vue/Ai-Diary-vue/node_modules/
+demo_spring_Vue/Ai-Diary-vue/dist/
+pronounce-api/.env
+pronounce-api/venv311
+# 구글 서비스 계정 비밀키
+pronounce-api/*.json

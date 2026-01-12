@@ -65,34 +65,34 @@ public class DiaryRequest {
     private String drugLunch;
     private String drugDinner;
 
-    public Diary toDiary() {
-        String selectedTimesJson = "";
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            selectedTimesJson = objectMapper.writeValueAsString(this.selectedTimes);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return Diary.builder()
-                .diaryId(this.diaryId)
-                .userSqno(this.userSqno)
-                .userId(this.userId)
-                .delYn(this.delYn)
-                .email(this.email)
-                .title(this.title)
-                .content(this.content)
-                .tag1(this.tag1)
-                .tag2(this.tag2)
-                .tag3(this.tag3)
-                .diaryStatus(this.diaryStatus)
-                .author(this.author)
-                .emotion(this.emotion)
-                .diaryType(this.diaryType)
-                .selectedTimes(selectedTimesJson)
-                .drugMorning(this.drugMorning)
-                .drugLunch(this.drugLunch)
-                .drugDinner(this.drugDinner)
-                .build();
-    }
+//    public Diary toDiary() {
+//        String selectedTimesJson = "";
+//        try {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            selectedTimesJson = objectMapper.writeValueAsString(this.selectedTimes);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+//        return Diary.builder()
+//                .diaryId(this.diaryId)
+//                .userSqno(this.userSqno)
+//                .userId(this.userId)
+//                .delYn(this.delYn)
+//                .email(this.email)
+//                .title(this.title)
+//                .content(this.content)
+//                .tag1(this.tag1)
+//                .tag2(this.tag2)
+//                .tag3(this.tag3)
+//                .diaryStatus(this.diaryStatus)
+//                .author(this.author)
+//                .emotion(this.emotion)
+//                .diaryType(this.diaryType)
+//                .selectedTimes(selectedTimesJson)
+//                .drugMorning(this.drugMorning)
+//                .drugLunch(this.drugLunch)
+//                .drugDinner(this.drugDinner)
+//                .build();
+//    }
 
 }

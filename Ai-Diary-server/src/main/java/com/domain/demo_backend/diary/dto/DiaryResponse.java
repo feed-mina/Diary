@@ -54,21 +54,21 @@ public class DiaryResponse {
     }
 
 
-    public Diary toDiary() {
-        return Diary.builder()
-                .userSqno(this.userSqno)
-                .userId(this.userId)
-                .title(this.title)
-                .content(this.content)
-                .tag1(this.tag1)
-                .tag2(this.tag2)
-                .tag3(this.tag3)
-                .diaryStatus(this.diaryStatus)
-                .author(this.author)
-                .emotion(this.emotion)
-                .regDt(this.regDt)
-                .build();
-    }
+//    public Diary toDiary() {
+//        return Diary.builder()
+//                .userSqno(this.userSqno)
+//                .userId(this.userId)
+//                .title(this.title)
+//                .content(this.content)
+//                .tag1(this.tag1)
+//                .tag2(this.tag2)
+//                .tag3(this.tag3)
+//                .diaryStatus(this.diaryStatus)
+//                .author(this.author)
+//                .emotion(this.emotion)
+//                .regDt(this.regDt)
+//                .build();
+//    }
 
 
 }

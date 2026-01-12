@@ -4,6 +4,7 @@ import com.domain.demo_backend.diary.domain.Diary;
 import com.domain.demo_backend.diary.domain.DiaryRepository;
 import com.domain.demo_backend.diary.dto.DiaryRequest;
 import com.domain.demo_backend.diary.dto.DiaryResponse;
+import com.domain.demo_backend.user.domain.User;
 import com.domain.demo_backend.user.domain.UserRepository;
 import com.domain.demo_backend.util.CustomUserDetails;
 import com.domain.demo_backend.util.JwtUtil;
@@ -139,7 +140,6 @@ public class DiaryService {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
         System.out.println("@@@diaryRequest-다이어리서비스: " + diaryRequest);
-        System.out.println("@@@diaryRequest.toDiary()-다이어리서비스: " + diaryRequest.toDiary());
         String email = userDetails.getUsername();
         HttpServletRequest request;
         ObjectMapper objectMapper = new ObjectMapper();
@@ -150,8 +150,12 @@ public class DiaryService {
             e.printStackTrace(); // 또는 로깅 처리
         }
 
+        // 1. 먼저 DB에서 유저를 찾는다.
+        User user = userRepository.findByUserSqno(diaryRequest.getUserSqno()).orElseThrow(()-> new IllegalArgumentException("존재하지 않은 사용자입니다."));
+
+        // 2.빌더를 사용해 다이어리를 만든다
         Diary diary = Diary.builder()
-                .userSqno(diaryRequest.getUserSqno())
+                .user(user) // userSqno 대신 객체 자체를 넣어준다.
                 .title(diaryRequest.getTitle() != null ? diaryRequest.getTitle() : "Untitled")
                 .author(diaryRequest.getAuthor() != null ? diaryRequest.getAuthor() : "Undefined")
                 .userId(diaryRequest.getUserId() != null ? diaryRequest.getUserId() : "Undefined")

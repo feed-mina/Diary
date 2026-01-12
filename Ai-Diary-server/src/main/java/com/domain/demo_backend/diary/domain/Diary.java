@@ -1,5 +1,6 @@
 package com.domain.demo_backend.diary.domain;
 
+import com.domain.demo_backend.user.domain.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,6 +15,8 @@ import java.util.Map;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor // 빌더를 위해 추가
+@Builder // 클래스 위에 붙으면 모든 빌드에 대해 빌더가 생긴다.
 public class Diary {
 
     @Id
@@ -21,12 +24,12 @@ public class Diary {
     @Column(name = "diary_id")
     private Long diaryId;
 
-    @Column(name="user_sqno")
-    private Long userSqno;
-
     private String title;
     private String content;
 
+    @ManyToOne // 사용자와 연결이 있나?
+    @JoinColumn(name="user_sqno")
+    private User user;
 //    @JsonProperty("tags")
 //    private Map<String, String> tags;
 
@@ -93,64 +96,9 @@ public class Diary {
     @Column(name="drug_dinner")
     private String drugDinner;
 
-    public Diary toDiary() {
-        return Diary.builder()
-                .userSqno(this.userSqno)
-                .userId(this.userId)
-                .email(this.email)
-                .title(this.title)
-                .content(this.content)
-                .tag1(this.tag1)
-                .tag2(this.tag2)
-                .tag3(this.tag3)
-                .diaryStatus(this.diaryStatus)
-                .delYn(this.delYn)
-                .frstRegIp(this.frstRegIp)
-                .frstRgstUspsSqno(this.frstRgstUspsSqno)
-                .regDt(this.regDt)
-                .author(this.author)
-                .emotion(this.emotion)
-                .diaryType(this.diaryType)
-                .selectedTimes(this.selectedTimes)
-                .drugMorning(this.drugMorning)
-                .drugLunch(this.drugLunch)
-                .drugDinner(this.drugDinner)
-                .build();
-    }
-
-    @Builder
-    public Diary(Long diaryId, String title, String content,  String tag1, String tag2, String tag3, String date, String userId, String email,String username, Long userSqno, String sbsceDt, String lastUpdtDt, String roleCd, String roleNm, LocalDateTime regDt, LocalDateTime updtDt, String diaryStatus, String diaryType, String delYn, LocalDateTime delDt, LocalDateTime frstRegDt, String frstRegIp, String lastUpdtIp, BigInteger frstRgstUspsSqno, BigInteger lastUpdtUspsSqno, String author, Integer emotion, String selectedTimes, String drugMorning, String drugLunch, String drugDinner) {
-        this.diaryId = diaryId;
-        this.title = title;
-        this.content = content;
-//        this.tags = tags;
-        this.tag1 = tag1;
-        this.tag2 = tag2;
-        this.tag3 = tag3;
-        this.date = date;
-        this.userId = userId;
-        this.email = email;
-        this.username = username;
-        this.userSqno = userSqno;
-        this.sbsceDt = sbsceDt;
-        this.lastUpdtDt = lastUpdtDt;
-        this.diaryStatus = diaryStatus;
-        this.delYn = delYn;
-        this.frstRgstUspsSqno = frstRgstUspsSqno;
-        this.frstRegIp = frstRegIp;
-        this.regDt = regDt;
-        this.author = author;
-        this.emotion = emotion;
-        this.selectedTimes = selectedTimes;
-        this.drugMorning = drugMorning;
-        this.drugLunch = drugLunch;
-        this.drugDinner = drugDinner;
-    }
-
     @PrePersist
     public void prePersist(){
         this.regDt = LocalDateTime.now();
         this.updtDt = LocalDateTime.now();
     }
-
 }

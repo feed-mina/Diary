@@ -2,9 +2,10 @@ package com.domain.demo_backend.user.domain;
 
 import jakarta.validation.constraints.Email;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 // 여기서 JPA가 쿼리를 만든다 !
     Optional<User> findByEmail(String email);

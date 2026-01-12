@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -58,7 +61,42 @@ public class DiaryRepositoryTest {
         assertThat(savedDiary.getUser().getEmail()).isEqualTo("test@test.com");
 
         System.out.println("테스트 성공! 생성된 다이어리 ID: " + savedDiary.getDiaryId());
+    }
 
+    @Test
+    @DisplayName("다이어리 페이징 및 최신순 정렬 테스트")
+    public void diary_paging_test(){
+        // 1. Given :사용자 준비
+        User user = User.builder()
+                .email("paging@test.com")
+                .username("페이징민아")
+                .build();
+        userRepository.save(user);
+
+        // 2. Given : 다이어리 3개 저장(제목에 번호를 붙어서 구분)
+        for(int i = 1; i <= 3; i++){
+            diaryRepository.save(Diary.builder()
+                    .user(user)
+                    .title("일기 " + i)
+                    .content("내용 " + i)
+                    .delYn("N")
+                    .build());
+        }
+
+        // 3. When : 첫번째 페이지에서 2개인 조회 요청 (0번 페이지, 크기 2)
+        Pageable pageable = PageRequest.of(0, 2);
+        Page<Diary> diaryPage = diaryRepository.findByDelYnOrderByRegDtDesc("N", pageable);
+
+        // 4   Then : 검증
+        // 1) 한 페이지 크기가 2인지 확인
+        assertThat(diaryPage.getSize()).isEqualTo(2);
+        // 2) 전체 데이터 개수가 3개인지 확인 (Page 객체가 계산)
+        assertThat(diaryPage.getTotalElements()).isEqualTo(3);
+        // 3) 최신순(DESC) 정렬이므로 가장 나중에 저장한 "일기 3"이 첫번째 인지 확인
+        assertThat(diaryPage.getContent().get(0).getTitle()).isEqualTo("일기 3");
+
+        System.out.println("현재 페이지 데이터 수 :" + diaryPage.getNumberOfElements());
+        System.out.println("ㅎ전체 페이지 수 :" + diaryPage.getTotalPages());
 
     }
 }

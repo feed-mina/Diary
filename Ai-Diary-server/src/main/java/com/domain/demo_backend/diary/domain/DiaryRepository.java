@@ -1,6 +1,8 @@
 package com.domain.demo_backend.diary.domain;
 
 import com.domain.demo_backend.diary.dto.DiaryResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,4 +28,7 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
     Optional<Diary> findByDiaryIdAndUserIdAndDelYn(Long diaryId, String userId, String delYn);
     // 3. 개수 세기
     int countByUserId(String userId);
+
+    // 4. 삭제되지 않은 일기 목록을 최신순으로 페이징하여 가져오기
+    Page<Diary> findByDelYnOrderByRegDtDesc(String delYn, Pageable pageable);
 }

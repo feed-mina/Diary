@@ -10,6 +10,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
     Optional<User> findByPhone(String phone);
     Optional<User> findByUsername(String username);
+    Optional<User> findByUserSqno(Long userSqno);
 
     // 2026.01.11 update 관련ㄹ 메서드들은 더티 체킹을 사용한다.
     // 2026.01.11 insert 대신 기본 제공되는 save()를 사용하면 된다.

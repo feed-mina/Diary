@@ -1,10 +1,10 @@
 package com.domain.demo_backend.service;
 
 import com.domain.demo_backend.diary.domain.Diary;
+import com.domain.demo_backend.diary.domain.DiaryRepository;
 import com.domain.demo_backend.diary.dto.DiaryRequest;
 import com.domain.demo_backend.diary.dto.DiaryResponse;
-import com.domain.demo_backend.mapper.DiaryMapper;
-import com.domain.demo_backend.mapper.UserMapper;
+import com.domain.demo_backend.user.domain.UserRepository;
 import com.domain.demo_backend.util.CustomUserDetails;
 import com.domain.demo_backend.util.JwtUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,15 +30,15 @@ import java.util.stream.Collectors;
 @Service
 public class DiaryService {
     @Autowired
-    private DiaryMapper diaryMapper;
-    private UserMapper userMapper;
+    private DiaryRepository diaryRepository;
+    private UserRepository userRepository;
 
     private final JwtUtil jwtUtil;
 
 
-    public DiaryService(DiaryMapper diaryMapper, UserMapper userMapper,JwtUtil jwtUtil) {
-        this.diaryMapper = diaryMapper;
-        this.userMapper = userMapper;
+    public DiaryService(DiaryRepository diaryRepository, UserRepository userRepository,JwtUtil jwtUtil) {
+        this.diaryRepository = diaryRepository;
+        this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
     }
 
@@ -46,16 +46,20 @@ public class DiaryService {
         System.out.println("@@@다이어리 서비스 selectDiaryList진입");
 //        PageHelper.startPage(pageNo, pageSize);
 
-        int totalCount = diaryMapper.countDiaryList(userId); //  이 메서드 필요
+        int totalCount = diaryRepository.countByUserId(userId);
 
-
-        List<DiaryResponse> diaryResponseList;
+        List<Diary> diaries;
         int offset = (pageNo - 1) * pageSize; //  OFFSET 미리 계산
         System.out.println("@@@offset: " + offset);
         try {
            // 일기 목록 가져오기
-            diaryResponseList = diaryMapper.selectDiaryList(userId, pageSize, offset) ;
-            System.out.println("@@@1--diaryResponseList:: " + diaryResponseList);
+//            diaryResponseList = diaryRepository.selectDiaryList(userId, pageSize, offset) ;
+            diaries = diaryRepository.findByDiaryListCustom(userId, pageSize, offset) ;
+//            System.out.println("@@@1--diaries:: " + diaries);
+            // 2. 엔티티 목록을 DTO(DiaryResponse) 목록으로 변환한다.
+            List<DiaryResponse> diaryResponseList = diaries.stream()
+                    .map(this::convertToDto)
+                    .collect(Collectors.toList());
             // PageInfo 객체로 페이징 결과를 반환
             PageInfo<DiaryResponse> pageInfo = new PageInfo<>(diaryResponseList);
             pageInfo.setPageNum(pageNo);
@@ -73,26 +77,35 @@ public class DiaryService {
         System.out.println("@@@@@@findDiaryById 서비스 로직 진입 diaryReq:: " + diaryReq);
 
         System.out.println("@@@findDiaryItemById sql시작" + diaryReq);
-
+        // 1. diaryReq 에서 필요한 값을 꺼내서 변수에 담는다.
+         String userId = diaryReq.getUserId();
+         int pageSize = 10; // 만약 요청이 없다면 임시로 10개
+         int offset = 0; // 첫 페이지부터
 //     return diaryMapper.selectDiaryItem(diaryReq)
-        return diaryMapper.findDiaryItemById(diaryReq.getUserId())
-                .stream() // set을 stream으로 변환
-                .map(this::convertToDto) // DTO 변환 적용
-                .collect(Collectors.toSet());  // 다시 Set으로 변환
+         return diaryRepository.findByDiaryListCustom(userId, pageSize, offset) // 1. List를 받는다
+                 .stream()                                               // 2. 하나씩 꺼낸다 .map(this::convertToDto)
+                 .map(diary -> {
+                     // Diary 엔티티를 DiaryResponse로 바꾸는 과정이 필요
+                     DiaryResponse res = new DiaryResponse();
+                     res.setDiaryId(BigInteger.valueOf(diary.getDiaryId()));
+                     res.setTitle(diary.getTitle());
+                     return res;
+                 }) // 3. 모양을 바꾼다
+                 .collect(Collectors.toSet());
 
     }
 
-    private DiaryResponse convertToDto(DiaryResponse diaryResponse) {
+    private DiaryResponse convertToDto(Diary diary) {
         DiaryResponse dto = new DiaryResponse();
-        dto.setDiaryId(diaryResponse.getDiaryId());
-        dto.setTitle(diaryResponse.getTitle());
-        dto.setContent(diaryResponse.getContent());
-        dto.setRegDt(diaryResponse.getRegDt());
+        dto.setDiaryId(BigInteger.valueOf(diary.getDiaryId()));
+        dto.setTitle(diary.getTitle());
+        dto.setContent(diary.getContent());
+        dto.setRegDt(diary.getRegDt());
         return dto;
     }
 
     @Transactional(readOnly = true)
-    public DiaryResponse viewDiaryItem(DiaryRequest diaryReq) {
+    public Optional<Diary> viewDiaryItem(DiaryRequest diaryReq) {
 
         System.out.println("@@@viewDiaryItem 서비스 로직 진입 diaryReq:: " + diaryReq);
         System.out.println("@@@selectDiaryItem sql시작" + diaryReq);
@@ -104,10 +117,7 @@ public class DiaryService {
         }
         try {
             // 일기 조회
-            DiaryResponse diary = (DiaryResponse) diaryMapper.selectDiaryItem(
-                    diaryId,
-                    userId, 'N'
-            );
+            Optional<Diary> diary= diaryRepository.findByDiaryIdAndUserIdAndDelYn(diaryId, userId,"N");
 
             //  조회된 데이터가 없을 경우 예외 처리 추가
             if (diary == null) {
@@ -131,10 +141,6 @@ public class DiaryService {
         System.out.println("@@@diaryRequest-다이어리서비스: " + diaryRequest);
         System.out.println("@@@diaryRequest.toDiary()-다이어리서비스: " + diaryRequest.toDiary());
         String email = userDetails.getUsername();
-        BigInteger correctUserSqno =  userMapper.findIndexByEmail(email);
-
-
-        System.out.println("@@@ userSqno: " + correctUserSqno);
         HttpServletRequest request;
         ObjectMapper objectMapper = new ObjectMapper();
         String selectedTimesJson = "";
@@ -145,14 +151,11 @@ public class DiaryService {
         }
 
         Diary diary = Diary.builder()
-                .userSqno(diaryRequest.getUserSqno() != null
-                        ? diaryRequest.getUserSqno()
-                        : correctUserSqno.longValue())
+                .userSqno(diaryRequest.getUserSqno())
                 .title(diaryRequest.getTitle() != null ? diaryRequest.getTitle() : "Untitled")
                 .author(diaryRequest.getAuthor() != null ? diaryRequest.getAuthor() : "Undefined")
                 .userId(diaryRequest.getUserId() != null ? diaryRequest.getUserId() : "Undefined")
                 .content(diaryRequest.getContent() != null ? diaryRequest.getContent() : "")
-                .tags(Optional.ofNullable(diaryRequest.getTags()).orElse(new HashMap<>()))
                 .tag1(diaryRequest.getTag1() != null ? diaryRequest.getTag1() : "")
                 .tag2(diaryRequest.getTag2() != null ? diaryRequest.getTag2() : "")
                 .tag3(diaryRequest.getTag3() != null ? diaryRequest.getTag3() : "")
@@ -169,7 +172,8 @@ public class DiaryService {
 
         System.out.println("@@@Diary 객체 생성 값: " + diary);
 
-        diaryMapper.insertDiary(diary);
+//        diaryRepository.insertDiary(diary);
+        diaryRepository.save(diary);
     }
 
 }

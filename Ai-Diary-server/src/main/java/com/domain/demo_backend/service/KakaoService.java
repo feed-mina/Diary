@@ -6,6 +6,7 @@ import com.domain.demo_backend.token.domain.RefreshToken;
 import com.domain.demo_backend.token.domain.RefreshTokenRepository;
 import com.domain.demo_backend.token.domain.TokenResponse;
 import com.domain.demo_backend.user.domain.User;
+import com.domain.demo_backend.user.domain.UserRepository;
 import com.domain.demo_backend.user.dto.KakaoUserInfo;
 import com.domain.demo_backend.util.JwtUtil;
 import com.domain.demo_backend.util.PasswordUtil;
@@ -25,16 +26,18 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
+
 @Service
 public class KakaoService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtUtil jwtUtil;
-    private final UserMapper userMapper;
+    private final UserRepository userRepository;
     private final Logger log = LoggerFactory.getLogger(KakaoService.class);
 
-    public KakaoService(RefreshTokenRepository refreshTokenRepository, JwtUtil jwtUtil, UserMapper userMapper) {
+    public KakaoService(RefreshTokenRepository refreshTokenRepository, JwtUtil jwtUtil, UserRepository userRepository) {
         this.refreshTokenRepository = refreshTokenRepository;
-        this.userMapper = userMapper;
+        this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
     }
 
@@ -118,14 +121,15 @@ public class KakaoService {
         LocalDateTime ldt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         log.info("KAKAOSERVICE-registerKakaoUser 진입 , 이메일이 있는지 확인 : " );
         // DB에서 같은 이메일이 있는지 확인해
-        if(userMapper.findByUserEmail(kakaoUserInfo.getEmail()) != null){
+        if(userRepository.findByEmail(kakaoUserInfo.getEmail()) != null){
             log.info("KAKAOSERVICE-카카오 사용자 이메일: " + kakaoUserInfo.getEmail());
 
             // 이미 존재하는 경우 updated_at 갱신
-            userMapper.updateUpdatedAt(kakaoUserInfo.getEmail());
+//            userRepository.updateUpdatedAt(kakaoUserInfo.getEmail());
 
-            User extiUser = userMapper.findByUserEmail(kakaoUserInfo.getEmail());
-            System.out.println("KAKAOSERVICE-@@@@@@@@@userMapper.findByUSerEmail"+extiUser);
+            Optional<User> extiUser = userRepository.findByEmail(kakaoUserInfo.getEmail());
+            System.out.println("KAKAOSERVICE-@@@@@@@@@useruserRepositorydByUSerEmail"+extiUser);
+
             TokenResponse tokenResponse  =  jwtUtil.generateTokens(
                     kakaoUserInfo.getEmail(),
                     kakaoUserInfo.getHashedPassword(),
@@ -162,7 +166,7 @@ return tokenResponse;
         // DB에 저장 후 자동 생성된 사용자 고유 번호(userSqno)가 있으면
         if(user.getUserSqno() != null) {
             // 사용자 정보를 DB에 저장해
-            userMapper.insertUser(user);
+            userRepository.save(user);
 
             // JWT 토큰을 생성해 반환해
             TokenResponse tokenResponse  =  jwtUtil.generateTokens(user.getEmail(),user.getHashedPassword(), user.getUserId() );
@@ -173,7 +177,7 @@ return tokenResponse;
             log.info("KAKAOSERVICE-user: " + user);
             log.info("KAKAOSERVICE-user Mapper insertUser 시작");
             // 사용자 정보를 DB에 저장해
-            userMapper.insertUser(user);
+            userRepository.save(user);
             // JWT 토큰을 생성해 반환해
             TokenResponse tokenResponse  =  jwtUtil.generateTokens(user.getEmail(),user.getHashedPassword(), user.getUserId() );
             String jwtToken = "Bearer " + tokenResponse.getAccessToken();

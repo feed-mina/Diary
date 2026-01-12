@@ -1,5 +1,6 @@
 package com.domain.demo_backend.controller;
 
+import com.domain.demo_backend.diary.domain.Diary;
 import com.domain.demo_backend.diary.dto.DiaryRequest;
 import com.domain.demo_backend.diary.dto.DiaryResponse;
 import com.domain.demo_backend.helper.UserInfoHelper;
@@ -142,7 +143,7 @@ public class DiaryController {
         try {
             System.out.println("@@@viewDiaryItem 서비스 로직 진입");
 
-            DiaryResponse diaryItem = diaryService.viewDiaryItem(diaryReq);
+            Optional<Diary> diaryItem = diaryService.viewDiaryItem(diaryReq);
             System.out.println("@@@6--selectDiaryList 서비스:: " + diaryItem);
             Map<String, Object> response = new HashMap<>();
             response.put("diaryItem", diaryItem);

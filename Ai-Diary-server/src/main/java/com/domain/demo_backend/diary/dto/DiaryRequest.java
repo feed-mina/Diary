@@ -81,7 +81,6 @@ public class DiaryRequest {
                 .email(this.email)
                 .title(this.title)
                 .content(this.content)
-                .tags(this.tags)
                 .tag1(this.tag1)
                 .tag2(this.tag2)
                 .tag3(this.tag3)

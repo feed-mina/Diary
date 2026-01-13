@@ -4,9 +4,9 @@ import InputField from "./fields/InputField";
 import ButtonField from "./fields/ButtonField";
 import { useState } from "react";
 
-const componentMap = {
-    INPUT: InputField,
-    PASSWORD: InputField, // 패스워드도 입력창 부품 공유
+const componentMap = {INPUT: InputField,
+    TEXT: InputField,
+    PASSWORD: InputField,
     BUTTON: ButtonField,
     SNS_BUTTON: ButtonField,
     LINK_BUTTON: ButtonField
@@ -54,8 +54,13 @@ function DynamicEngine({ metadata }) {
         <div className="main-wrap">
             {metadata.sort((a, b) => a.SORT_ORDER - b.SORT_ORDER).map((item) => {
                 // 데이터를 받아서 그리기 직전에 대문자로 통일하는 방법
-                const Component = componentMap[item.component_type?.toUpperCase()];
-                if (!Component) return null;
+                const typeKey = item.component_type ? item.component_type.toUpperCase() : '';
+                const Component = componentMap[typeKey];
+                // 부품을 못 찾으면 왜 못 찾았는지 콘솔에 찍어보기 (디버깅용)
+                if (!Component) {
+                    console.log("부품 찾기 실패! 타입명:", item.component_type);
+                    return null;
+                }
 
                 const customStyle = item.INLINE_STYLE ? JSON.parse(item.INLINE_STYLE) : {};
 

@@ -9,7 +9,7 @@ function InputField({ id,label, className, style, placeholder, readOnly, isRequi
         <div className="field-container" style={style}>
             {label && <label htmlFor={id}>{label}</label>}
             <input
-                type={id.include('pw') ? 'password' : 'text'}
+                type={id.includes('pw') ? 'password' : 'text'}
                 id={id}
                 name={id} // COMPONENT_ID를 name으로 사용
                 placeholder={placeholder}

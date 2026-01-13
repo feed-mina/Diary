@@ -2,7 +2,9 @@ package com.domain.demo_backend.controller;
 
 import com.domain.demo_backend.ui.domain.UiMetadata;
 import com.domain.demo_backend.ui.domain.UiMetadataRepository;
+import com.domain.demo_backend.util.ApiResponse;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,9 +20,10 @@ public class UiController {
         this.uiMetadataRepository = uiMetadataRepository;
     }
 
-    @GetMapping("/{uiId}")
-    public List<UiMetadata> getUiMetadataList(String uiId){
-        return uiMetadataRepository.findByUiIdOrderBySortOrderAsc(uiId);
+    @GetMapping("/{screenId}")
+    public ApiResponse<List<UiMetadata>> getUiMetadataList(@PathVariable String screenId){
+        List<UiMetadata> list = uiMetadataRepository.findByScreenIdOrderBySortOrderAsc(screenId);
+        return ApiResponse.success(list);
     }
 
 }

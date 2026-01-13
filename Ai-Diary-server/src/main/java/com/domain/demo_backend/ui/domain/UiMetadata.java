@@ -19,6 +19,9 @@ public class UiMetadata {
     @Column(name = "ui_id", nullable = false)
     private Long uiId;
 
+    @Column(name = "screen_id", nullable = false, length = 50)
+    private String screenId;
+
     @Column(name = "component_id", nullable = false, length = 50)
     private String componentId;
 
@@ -44,6 +47,19 @@ public class UiMetadata {
 
     @Column(name="created_at" , updatable = false)
     private LocalDateTime createdAt;
+
+
+    @Column(name = "css_class", length = 100)
+    private String cssClass;
+
+    @Column(name = "inline_style")
+    private String inlineStyle;
+
+    @Column(name = "action_type", length = 50)
+    private String actionType;
+
+    @Column(name = "action_url")
+    private String actionUrl;
 
     @PrePersist
     public void prePersist(){

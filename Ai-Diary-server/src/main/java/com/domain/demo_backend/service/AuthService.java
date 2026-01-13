@@ -64,22 +64,17 @@ public class AuthService {
         if (!"Y".equals(user.getVerificationCode())) {
             throw new RuntimeException("이메일 인증이 필요합니다.");
         }
+
+        // 2. 비밀번호 검증
+
         if (!user.getHashedPassword().equals(PasswordUtil.sha256(loginRequest.getPassword()))) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
-        // 디버깅
-        log.info("  250527_DB에서 가져온 User: " + user);
-        log.info("  250527_DB 해시값: " + user.getHashedPassword());
-        log.info("  250527_입력된 해시값: " + PasswordUtil.sha256(loginRequest.getPassword()));
-
-
-        log.info("  250527_JWT 성공");
         // 비밀번호를 포함하지 않은 사용자 정보를 JWT에 포함 users의 값은 전부 받아온다.
 
         log.info("updated_at 갱신 시작");
         user.setUpdatedAt(LocalDateTime.now());
         log.info("updated_at 갱신 완료");
-
 
         // 5. JWT 발급
         return jwtUtil.generateTokens(
@@ -165,19 +160,10 @@ public class AuthService {
 
 
     public String sendVerificationCode(String email) throws MessagingException {
-
-        log.info("  250527_@@@@@@@@@@@@@@@@@@@@@@@@");
-        log.info("  250527_sendVerificationCode");
-        log.info("  250527_email", email);
-
         //랜덤 인등코드 생성
         String verificationCode = generateRendomCode();
-
-        log.info("  250527_verificationCode", verificationCode);
         // DB에 인증코드, 만료시간 저장
 //        userRepository.updateVerificationCode(email, verificationCode);
-
-
         // 이메일 작성 및 전송
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
@@ -210,7 +196,6 @@ public class AuthService {
     // 회원가입 페이지 이후 인증번호 코드 페이지
     @Transactional
     public boolean verifyCode(String email, String code){
-        log.info("  250527_email: ", email);
         User user = userRepository.findByEmail(email).orElseThrow(()->new IllegalArgumentException("사용자가 없습니다"));
 
         if (user == null) {
@@ -267,7 +252,6 @@ public class AuthService {
     public void nonMember(RegisterRequest registerRequest) {
         Date date = new Date();
         LocalDateTime ldt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        log.info("  250527_@@@@@회원탈퇴 서비스 진입 email: " + registerRequest.getEmail());
         User existingUser = userRepository.findByEmail(registerRequest.getEmail()).orElseThrow(()-> new IllegalArgumentException("사용자가 없습니다"));
         if (existingUser == null) {
             log.info("  250527_회원탈퇴 실패: 해당 사용자가 존재하지 않습니다.");

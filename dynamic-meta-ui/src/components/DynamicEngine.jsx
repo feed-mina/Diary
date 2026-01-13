@@ -53,21 +53,22 @@ function DynamicEngine({ metadata }) {
     return (
         <div className="main-wrap">
             {metadata.sort((a, b) => a.SORT_ORDER - b.SORT_ORDER).map((item) => {
-                const Component = componentMap[item.COMPONENT_TYPE];
+                // 데이터를 받아서 그리기 직전에 대문자로 통일하는 방법
+                const Component = componentMap[item.component_type?.toUpperCase()];
                 if (!Component) return null;
 
                 const customStyle = item.INLINE_STYLE ? JSON.parse(item.INLINE_STYLE) : {};
 
                 return (
                     <Component
-                        key={item.COMPONENT_ID}
-                        id={item.COMPONENT_ID}
-                        label={item.LABEL_TEXT}
-                        className={item.CSS_CLASS}
+                        key={item.component_id}
+                        id={item.component_id}
+                        label={item.label_text}
+                        className={item.css_class || "default-style"}
                         style={customStyle}
-                        placeholder={item.PLACEHOLDER}
-                        readOnly={item.IS_READONLY}
-                        onChange={(e) => onChange(item.COMPONENT_ID, e.target.value)}
+                        placeholder={item.placeholder}
+                        readOnly={item.is_required}
+                        onChange={(e) => onChange(item.component_id,e.target.value)}
                         onClick={() => onAction(item)}
                     />
                 );

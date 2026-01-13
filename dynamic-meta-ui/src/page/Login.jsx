@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import DynamicEngine from "./components/DynamicEngine";
+import DynamicEngine from "../components/DynamicEngine";
 
 function Login() {
     const [metadata, setMetadata] = useState([]); // 설계도 저장
@@ -21,7 +21,16 @@ function Login() {
     // 3. 버튼 눌렀을 때 DB의 action_type을 보고 행동하는 기능
     const handleAction = (item) => {
         if (item.ACTION_TYPE === "SUBMIT") {
-            console.log("로그인 시도!", formData); // 여기서 AuthService.login 호출
+            try{
+                // AuthService의 login API 호출
+                const response = axios.post("/api/auth/login", formData);
+                console.log("로그인 시도!", formData); // 여기서 AuthService.login 호출
+                // 로그인 성공 시 토큰 저장 및 이동
+                console.log("로그인 성공!",response.data);
+            } catch (error){
+                // "존재하지 않는 계정입니다" 등의 에러 메시지 처리
+                console.log("로그인 실패:", error.response.data.message);
+            }
         } else if (item.ACTION_TYPE === "LINK") {
             window.location.href = item.ACTION_URL;
         }
@@ -29,7 +38,6 @@ function Login() {
 
     return (
         <div>
-            <h1>로그인 페이지</h1>
             <DynamicEngine
                 metadata={metadata}
                 onChange={handleChange}

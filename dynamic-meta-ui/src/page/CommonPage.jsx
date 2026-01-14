@@ -61,7 +61,13 @@ function CommonPage() {
                 console.log("서버 응답:", response.data);
 
                 // 3. JWT 토큰 저장
-                localStorage.setItem("accessToken", response.data.data.accessToken);
+                if (response.data.accessToken) {
+                    localStorage.setItem("accessToken", response.data.accessToken);
+                    localStorage.setItem("refreshToken", response.data.refreshToken); // 리프레시 토큰도 함께 저장
+
+                    console.log("토큰 저장 완료! 메인 페이지로 이동합니다.");
+                    window.location.href = `/view/MAIN_PAGE`;
+                }
 
                 window.location.href = `/view/MAIN_PAGE`;
             } catch(error){

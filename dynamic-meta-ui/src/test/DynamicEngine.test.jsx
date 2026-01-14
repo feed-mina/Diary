@@ -9,12 +9,20 @@ test('필수 입력값이 없으면 경고 메시지가 출력되는지 테스�
         sort_order: 1,
         action_type: 'SUBMIT'
     }];
-
-    render(<DynamicEngine metadata={mockData} />);
-
-    // 버튼 찾기 (정규표현식을 쓰면 대소문자나 공백에 조금 더 유연합니다)
+// 가짜 함수(Mock function)를 만듭니다.
+    const mockOnAction = jest.fn();
+    const mockOnChange = jest.fn();
     const loginBtn = screen.getByText(/로그인/);
     fireEvent.click(loginBtn);
+    render(
+        <DynamicEngine
+            metadata={mockData}
+            onAction={mockOnAction}
+            onChange={mockOnChange}
+        />
+    );
+    // render(<DynamicEngine metadata={mockData} />);
+    // 버튼 찾기 (정규표현식을 쓰면 대소문자나 공백에 조금 더 유연합니다)
 });
 test('DB의 CSS 클래스가 버튼에 잘 입혀지는지 확인', () => {
     const mockData = [{

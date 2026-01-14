@@ -5,16 +5,20 @@
  describe('동적 UI 시스템 로그인 테스트', () => {
 
      it('로그인 페이지가 설계도대로 그려지고 로그인이 성공해야 한다', () => {
-
+        // [추가] 백엔드 로그인 API 주소를 감시합니다.
+         // 스프링부트의 실제 로그인 경로(예: /api/login)를 입력하세요.
+         cy.intercept('POST', '/api/auth/login').as('loginRequest');
          // 1. 로그인 페이지 접속
          cy.visit('http://localhost:3000/view/LOGIN_PAGE');
 
          // 2. 화면이 로딩될때까지 기다림
-         cy.contains('설계도를 읽어오는 중...').shoud('not.exist');
+         cy.contains('설계도를 읽어오는 중...').should('not.exist');
 
          // 3. 동적으로 그려진 입력창이 존재하는지 확인 (DB의 componentId기준)
-         cy.get('input#user_email').should('be.visible');
-         cy.get('input#user_pw').should('be.visible');
+         cy.get('input#user_email').type('test@test.com');
+         cy.get('input#user_pw').type('password123');
+         // cy.get('input#user_email').should('be.visible');
+         // cy.get('input#user_pw').should('be.visible');
 
          // 4. 아이디와 비밀번호 입력
          cy.get('input#user_email').type('test@test.com');
@@ -23,13 +27,20 @@
          // 5. 로그인 버튼 클릭
          cy.contains('로그인').click();
 
+         cy.wait('@loginRequest');
          // 6. 백엔드 응답 후 메인 페이지로 이동했는지 확인
          cy.url().should('include', '/view/MAIN_PAGE');
 
          // 7. 로컬스토리지에 토큰이 잘 저장되었는지 확인
          cy.window().then((win) => {
              const token = win.localStorage.getItem('accessToken');
-             expect(token).to.exit;
+             expect(token).to.exist; // 토큰이 존재한다
+
+             // JWT 특유의 구조 (점 두개로 구분된 세 파트)를 가졌는지 확인
+             expect(token.split('.')).to.have.length(3);
+
+             console.log("확인된 토큰:", token);
+
          });
      });
 

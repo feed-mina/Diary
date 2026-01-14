@@ -28,6 +28,7 @@ function CommonPage() {
     },[screenId]) // screenId가 바뀔때마다 다시 실행된다
 
     const handleChange = (id, value) => {
+        console.log("========handleChange============");
         setFormData(prev => ({
             ...prev,
             [id]: value
@@ -35,10 +36,13 @@ function CommonPage() {
     };
 
     const handleAction = async (item) => {
-        const { action_type, action_url , component_id } = item;
+        const { actionType, actionUrl , componentId } = item;
+        console.log("========handleAction============");
+        console.log("실제 actionType:", actionType);
+        console.log("item: ", item);
 
         // 1. 제출(SUBMIT) 시 필수 입력 체크
-        if (action_type === "SUBMIT") {
+        if (actionType === "SUBMIT") {
             const requiredFields = metadata.filter(meta => meta.isRequired);
             // 2. 실제 서버로 데이터 보내기
 
@@ -51,9 +55,9 @@ function CommonPage() {
             }
             // 2. 체크 통과 시 서버 전송
             try{
-                console.log("서버 주소로 데이터 보내는 중:", action_url);
+                console.log("서버 주소로 데이터 보내는 중:", actionUrl);
 
-                const response = await axios.post(action_url, formData);
+                const response = await axios.post(actionUrl, formData);
                 console.log("서버 응답:", response.data);
 
                 // 3. JWT 토큰 저장
@@ -67,12 +71,12 @@ function CommonPage() {
             }
 
             // 검사 통과 후 실제 전송 로직
-            console.log("액션 타입: ", action_type, " 서버로 보낼 데이터: ", formData);
+            console.log("액션 타입: ", actionType, " 서버로 보낼 데이터: ", formData);
         }
 
         // 2. 이동(LINK) 처리
-        else if (action_type === "LINK") {
-            console.log(`${action_url} 주소로 이동`);
+        else if (actionType === "LINK") {
+            console.log(`${actionUrl} 주소로 이동`);
             window.location.href = item.actionUrl;
         }
     }; // onAction 함수는 여기서 끝납니다.

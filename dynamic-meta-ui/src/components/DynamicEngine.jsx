@@ -30,7 +30,7 @@ function DynamicEngine({ metadata , onChange, onAction}) {
                 const customStyle = (item.inlineStyle && typeof item.inlineStyle === 'string')
                     ? JSON.parse(item.inlineStyle)
                     : (item.inlineStyle || {}); // 문자열일 때만 파싱하고, 아니면 그대로 사용하거나 빈 객체 전달
-                    console.log(customStyle);
+                    // console.log(customStyle);
                 return (
                     <Component
                         key={item.componentId}

@@ -1,4 +1,4 @@
-package com.domain.demo_backend.query.domain;
+package com.domain.demo_backend.query.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.SelectProvider;

@@ -3,19 +3,30 @@
 import InputField from "./fields/InputField";
 import ButtonField from "./fields/ButtonField";
 import { useState } from "react";
+import ImageField from "./fields/ImageField";
+import TextField from "./fields/TextField";
 
 const componentMap = {INPUT: InputField,
-    TEXT: InputField,
+    TEXT: TextField,
     PASSWORD: InputField,
     BUTTON: ButtonField,
     SNS_BUTTON: ButtonField,
-    LINK_BUTTON: ButtonField
+    LINK_BUTTON: ButtonField,
+    IMAGE: ImageField
 };
 
 function DynamicEngine({ metadata , onChange, onAction}) {
 
     return (
-        <div className="main-wrap">
+        <div className="main-wrap"
+             style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
+            textAlign: "center",
+            gap: "10px"}}>
             {metadata.sort((a, b) => a.sortOrder - b.sortOrder).map((item) => {
                 // 데이터를 받아서 그리기 직전에 대문자로 통일하는 방법
                 const typeKey = item.componentType ? item.componentType.toUpperCase() : '';

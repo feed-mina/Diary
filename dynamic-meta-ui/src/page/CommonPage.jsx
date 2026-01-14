@@ -8,6 +8,18 @@ function CommonPage() {
     const [formData, setFormData] = useState({});
     const [loading, setLoading] = useState(true); // 로딩 상태
 
+    const isLoggedIn = !!localStorage.getItem("accessToken");
+    // 메타데이터 필터링
+    const filtedMetadata = metadata.filter(item => {
+        if (item.componentId === "login_btn"){
+            return !isLoggedIn;
+        }
+        if(item.componentId === "go_diary_btn"){
+            return isLoggedIn;
+        }
+        return true;
+    });
+
     useEffect(() => {
         setLoading(true);
         // 주소창이 바뀔때마다 해당 ID의 설계도를 요청한다
@@ -40,6 +52,7 @@ function CommonPage() {
         console.log("========handleAction============");
         console.log("실제 actionType:", actionType);
         console.log("item: ", item);
+
 
         // 1. 제출(SUBMIT) 시 필수 입력 체크
         if (actionType === "SUBMIT") {
@@ -92,7 +105,7 @@ function CommonPage() {
     return (
         <div className={`page-wrap ${screenId}`}>
             <DynamicEngine
-                metadata={metadata}
+                metadata={filtedMetadata}
                 onChange={handleChange}
                 onAction={handleAction}
             />

@@ -26,10 +26,18 @@ public class Diary {
 
     private String title;
     private String content;
-
-    @ManyToOne // 사용자와 연결이 있나?
+    // 문자열 userId 필드
+    private String userId;
+    // 실제 연관관계 필드(DB의  user_sqno 칼럼을 실제로 관리함)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_sqno")
     private User user;
+
+    // 숫자 PK 값만 따로 확인하고 싶은 경우
+    // insertable=false, updatable=false를 넣어야 중복 매핑 에러가 사라진다.
+    @Column(name="user_sqno", insertable=false, updatable=false)
+    private Long userSqno;
+
 //    @JsonProperty("tags")
 //    private Map<String, String> tags;
 
@@ -37,7 +45,6 @@ public class Diary {
     private String tag2;
     private String tag3;
     private String date;
-    private String userId;
     private String email;
     private String username;
     private String sbsceDt;

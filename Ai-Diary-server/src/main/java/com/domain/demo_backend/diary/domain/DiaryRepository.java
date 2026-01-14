@@ -15,7 +15,13 @@ import java.util.Optional;
 
 @Repository
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
+    // 특정 사용자의 삭제가 되지 않은 일기 개수 세기 (User 객체 기준)
+    int countByUserAndDelYn(User user, String delYn);
 
+    // 특정 사용자의 일기 목록을 페이징하여 가져오기 (Spring Data JPA 명명 규칙 활용)
+    @Query("SELECT d FROM Diary d WHERE d.user.userSqno = :userSqno AND d.delYn = :delYn ORDER BY d.regDt DESC")
+    List<Diary> findMemberDiaryList(@Param("userSqno") Long userSqno, @Param("delYn") String delYn, Pageable pageable);
+    // 2. 특정 사용자의 일기 목록을 페이징하여 가져오기
 
     // 1, 단순 목록 조회 (페이징 없이)
 //    List<DiaryResponse> findByUserId(String userId, int pageSize, int offset);
@@ -27,6 +33,7 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
 //    Collection<Object> findDiaryItemById(String userId);
 
     Optional<Diary> findByDiaryIdAndUserIdAndDelYn(Long diaryId, String userId, String delYn);
+
     // 3. 개수 세기
     int countByUserId(String userId);
 
@@ -34,4 +41,16 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
     Page<Diary> findByDelYnOrderByRegDtDesc(String delYn, Pageable pageable);
 
     Page<Diary> findByUserAndDelYnOrderByRegDtDesc(User user, String delYn, Pageable pageable);
+
+
+    // User 객체 내부의 userSqno(또는 id)를 참조하도록 메서드명을 변경합니다.
+// User 엔티티 내부의 PK 필드명이 id라면 findByUserId, userSqno라면 findByUserUserSqno가 됩니다.
+    List<Diary> findByUser_UserSqnoOrderByRegDtDesc(Long userSqno);
+
+    // User 객체 내부의 userSqno(또는 id)를 참조하도록 메서드명을 변경합니다.
+// User 엔티티 내부의 PK 필드명이 id라면 findByUserId, userSqno라면 findByUserUserSqno가 됩니다.
+//    List<Diary> findByUser_UserSqnoOrderByRegDtDesc(Long userSqno);
+
+    // 엔티티의 private String userId 필드와 타입을 맞춥니다.
+    List<Diary> findByUserIdOrderByRegDtDesc(String userId);
 }

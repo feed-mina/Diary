@@ -4,8 +4,10 @@ import { useParams } from "react-router-dom";
 import DynamicEngine from "../components/DynamicEngine";
 function CommonPage() {
     const { screenId } = useParams();
-    const [metadata, setMetadata] = useState([]);
+    const [metadata, setMetadata] = useState([]); // 화면 설계떠
     const [formData, setFormData] = useState({});
+
+    const [diaryList, setDiaryList] = useState([]); // 실제 일기 데이터
     const [loading, setLoading] = useState(true); // 로딩 상태
 
     const isLoggedIn = !!localStorage.getItem("accessToken");
@@ -21,23 +23,32 @@ function CommonPage() {
     });
 
     useEffect(() => {
-        setLoading(true);
-        // 주소창이 바뀔때마다 해당 ID의 설계도를 요청한다
-        axios.get(`/api/ui/${screenId}`)
-        .then(response => {
-            console.log("response.data 서버 응답 데이터:", response.data);
-            console.log("response.data.data 서버 응답 데이터:", response.data.data);
-            if(response.data.status === "success"){
-                setMetadata(response.data.data);
-            }
-            // * 데이터를 다 받았으니 로딩을 끈다.
-            setLoading(false);
-        })
-            .catch(error => {
+        const initializePage = async () => {
+            setLoading(true);
+            try{
+            //     1, 화면 설계도 (Metadata)가져오기
+                const uiRes = await axios.get(`/api/ui/${screenId}`);
+                if (uiRes.data.status === "success") {
+                    setMetadata(uiRes.data.data);
+                }
+                // 2. 만약 메인 페이지라면 일기 목록도 함께 가져오기
+                if (screenId === "MAIN_PAGE" && isLoggedIn) {
+                    const diaryRes = await axios.get("/api/diary/viewDiaryList", {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                        }
+                    });
+                    // 백엔드 응답 구조에 따라 diaryList추출
+                    setDiaryList(diaryRes.data.diaryList ||[]);
+                }
+            } catch (error){
                 console.log("에러 발생: ", error);
+            } finally {
                 setLoading(false);
-            })
-    },[screenId]) // screenId가 바뀔때마다 다시 실행된다
+            }
+        };
+        initializePage();
+    },[screenId, isLoggedIn]) // screenId가 바뀔때마다 다시 실행된다
 
     const handleChange = (id, value) => {
         console.log("========handleChange============");

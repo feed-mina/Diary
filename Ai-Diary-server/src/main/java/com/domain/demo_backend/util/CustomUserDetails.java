@@ -17,6 +17,7 @@ public class CustomUserDetails extends User {
     // Spring Security의 SecurityContextHolder에서 인증 정보 가져오기
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+    private Long userSqno;
     private String email;
     private String hashedPassword;
     private String userId;
@@ -45,5 +46,9 @@ public class CustomUserDetails extends User {
         }
         // 사용자 정보를 CustomUserDetails로 반환
         return (CustomUserDetails) principal;
+    }
+
+    public Long getUserSqno() {
+        return this.userSqno;
     }
 }

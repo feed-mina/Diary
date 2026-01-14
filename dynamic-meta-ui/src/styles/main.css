@@ -1,0 +1,27 @@
+.field-container {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.field-container label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+/* DB에서 css_class로 들어올 이름들 */
+.login-input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.diary-nav1 {
+    background-color: #A5778F;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}

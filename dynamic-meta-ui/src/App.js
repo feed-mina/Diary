@@ -1,24 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import './styles/main.css';
+import CommonPage from "./page/CommonPage";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <BrowserRouter>
+        <Routes>
+            {/*주소창에 /view 뒤에 오는 글자를 screenId라는 이름으로 읽는다*/}
+          <Route path="/view/:screenId" element={<CommonPage />} />
+            {/*기본주소로 오면 로그인 페이지로 보내준다*/}
+          <Route path="/" element={<CommonPage screenId="LOGIN_PAGE" />} />
+        </Routes>
+      </BrowserRouter>
   );
 }
 

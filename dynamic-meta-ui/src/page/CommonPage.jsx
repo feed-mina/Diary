@@ -56,8 +56,14 @@ function CommonPage() {
                 const response = await axios.post(action_url, formData);
                 console.log("서버 응답:", response.data);
 
+                // 3. JWT 토큰 저장
+                localStorage.setItem("accessToken", response.data.data.accessToken);
+
+                window.location.href = `/view/MAIN_PAGE`;
             } catch(error){
+                const errorMsg = error.response?.data?.message || "로그인 정보를 다시 확인해주세요.";
                 console.log("에러 발생: ", error.message);
+                console.log("errorMsg: ", errorMsg);
             }
 
             // 검사 통과 후 실제 전송 로직
@@ -67,7 +73,7 @@ function CommonPage() {
         // 2. 이동(LINK) 처리
         else if (action_type === "LINK") {
             console.log(`${action_url} 주소로 이동`);
-            window.location.href = action_url;
+            window.location.href = item.actionUrl;
         }
     }; // onAction 함수는 여기서 끝납니다.
 

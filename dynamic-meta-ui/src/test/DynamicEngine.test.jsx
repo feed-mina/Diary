@@ -29,7 +29,7 @@ test('DB의 CSS 클래스가 버튼에 잘 입혀지는지 확인', () => {
         component_id: 'login_btn',
         label_text: '로그인',
         component_type: 'BUTTON',
-        css_class: 'diary-nav1' // 민아 님의 기존 CSS 클래스명
+        className: 'diary-nav1' // 민아 님의 기존 CSS 클래스명
     }];
 
     render(<DynamicEngine metadata={mockData} />);

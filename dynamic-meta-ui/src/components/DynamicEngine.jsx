@@ -16,17 +16,17 @@ const componentMap = {INPUT: InputField,
 };
 
 function DynamicEngine({ metadata , onChange, onAction}) {
-
+    const containerStyle = {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        textAlign: "center",
+        gap: "10px"
+    };
     return (
-        <div className="main-wrap"
-             style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-            textAlign: "center",
-            gap: "10px"}}>
+        <div className="main-wrap" style={containerStyle}>
             {metadata.sort((a, b) => a.sortOrder - b.sortOrder).map((item) => {
                 // 데이터를 받아서 그리기 직전에 대문자로 통일하는 방법
                 const typeKey = item.componentType ? item.componentType.toUpperCase() : '';

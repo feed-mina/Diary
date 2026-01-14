@@ -27,6 +27,7 @@ public class CommonQueryController {
     public ResponseEntity<?> execute(@PathVariable String sqlKey, @RequestBody Map<String, Object> params, Authentication authentication){
         System.out.println("@@@ 공통 실행기 진입 sqlkey: " + sqlKey);
 
+        /* 임시 수정 : DB 조회를 잠시 막음
         // 서비스 로부터 SQL 설계도(Query text)를 가져온다. (Redis 또는 DB)
         String query = queryMasterService.getQuery(sqlKey);
 
@@ -41,8 +42,17 @@ public class CommonQueryController {
         // 실제 실행 : 로그로 쿼리가 잘 가져옸는지 확인
         System.out.println("@@@ 실행할 쿼리 : "+ query);
         System.out.println("@@@ 바인딩할 파라미터:"+ params);
+*/
+        System.out.println("@@@ 더미 query 날림_20260115 Mockito 테스트@@@@");
 
+        String query = "dummy_query";
         // todo : 동적 쿼리 실행기 (DynamicExecutor) 호출 로직이 들어간다
+
+        if (authentication != null){
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            params.put("userSqno", userDetails.getUserSqno());
+            params.put("userId", userDetails.getUserId());
+        }
 
         List<Map<String, Object>> result = dynamicExecutor.executeList(query, params);
 

@@ -28,4 +28,13 @@ public class UiControllerTest {
                 .andExpect(jsonPath("$.data[0].screenId").value("LOGIN_PAGE"))
                 .andExpect(jsonPath("$.data.length()").isNotEmpty());
     }
+
+    @DisplayName("레디스 캐싱을 포함한 UI메타데이터 조회 테스트")
+    void getUiMetaWithCacheTest() throws Exception{
+        // 첫번째 호출 : DB에서 가져와서 레디스에 저장
+        mockMvc.perform(get("/api/ui/LOGIN_PAGE"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("success"))
+                .andExpect(jsonPath("$.data.length()").isNotEmpty());
+    }
 }

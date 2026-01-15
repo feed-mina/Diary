@@ -15,7 +15,9 @@ const componentMap = {INPUT: InputField,
     IMAGE: ImageField
 };
 
-function DynamicEngine({ metadata , onChange, onAction}) {
+function DynamicEngine({ metadata , onChange, onAction, pageData}) {
+    // 부모로부터 받은 metadata를 하나씩 부품으로 변환
+
     const containerStyle = {
         display: "flex",
         flexDirection: "column",
@@ -26,40 +28,57 @@ function DynamicEngine({ metadata , onChange, onAction}) {
         gap: "10px"
     };
     return (
-        <div className={`page-wrap ${screenId}`} style={containerStyle}>
-            {metadata.sort((a, b) => a.sortOrder - b.sortOrder).map((item) => {
-                // 데이터를 받아서 그리기 직전에 대문자로 통일하는 방법
-                const typeKey = item.componentType ? item.componentType.toUpperCase() : '';
+        <div className="engine -container" style={containerStyle}>
+            {metadata.map((item) => {
+            const {component_type, ref_data_id, component_id} = item;
+            // 1. 컴포넌트 지도에서 부품 찾기
+                const typeKey = component_type ? component_type.toUpperCase() : '';
                 const Component = componentMap[typeKey];
-                // 부품을 못 찾으면 왜 못 찾았는지 콘솔에 찍어보기 (디버깅용)
-                if (!Component) {
-                    console.log("부품 찾기 실패! 타입명:", item.componentType);
-                    return null;
-                }
+                // 2. 이 부품이 사용할 데이터 소스 찾기 (없으면 로딩 상태)
+                const remoteData = pageData[ref_data_id] || {status: "loading", data: []};
 
-                // DynamicEngine.js 내부 수정
-                const customStyle = (item.inlineStyle && typeof item.inlineStyle === 'string')
-                    ? JSON.parse(item.inlineStyle)
-                    : (item.inlineStyle || {}); // 문자열일 때만 파싱하고, 아니면 그대로 사용하거나 빈 객체 전달
-                    // console.log(customStyle);
+                // 3. 데이터 소스 타입은 화면에 그리지 않음
+                if(component_type === "DATA_SOURCE") return null;
+
+                // 4. 지도에 등록된 부품이 있으면 렌더링
+                if(Component) {
                 return (
                     <Component
-                        key={item.componentId}
-                        id={item.componentId}
-                        label={item.labelText}
-                        className={item.cssClass || "default-style"}
-                        style={customStyle}
-                        placeholder={item.placeholder}
-                        readOnly={item.isReadonly} // 수정 불가 여부
-                        required={item.isRequired} // 필수 입력 여부
-                        onChange={(e) => onChange(item.componentId,e.target.value)}
-                        onClick={() => onAction(item)}
-                    />
-                    // onChange 나 onClick은 comoonPage(부모)에서 실행한다.
-                );
+                        key={item.ui_id}
+                        id={component_id}
+                        meta={item}
+                        remoteData={remoteData}
+                        onChange={onChange}
+                        onAction={onAction}/>
+                    );
+                }
+                // 등록되지 않은 타입인 경우 안내 문구
+                return <div key={item.ui_id}>알 수 없는 타입:{component_type}</div>;
             })}
         </div>
     );
+    const renderComponent = (item) => {
+        const { component_type, ref_data_id } = item;
+
+        // 데이터가 아예 없으면 기본 상태 객체를 제공함
+        const remoteData = pageData[ref_data_id] || { status: "success", data: [] };
+
+        if (component_type === "DATA_SOURCE") return null;
+        const typeKey = item.component_type ? item.component_type.toUpperCase() : ''; // 대문자로 통일
+        const Component = componentMap[typeKey];
+        if (Component) {
+            return (
+                <Component
+                    key={item.ui_id}
+                    meta={item}
+                    remoteData={remoteData}
+                    onChange={onChange}
+                    onAction={onAction}
+                />
+            );
+        }
+        return null;
+    };
 }
 
 export default DynamicEngine;

@@ -6,17 +6,16 @@ function CommonPage() {
     const { screenId } = useParams();
     const [metadata, setMetadata] = useState([]); // 화면 설계떠
     const [formData, setFormData] = useState({});
-
-    const [diaryList, setDiaryList] = useState([]); // 실제 일기 데이터
+    const [pageData, setPageData] = useState({});
     const [loading, setLoading] = useState(true); // 로딩 상태
 
     const isLoggedIn = !!localStorage.getItem("accessToken");
     // 메타데이터 필터링
     const filtedMetadata = metadata.filter(item => {
-        if (item.componentId === "login_btn"){
+        if (item.component_id === "login_btn"){
             return !isLoggedIn;
         }
-        if(item.componentId === "go_diary_btn"){
+        if(item.component_id === "go_diary_btn"){
             return isLoggedIn;
         }
         return true;
@@ -28,19 +27,38 @@ function CommonPage() {
             try{
             //     1, 화면 설계도 (Metadata)가져오기
                 const uiRes = await axios.get(`/api/ui/${screenId}`);
-                if (uiRes.data.status === "success") {
-                    setMetadata(uiRes.data.data);
-                }
-                // 2. 만약 메인 페이지라면 일기 목록도 함께 가져오기
-                if (screenId === "MAIN_PAGE" && isLoggedIn) {
-                    const diaryRes = await axios.get("/api/diary/viewDiaryList", {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-                        }
-                    });
-                    // 백엔드 응답 구조에 따라 diaryList추출
-                    setDiaryList(diaryRes.data.diaryList ||[]);
-                }
+                const metadataList = uiRes.data.data || [];
+                setMetadata(metadataList);
+
+                // DATA_SOURDE 타입만 필터링
+                const sources = metadataList.filter(item => item.component_type === "DATA_SOURCE" && item.action_type === "AUTO_FETCH");
+
+                // 병렬 APU 호출 준비
+                const dataPromises = sources.map(async (source) =>{
+                    try{
+                        const res = await axios.post(source.data_api_url,{
+                            sqlKey: source.data_sql_key,
+                            params:source.data_params // DB에 정의된 파라미터
+                        },{
+                            headers: {Authorization: `Bearer ${localStorage.getItem("accessToken")}`}
+                        });
+                        return {id: source.component_id, status: "success",  data: res.data.data};
+                    }catch(err){
+                        console.error(`API 호출 실패: ${source.component_id}`, err);
+                        return {id: source.component_id, data: []};
+                    }
+                });
+
+                // 모든 데이터가 도착할때까지 대기
+                const results = await Promise.all(dataPromises);
+
+                // 결과들을 하나의 객체로 합치기
+                const combinedData = {};
+                results.forEach(res =>{
+                    if (res) combinedData[res.id] = res;
+                });
+                // 데이터가 아예 없더라도 빈 객체라도 설정하여 엔진이 멈추지 않게 함
+                setPageData(combinedData);
             } catch (error){
                 console.log("에러 발생: ", error);
             } finally {
@@ -59,7 +77,7 @@ function CommonPage() {
     };
 
     const handleAction = async (item) => {
-        const { actionType, actionUrl , componentId } = item;
+        const { actionType, actionUrl , component_id } = item;
         console.log("========handleAction============");
         console.log("실제 actionType:", actionType);
         console.log("item: ", item);
@@ -71,7 +89,7 @@ function CommonPage() {
             // 2. 실제 서버로 데이터 보내기
 
             for (let field of requiredFields) {
-                const value = formData[field.componentId];
+                const value = formData[field.component_id];
                 if (!value || value.trim() === "") {
                     alert(`${field.labelText} 항목은 필수 입력입니다`);
                     return; // 검사 탈락 시 여기서 중단
@@ -119,6 +137,7 @@ function CommonPage() {
                 metadata={filtedMetadata}
                 onChange={handleChange}
                 onAction={handleAction}
+                pageData={pageData} // 데이터 꾸러미 전달
             />
         </div>
     );

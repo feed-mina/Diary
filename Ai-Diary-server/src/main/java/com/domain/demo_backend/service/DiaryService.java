@@ -16,6 +16,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import io.jsonwebtoken.Claims;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -179,5 +181,21 @@ public class DiaryService {
 //        diaryRepository.insertDiary(diary);
         diaryRepository.save(diary);
     }
+    public PageInfo<DiaryResponse> selectMemberDiaryList(Authentication authentication, int pageNo, int pageSize) {
+        // 1. 현재 로그인한 사용자 정보 가져오기
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String email = userDetails.getUsername(); // email추출
+        // 2. DB에서 유저 객체 찾기
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다"));
 
+        // 3. 페이징 설정 및 해당 유저의 데이터만 조회
+        Pageable pageable = PageRequest.of(pageNo -1, pageSize);
+        List<Diary> diaries = diaryRepository.findMemberDiaryList(user.getUserSqno(), "N", pageable);
+        int totalCount = diaryRepository.countByUserAndDelYn(user, "N");
+        // 4. DTO 변환 및 결과 반환
+        List<DiaryResponse> diaryResponseList = diaries.stream().map(this::convertToDto).collect(Collectors.toList());
+        PageInfo<DiaryResponse> pageInfo = new PageInfo<>(diaryResponseList);
+        pageInfo.setTotal(totalCount);
+        return pageInfo;
+    }
 }

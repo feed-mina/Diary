@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Transactional
 public class DiaryRepositoryTest {
 
     @Autowired
@@ -85,7 +86,7 @@ public class DiaryRepositoryTest {
 
         // 3. When : 첫번째 페이지에서 2개인 조회 요청 (0번 페이지, 크기 2)
         Pageable pageable = PageRequest.of(0, 2);
-        Page<Diary> diaryPage = diaryRepository.findByDelYnOrderByRegDtDesc("N", pageable);
+        Page<Diary> diaryPage = diaryRepository.findByUserAndDelYnOrderByRegDtDesc(user,"N", pageable);
 
         // 4   Then : 검증
         // 1) 한 페이지 크기가 2인지 확인

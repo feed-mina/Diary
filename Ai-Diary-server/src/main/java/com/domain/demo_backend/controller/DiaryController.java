@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -231,5 +232,16 @@ public class DiaryController {
         return ResponseEntity.ok().body(Map.of("success", true));
 
     }
-
+// 보안컨텍스트 SecurityContextHolder에 담긴 검증된 유저 정보를 사용
+    @GetMapping("/member-diaries")
+    public ResponseEntity<?> getMemberDiaries(@RequestParam(value = "pageNo", defaultValue = "1") int pageNo, @RequestParam(value = "pageSize", defaultValue = "5") int pageSize) {
+        // 현재 인증된 유저 정보 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        try{
+            PageInfo<DiaryResponse> diaryList = diaryService.selectMemberDiaryList(authentication, pageNo, pageSize);
+            return ResponseEntity.ok(diaryList);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }

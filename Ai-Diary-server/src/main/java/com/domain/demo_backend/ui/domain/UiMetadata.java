@@ -48,7 +48,6 @@ public class UiMetadata {
     @Column(name="created_at" , updatable = false)
     private LocalDateTime createdAt;
 
-
     @Column(name = "css_class", length = 100)
     private String cssClass;
 
@@ -60,6 +59,36 @@ public class UiMetadata {
 
     @Column(name = "action_url")
     private String actionUrl;
+
+    @Column(name = "data_sql_key", length = 50)
+    private String dataSqlKey;
+
+    @Column(name = "data_api_url")
+    private String dataApiUrl;
+
+    @Column(name = "data_params", length = 50)
+    private String dataParams;
+
+    @Column(name = "ref_data_id")
+    private String refDataId;
+
+    @Column(name = "group_id", length = 50)
+    private String groupId;
+
+    @Column(name = "group_direction", length = 10)
+    private String groupDirection; // 'ROW' 또는 'COLUMN'
+
+    @Column(name = "submit_group_id", length = 50)
+    private String submitGroupId;
+
+    @Column(name = "submit_group_order")
+    private Integer submitGroupOrder;
+
+    @Column(name = "submit_group_separator", length = 5)
+    private String submitGroupSeparator;
+
+    @Column(name = "parent_group_id", length = 50)
+    private String parentGroupId;
 
     @PrePersist
     public void prePersist(){

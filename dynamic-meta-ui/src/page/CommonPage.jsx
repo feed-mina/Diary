@@ -50,9 +50,9 @@ function CommonPage() {
 
                 // 병렬 APU 호출 준비
                 const dataPromises = sources.map(async (source) =>{
-                    if (!isLoggedIn && source.dataSqlKey === "GET_MEMBER_DIARY_LIST"){
-                        return {id: source.componentId, status: "success",  data: []};
-                    }
+                    // if (!isLoggedIn && source.dataSqlKey === "GET_MEMBER_DIARY_LIST"){
+                    //     return {id: source.componentId, status: "success",  data: []};
+                    // }
                     try{
                         /*
                         * const res = await axios.post(source.dataApiUrl,{
@@ -62,7 +62,14 @@ function CommonPage() {
                             headers: {Authorization: `Bearer ${localStorage.getItem("accessToken")}`}
                         });
                         * */
-                        // const res = await axios.post(``)
+
+                        const apiUrl = source.dataApiUrl.includes('/api/execute') ? source.dataApiUrl : `/api/execute/${source.dataSqlKey}`;
+                        console.log("apiUrl: ", apiUrl);
+                        const res = await axios.post(apiUrl, {
+                            params : source.dataParams
+                        },{
+                            headers: {Authorization: `Bearer ${localStorage.getItem("accessToken")}`}
+                        });
                         return {id: source.componentId, status: "success",  data: res.data.data};
                     }catch(err){
                         console.error(`API 호출 실패: ${source.componentId}`, err);
@@ -82,6 +89,13 @@ function CommonPage() {
                 setPageData(combinedData);
             } catch (error){
                 console.log("에러 발생: ", error);
+                if (error.response && error.response.status === 401) {
+                    alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+                    localStorage.removeItem("accessToken");
+                    window.location.href = "/view/LOGIN_PAGE";
+                }
+                console.error(`API 호출 실패: ${source.componentId}`, error);
+                return {id: source.componentId, data: []};
             } finally {
                 setLoading(false);
             }

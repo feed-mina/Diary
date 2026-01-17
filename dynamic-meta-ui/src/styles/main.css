@@ -14,7 +14,7 @@ button:hover { transform: scale(1.05); }
 
 button.active, button.active-button { color: #fff; background: #A5778F; }
 
-input, textarea, select { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ddd; box-sizing: border-box; }
+/*input, textarea, select { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ddd; box-sizing: border-box; }*/
 
 /* 네비게이션 공통 스타일 */ .nav-wrap { flex-shrink: 0; background-color: beige; box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; padding: 2rem; }
 
@@ -118,12 +118,12 @@ button.active {
 }
 
 
-input, textarea, select {
-    width: 100%;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-}
+/*input, textarea, select {*/
+/*    width: 100%;*/
+/*    padding: 8px;*/
+/*    border-radius: 5px;*/
+/*    border: 1px solid #ddd;*/
+/*}*/
 
 .kakaoLoginSection{
     display: flex;

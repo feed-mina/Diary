@@ -1,11 +1,11 @@
 function ButtonField({ meta, onAction }) {
     return (
         <button
-            className={meta.css_class}
-            style={JSON.parse(meta.inline_style || "{}")}
+            className={meta.cssClass}
+            style={JSON.parse(meta.inlineStyle || "{}")}
             onClick={() => onAction(meta)}
         >
-            {meta.label_text}
+            {meta.labelText}
         </button>
     );
 }

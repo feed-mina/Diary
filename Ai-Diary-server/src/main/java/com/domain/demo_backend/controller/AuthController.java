@@ -4,6 +4,7 @@ import com.domain.demo_backend.service.AuthService;
 import com.domain.demo_backend.token.domain.RefreshToken;
 import com.domain.demo_backend.token.domain.RefreshTokenRepository;
 import com.domain.demo_backend.token.domain.TokenResponse;
+import com.domain.demo_backend.user.domain.User;
 import com.domain.demo_backend.user.dto.*;
 import com.domain.demo_backend.util.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -40,6 +41,7 @@ public class AuthController {
     private Map<String, String> emailVerificationMap = new HashMap<>();
     private JwtUtil jwtUtil;
     private final AuthService authService;
+    private User user;
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
@@ -284,7 +286,7 @@ public class AuthController {
             }
             //3. 새 Access Token 발급
             log.info("@@@@@  새 Access Token 발급");
-            String newAccessToken = jwtUtil.createAccessToken(email);
+            String newAccessToken = jwtUtil.createAccessToken(user);
             return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
 
         } catch (ExpiredJwtException e) {

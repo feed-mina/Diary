@@ -43,7 +43,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return new CustomUserDetails(
                 user.getEmail(),
-                user.getPassword(),
+                user.getUserSqno(),
                 user.getUserId(),
                 getAuthorities(user.getRole())
         ); // CustomUserDetails 객체 반환

@@ -23,12 +23,12 @@ public class CustomUserDetails extends User {
     private String userId;
 
     // Constructor for CustomUserDetails
-    public CustomUserDetails(String email, String hashedPassword, String userId, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetails(String email, Long userSqno, String userId, Collection<? extends GrantedAuthority> authorities) {
         // Call the superclass (User) constructor
         super(email, "dummy_password", authorities);
         this.email = email;
         this.userId = userId;
-        this.hashedPassword = hashedPassword;
+        this.userSqno = userSqno;
     }
 
 

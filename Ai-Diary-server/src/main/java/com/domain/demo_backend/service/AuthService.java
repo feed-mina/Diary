@@ -79,7 +79,7 @@ public class AuthService {
         // 5. JWT 발급
         return jwtUtil.generateTokens(
                 user.getEmail(), // setEmail(void)가 아니라 이미 저장된 email을 가져옴
-                user.getHashedPassword(),
+                user.getUserSqno(),
                 String.valueOf(user.getUserId())
         );
     }

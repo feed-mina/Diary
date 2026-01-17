@@ -132,7 +132,7 @@ public class KakaoService {
 
             TokenResponse tokenResponse  =  jwtUtil.generateTokens(
                     kakaoUserInfo.getEmail(),
-                    kakaoUserInfo.getHashedPassword(),
+                    kakaoUserInfo.getUserSqno(),
                     String.valueOf(kakaoUserInfo.getUserId())
             );
             log.info("KAKAOSERVICE-카카오 사용자 이메일: " + kakaoUserInfo.getEmail());
@@ -169,7 +169,7 @@ return tokenResponse;
             userRepository.save(user);
 
             // JWT 토큰을 생성해 반환해
-            TokenResponse tokenResponse  =  jwtUtil.generateTokens(user.getEmail(),user.getHashedPassword(), user.getUserId() );
+            TokenResponse tokenResponse  =  jwtUtil.generateTokens(user.getEmail(),user.getUserSqno(), user.getUserId() );
             String jwtToken = "Bearer " + tokenResponse.getAccessToken();
             log.info("KAKAOSERVICE-jwtToken: " + jwtToken);
             return tokenResponse;
@@ -179,7 +179,7 @@ return tokenResponse;
             // 사용자 정보를 DB에 저장해
             userRepository.save(user);
             // JWT 토큰을 생성해 반환해
-            TokenResponse tokenResponse  =  jwtUtil.generateTokens(user.getEmail(),user.getHashedPassword(), user.getUserId() );
+            TokenResponse tokenResponse  =  jwtUtil.generateTokens(user.getEmail(),user.getUserSqno(), user.getUserId() );
             String jwtToken = "Bearer " + tokenResponse.getAccessToken();
             log.info("KAKAOSERVICE-jwtToken: " + jwtToken);
             return tokenResponse ;

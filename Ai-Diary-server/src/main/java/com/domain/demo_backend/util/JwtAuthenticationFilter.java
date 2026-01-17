@@ -53,13 +53,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String email = claims.getSubject();
                 System.out.println("@@@@email : " + email);
                 String userId = claims.get("userId", String.class);
-                String hashedPassword = claims.get("hashedPassword", String.class); // String으로 읽기
-                System.out.println("@@@@userSqnoStr : " + hashedPassword);
+                Long userSqno =claims.get("userSqno", Long.class);
+                System.out.println("@@@@실제 userSqno : " + userSqno);
 
                 if (email != null) {
                     List<GrantedAuthority> authorities = List.of(() -> "ROLE_USER");
                     System.out.println("@@@@authorities: " + authorities);
-                    CustomUserDetails userDetails = new CustomUserDetails(email, hashedPassword, userId, List.of(new SimpleGrantedAuthority("ROLE_USER")));
+                    CustomUserDetails userDetails = new CustomUserDetails(email, userSqno, userId, List.of(new SimpleGrantedAuthority("ROLE_USER")));
 
                     System.out.println("@@@@userDetails: " + userDetails);
                     // 인증 토큰 생성

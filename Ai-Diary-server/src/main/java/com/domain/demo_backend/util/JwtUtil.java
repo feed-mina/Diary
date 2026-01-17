@@ -63,7 +63,7 @@ public class JwtUtil {
     }
 
     // 토큰생성
-    public TokenResponse generateTokens(String email, String hashedPassword, String userId) {
+    public TokenResponse generateTokens(String email, Long userSqno, String userId) {
         Date now = new Date();
 
         Date accessExp = new Date(now.getTime() + ACCESS_TOKEN_VALIDITY);
@@ -79,7 +79,7 @@ public class JwtUtil {
         String accessToken = Jwts.builder()
                 .setClaims(claims)
                 .claim("email", email) // 사용자 고유 식별자 추가
-                .claim("hashedPassword", hashedPassword)
+                .claim("userSqno", userSqno)
                 .claim("userId", userId) //
                 .setIssuedAt(now)
                 .setExpiration(accessExp)
@@ -166,8 +166,10 @@ public class JwtUtil {
     }
 
 
-    public String createAccessToken(String email) {
-        Claims claims = Jwts.claims().setSubject(email);
+    public String createAccessToken(User user) {
+        Claims claims = Jwts.claims().setSubject(user.getEmail());
+        claims.put("userId", user.getUserId());
+        claims.put("userSqno", user.getUserSqno());
         Date now = new Date();
         Date accessExp = new Date(now.getTime() + 1000L * 60 * 60); // 1시간
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
+import axios from "../api/axios";
 import { useParams } from "react-router-dom";
 import DynamicEngine from "../components/DynamicEngine";
 function CommonPage() {
@@ -12,8 +12,13 @@ function CommonPage() {
 
     const [pwType, setPwType] = useState("password");
 
+    const getCookie = (name) => {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`: ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    };
 
-    const isLoggedIn = !!localStorage.getItem("accessToken");
+    const isLoggedIn = !!getCookie("accessToken");
     // 메타데이터 필터링
     const filtedMetadata = metadata.map(item => {
 
@@ -58,21 +63,17 @@ function CommonPage() {
                     //     return {id: source.componentId, status: "success",  data: []};
                     // }
                     try{
-                        /*
-                        * const res = await axios.post(source.dataApiUrl,{
-                            sqlKey: source.dataSqlKey,
-                            params:source.dataParams // DB에 정의된 파라미터
-                        },{
-                            headers: {Authorization: `Bearer ${localStorage.getItem("accessToken")}`}
-                        });
-                        * */
 
                         const apiUrl = source.dataApiUrl.includes('/api/execute') ? source.dataApiUrl : `/api/execute/${source.dataSqlKey}`;
                         console.log("apiUrl: ", apiUrl);
+                        // const res = await axios.post(apiUrl, {
+                        //     params : source.dataParams
+                        // },{
+                        //     headers: {Authorization: `Bearer ${localStorage.getItem("accessToken")}`}
+                        // });
+
                         const res = await axios.post(apiUrl, {
                             params : source.dataParams
-                        },{
-                            headers: {Authorization: `Bearer ${localStorage.getItem("accessToken")}`}
                         });
                         return {id: source.componentId, status: "success",  data: res.data.data};
                     }catch(err){
@@ -95,15 +96,19 @@ function CommonPage() {
                 console.log("에러 발생: ", error);
                 if (error.response && error.response.status === 401) {
                     alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-                    localStorage.removeItem("accessToken");
+                    // localStorage.removeItem("accessToken");
+                    // 쿠키 삭제 : 만료일을 과거로 설정
+                    document.cookie = "accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC";
                     window.location.href = "/view/LOGIN_PAGE";
+
+                    console.error(`API 호출 실패: ${source.componentId}`, error);
+                    return {id: source.componentId, data: []};
+
                 }
-                console.error(`API 호출 실패: ${source.componentId}`, error);
-                return {id: source.componentId, data: []};
             } finally {
                 setLoading(false);
+            };
             }
-        };
         initializePage();
     },[screenId, isLoggedIn]) // screenId가 바뀔때마다 다시 실행된다
 
@@ -181,9 +186,7 @@ function CommonPage() {
 
                 // 3. JWT 토큰 저장
                 if (response.data.accessToken) {
-                    localStorage.setItem("accessToken", response.data.accessToken);
-                    localStorage.setItem("refreshToken", response.data.refreshToken); // 리프레시 토큰도 함께 저장
-
+                    document.cookie = `accessToken=${response.data.accessToken}; path=/; max-age=3600`;
                     console.log("토큰 저장 완료! 메인 페이지로 이동합니다.");
                     window.location.href = `/view/MAIN_PAGE`;
                 }

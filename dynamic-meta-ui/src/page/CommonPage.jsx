@@ -16,6 +16,8 @@ function CommonPage() {
     const isLoggedIn = !!localStorage.getItem("accessToken");
     // 메타데이터 필터링
     const filtedMetadata = metadata.map(item => {
+
+
         if(item.componentId === "pw_toggle_btn"){
             return {
                 ...item,
@@ -24,8 +26,10 @@ function CommonPage() {
         }
         return item;
         }).filter(item => {
-        if (item.componentId === "login_btn") return !isLoggedIn;
-        if (item.componentId === "go_diary_btn") return isLoggedIn;
+        if (item.componentId === "go_login_btn" || item.componentId === "go_tutorial_btn")
+            return !isLoggedIn;
+        if (item.componentId === "go_diary_btn" || item.componentId === "go_tutorial_btn")
+            return isLoggedIn;
         return true;
     });
 

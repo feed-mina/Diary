@@ -1,181 +1,91 @@
-# Diary & Authentication Web App
+# JustSaying (Diary & Authentication Web App)
 
-## 📌 프로젝트 개요
-이 프로젝트는 **Vue.js**와 **Spring Boot**를 사용하여 **일기장 기능 및 사용자 인증**(일반 로그인 & 카카오 소셜 로그인)을 제공하는 웹 애플리케이션입니다.
+> **"JWT, OAuth, 그리고 SMTP까지. 철저하게 인증과 보안, 캐싱 파이프라인을 검증한 감정 기록 플랫폼"**
 
-사용자는 **일기장**에 글을 작성하고 수정할 수 있으며, **JWT 및 이메일 인증**을 포함한 **일반 로그인과 카카오 소셜 로그인**을 통해 회원가입 및 로그인이 가능합니다.
+![Vue.js](https://img.shields.io/badge/Vue.js-3.x-4FC08D?logo=vuedotjs&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?logo=spring-boot&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)
+![OAuth 2.0](https://img.shields.io/badge/OAuth_2.0-Kakao-FFCD00?logo=kakao&logoColor=black)
 
-> "감정도 기록이 된다면, 우리는 조금 더 나를 이해할 수 있을까?"
-> 반복되는 하루 속 내 감정을 놓치지 않기 위해 시작했어요.
-> 단순히 텍스트를 쓰는 일기장이 아니라, 감정지수를 기반으로 한 감정의 시각화,
-> 해시태그로 정리되는 감정의 흐름, 그리고 수면패턴도 기록하면서 하루를 정리할 수 있으면 좋겠다 싶었어요.
-> 개발자로서의 역량을 넘어, 감정을 기술로 표현해보는 실험이었습니다.
-서버부터 프론트, 배포 자동화까지 모든 걸 혼자 구성하면서
-'내가 만들고 싶은 서비스는 무엇인가'를 진지하게 고민했던 프로젝트예요.
----
-## 🖼 대표 화면
+## 📌 1. 프로젝트 개요
 
-| 메인페이지 | 감정 일기 작성 | 일기 리스트 | 상세 보기 |
-|------------|----------------|--------------|------------|
-| ![main](./assets/main.png) | ![write](./assets/0002.png) | ![list](./assets/0005.png) | ![detail](./assets/0010.png) |
+사용자의 일상 감정을 기록하고, 이를 데이터화하여 보여주는 **웹 기반 감정 다이어리 서비스**입니다. 
+단순한 텍스트 기록을 넘어, **일반 로그인(JWT + SMTP 이메일) 및 OAuth 2.0 소셜 로그인(Kakao)의 완벽한 융합**, 그리고 Vue 3 클라이언트와 Spring Boot 백엔드 간의 체계화된 API 인증 파이프라인(interceptor 통신) 설계 목적을 둔 프로젝트입니다.
 
-## 🚀 주요 기능
-### 📒 일기장 기능
-- **CRUD 기능:** 글 작성 / 수정 / 삭제 / 조회
-- **사용자별 일기 관리:** 내가 쓴 일기만 보기, 전체 일기 보기, 로그인한 사용자가 자신의 일기 작성 및 조회 가능
-- **MySQL 데이터베이스 저장**
-
-### 🔐 사용자 인증 (Authentication)
-1. **일반 로그인 (JWT + 이메일 인증 포함)**  
-   - JWT (JSON Web Token) 기반 로그인  
-   - 이메일 인증 (SMTP를 활용한 인증 코드 발송)  
-   - 비밀번호 암호화 (BCrypt 적용)  
-2. **카카오 소셜 로그인**  
-   - OAuth 2.0 기반 카카오 로그인  
-   - 카카오 프로필 정보 받아오기 (닉네임, 이메일 등)  
-   - 기존 회원과 연동하여 JWT 발급  
+* **🚀 서버 상태:** AWS 인프라 비용 소진으로 현재 호스팅이 종료되었습니다. 하단의 **로컬 실행 가이드**를 참조해 주세요.
 
 ---
 
-## 🛠 기술 스택
-###  Frontend (Vue.js)
-- Vue 3
-- Vue Router (페이지 라우팅)
-- 로컬 스토리지 기반 상태 관리 (`onMounted` + `watch` 활용)
-- 로그인 유무 체크
-- Axios (백엔드 API 호출, `axios.interceptor` 적용)
+## 🏗 2. 아키텍처 및 핵심 플로우 (Architecture Flow)
 
-###  Backend (Spring Boot)
-- Spring Boot 3
-- Spring Security (인증 및 보안)
-- MyBatis (데이터베이스 연동)
-- JWT (토큰 인증)
-- SMTP (이메일 인증)
-- OAuth 2.0 (카카오 로그인)
-- MySQL (사용자 정보 및 일기 데이터 저장)
+### 🔐 하이브리드 인증 흐름 (Hybrid Auth Pipeline)
+카카오 소셜 토큰과 자체 서비스 세션 간의 충돌 문제를 막기 위해 **통합 JWT 발급** 구조로 통일한 것이 핵심입니다.
 
----
-
-## 📂 프로젝트 구조
-```
-my-project
-├── Ai-Diary-server (Spring Boot)
-│    ├── src/main/java/com/domain/demo_backend/controller  (API 컨트롤러)
-│    ├── src/main/java/com/domain/demo_backend/service     (비즈니스 로직)
-│    ├── src/main/java/com/domain/demo_backend/user       (계정 dto/domain)
-│    ├── src/main/java/com/domain/demo_backend/diary      (다이어리 dto/domain)
-│    ├── src/main/java/com/domain/demo_backend/util       (유틸리티)
-│    ├── src/main/java/com/domain/demo_backend/mapper     (데이터베이스 연동)
-│    ├── src/main/resources/application.properties        (설정 파일)
-│    ├── src/main/resources/mappers                      (마이바티스)
-│
-├── frontend (Vue.js)
-│    ├── src/components   (컴포넌트)
-│    ├── src/page         (페이지 설정)
-│    ├── src/router       (라우터 설정)
-│    ├── src/store        (상태 관리 - 로컬 스토리지 활용)
-│    ├── src/App.vue      (axios.interceptor 적용)
-│
-├── README.md
+```text
+[ Client (Vue 3) ] ──▶ (1. 카카오/일반 로그인 요청) ──▶ [ Spring Boot Security ]
+       │                                                         │
+       │                                         (2. DB Email 유저 식별 매핑)
+       │                                                         │
+       ◀─── (3. 통합 서버 JWT(Access Token) 발급 반환) ◀── [ Token Provider ]
+       │
+       ▼ (4. LocalStorage & axios.interceptor 등록)
+    [ 이후 모든 API 요청 시 통합 JWT로 인가(Authorization) 제어 ]
 ```
 
 ---
 
-## 📌 API 명세
-### 🔑 사용자 인증 API
-| Method | Endpoint | 설명 |
-|--------|------------------------|--------------------------------|
-| POST   | `/api/auth/register`   | 일반 회원가입 (이메일 인증 포함) |
-| POST   | `/api/auth/login`      | 일반 로그인 (JWT 발급) |
-| GET    | `/api/auth/verify-email?token=xxx` | 이메일 인증 확인 |
-| POST   | `/api/kakao/login`     | 카카오 로그인 |
+## 🔥 3. 기술 의사결정 (Tech Reasoning)
 
-### 📝 일기장 API
-| Method | Endpoint | 설명 |
-|--------|----------------------------|------------------|
-| POST   | `/api/diary/addDiaryList`  | 일기 작성 |
-| GET    | `/api/diary/viewDiarylist` | 일기 목록 조회 |
-| GET    | `/api/diary/viewDiaryItem/{diaryId}` | 일기 상세보기 |
+### ① 카카오 OAuth와 내부 회원(JWT) 정보 통합 매핑
+* 소셜 로그인의 생태계(Kakao Access Token)의 생명주기와 서비스 자체 세션 생명주기를 분리해야 했습니다.
+* 카카오에서 응답받은 유저 프로필(Email)을 서비스 내부의 `UserEntity`와 조회/병합하여, 최종 응답은 프론트엔드가 자체 서비스 인증 규격인 **단일 JWT 포맷**으로 소화할 수 있게 통합했습니다.
 
-### ✔ 일반 로그인 요청 예시
-```json
-{
-  "email": "user@domain/demo_backend.com",
-  "password": "securepassword"
-}
-```
-
-### ✔ 카카오 로그인 요청 예시
-```json
-{
-  "accessToken": "kakao_access_token"
-}
-```
-
-### ✔ 응답 예시 (JWT 포함)
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-```
+### ② 클라이언트 보안 로직 (axios.interceptor + Vue Router)
+* 프론트엔드 라우터(Vue Router)를 세분화하여 로그인된 사용자만 일기장(`/diary`)에 접근할 수 있게 가드를 구축했습니다.
+* 매 요청마다 수동으로 토큰을 넣는 낭비를 막기 위해 **Axios Request Interceptor**를 등록, 헤더에 자동으로 `Bearer JWT`가 탑재되게 설정하여 프론트엔드 보안 코드를 깔끔히 유지했습니다.
 
 ---
 
-## 🛠 axios.interceptor 적용 (App.vue)
-```javascript
-axios.interceptors.request.use(
-  config => {
-    const token = localStorage.getItem("jwtToken") || localStorage.getItem("kakaoToken");
-    console.log("@@@@App interceptors token", token);
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
-    }
-    return config;
-  },
-  error => {
-    return Promise.reject(error);
-  }
-);
-```
+## 🛠 4. 기술 스택 (Tech Stack)
+
+### Frontend (User & Admin UX)
+* **Core:** Vue.js 3, Vue Router
+* **State & Fetching:** LocalStorage / Composition API (watch, onMounted), Axios
+* **Deployment:** AWS S3, CloudFront
+
+### Backend (API Server)
+* **Core:** Java 17, Spring Boot 3.x, Spring Security
+* **Data Access & Storage:** MyBatis, MySQL
+* **Auth & Features:** JWT 토큰, SMTP (이메일 인증), OAuth 2.0 (카카오)
+* **Deployment:** AWS EC2, Nginx
 
 ---
 
-## 🚀 실행 방법
-###  백엔드 (Spring Boot) 실행
+## 📝 5. 주요 기능 명세 (Features)
+
+* **다중 로그인 정책 결합:** BCrypt 암호화 기반 자체 회원가입, 메일서버(SMTP) 본인인증, 카카오 프로필 활용 가입
+* **개인화된 일기 CRUD:** 각 유저(PK 매핑)가 작성한 일기만 열람 가능하도록 보안(`@AuthenticationPrincipal` 검증)
+* **감정 태그 모델링:** 향후 텍스트 AI 감성분석에 쓰일 감정 태그 해시화 DB 설계
+
+---
+
+## 🚀 6. 로컬 실행 방법 (Getting Started)
+
+### Backend (Spring Boot)
 ```bash
-cd backend
+git clone https://github.com/feed-mina/Diary.git
+cd Ai-Diary-server
 ./mvnw spring-boot:run
 ```
+*(※ application.properties의 MySQL 구동 여부 및 카카오 OAuth Key 삽입 필수)*
 
-###  프론트엔드 (Vue.js) 실행
+### Frontend (Vue 3)
 ```bash
-cd frontend
+cd Ai-Diary-vue
 npm install
 npm run dev
 ```
 
-## 배포 진행중에 있습니다.
-https://justsaying.co.kr 접속 시 정상 동작 여부 확인중
-백엔드: http:/15.165.179.197:8080
-프론트엔드: http://web-2025-version1.s3-website.ap-northeast-2.amazonaws.com
 ---
-
-## 🔧 추가 기능 개선 아이디어
-- 네이버, 구글 소셜 로그인 추가
-- 회원 프로필 사진 업로드 기능
-
-## 🤝 기여 방법
-1. 이 프로젝트를 **Fork**합니다.
-2. 새로운 브랜치를 만듭니다. (`git checkout -b feature-branch`)
-3. 기능을 추가하거나 수정합니다.
-4. 변경 사항을 커밋합니다. (`git commit -m "설명"`)
-5. 원격 저장소에 푸시합니다. (`git push origin feature-branch`)
-6. **Pull Request**를 생성합니다.
-
----
-
-## 📜 라이선스
-이 프로젝트는 **MIT 라이선스**를 따릅니다.
-
-🔥 일기 작성과 안전한 로그인 기능을 갖춘 웹 애플리케이션! 🙌 함께 개발하고 싶다면 언제든지 기여해주세요!
-
+*Developed by Min Yerin (2년 차 풀스택/백엔드 개발자)* 
+*Contacts: dbdlstltm94@gmail.com*

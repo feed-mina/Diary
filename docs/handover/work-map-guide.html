@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>유지보수 및 인수인계 문서 - work-map-guide</title>
+<style>body{font-family:Arial,'Noto Sans KR',sans-serif;max-width:1100px;margin:24px auto;padding:0 16px;line-height:1.55}img{max-width:100%;height:auto;border:1px solid #ddd}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccc;padding:6px;vertical-align:top}code{background:#f5f5f5;padding:2px 4px}</style>
+</head><body><h1 id="_1">유지보수 및 인수인계 문서</h1>
+<h2 id="_2">목차</h2>
+<ul>
+<li><a href="#1-문서-안내">1. 문서 안내</a></li>
+<li><a href="#2-전체-구조">2. 전체 구조</a></li>
+<li><a href="#3-화면과-컴포넌트">3. 화면과 컴포넌트</a></li>
+<li><a href="#4-핵심-파일과-기능">4. 핵심 파일과 기능</a></li>
+<li><a href="#5-함수-계약입력-처리-반환-부수효과">5. 함수 계약(입력-처리-반환-부수효과)</a></li>
+<li><a href="#6-동작-흐름도">6. 동작 흐름도</a></li>
+<li><a href="#7-역할-관계도">7. 역할 관계도</a></li>
+<li><a href="#8-api-매핑">8. API 매핑</a></li>
+<li><a href="#9-db-스키마">9. DB 스키마</a></li>
+<li><a href="#10-erd">10. ERD</a></li>
+<li><a href="#11-유지보수-절차">11. 유지보수 절차</a></li>
+<li><a href="#12-증상별-문제-진단">12. 증상별 문제 진단</a></li>
+<li><a href="#13-검수-결과">13. 검수 결과</a></li>
+</ul>
+<hr />
+<h2 id="1">1. 문서 안내</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>대상</td>
+<td>프로젝트를 처음 맡는 개발자</td>
+</tr>
+<tr>
+<td>활용 방법</td>
+<td>화면에서 시작해 API, 서비스, DB 필드까지 추적</td>
+</tr>
+<tr>
+<td>읽는 순서</td>
+<td>문서 안내 → 화면/컴포넌트 → API/함수 계약 → DB/ERD → 유지보수/장애 대응</td>
+</tr>
+<tr>
+<td>적용 범위</td>
+<td>프런트엔드(Vue 3), 백엔드(Spring Boot), 데이터베이스(PostgreSQL 설정 + schema.sql), 운영 절차</td>
+</tr>
+<tr>
+<td>캡처 기준</td>
+<td>실제 실행 시도 후 실패하여 <code>코드 기반 재구성 · 설명용 데이터</code> 이미지 사용</td>
+</tr>
+</tbody>
+</table>
+<p>실행 시도 결과: <code>Ai-Diary-vue</code> 실행 중 <code>src/page/ConfirmPassword2.vue</code> 파일 경로 불일치로 Vite 의존성 스캔 실패(라우터는 <code>ConfirmPassword2.vue</code> 참조, 실제 파일은 <code>confirmPassword2.vue</code>).</p>
+<hr />
+<h2 id="2">2. 전체 구조</h2>
+<ul>
+<li>프런트엔드는 Vue Router 기반 페이지(<code>src/page</code>)와 재사용 컴포넌트(<code>src/components</code>)로 구성되고, <code>axiosInstance</code>가 공통 인증 헤더와 401 재시도를 처리합니다.</li>
+<li>백엔드는 <code>AuthController</code>, <code>DiaryController</code>, <code>KakaoController</code>, <code>TimeController</code>가 API 진입점을 제공하고, <code>AuthService/DiaryService/KakaoService</code>가 핵심 로직을 수행합니다.</li>
+<li>데이터는 JPA 엔티티(<code>users</code>, <code>diary</code>, <code>refresh_token</code>) 중심으로 읽고 쓰며, <code>schema.sql</code>에는 추가 테이블(<code>email_verification</code>, <code>chats</code>, <code>diary_views</code>, <code>webrtc_connections</code>)이 정의되어 있습니다.</li>
+</ul>
+<p>데이터 이동(요약):
+<code>화면 입력 -&gt; axiosInstance -&gt; Controller -&gt; Service -&gt; Repository/JPA -&gt; DB -&gt; JSON 응답 -&gt; 화면 렌더</code></p>
+<hr />
+<h2 id="3">3. 화면과 컴포넌트</h2>
+<h3 id="31">3.1 홈/인증 화면</h3>
+<p><img alt="화면1 홈" src="./images/screens/home_page_reconstructed.png" />
+<img alt="화면2 로그인" src="./images/screens/login_page_reconstructed.png" />
+<img alt="화면3 회원가입" src="./images/screens/signup_page_reconstructed.png" />
+<img alt="화면4 이메일인증" src="./images/screens/verification_page_reconstructed.png" /></p>
+<ul>
+<li><strong>Home(<code>/</code>)</strong>: 로그인 상태(localStorage)에 따라 CTA 버튼이 달라지며, 비로그인은 로그인/튜토리얼로, 로그인 사용자는 작성/목록으로 이동합니다.</li>
+<li><strong>Login(<code>/login</code>)</strong>: 일반 로그인과 카카오 로그인을 모두 제공하고 성공 시 토큰과 사용자 식별값을 localStorage에 저장합니다.</li>
+<li><strong>Signup(<code>/signup</code>)</strong>: 입력 검증 후 회원 생성 요청을 보내고, 이어서 이메일 인증코드 전송 API를 호출합니다.</li>
+<li><strong>Verification(<code>/email-verification</code>)</strong>: 3분 타이머 안에 코드 확인을 수행하며 실패/만료 시 재전송 경로로 분기합니다.</li>
+</ul>
+<h3 id="32">3.2 다이어리 화면</h3>
+<p><img alt="화면5 작성" src="./images/screens/diary_write_page_reconstructed.png" />
+<img alt="화면6 목록" src="./images/screens/diary_list_page_reconstructed.png" />
+<img alt="화면7 상세" src="./images/screens/diary_view_page_reconstructed.png" /></p>
+<ul>
+<li><strong>DiaryWriting(<code>/diary/write</code>)</strong>: 날짜/작성자/제목/감정 필수 검증 후 일기를 저장하며, 수면 시간/약 복용 정보를 함께 전송합니다.</li>
+<li><strong>DiaryList(<code>/diary/common</code>)</strong>: 공개/비공개와 내 글 필터를 조합해 목록을 보여주고 페이지네이션을 처리합니다.</li>
+<li><strong>DiaryView(<code>/diary/view/:diaryId</code>)</strong>: <code>diaryId + userId</code> 조합으로 상세를 조회하고 태그/감정/번역 기능을 연결합니다.</li>
+</ul>
+<h3 id="33">3.3 포모도로 화면</h3>
+<p><img alt="화면8 포모도로" src="./images/screens/pomodoro_main_reconstructed.png" /></p>
+<ul>
+<li><strong>pomoLogin/pomoMain</strong>: 카카오 로그인 후 스탑워치/포모도로 기록을 만들고 카카오 나에게 보내기로 전송합니다.</li>
+</ul>
+<hr />
+<h2 id="4">4. 핵심 파일과 기능</h2>
+<table>
+<thead>
+<tr>
+<th>영역</th>
+<th>파일</th>
+<th>책임</th>
+<th>핵심 기능(1~2문장)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>라우팅</td>
+<td><code>Ai-Diary-vue/src/router/index.js</code></td>
+<td>페이지 매핑</td>
+<td>인증/다이어리/포모도로 라우트를 연결하며 일부 보호 로직을 beforeEach에서 처리합니다.</td>
+</tr>
+<tr>
+<td>API 클라이언트</td>
+<td><code>Ai-Diary-vue/src/unit/axiosInstance.js</code></td>
+<td>공통 HTTP 정책</td>
+<td>토큰 우선순위(jwt/access/kakao)를 Authorization에 주입하고, 401 시 refresh API로 재발급 후 원요청을 재시도합니다.</td>
+</tr>
+<tr>
+<td>로그인 UI</td>
+<td><code>Ai-Diary-vue/src/page/LoginPage.vue</code></td>
+<td>사용자 로그인 입력/분기</td>
+<td>일반 로그인과 카카오 SDK 로그인 흐름을 분리 처리하고 성공 시 localStorage를 갱신합니다.</td>
+</tr>
+<tr>
+<td>회원가입 UI</td>
+<td><code>Ai-Diary-vue/src/page/SignupPage.vue</code></td>
+<td>계정 생성 + 코드 전송</td>
+<td>로컬 검증 후 register 호출, 성공 시 signup 호출로 이메일 인증 코드를 보냅니다.</td>
+</tr>
+<tr>
+<td>일기 작성 UI</td>
+<td><code>Ai-Diary-vue/src/page/DiaryWriting.vue</code></td>
+<td>일기 입력/저장</td>
+<td>필수값 검증과 공개설정, 태그, 수면/복약 정보를 한 요청으로 묶어 저장 API에 전달합니다.</td>
+</tr>
+<tr>
+<td>일기 목록 UI</td>
+<td><code>Ai-Diary-vue/src/page/DiaryList.vue</code></td>
+<td>목록/필터/페이징</td>
+<td>서버 페이지네이션 응답을 받아 비공개 정책과 내 글 필터를 화면에서 최종 반영합니다.</td>
+</tr>
+<tr>
+<td>일기 상세 UI</td>
+<td><code>Ai-Diary-vue/src/page/DiaryView.vue</code></td>
+<td>상세 조회/표시</td>
+<td>라우트 파라미터를 사용해 상세 일기를 조회하고 감정 텍스트/태그/번역 표시를 구성합니다.</td>
+</tr>
+<tr>
+<td>인증 API</td>
+<td><code>Ai-Diary-server/.../controller/AuthController.java</code></td>
+<td>회원/토큰 엔드포인트</td>
+<td>로그인, 가입, 인증코드 확인/재전송, 탈퇴, 비밀번호 변경, 토큰 재발급 API를 제공합니다.</td>
+</tr>
+<tr>
+<td>인증 서비스</td>
+<td><code>Ai-Diary-server/.../service/AuthService.java</code></td>
+<td>인증 비즈니스</td>
+<td>이메일/비밀번호 검증, 인증코드 생성/메일 발송, 탈퇴/비밀번호 변경 로직을 수행합니다.</td>
+</tr>
+<tr>
+<td>다이어리 API</td>
+<td><code>Ai-Diary-server/.../controller/DiaryController.java</code></td>
+<td>일기 조회/저장</td>
+<td>목록/상세 조회와 작성 요청의 사용자 일치성 검증 및 응답 조립을 담당합니다.</td>
+</tr>
+<tr>
+<td>다이어리 서비스</td>
+<td><code>Ai-Diary-server/.../service/DiaryService.java</code></td>
+<td>다이어리 도메인 로직</td>
+<td>리스트 페이징 변환, 상세 조회, 엔티티 생성 및 저장을 수행합니다.</td>
+</tr>
+<tr>
+<td>카카오 API</td>
+<td><code>Ai-Diary-server/.../controller/KakaoController.java</code></td>
+<td>소셜 로그인/카톡 전송</td>
+<td>카카오 access token으로 사용자 정보를 조회하고 내부 JWT를 발급하거나 기록 메시지를 카카오 API로 전달합니다.</td>
+</tr>
+<tr>
+<td>보안 필터</td>
+<td><code>Ai-Diary-server/.../util/JwtAuthenticationFilter.java</code></td>
+<td>요청 인증 컨텍스트 구성</td>
+<td><strong>*</strong>* 검증해 SecurityContext에 <code>CustomUserDetails</code>를 주입합니다.</td>
+</tr>
+<tr>
+<td>토큰 유틸</td>
+<td><code>Ai-Diary-server/.../util/JwtUtil.java</code></td>
+<td>JWT 발급/검증</td>
+<td>access/refresh 토큰 생성, refresh_token 저장, 토큰 검증/재발급을 처리합니다.</td>
+</tr>
+<tr>
+<td>데이터 모델</td>
+<td><code>Ai-Diary-server/.../user/domain/User.java</code>, <code>.../diary/domain/Diary.java</code></td>
+<td>DB 매핑</td>
+<td>사용자/일기 컬럼과 엔티티 라이프사이클(<code>@PrePersist</code>)을 정의합니다.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-">5. 함수 계약(입력-처리-반환-부수효과)</h2>
+<table>
+<thead>
+<tr>
+<th>화면 요소</th>
+<th>함수/메서드</th>
+<th>입력</th>
+<th>처리 조건</th>
+<th>반환값</th>
+<th>부수 효과</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>로그인 버튼</td>
+<td><code>LoginPage.onClickLoginButton</code></td>
+<td>email, password</td>
+<td>둘 중 하나라도 비면 즉시 경고</td>
+<td>성공/실패 알림</td>
+<td>localStorage 토큰/사용자값 저장, <code>/diary/common</code> 이동</td>
+</tr>
+<tr>
+<td>카카오 로그인 버튼</td>
+<td><code>LoginPage.kakaoLogin</code></td>
+<td>Kakao SDK access token</td>
+<td>SDK 미초기화면 중단</td>
+<td>access/refresh + kakaoUserInfo</td>
+<td>localStorage 갱신, 라우팅 이동</td>
+</tr>
+<tr>
+<td>회원가입 전송 버튼</td>
+<td><code>SignupPage.sendVerificationCode</code></td>
+<td>signUpData</td>
+<td>이메일 형식/중복 검증 실패 시 중단</td>
+<td>인증코드 전송 성공 메시지</td>
+<td><code>/email-verification</code> 이동</td>
+</tr>
+<tr>
+<td>코드 확인 버튼</td>
+<td><code>VerificationPage.checkCode</code></td>
+<td>email(query), 7자리 code</td>
+<td>코드 불일치/만료 시 실패 분기</td>
+<td>인증 성공/실패 메시지</td>
+<td>성공 시 <code>/login</code> 이동</td>
+</tr>
+<tr>
+<td>저장 버튼</td>
+<td><code>DiaryWriting.onClickSaveDiary</code></td>
+<td>diaryData(제목/본문/태그/감정/시간/복약)</td>
+<td>필수값 누락 시 저장 중단</td>
+<td><code>{success:true}</code> 기대</td>
+<td>일기 저장, 성공 알림 후 목록 이동</td>
+</tr>
+<tr>
+<td>목록 로드</td>
+<td><code>DiaryList.fetchDiaryList</code></td>
+<td>pageNo, pageSize, showOnlyMine</td>
+<td>빈목록/오류 시 메시지 분기</td>
+<td><code>diaryList,total,page,pageSize</code></td>
+<td>화면 필터링(비공개 + 작성자 조건)</td>
+</tr>
+<tr>
+<td>상세 로드</td>
+<td><code>DiaryView.getDiaryItem</code></td>
+<td>diaryId(path), userId(query)</td>
+<td>둘 중 하나라도 없으면 호출 중단</td>
+<td><code>diaryItem</code></td>
+<td>상세 화면 상태 갱신</td>
+</tr>
+<tr>
+<td>로그인 API</td>
+<td><code>AuthController.login -&gt; AuthService.login</code></td>
+<td><code>LoginRequest{email,password}</code></td>
+<td>사용자 미존재/미인증/비번불일치 시 예외</td>
+<td><code>accessToken,refreshToken</code></td>
+<td>refreshToken 쿠키 발급 + refresh_token 테이블 저장</td>
+</tr>
+<tr>
+<td>토큰 재발급 API</td>
+<td><code>AuthController.refresh</code></td>
+<td>refreshToken(cookie)</td>
+<td>쿠키 없음/만료/DB불일치 시 401</td>
+<td><code>newAccessToken</code></td>
+<td>없음(재로그인 유도 가능)</td>
+</tr>
+<tr>
+<td>일기 저장 API</td>
+<td><code>DiaryController.addDiaryList -&gt; DiaryService.addDiary</code></td>
+<td><code>DiaryRequest</code> + Authorization</td>
+<td>로그인 사용자 email과 요청 email 불일치 시 403</td>
+<td><code>{success:true}</code></td>
+<td>diary insert, IP/selected_times/drug_* 저장</td>
+</tr>
+<tr>
+<td>일기 상세 API</td>
+<td><code>DiaryController.viewDiaryItem</code></td>
+<td>diaryId + userId + Authorization</td>
+<td>userId 누락/토큰 오류 시 실패</td>
+<td><code>Optional&lt;Diary&gt;</code> 래핑 응답</td>
+<td>없음</td>
+</tr>
+<tr>
+<td>카카오 기록 전송</td>
+<td><code>KakaoController.sendRecord</code></td>
+<td>Authorization(JWT), body(kakaoAccessToken, stopwatch/pomodoro)</td>
+<td>토큰 누락/카카오 조회 실패 시 401</td>
+<td>성공/실패 메시지</td>
+<td>카카오톡 나에게 보내기 API 호출</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6">6. 동작 흐름도</h2>
+<p><img alt="다이어그램1 인증흐름" src="./images/diagrams/auth_flow.png" />
+<img alt="다이어그램2 다이어리흐름" src="./images/diagrams/diary_flow.png" /></p>
+<h3 id="61">6.1 인증 분기 핵심</h3>
+<ol>
+<li>로그인 요청 수신.</li>
+<li>사용자 조회 실패 또는 비밀번호/인증상태 실패면 즉시 에러 반환.</li>
+<li>성공 시 access/refresh 발급 후 refresh는 HttpOnly 쿠키로 반환.</li>
+<li>이후 API 401 발생 시 프런트가 <code>/api/auth/refresh</code> 호출.</li>
+<li>refresh 성공이면 원요청 재시도, 실패면 localStorage 정리 후 로그인 이동.</li>
+</ol>
+<h3 id="62">6.2 다이어리 분기 핵심</h3>
+<ol>
+<li>목록 조회는 <code>showOnlyMine</code>에 따라 <code>userId</code> 파라미터 분기.</li>
+<li>서버 응답 후 프런트에서 <code>diaryStatus</code>와 작성자 ID를 다시 필터링.</li>
+<li>상세 조회는 <code>diaryId + userId</code> 둘 다 필요하며 누락 시 조기 종료.</li>
+<li>저장은 필수값 검증 실패 시 조기 종료, 성공 시 목록 화면으로 이동.</li>
+</ol>
+<hr />
+<h2 id="7">7. 역할 관계도</h2>
+<p><img alt="다이어그램3 역할관계도" src="./images/diagrams/role_relation.png" /></p>
+<p>화살표 의미:
+- <code>Page -&gt; Component</code>: 화면 구성 및 사용자 이벤트 수집.
+- <code>Component/Page -&gt; Service Client</code>: API 요청 생성.
+- <code>Controller -&gt; Service</code>: 도메인 규칙 적용.
+- <code>Service -&gt; Repository -&gt; DB</code>: 영속화 처리.
+- <code>Controller -&gt; Page</code>: JSON 응답으로 렌더링 갱신.</p>
+<hr />
+<h2 id="8-api">8. API 매핑</h2>
+<table>
+<thead>
+<tr>
+<th>화면</th>
+<th>API</th>
+<th>메서드</th>
+<th>요청 필드</th>
+<th>응답 필드</th>
+<th>연결 DB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>로그인</td>
+<td><code>/api/auth/login</code></td>
+<td>POST</td>
+<td><code>email</code>, <code>password</code></td>
+<td><code>accessToken</code>, <code>refreshToken</code></td>
+<td><code>users</code>, <code>refresh_token</code></td>
+</tr>
+<tr>
+<td>카카오 로그인</td>
+<td><code>/api/kakao/login</code></td>
+<td>POST</td>
+<td><code>accessToken</code></td>
+<td><code>accessToken</code>, <code>refreshToken</code>, <code>kakaoUserInfo</code></td>
+<td><code>users</code>, <code>refresh_token</code></td>
+</tr>
+<tr>
+<td>회원가입</td>
+<td><code>/api/auth/register</code></td>
+<td>POST</td>
+<td><code>userId</code>, <code>username</code>, <code>password</code>, <code>phone</code>, <code>email</code></td>
+<td>성공 메시지</td>
+<td><code>users</code></td>
+</tr>
+<tr>
+<td>인증코드 발송</td>
+<td><code>/api/auth/signup</code></td>
+<td>POST</td>
+<td>body:<code>email</code>, params:<code>message</code></td>
+<td>message/email</td>
+<td>(코드상 Map/메일 전송, 사용자 verify 연동)</td>
+</tr>
+<tr>
+<td>인증코드 확인</td>
+<td><code>/api/auth/verify-code</code></td>
+<td>POST</td>
+<td><code>email</code>, <code>code</code></td>
+<td>성공/실패 문자열</td>
+<td><code>users.verification_code</code>, <code>users.verifyYn</code></td>
+</tr>
+<tr>
+<td>코드 재전송</td>
+<td><code>/api/auth/resend-code</code></td>
+<td>POST</td>
+<td><code>email</code></td>
+<td>성공/실패 문자열</td>
+<td><code>users.verification_code</code></td>
+</tr>
+<tr>
+<td>일기 저장</td>
+<td><code>/api/diary/addDiaryList</code></td>
+<td>POST</td>
+<td><code>email,userId,title,content,emotion,tag1~3,selectedTimes,drug*</code></td>
+<td><code>{success:true}</code></td>
+<td><code>diary.*</code>, <code>users.user_sqno</code></td>
+</tr>
+<tr>
+<td>일기 목록</td>
+<td><code>/api/diary/viewDiaryList</code></td>
+<td>GET</td>
+<td><code>userId,pageNo,pageSize</code></td>
+<td><code>diaryList,total,page,pageSize,message</code></td>
+<td><code>diary</code>, <code>users</code></td>
+</tr>
+<tr>
+<td>일기 상세</td>
+<td><code>/api/diary/viewDiaryItem/{diaryId}</code></td>
+<td>GET</td>
+<td>path:<code>diaryId</code>, query:<code>userId</code></td>
+<td><code>diaryItem</code></td>
+<td><code>diary</code></td>
+</tr>
+<tr>
+<td>현재 시간</td>
+<td><code>/api/timer/now</code></td>
+<td>GET</td>
+<td>없음</td>
+<td>문자열 시간</td>
+<td>없음</td>
+</tr>
+<tr>
+<td>헬스체크</td>
+<td><code>/api/timer/health</code></td>
+<td>GET</td>
+<td>없음</td>
+<td><code>OK</code></td>
+<td>없음</td>
+</tr>
+<tr>
+<td>카카오 기록 전송</td>
+<td><code>/api/kakao/sendRecord</code></td>
+<td>POST</td>
+<td><code>kakaoAccessToken</code>, <code>stopwatchTime</code>, <code>pomodoroCount</code>, <code>pomodoroTotalTime</code>, <code>recordUrl</code></td>
+<td>성공/실패 메시지</td>
+<td>DB 직접 저장 없음(외부 전송)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="9-db">9. DB 스키마</h2>
+<h3 id="91">9.1 핵심 테이블 상세</h3>
+<h4 id="users">users</h4>
+<ul>
+<li>PK: <code>user_sqno</code></li>
+<li>주요 컬럼: <code>user_id</code>, <code>username</code>, <code>password</code>, <code>hashed_password</code>, <code>role</code>, <code>phone</code>, <code>email(unique)</code>, <code>delYn/del_yn</code>, <code>verifyYn/verify_yn</code>, <code>socialType/social_type</code>, <code>verification_code</code>, <code>created_at</code>, <code>updated_at</code></li>
+<li>화면 사용: 로그인/회원가입/회원탈퇴/비밀번호변경/소셜로그인</li>
+</ul>
+<h4 id="diary">diary</h4>
+<ul>
+<li>PK: <code>diary_id</code></li>
+<li>FK: <code>user_sqno -&gt; users.user_sqno</code></li>
+<li>주요 컬럼: <code>user_id</code>, <code>title</code>, <code>content</code>, <code>tag1</code>, <code>tag2</code>, <code>tag3</code>, <code>emotion</code>, <code>diary_status</code>, <code>diary_type</code>, <code>del_yn</code>, <code>reg_dt</code>, <code>updt_dt</code>, <code>frst_reg_ip</code></li>
+<li>코드 확장 컬럼(엔티티 기준): <code>selected_times</code>, <code>drug_morning</code>, <code>drug_lunch</code>, <code>drug_dinner</code></li>
+<li>화면 사용: 일기 작성/목록/상세</li>
+</ul>
+<h4 id="refresh_token">refresh_token (코드 기준)</h4>
+<ul>
+<li>엔티티: <code>RefreshToken(userSqno, email, refreshToken, expiration)</code></li>
+<li>사용: access token 재발급 검증</li>
+</ul>
+<h3 id="92-schemasql">9.2 보조 테이블(schema.sql 기준)</h3>
+<ul>
+<li><code>email_verification</code>: 인증 코드/만료시간 저장 용도.</li>
+<li><code>diary_views</code>: 일기 조회 이력.</li>
+<li><code>chats</code>, <code>webrtc_connections</code>: 사용자 간 메시지/연결 추적.</li>
+<li><code>user_info</code>: 카카오 프로필 성격의 사용자 정보 보관.</li>
+</ul>
+<h3 id="93">9.3 제약/연결 구분</h3>
+<ul>
+<li><strong>실제 FK(schema.sql)</strong>: <code>diary.user_sqno</code>, <code>diary_views.diary_id/viewer_sqno</code>, <code>chats.sender/receiver</code>, <code>webrtc caller/receiver</code>.</li>
+<li><strong>코드상 논리 연결</strong>: <code>refresh_token.email</code>, <code>email_verification.email</code> 등은 코드에서 식별자로 사용되나 schema.sql의 FK 선언과는 별개로 관리됨.</li>
+</ul>
+<hr />
+<h2 id="10-erd">10. ERD</h2>
+<p><img alt="다이어그램4 전체ERD" src="./images/diagrams/erd_overall.png" />
+<img alt="다이어그램5 일기기능ERD" src="./images/diagrams/erd_diary_feature.png" /></p>
+<ul>
+<li>전체 ERD는 인증/일기/부가 기능 테이블 간 관계를 한 화면에 보여줍니다.</li>
+<li>기능별 ERD는 일기 작성 시 UI 필드가 <code>DiaryRequest -&gt; DiaryService -&gt; diary/users</code>로 연결되는 경로를 분리해 보여줍니다.</li>
+</ul>
+<hr />
+<h2 id="11">11. 유지보수 절차</h2>
+<h3 id="111">11.1 환경 설정</h3>
+<ul>
+<li>Backend: Java 17, PostgreSQL(로컬), SMTP 설정 필요.</li>
+<li>Frontend: Node.js + npm, Vite.</li>
+<li>필수 설정 파일: <code>/home/runner/work/Diary/Diary/Ai-Diary-server/src/main/resources/application.properties</code></li>
+<li>DB: <code>spring.datasource.*</code></li>
+<li>JWT: <code>jwt.secret-key</code>, <code>jwt.issuer</code></li>
+<li>SMTP: <code>spring.mail.*</code></li>
+<li>Kakao: <code>KAKAO_CLIENT_ID</code>, <code>KAKAO_REDIRECT_URI</code></li>
+</ul>
+<h3 id="112">11.2 로컬 실행</h3>
+<ul>
+<li>Backend</li>
+<li>위치: <code>/home/runner/work/Diary/Diary/Ai-Diary-server</code></li>
+<li>명령: <code>./mvnw spring-boot:run</code></li>
+<li>확인: <code>GET /api/timer/health</code>가 <code>OK</code></li>
+<li>Frontend</li>
+<li>위치: <code>/home/runner/work/Diary/Diary/Ai-Diary-vue</code></li>
+<li>명령: <code>npm install &amp;&amp; npm run dev</code></li>
+<li>확인: 브라우저 홈 라우트 진입</li>
+</ul>
+<h3 id="113">11.3 변경 위치 찾기</h3>
+<ul>
+<li>로그인/회원: <code>page/LoginPage.vue</code>, <code>page/SignupPage.vue</code>, <code>controller/AuthController.java</code>, <code>service/AuthService.java</code></li>
+<li>다이어리: <code>page/Diary*.vue</code>, <code>controller/DiaryController.java</code>, <code>service/DiaryService.java</code>, <code>diary/domain/*</code></li>
+<li>카카오: <code>components/LoginView.vue</code>, <code>controller/KakaoController.java</code>, <code>service/KakaoService.java</code></li>
+<li>공통 인증헤더: <code>unit/axiosInstance.js</code>, <code>util/JwtAuthenticationFilter.java</code></li>
+</ul>
+<h3 id="114">11.4 테스트/빌드</h3>
+<ul>
+<li>Frontend</li>
+<li><code>npm run build</code></li>
+<li><code>npm run test:unit</code></li>
+<li><code>npm run lint</code></li>
+<li>Backend</li>
+<li><code>./mvnw test</code></li>
+<li><code>./mvnw package</code></li>
+</ul>
+<h3 id="115">11.5 배포/복구(저장소 확인 범위)</h3>
+<ul>
+<li>백엔드는 JAR 업로드 후 EC2에서 실행하는 절차가 <code>Ai-Diary-server/README.md</code>에 정리되어 있습니다.</li>
+<li>프런트는 S3/CloudFront, 백엔드는 EC2+Nginx 프록시 구성을 사용한 기록이 루트 README와 서버 README에 존재합니다.</li>
+<li>복구 시 우선순위: 1) 백엔드 프로세스/JAR 상태 2) DB 연결 3) 프런트 정적 배포 경로 4) Nginx 프록시 라우팅.</li>
+</ul>
+<hr />
+<h2 id="12">12. 증상별 문제 진단</h2>
+<table>
+<thead>
+<tr>
+<th>증상</th>
+<th>1차 확인</th>
+<th>원인 후보</th>
+<th>조치</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>프런트 실행 실패</td>
+<td><code>npm run dev</code> 로그</td>
+<td>라우터 파일명 대소문자 불일치(<code>ConfirmPassword2.vue</code>)</td>
+<td>라우터 import와 실제 파일명 정합 확인</td>
+</tr>
+<tr>
+<td>로그인 후 API 401 반복</td>
+<td>Network 탭 + <code>/api/auth/refresh</code> 응답</td>
+<td>refresh 쿠키 누락/만료/DB 불일치</td>
+<td>쿠키 도메인/SameSite/Secure 설정과 <code>refresh_token</code> 레코드 점검</td>
+</tr>
+<tr>
+<td>일기 상세가 빈 화면</td>
+<td>URL의 <code>diaryId</code>, <code>userId</code></td>
+<td>query <code>userId</code> 누락 시 호출 중단</td>
+<td>목록에서 이동 URL 파라미터 전달 확인</td>
+</tr>
+<tr>
+<td>일기 저장 403</td>
+<td>요청 body <code>email</code> vs 인증 사용자</td>
+<td>요청 이메일/토큰 사용자 불일치</td>
+<td>localStorage 사용자값과 요청 payload 동기화</td>
+</tr>
+<tr>
+<td>카카오 전송 실패</td>
+<td><code>/api/kakao/sendRecord</code> 응답</td>
+<td>Authorization 또는 kakaoAccessToken 누락</td>
+<td>로그인 상태/토큰 저장 키 점검</td>
+</tr>
+<tr>
+<td>서버는 뜨는데 시간 위젯 미표시</td>
+<td><code>/api/timer/now</code> 호출</td>
+<td>CORS/프록시 경로 문제</td>
+<td><code>SecurityConfig</code> CORS 허용 도메인과 프런트 baseURL 점검</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="13">13. 검수 결과</h2>
+<ul>
+<li>Markdown 점검</li>
+<li>이미지 상대 경로: <code>./images/...</code>로 통일, 로컬 렌더링 기준 정상.</li>
+<li>내부 링크(목차): 섹션 앵커 기준 연결 확인.</li>
+<li>PDF 점검</li>
+<li>본 문서와 동일 제목/내용으로 생성.</li>
+<li>페이지별 텍스트/이미지 배치 확인(잘림 최소화 기준).</li>
+</ul></body></html>
